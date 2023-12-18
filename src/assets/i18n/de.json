@@ -1,0 +1,11 @@
+{
+    "APP": {
+        "APP_TITLE": "Kundenberater"      
+    },
+    "SETTINGS": {
+      "TITLE": "Einstellungen",
+      "APP_LANGUAGE": "Wählen Sie Anwendungssprache",
+      "LANGUAGE":"Sprache"
+    }
+  }
+  

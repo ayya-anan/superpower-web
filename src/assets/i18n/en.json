@@ -1,0 +1,11 @@
+{
+    "APP": {
+        "APP_TITLE": "Customer Relationship Manager"     
+    },
+    "SETTINGS": {
+      "TITLE": "Settings",
+      "APP_LANGUAGE": "Select Application Language",
+      "LANGUAGE":"Language"
+    }
+  }
+  

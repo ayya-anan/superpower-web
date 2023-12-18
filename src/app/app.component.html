@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ 'APP.APP_TITLE' | translate }}</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with person icon" routerLink="profile">
+    <mat-icon>person</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with settings icon" routerLink="settings">
+    <mat-icon>settings</mat-icon>
+  </button>
+</mat-toolbar>
+<router-outlet></router-outlet>
