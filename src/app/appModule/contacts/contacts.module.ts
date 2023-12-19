@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactsComponent } from './contacts.component';
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { AutoCompleteModule } from "primeng/autocomplete";
@@ -25,6 +25,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
 	imports: [
@@ -52,7 +53,9 @@ import { SliderModule } from 'primeng/slider';
 		ListboxModule,
 		SelectButtonModule,
 		CheckboxModule,
-		ButtonModule
+		ButtonModule,
+		AccordionModule,
+		ReactiveFormsModule
 	],
 	declarations: [ContactsComponent]
 })

@@ -1,4 +1,97 @@
 <div class="grid p-fluid">
+	<div class="col-12">
+		<div class="card">
+			<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+				<p-accordion [multiple]="true" [activeIndex]="[0]">
+					<p-accordionTab header="Personal Details">
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="firstname">First Name</label>
+								<input formControlName="firstname" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="middlename">Middle Name</label>
+								<input formControlName="middlename" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="lastname">Last Name</label>
+								<input formControlName="lastname" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+					</p-accordionTab>
+					<p-accordionTab header="Contact">
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">Email Address</label>
+								<input formControlName="emailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="middlename">Alternate Email Address</label>
+								<input formControlName="alternateEmailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+						<div class="field grid">
+							<div class="field col">
+								<div class="field">
+									<label for="lastname">Primary Contact</label>
+									<input formControlName="primaryContact" type="number"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+								<div class="field">
+									<label for="lastname">Alternate Contact</label>
+									<input formControlName="alternateContact" type="number"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+							<div class="field col">
+								<label for="middlename">Mailing Address</label>
+								<textarea rows="5" cols="30" pInputTextarea formControlName="text"></textarea>
+							</div>
+						</div>
+					</p-accordionTab>
+					<p-accordionTab header="Job Related">
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="firstname">Job Title</label>
+								<input type="text" formControlName="jobtitle"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="middlename">Company</label>
+								<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
+									placeholder="company"></p-dropdown>
+							</div>
+							<div class="field col">
+								<label for="lastname">Role</label>
+								<p-dropdown formControlName="rolename" [options]="roles" optionLabel="name"
+									placeholder="role"></p-dropdown>
+							</div>
+						</div>
+					</p-accordionTab>
+					<p-accordionTab header="Open Opportunities">
+
+					</p-accordionTab>
+					<p-accordionTab header="Activity Log">
+
+					</p-accordionTab>
+					<p-accordionTab header="Contact Owner">
+
+					</p-accordionTab>
+				</p-accordion>
+				<div class="col" style="width: 100px;">
+					<button pButton pRipple label="Submit" class="p-button-success"></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="grid p-fluid">
 	<div class="col-12 md:col-6">
 		<div class="card">
 			<h5>InputText</h5>
@@ -199,4 +292,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
