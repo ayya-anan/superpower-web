@@ -1,32 +1,27 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
+import { LayoutService } from './coreService/app.layout.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, MatIconModule, MatToolbarModule, MatButtonModule, MatInputModule, MatSelectModule, 
-    MatFormFieldModule, RouterModule ,TranslateModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    templateUrl: './app.component.html'
 })
-export class AppComponent {
-  
-  title = 'Customer Relationship Manager';
-  
-  constructor(public translate: TranslateService){  
-    translate.addLangs(['en', 'de']);
-    translate.setDefaultLang('en');
+export class AppComponent implements OnInit {
 
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang?.match(/en|de/) ? browserLang : 'en');
-  }
-  
+    constructor(private primengConfig: PrimeNGConfig, private layoutService: LayoutService) { }
+
+    ngOnInit(): void {
+        this.primengConfig.ripple = true;       //enables core ripple functionality
+
+        //optional configuration with the default configuration
+        this.layoutService.config = {
+            ripple: false,                      //toggles ripple on and off
+            inputStyle: 'outlined',             //default style for input elements
+            menuMode: 'static',                 //layout mode of the menu, valid values are "static" and "overlay"
+            colorScheme: 'light',               //color scheme of the template, valid values are "light" and "dark"
+            theme: 'md-light-indigo',         //default component theme for PrimeNG
+            scale: 14                           //size of the body font size to scale the whole application
+        };
+    }
+
 }
