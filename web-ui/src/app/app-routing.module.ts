@@ -9,7 +9,8 @@ import { AppLayoutComponent } from "./coreModule/layout/app.layout.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    { path: '', redirectTo: '/contacts' ,pathMatch:'full'},
+                    { path: '', redirectTo: '/dashboard' ,pathMatch:'full'},
+                    { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'contacts', loadChildren: () => import('./appModule/contacts/contacts.module').then(m => m.ContactsModule) },
                 ]
             },

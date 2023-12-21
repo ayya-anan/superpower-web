@@ -1,11 +1,33 @@
+import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
 
 @Component({
-    templateUrl: './contacts.component.html'
+    templateUrl: './contacts.component.html',
+    styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
+
+    contactView: boolean = false;
+
+    columns = [
+        { header: 'Name', field: 'name'},
+        { header: 'Email Address', field: 'email'},
+        { header: 'Contact', field: 'contact'},
+        { header: 'Company', field: 'company'},
+        { header: 'Job Title', field: 'jobTitle'},
+        { header: 'Status', field: 'status'},
+        { header: 'Actions', field: 'action'}
+    ];
+
+    tableData = [
+        { name : 'Nadesh', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Eviden', jobTitle: 'Senior Software Engineer', status: 'Prospect' },
+        { name : 'Ioni Bowcher', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Scat', jobTitle: 'Senior Software Engineer', status: 'Active' },
+        { name : 'Amy Elsner', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Sider', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
+        { name : 'Asiya Javayant', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Parkway', jobTitle: 'Senior Software Engineer', status: 'Suspended' },
+        { name : 'Xuxue Feng', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Smc Inc', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
+        { name : 'Onyama Limba', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Q A Service', jobTitle: 'Senior Software Engineer', status: 'Active' }
+    ]
 
     company: any = [
         { name: 'TeamLeader' },
@@ -34,6 +56,10 @@ export class ContactsComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {}
+
+    addContact() {
+        this.contactView = true;
+    }
 
     onSubmit() {
         console.log(this.contactForm.value);

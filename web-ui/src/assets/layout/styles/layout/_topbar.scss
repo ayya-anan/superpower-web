@@ -6,7 +6,8 @@
     top: 0;
     width: 100%;
     padding: 0 2rem;
-    background-color: var(--surface-card);
+    // background-color: var(--surface-card);
+    background-color: #79def359;
     transition: left $transitionDuration;
     display: flex;
     align-items: center;
@@ -22,7 +23,7 @@
         border-radius: 12px;
 
         img {
-            height: 2.5rem;
+            height: 4.95rem;
             margin-right: .5rem;
         }
 

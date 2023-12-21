@@ -26,6 +26,7 @@ import { ColorPickerModule } from 'primeng/colorpicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
 import { AccordionModule } from 'primeng/accordion';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
 	imports: [
@@ -55,7 +56,8 @@ import { AccordionModule } from 'primeng/accordion';
 		CheckboxModule,
 		ButtonModule,
 		AccordionModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		TableModule
 	],
 	declarations: [ContactsComponent]
 })
