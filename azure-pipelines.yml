@@ -18,7 +18,7 @@ trigger:
   #environmentName: ''
 
   # Agent VM image name
-  #vmImageName: 'ubuntu-latest'
+  vmImageName: 'localhostpoolagent-aypnlocalmachine'
 
 stages:
 - stage: Build
