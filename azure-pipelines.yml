@@ -6,13 +6,13 @@
 trigger:
 - $(branch)
 
-variables:
+#variables:
 
   # Azure Resource Manager connection created during pipeline creation
   #azureSubscription: '8222181f-18b2-43ba-a05e-6d10e1c2965e'
 
   # Web app name
-  webAppName: 'superpower-web'
+  #webAppName: 'superpower-web'
 
   # Environment name
   #environmentName: ''
