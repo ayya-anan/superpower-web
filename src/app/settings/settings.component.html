@@ -1,7 +1,0 @@
-<h4>{{ 'SETTINGS.APP_LANGUAGE' | translate }}</h4>
-<mat-form-field>
-  <mat-label>{{ 'SETTINGS.LANGUAGE' | translate }}</mat-label>
-  <select matNativeControl required #langSelect (change)="setLanguage(langSelect)">
-    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
-  </select>
-</mat-form-field>

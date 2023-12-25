@@ -1,0 +1,28 @@
+
+.customer-badge {
+    border-radius: var(--border-radius);
+    padding: 0.25em 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+}
+.Active {
+    background: #C8E6C9;
+    color: #256029;
+}
+.Inactive {
+    background: #FFCDD2;
+    color: #c63737;
+}
+.Suspended {
+    background: #ECCFFF;
+    color: #694382;
+}
+.Prospect {
+    background: #FFD8B2;
+    color: #805b36;
+}
+
+
+
