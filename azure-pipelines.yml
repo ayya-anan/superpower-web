@@ -27,6 +27,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
+      name: 'localhostpool'
       vmImage: $(vmImageName)
 
     steps:
@@ -62,6 +63,7 @@ stages:
     displayName: Deploy
     environment: $(environmentName)
     pool:
+      name: 'localhostpool'
       vmImage: $(vmImageName)
     strategy:
       runOnce:
