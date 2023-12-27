@@ -1,0 +1,19 @@
+{
+    "COMMON": {
+        "EDIT": "Edit",
+        "ADD": "Add"
+    },
+    "MENU": {
+        "NAME": "Traces"
+    },
+    "DASHBOARD": {
+        "MAIN": {
+            "NAME": ""
+        }
+    },
+    "CONTACTS": {
+        "INDIVIDUAL": {
+            "NAME": ""
+        }
+    }
+}
