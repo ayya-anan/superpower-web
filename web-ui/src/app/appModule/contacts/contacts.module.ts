@@ -27,6 +27,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
 import { AccordionModule } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
 	imports: [
@@ -57,7 +58,8 @@ import { TableModule } from 'primeng/table';
 		ButtonModule,
 		AccordionModule,
 		ReactiveFormsModule,
-		TableModule
+		TableModule,
+		DialogModule
 	],
 	declarations: [ContactsComponent]
 })

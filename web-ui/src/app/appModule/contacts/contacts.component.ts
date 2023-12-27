@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class ContactsComponent implements OnInit {
 
     contactView: boolean = false;
+    additionalDetails: boolean = false;
 
     columns = [
         { header: 'Name', field: 'name'},
@@ -59,6 +60,10 @@ export class ContactsComponent implements OnInit {
 
     addContact() {
         this.contactView = true;
+    }
+
+    showContent() {
+        this.additionalDetails = true;
     }
 
     onSubmit() {
