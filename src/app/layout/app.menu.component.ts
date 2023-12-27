@@ -28,7 +28,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Lead Management',
-                icon: 'pi pi-fw pi-download',
+                icon: 'pi pi-fw pi-filter',
                 items: [
                     { label: 'Deals', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     { label: 'Quote', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
@@ -38,7 +38,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Active Work',
-                icon: 'pi pi-fw pi-home',
+                icon: 'pi pi-fw pi-wrench',
                 items: [
                     { label: 'Team Schedule', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     { label: 'Time Tracking', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
@@ -48,7 +48,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Payments',
-                icon: 'pi pi-fw pi-eye',
+                icon: 'pi pi-fw pi-money-bill',
                 items: [
                     { label: 'Reconcillation', icon: 'pi pi-fw pi-eye', routerLink: ['/'] },
                     { label: 'Reminders', icon: 'pi pi-fw pi-globe', routerLink: ['/'] }
@@ -57,7 +57,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Insights & Analytics',
-                icon: 'pi pi-fw pi-prime',
+                icon: 'pi pi-fw pi-bolt',
                 items: [
                     { label: 'Customer Survey', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
                     { label: 'Employee Survey', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
@@ -67,10 +67,10 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Business Administration',
-                icon: 'pi pi-fw pi-prime',
+                icon: 'pi pi-fw pi-user-plus',
                 items: [
-                    { label: 'Government Regulations', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
-                    { label: 'User Management', icon: 'pi pi-fw pi-prime', routerLink: ['/'] }
+                    { label: 'Government Regulations', icon: 'pi pi-fw pi-building', routerLink: ['/'] },
+                    { label: 'User Management', icon: 'pi pi-fw pi-users', routerLink: ['/'] }
                 ]
             }
         ];
