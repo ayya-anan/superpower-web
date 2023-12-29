@@ -1,5 +1,5 @@
 <p-dialog [(visible)]="contactView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
-	[draggable]="false" [resizable]="false">
+	[draggable]="false" [resizable]="false" (onHide)="clearDetails()">
 	<ng-template pTemplate="header">
 		<div class="m-auto">
 			<span><i class="pi pi-user" style="font-size: 1.5rem;"></i></span>
@@ -68,24 +68,24 @@
 					<div class="formgrid grid">
 						<div class="field col">
 							<label for="emailAddress">Address</label>
-							<input formControlName="emailAddress" type="text"
+							<input formControlName="address" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 					</div>
 					<div class="formgrid grid">
 						<div class="field col">
 							<label for="emailAddress">City</label>
-							<input formControlName="emailAddress" type="text"
+							<input formControlName="city" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
 							<label for="emailAddress">State</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="State"></p-dropdown>
+							<input type="text" formControlName="state"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
 							<label for="emailAddress">Zip</label>
-							<input formControlName="emailAddress" type="text"
+							<input formControlName="zipCode" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 					</div>
@@ -99,14 +99,26 @@
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
-							<label for="company">Company</label><br>
-							<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showCompanyDetails()"><i class="pi pi-plus mr-1"></i>Add New</div>
+							<ng-container *ngIf="showCompany; else ElseContent">
+								<input type="text" formControlName="companyname"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</ng-container>
+							<ng-template #ElseContent>
+								<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
 								placeholder="Company"></p-dropdown>
+							</ng-template>
 						</div>
 						<div class="field col">
-							<label for="role">Role</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="Role"></p-dropdown>
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showRoleDetails()"><i class="pi pi-plus mr-1"></i>Add New</div>
+							<ng-container *ngIf="showRole; else ElseContent2">
+								<input type="text" formControlName="rolename"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</ng-container>
+							<ng-template #ElseContent2>
+								<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+									placeholder="Role"></p-dropdown>
+							</ng-template>
 						</div>
 					</div>
 				</p-accordionTab>
@@ -118,7 +130,7 @@
 				</p-accordionTab>
 			</p-accordion>
 			<div class="col-12 m-auto" style="width: 100px;">
-				<button pButton pRipple label="Submit" class="p-button-success text-center"></button>
+				<button [disabled]="!contactForm.valid" pButton pRipple label="Submit" class="p-button-success text-center"></button>
 			</div>
 		</form>
 	</div>
