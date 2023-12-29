@@ -1,0 +1,187 @@
+<p-dialog [(visible)]="organizationsView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
+	[draggable]="false" [resizable]="false">
+	<ng-template pTemplate="header">
+		<div class="m-auto">
+			<span><i class="pi pi-building" style="font-size: 1.5rem;"></i></span>
+			<span class="text-xl ml-2 font-bold">Organizations Details</span>
+		</div>
+		<span *ngIf="false">
+			<p-inputSwitch class="mr-2" [(ngModel)]="additionalDetails"></p-inputSwitch>
+			<label>Additional Details</label>
+		</span>
+	</ng-template>
+	<div class="col-12">
+		<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+			<p-accordion [multiple]="true">
+				<p-accordionTab header="Organizations Details">
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="name">Name</label>
+							<input formControlName="name" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+                        <div class="field col">
+							<label for="name">Company Website</label>
+							<input formControlName="website" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+                        <div class="field col">
+							<label for="name">Tax Jurisdiction</label>
+							<input formControlName="jurisdiction" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col-2">
+							<label>Status</label><br>
+							<p-dropdown appendTo="body" formControlName="status" [options]="status" optionLabel="name"
+								placeholder="Prospect"></p-dropdown>
+						</div>
+					</div>
+                    <div class="formgrid grid">
+                        <div class="field col">
+							<label for="name">Primary Timezone</label>
+							<input formControlName="timezone" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+                        <div class="field col">
+                            <label for="lastname">Email Address</label><br>
+                            <input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                        <div class="field col">
+                            <label for="lastname">Primary Contact</label><br>
+                            <p-inputMask formControlName="primaryContact" mask="(999) 999-9999" placeholder="(999) 999-9999"></p-inputMask>
+                        </div>
+                    </div>
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <label for="emailAddress">Address</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                    </div>
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <label for="emailAddress">City</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                        <div class="field col">
+                            <label for="emailAddress">State</label><br>
+                            <p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+                                placeholder="State"></p-dropdown>
+                        </div>
+                        <div class="field col">
+                            <label for="emailAddress">Zip</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                    </div>
+				</p-accordionTab>
+				<p-accordionTab header="Segment">
+					<div class="formgrid grid">
+                        <div class="field col">
+							<label for="emailAddress">Industry Type</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+								placeholder="State"></p-dropdown>
+						</div>
+                        <div class="field col">
+							<label for="emailAddress">Sub Type</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+								placeholder="State"></p-dropdown>
+						</div>
+                        <div class="field col">
+							<label for="emailAddress">Revenue Range</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+								placeholder="State"></p-dropdown>
+						</div>
+                        <div class="field col-12">
+							<label for="emailAddress">Notes</label><br>
+                            <input formControlName="emailAddress" type="text"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+				</p-accordionTab>
+				<p-accordionTab header="Facilities">
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="jobtitle">Type</label>
+							<input type="text" formControlName="jobtitle"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="company">Employee Count</label><br>
+                            <input type="text" formControlName="jobtitle"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <label for="emailAddress">Address</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                    </div>
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <label for="emailAddress">City</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                        <div class="field col">
+                            <label for="emailAddress">State</label><br>
+                            <p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+                                placeholder="State"></p-dropdown>
+                        </div>
+                        <div class="field col">
+                            <label for="emailAddress">Zip</label>
+                            <input formControlName="emailAddress" type="text"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                    </div>
+				</p-accordionTab>
+                <p-accordionTab header="Rates">
+
+				</p-accordionTab>
+				<p-accordionTab header="Contacts">
+
+				</p-accordionTab>
+				<p-accordionTab header="Activity Log">
+
+				</p-accordionTab>
+			</p-accordion>
+			<div class="col-12 m-auto" style="width: 100px;">
+				<button pButton pRipple label="Submit" class="p-button-success text-center"></button>
+			</div>
+		</form>
+	</div>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog>
+	<ng-template pTemplate="message" let-message>
+		<div class="flex flex-column align-items-center w-full gap-3 surface-border">
+			<i class="pi pi-exclamation-triangle text-6xl text-primary-500"></i>
+			<p>{{ message.message }}</p>
+		</div>
+	</ng-template>
+</p-confirmDialog>
+<div class="col-12 py-0">
+	<p-toolbar>
+		<div class="p-toolbar-group-start">
+			<p-button icon="pi pi-user" severity="info" label="Add Organizations" (click)="addContact()"></p-button>
+			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true" label="Import"></p-button>
+			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true" severity="danger" label="Delete"
+				(click)="addContact()"></p-button>
+			<button type="button" pButton pRipple icon="pi pi-file" class="ml-2" pTooltip="CSV"
+				tooltipPosition="bottom"></button>
+			<button type="button" pButton pRipple icon="pi pi-file-pdf" class="p-button-warning ml-2" pTooltip="PDF"
+				tooltipPosition="bottom"></button>
+		</div>
+		<div class="p-toolbar-group-center">
+			<span class="p-input-icon-left">
+				<i class="pi pi-search"></i>
+				<input pInputText type="text" placeholder="Search keyword" />
+			</span>
+		</div>
+	</p-toolbar>
+	<app-table [key]="'Organizations'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+</div>

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IndividualComponent } from './individual.component';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CalendarModule } from "primeng/calendar";
 import { ChipsModule } from "primeng/chips";
@@ -26,11 +25,12 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
-import { IndividualRoutingModule } from './individual-routing.module';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { OrganizationsComponent } from './organizations.component';
+import { OrganizationsRoutingModule } from './organizations-routing.module';
 
 @NgModule({
 	imports: [
@@ -61,12 +61,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 		AccordionModule,
 		ReactiveFormsModule,
 		DialogModule,
-		IndividualRoutingModule,
+		OrganizationsRoutingModule,
 		AllTableModule,
 		ToastModule,
 		ToolbarModule,
 		ConfirmDialogModule
 	],
-	declarations: [IndividualComponent]
+	declarations: [OrganizationsComponent]
 })
-export class IndividualModule { }
+export class OrganizationsModule { }

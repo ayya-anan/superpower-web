@@ -13,36 +13,37 @@ export class AppMenuComponent implements OnInit {
         this.model = [
             {
                 label: 'Dashboard',
-                icon: 'pi pi-fw pi-eye',
+                icon: 'pi pi-fw pi-home',
                 routerLink: ['/dashboard']
             },
             { separator: true },
             {
                 label: 'Contacts',
-                icon: 'pi pi-fw pi-download',
+                icon: 'pi pi-fw pi-users',
                 items: [
-                    { label: 'Individual', icon: 'pi pi-fw pi-home', routerLink: ['/contacts/individual'] },
-                    { label: 'Organizations', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Individual', routerLink: ['/contacts/individual'] },
+                    { label: 'Organizations', routerLink: ['/contacts/organizations'] }
                 ]
             },
             { separator: true },
             {
                 label: 'Lead Management',
-                icon: 'pi pi-fw pi-filter',
+                icon: 'pi pi-fw pi-sitemap',
                 items: [
-                    { label: 'Deals', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    { label: 'Quote', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    { label: 'Contracts', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                    { label: 'Deals', routerLink: ['/'] },
+                    { label: 'Quote', routerLink: ['/'] },
+                    { label: 'Contracts', routerLink: ['/'] },
                 ]
             },
             { separator: true },
             {
                 label: 'Active Work',
-                icon: 'pi pi-fw pi-wrench',
+
+                icon: 'pi pi-fw pi-stopwatch',
                 items: [
-                    { label: 'Team Schedule', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    { label: 'Time Tracking', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    { label: 'Invoice', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                    { label: 'Team Schedule', routerLink: ['/'] },
+                    { label: 'Time Tracking', routerLink: ['/'] },
+                    { label: 'Invoice', routerLink: ['/'] },
                 ]
             },
             { separator: true },
@@ -50,8 +51,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Payments',
                 icon: 'pi pi-fw pi-money-bill',
                 items: [
-                    { label: 'Reconcillation', icon: 'pi pi-fw pi-eye', routerLink: ['/'] },
-                    { label: 'Reminders', icon: 'pi pi-fw pi-globe', routerLink: ['/'] }
+                    { label: 'Reconcillation', routerLink: ['/'] },
+                    { label: 'Reminders', routerLink: ['/'] }
                 ]
             },
             { separator: true },
@@ -59,18 +60,19 @@ export class AppMenuComponent implements OnInit {
                 label: 'Insights & Analytics',
                 icon: 'pi pi-fw pi-bolt',
                 items: [
-                    { label: 'Customer Survey', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
-                    { label: 'Employee Survey', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
-                    { label: 'Reporting', icon: 'pi pi-fw pi-prime', routerLink: ['/'] },
+                    { label: 'Customer Survey', routerLink: ['/'] },
+                    { label: 'Employee Survey', routerLink: ['/'] },
+                    { label: 'Reporting', routerLink: ['/'] },
                 ]
             },
             { separator: true },
             {
                 label: 'Business Administration',
-                icon: 'pi pi-fw pi-user-plus',
+                icon: 'pi pi-fw pi-cog',
                 items: [
-                    { label: 'Government Regulations', icon: 'pi pi-fw pi-building', routerLink: ['/'] },
-                    { label: 'User Management', icon: 'pi pi-fw pi-users', routerLink: ['/'] }
+                    { label: 'Government Regulations', routerLink: ['/'] },
+                    { label: 'User Management', routerLink: ['/'] },
+                    { label: 'Team Management', routerLink: ['/'] }
                 ]
             }
         ];
