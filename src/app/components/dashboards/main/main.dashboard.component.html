@@ -1,0 +1,65 @@
+<div class="layout-dashboard">
+    <div class="grid">
+        <div class="col-12 align-items-center justify-content-between">
+            <div class="mx-auto sm:mx-0">
+                <h1>Hi Michael...!</h1>
+            </div>
+            <div class="mx-auto sm:mx-0">
+                <h5>Here's What happening with your dashboard today</h5>
+            </div>
+        </div>
+        <div class="col-12 md:col-3" *ngFor="let metric of metrics">
+            <div class="card flex w-full relative h-14rem overflow-hidden" (mouseenter)="show(btn)"
+                (mouseleave)="hide(btn)">
+                <div class="flex w-full justify-content-between p-1">
+                    <div>
+                        <span class="block white-space-nowrap font-semibold">{{metric.title}}</span>
+                        <span class="block font-semibold text-xl mt-2 white-space-nowrap">{{metric.amount}}<span
+                                class="text-color-secondary text-sm">.67</span></span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block white-space-nowrap">{{metric.profit}} <i
+                                class="pi pi-arrow-up text-green-500"></i></span>
+                        <span class="block text-color-secondary mt-2 white-space-nowrap">vs last week</span>
+                    </div>
+                </div>
+                <img [src]="'assets/component/images/dashboard/' + metric.image +'.svg'"
+                    class="absolute w-full bottom-0 left-0">
+                <button #btn pButton pRipple type="button" label="View Details" icon="pi pi-eye font-semibold"
+                    iconPos="right" class="p-button-rounded p-button-secondary font-semibold absolute hidden"
+                    style="border-radius: 50px; left: 36%; bottom: 10%;"></button>
+            </div>
+        </div>
+
+        <div class="h-full col-12 xl:col-5">
+            <div class="card h-full">
+                <h4 class="white-space-nowrap mb-2">Quotes</h4>
+                <div class="flex gap-3 w-full mt-4 align-items-center" *ngFor="let expense of expenses">
+                    <div class="w-full">
+                        <div class="flex flex-wrap w-full justify-content-between align-items-center">
+                            <span class="font-semibold">{{expense.title}}</span>
+                            <div class="flex">
+                                <span
+                                    class="font-semibold text-color-secondary pr-2 border-right-2 surface-border text-sm">{{expense.value}}%</span>
+
+                                <span class="font-semibold ml-2 text-sm">{{expense.amount}}</span>
+                            </div>
+                        </div>
+                        <div class="border-round w-full overflow-hidden mt-2"
+                            style="height:7px; background-color: var(--surface-border)">
+                            <div class="border-left-round h-full" [style.background]="expense.background"
+                                [style.width]="expense.value + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 xl:col-7">
+            <div class="card">
+                <h4>Amount</h4>
+                <p-chart type="bar" [data]="barData" [options]="barOptions" height="470px"></p-chart>
+            </div>
+        </div>
+    </div>
+</div>
