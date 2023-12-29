@@ -38,6 +38,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Active Work',
+
                 icon: 'pi pi-fw pi-stopwatch',
                 items: [
                     { label: 'Team Schedule', routerLink: ['/'] },
@@ -48,7 +49,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Payments',
-                icon: 'pi pi-fw pi-credit-card',
+                icon: 'pi pi-fw pi-money-bill',
                 items: [
                     { label: 'Reconcillation', routerLink: ['/'] },
                     { label: 'Reminders', routerLink: ['/'] }
@@ -57,7 +58,7 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Insights & Analytics',
-                icon: 'pi pi-fw pi-chart-line',
+                icon: 'pi pi-fw pi-bolt',
                 items: [
                     { label: 'Customer Survey', routerLink: ['/'] },
                     { label: 'Employee Survey', routerLink: ['/'] },
