@@ -4,6 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { AppTranslateRootModule } from './coreModules/app.translate.root.module';
+import { AppProviderModule } from './coreModules/app.provider.module';
+import { AppApiModule } from './coreModules/app.api.module';
 
 @NgModule({
     declarations: [
@@ -13,7 +15,9 @@ import { AppTranslateRootModule } from './coreModules/app.translate.root.module'
         AppRoutingModule,
         AppLayoutModule,
         AppTranslateRootModule,
-        CommonModule
+        CommonModule,
+        AppProviderModule,
+        AppApiModule.forRoot(),
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy }

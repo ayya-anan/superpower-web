@@ -21,13 +21,13 @@
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
                         <div class="field col">
-							<label for="name">Company Website</label>
-							<input formControlName="website" type="text"
+							<label for="name">Point Of Contact</label>
+							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
                         <div class="field col">
-							<label for="name">Tax Jurisdiction</label>
-							<input formControlName="jurisdiction" type="text"
+							<label for="name">Account Manager</label>
+							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col-2">
@@ -38,12 +38,7 @@
 					</div>
                     <div class="formgrid grid">
                         <div class="field col">
-							<label for="name">Primary Timezone</label>
-							<input formControlName="timezone" type="text"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-						</div>
-                        <div class="field col">
-                            <label for="lastname">Email Address</label><br>
+                            <label for="lastname">Primary Email Address</label><br>
                             <input formControlName="emailAddress" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                         </div>
@@ -61,20 +56,20 @@
                     </div>
                     <div class="formgrid grid">
                         <div class="field col">
-                            <label for="emailAddress">City</label>
+                            <label for="emailAddress">Post Code</label>
                             <input formControlName="emailAddress" type="text"
                                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                         </div>
                         <div class="field col">
-                            <label for="emailAddress">State</label><br>
+                            <label for="emailAddress">Country</label><br>
                             <p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
                                 placeholder="State"></p-dropdown>
                         </div>
                         <div class="field col">
-                            <label for="emailAddress">Zip</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
+							<label for="name">Company Website</label>
+							<input formControlName="website" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
                     </div>
 				</p-accordionTab>
 				<p-accordionTab header="Segment">
