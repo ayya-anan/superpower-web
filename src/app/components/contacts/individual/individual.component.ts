@@ -97,7 +97,7 @@ export class IndividualComponent implements OnInit {
         this.individualsList = this.individualService.allIndividuals.subscribe(
             (res: any) => {
                 this.tableData = [];
-                _.forEach(res.results, (item) => {
+                _.forEach(res.results, (item: any) => {
                     const obj = {
                         id: item.id,
                         salutation: item.personalDetails.salutation,
