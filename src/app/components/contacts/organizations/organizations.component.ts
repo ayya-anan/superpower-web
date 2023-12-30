@@ -12,42 +12,73 @@ export class OrganizationsComponent {
 
   organizationsView: boolean = false;
   additionalDetails: boolean = false;
+  addDetails: boolean = false;
+  companyAverge: number = 1500;
+  tinoAverage: number = 500;
 
   columns = [
     { header: 'Name', field: 'name' },
-    { header: 'Website', field: 'email' },
+    { header: 'Industry Type', field: 'type' },
+    { header: 'Sub Type', field: 'subType' },
+    { header: 'Email', field: 'email' },
     { header: 'Contact', field: 'contact' },
-    { header: 'Point of Contact', field: 'jobTitle' },
-    { header: 'Employees Count', field: 'jobTitle' },
+    { header: 'Point of Contact', field: 'poc' },
+    { header: 'Account Manager', field: 'accountManager' },
     { header: 'Status', field: 'status' },
     { header: 'Actions', field: 'action' }
   ];
 
   tableData = [
-    { name: 'Nadesh', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Eviden', jobTitle: 'Senior Software Engineer', status: 'Prospect' },
-    { name: 'Ioni Bowcher', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Scat', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Amy Elsner', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Sider', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Asiya Javayant', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Parkway', jobTitle: 'Senior Software Engineer', status: 'Suspended' },
-    { name: 'Xuxue Feng', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Smc Inc', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Onyama Limba', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Q A Service', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Nadesh', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Eviden', jobTitle: 'Senior Software Engineer', status: 'Prospect' },
-    { name: 'Ioni Bowcher', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Scat', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Amy Elsner', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Sider', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Asiya Javayant', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Parkway', jobTitle: 'Senior Software Engineer', status: 'Suspended' },
-    { name: 'Xuxue Feng', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Smc Inc', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Onyama Limba', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Q A Service', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Nadesh', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Eviden', jobTitle: 'Senior Software Engineer', status: 'Prospect' },
-    { name: 'Ioni Bowcher', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Scat', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Amy Elsner', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Sider', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Asiya Javayant', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Parkway', jobTitle: 'Senior Software Engineer', status: 'Suspended' },
-    { name: 'Xuxue Feng', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Smc Inc', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Onyama Limba', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Q A Service', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Nadesh', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Eviden', jobTitle: 'Senior Software Engineer', status: 'Prospect' },
-    { name: 'Ioni Bowcher', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Scat', jobTitle: 'Senior Software Engineer', status: 'Active' },
-    { name: 'Amy Elsner', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Sider', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Asiya Javayant', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Parkway', jobTitle: 'Senior Software Engineer', status: 'Suspended' },
-    { name: 'Xuxue Feng', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Smc Inc', jobTitle: 'Senior Software Engineer', status: 'Inactive' },
-    { name: 'Onyama Limba', email: 'mailtonadesh.nr@gmail.com', contact: '+91 9626138941', company: 'Q A Service', jobTitle: 'Senior Software Engineer', status: 'Active' }
+    { 
+      name: 'Beiersdorf',
+      type: 'Administration and guide from Pursue and operated; Business consulting',
+      subType: 'Operation from Sports facilities',
+      email: 'Info@arburg.com',
+      contact: '9529564467',
+      poc: 'Martin Müller',
+      accountManager: 'Lisa Wagner',
+      status: 'Active'
+    },
+    { 
+      name: 'Braun',
+      type: 'Wholesale with utility and consumer goods',
+      subType: 'Delivery from Services for the performing Arts',
+      email: 'info@Edeka.com',
+      contact: '2576456122',
+      poc: 'Mark Weber',
+      accountManager: 'Jeff Meyer',
+      status: 'Suspended'
+    },
+    { 
+      name: 'Beiersdorf',
+      type: 'Administration and guide from Pursue and operated; Business consulting',
+      subType: 'Operation from Sports facilities',
+      email: 'Info@arburg.com',
+      contact: '9529564467',
+      poc: 'Martin Müller',
+      accountManager: 'Lisa Wagner',
+      status: 'Active'
+    },
+    { 
+      name: 'GEA Group',
+      type: 'SECTION R – ART, ENTERTAINMENT AND RECREATION',
+      subType: 'Delivery from Services for the performing Arts',
+      email: 'info@GEA Group.com',
+      contact: '1456239872',
+      poc: 'Eric Schmidt',
+      accountManager: 'Andrew Hoffman',
+      status: 'Prospect'
+    },
+    { 
+      name: 'Bilfinger',
+      type: 'Other Wholesale',
+      subType: 'Wholesale with other Semi-finished goods',
+      email: 'Info@arburg.com',
+      contact: '6089770851',
+      poc: 'Bernd Maier',
+      accountManager: 'Jeff Meyer',
+      status: 'Active'
+    },
   ];
 
   Salutations: any = [
@@ -67,6 +98,33 @@ export class OrganizationsComponent {
   company: any = [
     { name: 'TeamLeader' },
     { name: 'HubSpot' },
+  ];
+
+  industryType : any = [
+    {name: 'Forestry and Logging'},
+    {name: 'Coal Mining'},
+  ];
+  subType: any = [
+    { name: 'Forestry'},
+    { name: 'Hard Coal Mining'},
+    { name: 'Brown Coal Mining'},
+  ];
+  revenueRange: any = [
+    { name: '0 - 10 million €' },
+    { name: '10 - 100 million €'  },
+    { name: '100 - 500 million €'  },
+    { name: '500 - 1 billion €'  },
+  ];
+  facilityType: any = [
+    { name: 'Office'},
+    { name: 'Warehouse'},
+    { name: 'Manufacturing Plant'},
+  ];
+  services: any = [
+    { name: 'Consulting'},
+    { name: 'Training'},
+    { name: 'Internal Audit'},
+    { name: 'External Audit'},
   ];
 
   roles: any = [
@@ -111,7 +169,6 @@ export class OrganizationsComponent {
       status: result.status.name
     }
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Added Successfully' });
-    this.tableData.unshift(obj);
   }
 
   editData(event: any) {

@@ -20,12 +20,12 @@
 							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
-                        <div class="field col">
+						<div class="field col">
 							<label for="name">Point Of Contact</label>
 							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
-                        <div class="field col">
+						<div class="field col">
 							<label for="name">Account Manager</label>
 							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
@@ -36,112 +36,168 @@
 								placeholder="Prospect"></p-dropdown>
 						</div>
 					</div>
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="lastname">Primary Email Address</label><br>
-                            <input formControlName="emailAddress" type="text"
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="lastname">Primary Email Address</label><br>
+							<input formControlName="emailAddress" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                        <div class="field col">
-                            <label for="lastname">Primary Contact</label><br>
-                            <p-inputMask formControlName="primaryContact" mask="(999) 999-9999" placeholder="(999) 999-9999"></p-inputMask>
-                        </div>
-                    </div>
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="emailAddress">Address</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                    </div>
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="emailAddress">Post Code</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                        <div class="field col">
-                            <label for="emailAddress">Country</label><br>
-                            <p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-                                placeholder="State"></p-dropdown>
-                        </div>
-                        <div class="field col">
+						</div>
+						<div class="field col">
+							<label for="lastname">Primary Contact</label><br>
+							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
+								placeholder="(999) 999-9999"></p-inputMask>
+						</div>
+					</div>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="emailAddress">Address</label>
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="emailAddress">Post Code</label>
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="emailAddress">Country</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+								placeholder="State"></p-dropdown>
+						</div>
+						<div class="field col">
 							<label for="name">Company Website</label>
 							<input formControlName="website" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
-                    </div>
+					</div>
 				</p-accordionTab>
 				<p-accordionTab header="Segment">
 					<div class="formgrid grid">
-                        <div class="field col">
+						<div class="field col">
 							<label for="emailAddress">Industry Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="State"></p-dropdown>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="industryType"
+								optionLabel="name" placeholder="Forestry and Logging"></p-dropdown>
 						</div>
-                        <div class="field col">
+						<div class="field col">
 							<label for="emailAddress">Sub Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="State"></p-dropdown>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="subType"
+								optionLabel="name" placeholder="Forestry"></p-dropdown>
 						</div>
-                        <div class="field col">
+						<div class="field col">
 							<label for="emailAddress">Revenue Range</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="State"></p-dropdown>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="revenueRange"
+								optionLabel="name" placeholder="0 - 10 million €"></p-dropdown>
 						</div>
-                        <div class="field col-12">
+						<div class="field col-12">
 							<label for="emailAddress">Notes</label><br>
-                            <input formControlName="emailAddress" type="text"
-                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 					</div>
 				</p-accordionTab>
 				<p-accordionTab header="Facilities">
 					<div class="formgrid grid">
+						<div class="field col-3">
+							<label for="emailAddress">Type</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="facilityType"
+								optionLabel="name" placeholder="Office"></p-dropdown>
+						</div>
+						<div class="field col-12">
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="emailAddress">Address</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="emailAddress">City</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+								<div class="field col">
+									<label for="emailAddress">State</label><br>
+									<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
+										optionLabel="name" placeholder="State"></p-dropdown>
+								</div>
+								<div class="field col">
+									<label for="emailAddress">Zip</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+						</div>
+						<div style="margin-bottom: 0.5rem;" class="actionLink field col-12"
+							(click)="addDetails = !addDetails "><i class="pi pi-plus mr-1"></i>Add Details</div>
+					</div>
+					<div class="formgrid grid" *ngIf="addDetails">
+						<div class="field col-3">
+							<label for="emailAddress">Type</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="facilityType"
+								optionLabel="name" placeholder="Office"></p-dropdown>
+						</div>
+						<div class="field col-12">
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="emailAddress">Address</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="emailAddress">City</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+								<div class="field col">
+									<label for="emailAddress">State</label><br>
+									<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
+										optionLabel="name" placeholder="State"></p-dropdown>
+								</div>
+								<div class="field col">
+									<label for="emailAddress">Zip</label>
+									<input formControlName="emailAddress" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+						</div>
+						<div style="margin-bottom: 0.5rem;" class="actionLink field col-12"
+							(click)="addDetails = !addDetails "><i class="pi pi-plus mr-1"></i>Add Details</div>
+					</div>
+				</p-accordionTab>
+				<p-accordionTab header="Rates">
+					<div class="formgrid grid">
 						<div class="field col">
-							<label for="jobtitle">Type</label>
-							<input type="text" formControlName="jobtitle"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							<label for="emailAddress">Type</label><br>
+							<p-dropdown appendTo="body" formControlName="rolename" [options]="services"
+								optionLabel="name" placeholder="Office"></p-dropdown>
 						</div>
 						<div class="field col">
-							<label for="company">Employee Count</label><br>
-                            <input type="text" formControlName="jobtitle"
-                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							<label for="emailAddress">Company Averaga</label><br>
+							<p-inputNumber [(ngModel)]="companyAverge" mode="currency" inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
+						</div>
+						<div class="field col">
+							<label for="emailAddress">Tino's Average</label><br>
+							<p-inputNumber [(ngModel)]="tinoAverage" mode="currency" inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
 						</div>
 					</div>
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="emailAddress">Address</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                    </div>
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="emailAddress">City</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                        <div class="field col">
-                            <label for="emailAddress">State</label><br>
-                            <p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-                                placeholder="State"></p-dropdown>
-                        </div>
-                        <div class="field col">
-                            <label for="emailAddress">Zip</label>
-                            <input formControlName="emailAddress" type="text"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        </div>
-                    </div>
-				</p-accordionTab>
-                <p-accordionTab header="Rates">
-
-				</p-accordionTab>
-				<p-accordionTab header="Contacts">
-
 				</p-accordionTab>
 				<p-accordionTab header="Activity Log">
-
+					<div class="formgrid grid">
+						<div class="field col-3">
+							<label for="emailAddress">Activity Timestamp</label><br>
+							<p-calendar [showIcon]="true"></p-calendar>
+						</div>
+						<div class="field col-9">
+							<label for="emailAddress">Notes</label><br>
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
 				</p-accordionTab>
 			</p-accordion>
 			<div class="col-12 m-auto" style="width: 100px;">
@@ -178,5 +234,6 @@
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [key]="'Organizations'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+	<app-table [key]="'Organizations'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)"
+		(deleteContent)="delete($event)"></app-table>
 </div>
