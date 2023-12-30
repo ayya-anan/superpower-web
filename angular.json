@@ -30,7 +30,9 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/styles.scss",
+                            "src/assets/layout/styles/layout/preloading.scss",
+                            "src/assets/layout/styles/theme/theme-light/blue/theme.scss"
                         ],
                         "scripts": []
                     },
