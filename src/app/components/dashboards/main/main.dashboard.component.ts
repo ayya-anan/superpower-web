@@ -20,6 +20,8 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
     expenses: any = [];
 
+    quotes: any = [];
+
     barData: any;
 
     barOptions: any;
@@ -41,28 +43,28 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
             {
                 title: 'Invoice',
                 profit: '+8%',
-                amount: '$12,345.67',
+                amount: '$48,921.67',
                 description: 'vs last week',
                 image: 'banking-1',
             },
             {
                 title: 'Quote',
                 profit: '+3%',
-                amount: '$12,345.67',
-                description: 'vs last week',
-                image: 'banking-2',
-            },
-            {
-                title: 'Payment',
-                profit: '+8%',
-                amount: '$12,345.67',
+                amount: '$21,828.32',
                 description: 'vs last week',
                 image: 'banking-3',
             },
             {
+                title: 'Payment',
+                profit: '+14%',
+                amount: '$17,261.45',
+                description: 'vs last week',
+                image: 'banking-2',
+            },
+            {
                 title: 'Due Balance',
-                profit: '+8%',
-                amount: '$12,345.67',
+                profit: '+6%',
+                amount: '$12,345.78',
                 description: 'vs last week',
                 image: 'banking-3',
             },
@@ -70,46 +72,78 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
         this.expenses = [
             {
                 title: 'Pending',
-                value: '79',
+                value: '12',
                 amount: '$702.00',
                 background:
                     'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)',
             },
             {
                 title: 'Unpaid',
-                value: '62',
+                value: '5',
                 amount: '$421.60',
                 background:
                     'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)',
             },
             {
                 title: 'Overdue',
-                value: '45',
+                value: '12',
                 amount: '$388.51',
                 background:
                     'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)',
             },
             {
                 title: 'Partially',
-                value: '41',
+                value: '10',
                 amount: '$295.72',
                 background:
                     'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)',
             },
             {
                 title: 'Paid',
-                value: '35',
+                value: '61',
                 amount: '$170.05',
                 background:
                     'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)',
+            }
+        ];
+
+        this.quotes = [
+            {
+                title: 'Approved',
+                value: '55',
+                amount: '$170.05',
+                background:
+                    'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)',
             },
             {
-                title: 'Due',
-                value: '23',
-                amount: '$96.80',
+                title: 'Drafts',
+                value: '4',
+                amount: '$702.00',
                 background:
-                    'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)',
+                    'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)',
             },
+            {
+                title: 'Pending',
+                value: '13',
+                amount: '$421.60',
+                background:
+                    'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)',
+            },
+            {
+                title: 'Sent',
+                value: '20',
+                amount: '$388.51',
+                background:
+                    'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)',
+            },
+            {
+                title: 'Declined',
+                value: '8',
+                amount: '$295.72',
+                background:
+                'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)',
+
+            }
         ];
 
         this.items = [
