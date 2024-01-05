@@ -1,0 +1,181 @@
+<p-sidebar *ngIf="dealForm" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000"
+    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+    <ng-template pTemplate="content">
+
+        <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
+            <div class="card  overflow-auto">
+                <div
+                    class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border">
+                    <div class="flex flex-column">
+                        <div class="mb-3 text-2xl font-medium">Deal Details</div>
+                        <div class="formgrid grid">
+                            <div class="field col-2">
+                                <label for="firstname">Name / Number</label>
+                                <input formControlName="firstname" type="text"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            </div>
+                            <div class="field col-2">
+                                <label>Status</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                    optionLabel="name" placeholder="Mr"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Organization</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                    optionLabel="name" placeholder="Mr"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label for="middlename">Value</label>
+                                <input formControlName="middlename" type="number"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            </div>
+                            <div class="field col-2">
+                                <label>Deal Currency</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Customer SPOC</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Account Manager</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Source</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Win Probability</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Est. Profitability</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Start Date</label><br>
+                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                            <div class="field col-2">
+                                <label>Close Date</label><br>
+                                <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
+                    <div class="flex flex-column">
+                        <div class="mb-3 text-2xl font-medium">Services</div>
+                    </div>
+                    <div class="flex mb-3 flex-wrap gap-2">
+                        <button pButton pRipple label="Add New" icon="pi pi-plus" (click)="addNewService()"></button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full" style="border-collapse: collapse; table-layout: auto">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    Location</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Service Type</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Unit Rate</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Quantity</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Discount</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let control of dynamicInputs; let i = index">
+                                <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                        optionLabel="name" placeholder="Germany"></p-dropdown>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                        optionLabel="name" placeholder="2 days"></p-dropdown>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon>
+                                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
+                                            type="number" (change)="onValueChange()"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <input [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="control.quantity" (change)="onValueChange()" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                            [ngModelOptions]="{standalone: true}" (change)="onValueChange()"
+                                            [(ngModel)]="control.discount" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total"
+                                            [disabled]="true" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+                    <div class="font-semibold mb-3 md:mb-0"></div>
+                    <div class="flex flex-column">
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">SUBTOTAL</span>
+                            <span>${{ total }}.00</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">VAT %</span>
+                            <span>{{ vat }}</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">Discount</span>
+                            <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
+                                    (change)="onValueChange()" type="number"
+                                    class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            </p-inputGroup>
+                        </div>
+                        <div class="flex justify-content-between align-items-center">
+                            <span class="font-semibold mr-6">TOTAL</span>
+                            <span>${{ getFinalTotal() }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
+               
+                <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
+                    class="p-button-primary h-3rem"></button>
+            </div>
+        </form>
+    </ng-template>
+</p-sidebar>

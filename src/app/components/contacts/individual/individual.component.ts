@@ -191,7 +191,7 @@ export class IndividualComponent implements OnInit {
             ],
             phones: [{ type: "personal", phoneNumber: result.primaryContact }],
             emailAddresses: [result.emailAddress],
-            socialMediaLinks: [{ "type": "linkedin", "url": "https://www.linkedin.com/in/natarajan-ramamoorthy-96b8a4111/" }
+            socialMediaLinks: [{ "type": "linkedin", "url": "https://www.linkedin.com/in/jerinjjose/" }
             ],
         }
         if (this.editId) {
