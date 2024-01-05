@@ -1,128 +1,180 @@
-<p-sidebar *ngIf="formValue" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000" styleClass="w-full md:w-8 lg:w-6 xl:w-5" [showCloseIcon]="false">
+<p-sidebar *ngIf="dealForm" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000"
+    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
     <ng-template pTemplate="content">
-        <form (submit)="onSave($event)">
-            <div class="px-4 py-6 border-bottom-1 surface-border flex align-items-center justify-content-between h-4rem">
-                <p-inplace #inplace [closable]="true" closeIcon="pi pi-check" styleClass="h-3rem" (onActivate)="focus(1)" styleClass="white-space-nowrap">
-                    <ng-template pTemplate="display">
-                        <span class="block text-900 font-semibold text-lg pl-2" pTooltip="Click to edit">{{formValue.title ? formValue.title : 'Untitled'}}</span>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <input #inputTitle type="text" name="title" [(ngModel)]="formValue.title" pInputText class="w-13rem sm:w-18rem h-3rem text-900 text-lg" (keydown.enter)="inplace.deactivate()">
-                    </ng-template>
-                </p-inplace>
-                <div class="flex">
-                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded p-button-text p-button-secondary" pTooltip="card actions" tooltipPosition="left" (click)="op.toggle($event)"></button>
-                    <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-text p-button-secondary" (click)="close()"></button>
-                    <p-overlayPanel #op>
-                        <ng-template pTemplate>
-                            <div class="grid grid-nogutter flex-column gap-5 w-15rem">
-                                <div class="col-12 flex flex-column">
-                                    <span class="text-900 font-semibold block w-full border-bottom-1 surface-border pb-3 mb-2">Move to...</span>
-                                    <span pRipple class="text-700 block p-2 cursor-pointer hover:surface-ground select-none border-round" *ngFor="let list of listNames" (click)="onMove(list.listId || '')">{{list.title}}</span>
-                                </div>
-                                <div class="col-12 flex flex-column">
-                                    <span class="text-900 font-semibold block w-full border-bottom-1 surface-border pb-3 mb-2">Tasks</span>
-                                    <span pRipple class="text-700 block p-2 cursor-pointer hover:surface-ground select-none border-round" (click)="addTaskList()">Create a tasklist</span>
-                                </div>
+
+        <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
+            <div class="card  overflow-auto">
+                <div
+                    class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border">
+                    <div class="flex flex-column">
+                        <div class="mb-3 text-2xl font-medium">Deal Details</div>
+                        <div class="formgrid grid">
+                            <div class="field col-2">
+                                <label for="firstname">Name / Number</label>
+                                <input formControlName="firstname" type="text"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
-                        </ng-template>
-                    </p-overlayPanel>
-                </div>
-            </div>
-            <div class="grid grid-nogutter gap-5 pt-5 flex-wrap flex-1 flex flex-column">
-                <div class="col-12 field px-5">
-                    <label for="start" class="block text-900 font-semibold">Description</label>
-                    <textarea id="description" name="description" type="text" pInputTextarea [rows]="5" [(ngModel)]="formValue.description" style="resize: none" class="w-full"></textarea>
-                </div>
-                <div class="col-12 px-5 flex gap-5">
-                    <div class="flex flex-column field w-full">
-                        <label for="start" class="block text-900 font-semibold">Start Date</label>
-                        <span class="p-input-icon-left w-full" style="height: 3.5rem;">
-                            <i class="pi pi-clock z-1" style="left: 1.5rem;"></i>
-                            <p-calendar name="startDate" [appendTo]="sidebar" dateFormat="yy-mm-dd" [showTime]="false" [required]="true" inputId="start" inputStyleClass="w-full pl-7 text-900 font-semibold" styleClass="w-full" [inputStyle]="{'height':'3.5rem'}" [(ngModel)]="formValue.startDate"></p-calendar>
-                        </span>
-                    </div>
-                    <div class="flex flex-column field w-full">
-                        <label for="due" class="block text-900 font-semibold">Due Date</label>
-                        <span class="p-input-icon-left w-full" style="height: 3.5rem;">
-                            <i class="pi pi-clock z-1" style="left: 1.5rem;"></i>
-                            <p-calendar name="endDate" [appendTo]="sidebar" dateFormat="yy-mm-dd"  [showTime]="false" [required]="true" inputId="due" inputStyleClass="w-full pl-7 text-900 font-semibold" styleClass="w-full" [inputStyle]="{'height':'3.5rem'}" [(ngModel)]="formValue.dueDate"></p-calendar>
-                        </span>
-                    </div>
-                </div>
-        
-                <div *ngIf="formValue.taskList.tasks.length || showTaskContainer" class="col-12 flex flex-column px-5">
-                    <div class="flex justify-content-between mb-3">
-                        <span class="text-900 font-semibold">Progress</span>
-                        <span class="text-900 font-semibold">{{formValue.progress}}%</span>
-                    </div>
-                    <p-progressBar name="progress" [value]="formValue.progress" [showValue]="false"></p-progressBar>
-                </div>
-        
-                <div *ngIf="formValue.taskList.tasks.length || showTaskContainer" class="col-12 flex flex-column px-5">
-                    <div class="h-4rem -mb-4">
-                        <p-inplace #inplace2 [closable]="true" closeIcon="pi pi-check" styleClass="h-4rem" (onActivate)="focus(2)">
-                            <ng-template pTemplate="display">
-                                <span class="block text-900 font-semibold text-lg mt-3" pTooltip="Click to edit" tooltipPosition="left">{{formValue.taskList.title}}</span>
-                            </ng-template>
-                            <ng-template pTemplate="content">
-                                <input #inputTaskListTitle type="text" name="title" [(ngModel)]="formValue.taskList.title" pInputText class="w-20rem h-3rem text-900 mt-2 text-lg" (keydown.enter)="inplace2.deactivate()">
-                            </ng-template>
-                        </p-inplace>
-                    </div>
-                    <textarea type="text" pInputTextarea name="taskContent" [(ngModel)]="taskContent" style="resize: none" class="w-full mt-4" placeholder="Add a task" (keydown.enter)="addTask($event)"></textarea>
-        
-                    <ul *ngIf="formValue.taskList?.tasks?.length !== 0" class="list-none p-4 flex flex-column gap-3 surface-ground surface-border border-1 border-round">
-                        <li class="flex align-items-start gap-3" *ngFor="let task of formValue.taskList?.tasks;let i=index">
-                            <p-checkbox [name]="task.text + i" [(ngModel)]="task.completed" [binary]="true" [inputId]="task.text" (onChange)="calculateProgress()"></p-checkbox>
-                            <span style="word-break: break-all;" [ngClass]="{'text-600 line-through': task.completed, 'text-900': !task.completed}">
-                                {{task.text}}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-        
-                <div class="col-12 flex flex-column field px-5">
-                    <label for="assignees" class="block text-900 font-semibold mb-3">Assignees</label>
-                    <p-autoComplete [appendTo]="sidebar" name="assignees" [(ngModel)]="formValue.assignees" [suggestions]="filteredAssignees" (completeMethod)="filterAssignees($event)" field="name" [multiple]="true" [showEmptyMessage]="true" emptyMessage="No results found" placeholder="Choose assignees" [inputStyle]="{'height': '2.5rem'}">
-                        <ng-template let-assignee pTemplate="selectedItem">
-                            <div class="flex align-items-center gap-3 border-round">
-                                <img src="assets/demo/images/avatar/{{assignee.image}}" [alt]="assignee.name" class="h-2rem w-2rem border-2 border-circle surface-border mr-2">
-                                <span class="text-900">{{assignee.name}}</span>
+                            <div class="field col-2">
+                                <label>Status</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                    optionLabel="name" placeholder="Mr"></p-dropdown>
                             </div>
-                        </ng-template>
-                        <ng-template let-assignee pTemplate="item">
-                            <div class="flex align-items-center border-round">
-                                <img src="assets/demo/images/avatar/{{assignee.image}}" [alt]="assignee.name" class="h-2rem w-2rem border-2 border-circle surface-border mr-2">
-                                <span class="text-900">{{assignee.name}}</span>
+                            <div class="field col-2">
+                                <label>Organization</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                    optionLabel="name" placeholder="Mr"></p-dropdown>
                             </div>
-                        </ng-template>
-                    </p-autoComplete>
-                </div>
-        
-                <div class="col-12 flex flex-column row-gap-4 px-5 mb-6">
-                    <span class="block text-900 font-semibold">Comments</span>
-                    <div class="flex align-items-center">
-                        <p-avatar icon="pi pi-user" class="mr-3" shape="circle" size="large"></p-avatar>
-                        <textarea type="text" pInputTextarea name="comment" [(ngModel)]="comment" style="resize: none" class="w-full" placeholder="Write a comment..." (keydown.enter)="onComment($event)"></textarea>
+                            <div class="field col-2">
+                                <label for="middlename">Value</label>
+                                <input formControlName="middlename" type="number"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            </div>
+                            <div class="field col-2">
+                                <label>Deal Currency</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Customer SPOC</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Account Manager</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Source</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Win Probability</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Est. Profitability</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-2">
+                                <label>Start Date</label><br>
+                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                            <div class="field col-2">
+                                <label>Close Date</label><br>
+                                <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngFor="let comment of formValue.comments" class="flex align-items-center border-round">
-                        <p-avatar *ngIf="comment.image" image="assets/demo/images/avatar/{{comment.image}}" class="mb-4" shape="circle" size="large"></p-avatar>
-                        <p-avatar *ngIf="!comment.image" icon="pi pi-user" class="mb-4" shape="circle" size="large"></p-avatar>
-                        <div class="ml-3 w-full">
-                            <div class="flex justify-content-between mb-2">
-                                <span class="block text-900">{{comment.name}}</span>
-                                <span class="block text-700">1 Jun 17:58 pm</span>
-                            </div>
-                            <span class="block text-900 border-1 surface-ground surface-border p-2 border-round" style="word-break: break-all;">{{comment?.text}}</span>
+                </div>
+                <div
+                    class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
+                    <div class="flex flex-column">
+                        <div class="mb-3 text-2xl font-medium">Services</div>
+                    </div>
+                    <div class="flex mb-3 flex-wrap gap-2">
+                        <button pButton pRipple label="Add New" icon="pi pi-plus" (click)="addNewService()"></button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full" style="border-collapse: collapse; table-layout: auto">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    Location</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Service Type</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Unit Rate</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Quantity</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Discount</th>
+                                <th
+                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let control of dynamicInputs; let i = index">
+                                <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                        optionLabel="name" placeholder="Germany"></p-dropdown>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                        optionLabel="name" placeholder="2 days"></p-dropdown>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon>
+                                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
+                                            type="number" (change)="onValueChange()"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <input [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="control.quantity" (change)="onValueChange()" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                            [ngModelOptions]="{standalone: true}" (change)="onValueChange()"
+                                            [(ngModel)]="control.discount" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total"
+                                            [disabled]="true" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+                    <div class="font-semibold mb-3 md:mb-0"></div>
+                    <div class="flex flex-column">
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">SUBTOTAL</span>
+                            <span>${{ total }}.00</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">VAT %</span>
+                            <span>{{ vat }}</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-2">
+                            <span class="font-semibold mr-6">Discount</span>
+                            <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
+                                    (change)="onValueChange()" type="number"
+                                    class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            </p-inputGroup>
+                        </div>
+                        <div class="flex justify-content-between align-items-center">
+                            <span class="font-semibold mr-6">TOTAL</span>
+                            <span>${{ getFinalTotal() }}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
-                <button pButton pRipple type="button" icon="pi pi-paperclip" class="p-button-outlined p-button-secondary surface-border text-900 w-3rem h-3rem"></button>
-                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-outlined p-button-secondary surface-border text-900 w-3rem h-3rem" (click)="onDelete()"></button>
-                <button pButton pRipple type="submit" icon="pi pi-check" label="Save" class="p-button-primary h-3rem"></button>
+               
+                <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
+                    class="p-button-primary h-3rem"></button>
             </div>
         </form>
     </ng-template>
