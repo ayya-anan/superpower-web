@@ -71,9 +71,7 @@ export class KanbanListComponent implements OnInit {
     }
 
     insertCard() {
-        if (this.list.listId) {
-            this.kanbanService.addCard(this.list.listId);
-        }
+        this.parent.sidebarVisible = true;
     }
 
     dropCard(event: CdkDragDrop<KanbanCard[]>): void {

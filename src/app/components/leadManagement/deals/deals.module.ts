@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DealsComponent } from './deals.component';
 import { DealsRoutingModule } from './deals-routing.module';
 import { KanbanListComponent } from './kanban-list/kanban-list.component';
@@ -26,9 +26,31 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { KanbanService } from './service/kanban.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogModule } from 'primeng/dialog';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
 
 @NgModule({
 	imports: [
+		FormsModule,
+		AutoCompleteModule,
+		CalendarModule,
+		ChipsModule,
+		DropdownModule,
+		InputMaskModule,
+		InputNumberModule,
+		InputTextareaModule,
+		InputTextModule,
+		InputGroupAddonModule,
+		InputGroupModule,
+		SelectButtonModule,
+		CheckboxModule,
+		ButtonModule,
+		ReactiveFormsModule,
+		DialogModule,
 		CommonModule,
 		FormsModule,
         DealsRoutingModule,

@@ -3,18 +3,21 @@ import { KanbanCard, Comment, ListName, Task } from 'src/app/api/kanban';
 import { Member } from 'src/app/api/member';
 import { MemberService } from 'src/app/service/member.service';
 import { Subscription } from 'rxjs';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { KanbanService } from '../service/kanban.service';
 import { DealsComponent } from '../deals.component';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-kanban-sidebar',
     templateUrl: './kanban-sidebar.component.html',
-    styleUrls: ['./kanban-sidebar.component.scss']
+    styleUrls: ['./kanban-sidebar.component.scss'],
+    providers: [MessageService, ConfirmationService]
 })
 export class KanbanSidebarComponent implements OnDestroy {
 
-    card: KanbanCard = {id:'' ,taskList: {title: 'Untitled Task List', tasks: []}};
+    card: KanbanCard = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
 
     formValue!: KanbanCard;
 
@@ -50,16 +53,130 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
-    constructor(public parent: DealsComponent, private memberService: MemberService, private kanbanService: KanbanService) {
+    columns = [
+        { header: 'Name', field: 'name' },
+        { header: 'Company', field: 'company' },
+        { header: 'Job Title', field: 'jobTitle' },
+        { header: 'Email Address', field: 'email' },
+        { header: 'Contact', field: 'contact' },
+        { header: 'Status', field: 'status' },
+        { header: 'Actions', field: 'action' }
+    ];
+
+    Salutations: any = [
+        { name: 'Mr.' },
+        { name: 'Ms.' },
+        { name: 'Mrs.' },
+        { name: 'Dr.' },
+    ];
+
+    status: any = [
+        { name: 'Prospect' },
+        { name: 'Active' },
+        { name: 'Inactive' },
+        { name: 'Suspended' }
+    ];
+
+    company: any = [
+        { name: 'TeamLeader' },
+        { name: 'HubSpot' },
+        { name: 'Wipro' },
+    ];
+
+    roles: any = [
+        { name: 'Decision Maker' },
+        { name: 'Advisor' },
+        { name: 'Influencer' },
+        { name: 'Senior Technical Lead' },
+    ];
+    serviceIn = {
+        location: '',
+        type: '',
+        unitRate: 0,
+        quantity: 0,
+        discount: 0,
+        total: 0,
+    };
+
+    dynamicInputs: any = [];
+    total = 0;
+    vat = 17;
+    discount = 0;
+
+    dealForm = new FormGroup({
+        salutation: new FormControl(),
+        firstname: new FormControl("", [Validators.required]),
+        middlename: new FormControl("", [Validators.required]),
+        lastname: new FormControl("", [Validators.required]),
+        status: new FormControl(),
+        emailAddress: new FormControl(),
+        alternateEmailAddress: new FormControl(),
+        primaryContact: new FormControl(),
+        alternateContact: new FormControl(),
+        address: new FormControl(),
+        city: new FormControl(),
+        state: new FormControl(),
+        zipCode: new FormControl(),
+        jobtitle: new FormControl(),
+        companyname: new FormControl(),
+        rolename: new FormControl()
+    });
+    constructor(
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService,
+        private fb: FormBuilder,
+        public parent: DealsComponent, private memberService: MemberService, private kanbanService: KanbanService) {
         this.memberService.getMembers().then(members => this.assignees = members);
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = data;
-            this.formValue = {...data};
+            this.formValue = { ...data };
 
         });
         this.listSubscription = this.kanbanService.selectedListId$.subscribe(data => this.listId = data);
         this.listNameSubscription = this.kanbanService.listNames$.subscribe(data => this.listNames = data);
+    }
+    ngOnInit() {
+        this.addNewService();
+    }
+    addNewService() {
+        this.dynamicInputs.push(_.cloneDeep(this.serviceIn));
+    }
+    subscribeToGetAllDealaddedits() {
+
+    }
+
+    onValueChange() {
+        if (this.dynamicInputs && this.dynamicInputs.length > 0) {
+            this.total = 0;
+            _.each(this.dynamicInputs, (data) => {
+                data.total = ((data.unitRate * data.quantity) - data.discount);
+                this.total += data.total;
+            });
+        }
+    }
+    subscribeToAddDealaddedits() {
+
+    }
+
+    subscribeToUpdateDealaddedits() {
+
+    }
+    getFinalTotal() {
+        if (this.total) { return Math.round(this.total * (this.vat / 100) + this.total) - this.discount }
+        return 0;
+    }
+    addContact() {
+    }
+
+    showContent() {
+    }
+
+    clearDetails() {
+    }
+
+    onSubmit() {
+
     }
 
     ngOnDestroy() {
@@ -99,7 +216,7 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSave(event: any) {
         event.preventDefault();
-        this.card = {...this.formValue};
+        this.card = { ...this.formValue };
         this.kanbanService.updateCard(this.card, this.listId);
         this.close();
     }
@@ -115,7 +232,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     resetForm() {
-        this.formValue =  {id:'' ,taskList: {title: 'Untitled Task List', tasks: []}};
+        this.formValue = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
     }
 
     addTaskList() {
@@ -126,7 +243,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         }
         else if (!this.formValue.taskList) {
             let id = this.kanbanService.generateId();
-            this.formValue = { ...this.formValue, taskList: { id: id, title: 'Untitled Task List', tasks: []  } };
+            this.formValue = { ...this.formValue, taskList: { id: id, title: 'Untitled Task List', tasks: [] } };
         }
     }
 
@@ -150,7 +267,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     calculateProgress() {
-        if(this.formValue.taskList) {
+        if (this.formValue.taskList) {
             let completed = this.formValue.taskList.tasks.filter(t => t.completed).length;
             this.formValue.progress = Math.round(100 * (completed / this.formValue.taskList.tasks.length));
         }
