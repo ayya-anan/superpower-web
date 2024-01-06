@@ -1,13 +1,17 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IndividualsAPI } from '../api/contacts/individualsApi.service';
 import { IndividualService } from '../api/contacts/individuals.service';
+import { OrganizationService } from '../api/contacts/organization.service';
+import { OrganizationAPI } from '../api/contacts/organizationApi.service';
 
 const APIS = [
-    IndividualsAPI
+    IndividualsAPI,
+    OrganizationAPI
 ];
 
 const CONTROLLERS = [
     IndividualService,
+    OrganizationService
 ];
 
 @NgModule({

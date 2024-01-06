@@ -31,6 +31,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { OrganizationsComponent } from './organizations.component';
 import { OrganizationsRoutingModule } from './organizations-routing.module';
+import { BadgeModule } from 'primeng/badge';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
 	imports: [
@@ -59,7 +61,9 @@ import { OrganizationsRoutingModule } from './organizations-routing.module';
 		CheckboxModule,
 		ButtonModule,
 		AccordionModule,
+		CardModule,
 		ReactiveFormsModule,
+		BadgeModule,
 		DialogModule,
 		OrganizationsRoutingModule,
 		AllTableModule,

@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="organizationsView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
+<p-dialog [(visible)]="organizationView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
 	[draggable]="false" [resizable]="false">
 	<ng-template pTemplate="header">
 		<div class="m-auto">
@@ -11,60 +11,29 @@
 		</span>
 	</ng-template>
 	<div class="col-12">
-		<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+		<form [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
 			<p-accordion [multiple]="true">
-				<p-accordionTab header="Organizations Details">
-					<div class="formgrid grid">
+				<p-accordionTab header="Organizations Details" [selected]="true">
+					<div class="formgrid grid" formGroupName="primaryDetails">
 						<div class="field col">
 							<label for="name">Name</label>
 							<input formControlName="name" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
-							<label for="name">Point Of Contact</label>
-							<input formControlName="name" type="text"
+							<label for="pointofContact">Point Of Contact</label>
+							<input formControlName="pointofContact" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
-							<label for="name">Account Manager</label>
-							<input formControlName="name" type="text"
+							<label for="accountManager">Account Manager</label>
+							<input formControlName="accountManager" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col-2">
 							<label>Status</label><br>
-							<p-dropdown appendTo="body" formControlName="status" [options]="status" optionLabel="name"
-								placeholder="Prospect"></p-dropdown>
-						</div>
-					</div>
-					<div class="formgrid grid">
-						<div class="field col">
-							<label for="lastname">Primary Email Address</label><br>
-							<input formControlName="emailAddress" type="text"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-						</div>
-						<div class="field col">
-							<label for="lastname">Primary Contact</label><br>
-							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
-								placeholder="(999) 999-9999"></p-inputMask>
-						</div>
-					</div>
-					<div class="formgrid grid">
-						<div class="field col">
-							<label for="emailAddress">Address</label>
-							<input formControlName="emailAddress" type="text"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-						</div>
-					</div>
-					<div class="formgrid grid">
-						<div class="field col">
-							<label for="emailAddress">Post Code</label>
-							<input formControlName="emailAddress" type="text"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-						</div>
-						<div class="field col">
-							<label for="emailAddress">Country</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-								placeholder="State"></p-dropdown>
+							<p-dropdown appendTo="body" [filter]="true" filterBy="name"  formControlName="status" [options]="status" optionLabel="name" optionValue="name" 
+								placeholder="Select Status"></p-dropdown>
 						</div>
 						<div class="field col">
 							<label for="name">Company Website</label>
@@ -72,121 +41,147 @@
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 					</div>
+					<div class="formgrid grid">
+						<div class="field col" formArrayName="phones">
+							<ng-container *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i">
+								<label for="lastname">Primary Contact</label><br>
+								<input formControlName="phoneNumber" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</ng-container>
+						</div>
+						<div class="field col" formArrayName="emailAddresses">
+							<ng-container *ngFor="let email of emailAddresses.controls; let i = index">
+								<label for="lastname">Primary Email Address</label><br>
+								<input [formControlName]="i" type="email"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+							</ng-container>
+						</div>
+					</div>
+					<ng-container formArrayName="addresses">
+						<ng-container *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
+
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="address">Address</label>
+									<input formControlName="address" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+							</div>
+							<div class="formgrid grid">
+								<div class="field col">
+									<label for="zipCode">Post Code</label>
+									<input formControlName="zipCode" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
+								<div class="field col">
+									<label for="country">Country</label><br>
+									<p-dropdown appendTo="body" formControlName="country" [filter]="true" filterBy="name"  [options]="countries"
+										optionLabel="name" optionValue="name"  placeholder="Country"></p-dropdown>
+								</div>
+							</div>
+						</ng-container>
+					</ng-container>
 				</p-accordionTab>
 				<p-accordionTab header="Segment">
-					<div class="formgrid grid">
+					<div class="formgrid grid" formGroupName="segmant">
 						<div class="field col">
-							<label for="emailAddress">Industry Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="industryType"
-								optionLabel="name" placeholder="Forestry and Logging"></p-dropdown>
+							<label for="industryType">Industry Type</label><br>
+							<p-dropdown appendTo="body" [filter]="true" filterBy="name"  formControlName="industryType" [options]="industryType"
+								optionLabel="name" optionValue="name"  placeholder="Select Type"></p-dropdown>
 						</div>
 						<div class="field col">
-							<label for="emailAddress">Sub Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="subType"
-								optionLabel="name" placeholder="Forestry"></p-dropdown>
+							<label for="subType">Sub Type</label><br>
+							<p-dropdown appendTo="body" [filter]="true" filterBy="name"  formControlName="subType" [options]="subType" optionLabel="name" optionValue="name" 
+								placeholder="Select Type"></p-dropdown>
 						</div>
 						<div class="field col">
-							<label for="emailAddress">Revenue Range</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="revenueRange"
-								optionLabel="name" placeholder="0 - 10 million €"></p-dropdown>
+							<label for="revenueRange">Revenue Range</label><br>
+							<p-dropdown appendTo="body"  [filter]="true" filterBy="name" formControlName="revenueRange" [options]="revenueRange"
+								optionLabel="name" optionValue="name"  placeholder="Select Revenue"></p-dropdown>
 						</div>
 						<div class="field col-12">
-							<label for="emailAddress">Notes</label><br>
-							<input formControlName="emailAddress" type="text"
+							<label for="notes">Notes</label><br>
+							<input formControlName="notes" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 					</div>
 				</p-accordionTab>
 				<p-accordionTab header="Facilities">
-					<div class="formgrid grid">
-						<div class="field col-3">
-							<label for="emailAddress">Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="facilityType"
-								optionLabel="name" placeholder="Office"></p-dropdown>
+					<ng-container formArrayName="facilities">
+						<div class="formgrid grid" *ngFor="let facility of facilities.controls; let i = index"
+							[formGroupName]="i">
+							<p-card class="field col-12">
+								<div class="field col-12">
+									<div class="formgrid grid">
+										<div class="field col-3">
+											<label for="type">Type</label><br>
+											<p-dropdown appendTo="body" formControlName="type" [filter]="true" filterBy="name"  [options]="facilityType"
+												optionLabel="name" optionValue="name"  placeholder="Office"></p-dropdown>
+										</div>
+
+										<div class="col-9 mt-4">
+											<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
+												<button pButton pRipple type="button" icon="pi pi-plus" title="Add New" *ngIf="i === facilities.controls.length - 1"
+													class="p-button-rounded p-button-info"
+													(click)="initFacilitiesArray()"></button>
+												<button pButton pRipple type="button" *ngIf="facilities.controls.length > 1" icon="pi pi-times" title="Remove" 
+													class="p-button-rounded p-button-danger"
+													(click)="removeFacilitiesArray(i)"></button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="field col-12">
+									<div class="formgrid grid">
+										<div class="field col">
+											<label for="address">Address</label>
+											<input formControlName="address" type="text"
+												class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+										</div>
+									</div>
+									<div class="formgrid grid">
+										<!-- <div class="field col" >
+							<label for="emailAddress">City</label>
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div> -->
+										<div class="field col">
+											<label for="country">Country</label><br>
+											<p-dropdown  [filter]="true" filterBy="name" appendTo="body" formControlName="country" [options]="countries"
+												optionLabel="name" optionValue="name"  placeholder="Country"></p-dropdown>
+										</div>
+										<div class="field col">
+											<label for="zipCode">Post Code</label>
+											<input formControlName="zipCode" type="text"
+												class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+										</div>
+									</div>
+								</div>
+							</p-card>
 						</div>
-						<div class="field col-12">
-							<div class="formgrid grid">
-								<div class="field col">
-									<label for="emailAddress">Address</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-							</div>
-							<div class="formgrid grid">
-								<div class="field col">
-									<label for="emailAddress">City</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-								<div class="field col">
-									<label for="emailAddress">State</label><br>
-									<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
-										optionLabel="name" placeholder="State"></p-dropdown>
-								</div>
-								<div class="field col">
-									<label for="emailAddress">Zip</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-							</div>
-						</div>
-						<div style="margin-bottom: 0.5rem;" class="actionLink field col-12"
-							(click)="addDetails = !addDetails "><i class="pi pi-plus mr-1"></i>Add Details</div>
-					</div>
-					<div class="formgrid grid" *ngIf="addDetails">
-						<div class="field col-3">
-							<label for="emailAddress">Type</label><br>
-							<p-dropdown appendTo="body" formControlName="rolename" [options]="facilityType"
-								optionLabel="name" placeholder="Office"></p-dropdown>
-						</div>
-						<div class="field col-12">
-							<div class="formgrid grid">
-								<div class="field col">
-									<label for="emailAddress">Address</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-							</div>
-							<div class="formgrid grid">
-								<div class="field col">
-									<label for="emailAddress">City</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-								<div class="field col">
-									<label for="emailAddress">State</label><br>
-									<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
-										optionLabel="name" placeholder="State"></p-dropdown>
-								</div>
-								<div class="field col">
-									<label for="emailAddress">Zip</label>
-									<input formControlName="emailAddress" type="text"
-										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-								</div>
-							</div>
-						</div>
-						<div style="margin-bottom: 0.5rem;" class="actionLink field col-12"
-							(click)="addDetails = !addDetails "><i class="pi pi-plus mr-1"></i>Add Details</div>
-					</div>
+					</ng-container>
 				</p-accordionTab>
-				<p-accordionTab header="Rates">
+				<p-accordionTab header="Rates" *ngIf="false">
 					<div class="formgrid grid">
 						<div class="field col">
 							<label for="emailAddress">Type</label><br>
 							<p-dropdown appendTo="body" formControlName="rolename" [options]="services"
-								optionLabel="name" placeholder="Office"></p-dropdown>
+								optionLabel="name" optionValue="name"  placeholder="Office"></p-dropdown>
 						</div>
 						<div class="field col">
 							<label for="emailAddress">Company Averaga</label><br>
-							<p-inputNumber [(ngModel)]="companyAverge" mode="currency" inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
+							<p-inputNumber [(ngModel)]="companyAverge" mode="currency" inputId="currency-germany"
+								currency="EUR" locale="de-DE"> </p-inputNumber>
 						</div>
 						<div class="field col">
 							<label for="emailAddress">Tino's Average</label><br>
-							<p-inputNumber [(ngModel)]="tinoAverage" mode="currency" inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
+							<p-inputNumber [(ngModel)]="tinoAverage" mode="currency" inputId="currency-germany"
+								currency="EUR" locale="de-DE"> </p-inputNumber>
 						</div>
 					</div>
 				</p-accordionTab>
-				<p-accordionTab header="Activity Log">
+				<p-accordionTab header="Activity Log" *ngIf="false">
 					<div class="formgrid grid">
 						<div class="field col-3">
 							<label for="emailAddress">Activity Timestamp</label><br>
