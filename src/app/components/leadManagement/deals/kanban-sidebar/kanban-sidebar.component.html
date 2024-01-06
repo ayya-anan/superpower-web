@@ -1,5 +1,5 @@
 <p-sidebar *ngIf="dealForm" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000"
-    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+    styleClass="w-full md:w-8 lg:w-8 xl:w-6" [showCloseIcon]="false">
     <ng-template pTemplate="content">
 
         <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
@@ -9,48 +9,54 @@
                     <div class="flex flex-column">
                         <div class="mb-3 text-2xl font-medium">Deal Details</div>
                         <div class="formgrid grid">
-                            <div class="field col-2">
+                            <div class="field col-6">
                                 <label for="firstname">Name / Number</label>
                                 <input formControlName="firstname" type="text"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
-                            <div class="field col-2">
+                            <div class="field col-6">
+                                <label for="middlename">Value</label>
+                                <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                        [value]="getFinalTotal()" type="number"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                </p-inputGroup>
+                            </div>
+                            <div class="field col-6">
+                                <label>Organization</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+                                    optionLabel="name" placeholder="Mr"></p-dropdown>
+                            </div>
+                            <div class="field col-6">
+                                <label>Start Date</label><br>
+                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                            <div class="field col-6">
+                                <label>Customer Contact</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-6">
+                                <label>Win Probability</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-6">
+                                <label>Account Manager</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <div class="field col-6">
+                                <label>Source</label><br>
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                            </div>
+                            <!-- <div class="field col-6">
                                 <label>Status</label>
                                 <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
                                     optionLabel="name" placeholder="Mr"></p-dropdown>
                             </div>
                             <div class="field col-2">
-                                <label>Organization</label>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
-                                    optionLabel="name" placeholder="Mr"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label for="middlename">Value</label>
-                                <input formControlName="middlename" type="number"
-                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            </div>
-                            <div class="field col-2">
                                 <label>Deal Currency</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label>Customer SPOC</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label>Account Manager</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label>Source</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label>Win Probability</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
@@ -60,13 +66,9 @@
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
                             <div class="field col-2">
-                                <label>Start Date</label><br>
-                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
-                            </div>
-                            <div class="field col-2">
                                 <label>Close Date</label><br>
                                 <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -97,7 +99,7 @@
                                     Quantity</th>
                                 <th
                                     class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Discount</th>
+                                    Employee Count</th>
                                 <th
                                     class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
                                     Total</th>
@@ -127,9 +129,8 @@
                                     </p-inputGroup>
                                 </td>
                                 <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
-                                            [ngModelOptions]="{standalone: true}" (change)="onValueChange()"
-                                            [(ngModel)]="control.discount" type="number"
+                                    <p-inputGroup class="w-full"><input [ngModelOptions]="{standalone: true}"
+                                            (change)="onValueChange()" [(ngModel)]="control.discount" type="number"
                                             class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                                     </p-inputGroup>
                                 </td>
@@ -137,7 +138,7 @@
                                     <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
                                             [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total"
                                             [disabled]="true" type="number"
-                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
                                     </p-inputGroup>
                                 </td>
                             </tr>
@@ -161,7 +162,7 @@
                             <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
                                     (change)="onValueChange()" type="number"
-                                    class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                    class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
                             </p-inputGroup>
                         </div>
                         <div class="flex justify-content-between align-items-center">
@@ -172,7 +173,7 @@
                 </div>
             </div>
             <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
-               
+
                 <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
                     class="p-button-primary h-3rem"></button>
             </div>
