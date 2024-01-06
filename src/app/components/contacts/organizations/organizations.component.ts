@@ -250,7 +250,13 @@ export class OrganizationsComponent {
       acceptButtonStyleClass: 'p-button-outlined p-button-sm',
       accept: () => {
         event.data.splice(event.index, 1);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Deleted Successfully' });
+        this.organizationService.deleteOrganization(event.rowData.id);
+        this.organizationService.deleteOrganizationEmit.subscribe(
+            (res: any) => {
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Deleted Successfully' });
+                this.organizationService.getAllOrganization();
+            }
+        );
       },
     });
   }
