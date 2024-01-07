@@ -23,12 +23,12 @@
 						<div class="field col">
 							<label for="pointofContact">Point Of Contact</label>
 							<p-dropdown appendTo="body" formControlName="pointofContact" [options]="individualsData"
-									optionLabel="name" optionValue="id" placeholder="Select Point Of Contact"></p-dropdown>
+								optionLabel="name" optionValue="id" placeholder="Select Point Of Contact"></p-dropdown>
 						</div>
 						<div class="field col">
 							<label for="accountManager">Account Manager</label>
 							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-									optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+								optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
 						</div>
 						<div class="field col-2">
 							<label>Status</label><br>
@@ -125,8 +125,12 @@
 												filterBy="name" [options]="facilityType" optionLabel="name"
 												optionValue="name" placeholder="Select Facility Type"></p-dropdown>
 										</div>
+										<div class="field col-3">
+											<label for="type">Employee Count</label><br>
+											<p-inputNumber formControlName="employeeCount"></p-inputNumber>
+										</div>
 
-										<div class="col-9 mt-4">
+										<div class="col-6 mt-4">
 											<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
 												<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
 													*ngIf="i === facilities.controls.length - 1"
@@ -173,7 +177,7 @@
 							<div class="field col">
 								<label for="type">Type</label><br>
 								<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
-									optionLabel="name" optionValue="name" placeholder="Office"></p-dropdown>
+									optionLabel="name" optionValue="name" placeholder="Select Type"></p-dropdown>
 							</div>
 							<div class="field col">
 								<label for="amount">Rate</label><br>

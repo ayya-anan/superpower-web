@@ -8,6 +8,8 @@ import { KanbanService } from '../service/kanban.service';
 import { DealsComponent } from '../deals.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as _ from 'lodash';
+import { OrganizationService } from 'src/app/api/contacts/organization.service';
+import { IndividualService } from 'src/app/api/contacts/individuals.service';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -53,23 +55,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
-    columns = [
-        { header: 'Name', field: 'name' },
-        { header: 'Company', field: 'company' },
-        { header: 'Job Title', field: 'jobTitle' },
-        { header: 'Email Address', field: 'email' },
-        { header: 'Contact', field: 'contact' },
-        { header: 'Status', field: 'status' },
-        { header: 'Actions', field: 'action' }
-    ];
-
-    Salutations: any = [
-        { name: 'Mr.' },
-        { name: 'Ms.' },
-        { name: 'Mrs.' },
-        { name: 'Dr.' },
-    ];
-
     status: any = [
         { name: 'Prospect' },
         { name: 'Active' },
@@ -77,31 +62,28 @@ export class KanbanSidebarComponent implements OnDestroy {
         { name: 'Suspended' }
     ];
 
-    company: any = [
-        { name: 'TeamLeader' },
-        { name: 'HubSpot' },
-        { name: 'Wipro' },
-    ];
 
-    roles: any = [
-        { name: 'Decision Maker' },
-        { name: 'Advisor' },
-        { name: 'Influencer' },
-        { name: 'Senior Technical Lead' },
+    quantity: any = [
+        { type: 'Forestry and Logging', quantity: 0.5, subType: 'Forestry' },
+        { type: 'Forestry and Logging', quantity: 1.5, subType: 'Hard Coal Mining' },
+        { type: 'Forestry and Logging', quantity: 2.5, subType: 'Brown Coal Mining' },
+        { type: 'Coal Mining', quantity: 3.5, subType: 'Forestry' },
+        { type: 'Coal Mining', quantity: 4.5, subType: 'Hard Coal Mining' },
+        { type: 'Coal Mining', quantity: 5.5, subType: 'Brown Coal Mining' },
     ];
-    serviceIn = {
-        location: '',
-        type: '',
-        unitRate: 0,
-        quantity: 0,
-        discount: 0,
-        total: 0,
-    };
-
     dynamicInputs: any = [];
     total = 0;
     vat = 17;
     discount = 0;
+
+    serviceIn = {
+        facility: '',
+        service: '',
+        unitRate: 0,
+        quantity: 0,
+        employeeCount: 0,
+        total: 0,
+    };
 
     dealForm = new FormGroup({
         salutation: new FormControl(),
@@ -119,13 +101,26 @@ export class KanbanSidebarComponent implements OnDestroy {
         zipCode: new FormControl(),
         jobtitle: new FormControl(),
         companyname: new FormControl(),
+        org: new FormControl(),
         rolename: new FormControl()
     });
+    individualSubscription: Subscription = new Subscription;
+    individualsData: { name: string; id: any; }[] = [];
+    organizationSubscription: Subscription = new Subscription;
+    organizationData: { name: any; id: any; }[] = [];
+    selectedOrganization: any = { facilities: [], services: [] };
+    organizationFilterData: { name: string; id: any; }[] = [];
+
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private fb: FormBuilder,
-        public parent: DealsComponent, private memberService: MemberService, private kanbanService: KanbanService) {
+        public parent: DealsComponent,
+        private memberService: MemberService,
+        private organizationService: OrganizationService,
+        private individualService: IndividualService,
+        private kanbanService: KanbanService
+    ) {
         this.memberService.getMembers().then(members => this.assignees = members);
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
@@ -137,7 +132,32 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.listNameSubscription = this.kanbanService.listNames$.subscribe(data => this.listNames = data);
     }
     ngOnInit() {
+        this.organizationService.getAllOrganization();
+        this.individualService.getAllIndividuals();
+        this.subscribeToGetAllOrganization();
+        this.subscribeToGetAllIndividuals();
         this.addNewService();
+    }
+    changeOrg(event: any) {
+        this.selectedOrganization = _.find(this.organizationData, (org) => org.id == event.value);
+    }
+    subscribeToGetAllOrganization() {
+        this.organizationSubscription = this.organizationService.allOrganization.subscribe(
+            (res: any) => {
+                this.organizationData = res.results;
+                this.organizationFilterData = _.map(res.results, (i) => {
+                    return { name: i.primaryDetails.name, id: i.id }
+                });
+            });
+    }
+    subscribeToGetAllIndividuals() {
+        this.individualSubscription = this.individualService.allIndividuals.subscribe(
+            (res: any) => {
+                this.individualsData = _.map(res.results, (i) => {
+                    return { name: `${i.personalDetails.firstName} ${i.personalDetails.middleName} ${i.personalDetails.lastName}`, id: i.id }
+                });
+            }
+        );
     }
     addNewService() {
         this.dynamicInputs.push(_.cloneDeep(this.serviceIn));
@@ -146,13 +166,15 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     }
 
-    onValueChange() {
-        if (this.dynamicInputs && this.dynamicInputs.length > 0) {
-            this.total = 0;
-            _.each(this.dynamicInputs, (data) => {
-                data.total = ((data.unitRate * data.quantity) - data.discount);
-                this.total += data.total;
-            });
+    onValueChange(index: number) {
+        if (this.dynamicInputs[index].facility && this.dynamicInputs[index].service) {
+            this.dynamicInputs[index].employeeCount = this.dynamicInputs[index].facility.employeeCount;
+            this.dynamicInputs[index].unitRate = this.dynamicInputs[index].service.amount;
+            const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.segmant.industryType && q.subType == this.selectedOrganization.segmant.subType);
+            this.dynamicInputs[index].quantity = hours.quantity;
+            this.dynamicInputs[index].total = this.dynamicInputs[index].employeeCount * this.dynamicInputs[index].unitRate * this.dynamicInputs[index].quantity;
+
+            this.getFinalTotal();
         }
     }
     subscribeToAddDealaddedits() {
@@ -163,6 +185,12 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     }
     getFinalTotal() {
+        if (this.dynamicInputs && this.dynamicInputs.length > 0) {
+            this.total = 0;
+            _.each(this.dynamicInputs, (data) => {
+                this.total += data.total;
+            });
+        }
         if (this.total) { return Math.round(this.total * (this.vat / 100) + this.total) - this.discount }
         return 0;
     }

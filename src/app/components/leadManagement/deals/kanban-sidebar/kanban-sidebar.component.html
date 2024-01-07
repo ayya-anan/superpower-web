@@ -11,29 +11,30 @@
                         <div class="formgrid grid">
                             <div class="field col-4">
                                 <label for="firstname">Number</label>
-                                <input formControlName="firstname" type="text"
+                                <input formControlName="status" type="text"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
                             <div class="field col-4">
                                 <label for="middlename">Value</label>
-                                <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
-                                        [value]="getFinalTotal()" type="number"
-                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                                </p-inputGroup>
+                                <input [value]="getFinalTotal()" formControlName="status"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
                             </div>
                             <div class="field col-4">
                                 <label>Organization</label>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
-                                    optionLabel="name" placeholder="Mr"></p-dropdown>
+                                <p-dropdown appendTo="body" formControlName="org" (onChange)="changeOrg($event)"
+                                    [options]="organizationFilterData" optionLabel="name" optionValue="id"
+                                    placeholder="Select Organization"></p-dropdown>
                             </div>
                             <div class="field col-4">
                                 <label>Start Date</label><br>
-                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
+                                <p-calendar formControlName="salutation" dateFormat="dd-M-yy"></p-calendar>
                             </div>
                             <div class="field col-4">
                                 <label>Customer Contact</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
+                                    optionLabel="name" optionValue="id"
+                                    placeholder="Select Customer Contact"></p-dropdown>
                             </div>
                             <div class="field col-4">
                                 <label>Win Probability</label><br>
@@ -42,8 +43,9 @@
                             </div>
                             <div class="field col-4">
                                 <label>Account Manager</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
+                                    optionLabel="name" optionValue="id"
+                                    placeholder="Select Customer Contact"></p-dropdown>
                             </div>
                             <div class="field col-4">
                                 <label>Source</label><br>
@@ -52,8 +54,8 @@
                             </div>
                             <div class="field col-4">
                                 <label>Status</label>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
-                                    optionLabel="name" placeholder="Mr"></p-dropdown>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="status"
+                                    optionLabel="name" placeholder="Select Status"></p-dropdown>
                             </div>
                             <!--  <div class="field col-2">
                                 <label>Deal Currency</label><br>
@@ -81,69 +83,73 @@
                         <button pButton pRipple label="Add New" icon="pi pi-plus" (click)="addNewService()"></button>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full" style="border-collapse: collapse; table-layout: auto">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                    Location</th>
-                                <th
-                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Service Type</th>
-                                <th
-                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Unit Rate</th>
-                                <th
-                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Quantity</th>
-                                <th
-                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Employee Count</th>
-                                <th
-                                    class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                                    Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let control of dynamicInputs; let i = index">
-                                <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">
-                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
-                                        optionLabel="name" placeholder="Germany"></p-dropdown>
-                                </td>
-                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
-                                        optionLabel="name" placeholder="2 days"></p-dropdown>
-                                </td>
-                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon>
-                                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
-                                            type="number" (change)="onValueChange()"
-                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
-                                    </p-inputGroup>
-                                </td>
-                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-inputGroup class="w-full"> <input [ngModelOptions]="{standalone: true}"
-                                            [(ngModel)]="control.quantity" (change)="onValueChange()" type="number"
-                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                                    </p-inputGroup>
-                                </td>
-                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-inputGroup class="w-full"><input [ngModelOptions]="{standalone: true}"
-                                            (change)="onValueChange()" [(ngModel)]="control.discount" type="number"
-                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                                    </p-inputGroup>
-                                </td>
-                                <td class="text-right py-3 border-bottom-1 surface-border px-3">
-                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
-                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total"
-                                            [disabled]="true" type="number"
-                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
-                                    </p-inputGroup>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div>
+                    <div class="grid mt-2">
+                        <div
+                            class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label>Facility</label>
+                        </div>
+                        <div
+                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label> Service Type</label>
+                        </div>
+                        <div
+                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label> Unit Rate</label>
+                        </div>
+                        <div
+                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label> Employee Count</label>
+                        </div>
+                        <div
+                            class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label> Quantity</label>
+                        </div>
+                        <div
+                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <label> Total</label>
+                        </div>
+                    </div>
+                    <div class="grid mt-2" *ngFor="let control of dynamicInputs; let i = index">
+                        <div
+                            class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <p-dropdown appendTo="body"  [ngModelOptions]="{standalone: true}" [(ngModel)]="control.facility"
+                                [options]="selectedOrganization.facilities" optionLabel="type" (onChange)="onValueChange(i)"
+                                placeholder="Select Facility"></p-dropdown>
+                        </div>
+                        <div
+                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <p-dropdown appendTo="body"  [ngModelOptions]="{standalone: true}" [(ngModel)]="control.service"
+                                [options]="selectedOrganization.services" optionLabel="type" (onChange)="onValueChange(i)" 
+                                placeholder="Select Service"></p-dropdown>
+                        </div>
+                        <div
+                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
+                                [disabled]="true" type="number"
+                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+
+                        </div>
+                        <div
+                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                [(ngModel)]="control.employeeCount" type="number"
+                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+                        </div>
+                        <div
+                            class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <input [ngModelOptions]="{standalone: true}"[disabled]="true"
+                                [(ngModel)]="control.quantity" type="number"
+                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                        <div
+                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total" [disabled]="true"
+                                type="number"
+                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
@@ -161,7 +167,7 @@
                             <span class="font-semibold mr-6">Discount</span>
                             <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
-                                    (change)="onValueChange()" type="number"
+                                    (change)="getFinalTotal()" type="number"
                                     class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
                             </p-inputGroup>
                         </div>

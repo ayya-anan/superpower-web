@@ -134,6 +134,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     facilitiesArray.push(this.fb.group({
       type: ['', [Validators.required]],
       address: ['', [Validators.required]],
+      employeeCount: ['', [Validators.required]],
       country: ['Germany', [Validators.required]],
       zipCode: ['', [Validators.required]],
     }));
