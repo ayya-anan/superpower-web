@@ -9,54 +9,59 @@
                     <div class="flex flex-column">
                         <div class="mb-3 text-2xl font-medium">Deal Details</div>
                         <div class="formgrid grid">
-                            <div class="field col-4">
-                                <label for="firstname">Number</label>
+                            <div class="field col-6">
+                                <label for="firstname">Name</label>
                                 <input formControlName="status" type="text"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
                                 <label for="middlename">Value</label>
-                                <input [value]="getFinalTotal()" formControlName="status"
+                                <input [disabled]="true" type="text" [value]="getFinalTotal()" formControlName="status"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
                                 <label>Organization</label>
                                 <p-dropdown appendTo="body" formControlName="org" (onChange)="changeOrg($event)"
                                     [options]="organizationFilterData" optionLabel="name" optionValue="id"
                                     placeholder="Select Organization"></p-dropdown>
                             </div>
-                            <div class="field col-4">
-                                <label>Start Date</label><br>
-                                <p-calendar formControlName="salutation" dateFormat="dd-M-yy"></p-calendar>
+                            <div class="field col-6">
+                                <label>Status</label>
+                                <p-dropdown appendTo="body" formControlName="salutation" [options]="status"
+                                    optionLabel="name" placeholder="Select Status"></p-dropdown>
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
                                 <label>Customer Contact</label><br>
                                 <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
                                     optionLabel="name" optionValue="id"
                                     placeholder="Select Customer Contact"></p-dropdown>
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
                                 <label>Win Probability</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                <p-dropdown appendTo="body" formControlName="status" [options]="winProbablity"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
                                 <label>Account Manager</label><br>
                                 <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
                                     optionLabel="name" optionValue="id"
                                     placeholder="Select Customer Contact"></p-dropdown>
                             </div>
-                            <div class="field col-4">
+                            <div class="field col-6">
+                                <label>Start Date</label><br>
+                                <p-calendar formControlName="salutation" dateFormat="dd-M-yy"></p-calendar>
+                            </div>
+                            <div class="field col-6">
                                 <label>Source</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
+                                <p-dropdown appendTo="body" formControlName="status" [options]="sourceList"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <div class="field col-4">
-                                <label>Status</label>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="status"
-                                    optionLabel="name" placeholder="Select Status"></p-dropdown>
+                            <div class="field col-6">
+                                <label>Close Date</label><br>
+                                <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
                             </div>
+
                             <!--  <div class="field col-2">
                                 <label>Deal Currency</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
@@ -66,10 +71,6 @@
                                 <label>Est. Profitability</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div>
-                            <div class="field col-2">
-                                <label>Close Date</label><br>
-                                <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
                             </div> -->
                         </div>
                     </div>
@@ -87,7 +88,7 @@
                     <div class="grid mt-2">
                         <div
                             class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label>Facility</label>
+                            <label> Facility </label>
                         </div>
                         <div
                             class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
@@ -95,7 +96,7 @@
                         </div>
                         <div
                             class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Unit Rate</label>
+                            <label> Service Rate</label>
                         </div>
                         <div
                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
@@ -112,15 +113,17 @@
                     </div>
                     <div class="grid mt-2" *ngFor="let control of dynamicInputs; let i = index">
                         <div
-                            class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <p-dropdown appendTo="body"  [ngModelOptions]="{standalone: true}" [(ngModel)]="control.facility"
-                                [options]="selectedOrganization.facilities" optionLabel="type" (onChange)="onValueChange(i)"
+                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="control.facility" [options]="selectedOrganization.facilities"
+                                optionLabel="type" (onChange)="onValueChange(i)"
                                 placeholder="Select Facility"></p-dropdown>
                         </div>
                         <div
                             class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <p-dropdown appendTo="body"  [ngModelOptions]="{standalone: true}" [(ngModel)]="control.service"
-                                [options]="selectedOrganization.services" optionLabel="type" (onChange)="onValueChange(i)" 
+                            <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="control.service" [options]="selectedOrganization.services"
+                                optionLabel="type" (onChange)="onValueChange(i)"
                                 placeholder="Select Service"></p-dropdown>
                         </div>
                         <div
@@ -138,8 +141,8 @@
 
                         </div>
                         <div
-                            class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <input [ngModelOptions]="{standalone: true}"[disabled]="true"
+                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true"
                                 [(ngModel)]="control.quantity" type="number"
                                 class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                         </div>
@@ -181,6 +184,10 @@
             <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
 
                 <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
+                    class="p-button-primary h-3rem"></button>
+                <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Generate PDF"
+                    class="p-button-primary h-3rem"></button>
+                <button pButton pRipple type="submit" icon="pi pi-envelope" label="Email"
                     class="p-button-primary h-3rem"></button>
             </div>
         </form>

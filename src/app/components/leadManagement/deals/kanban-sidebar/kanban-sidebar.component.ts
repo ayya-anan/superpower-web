@@ -56,12 +56,28 @@ export class KanbanSidebarComponent implements OnDestroy {
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
     status: any = [
-        { name: 'Prospect' },
-        { name: 'Active' },
-        { name: 'Inactive' },
-        { name: 'Suspended' }
+        { name: 'New' },
+        { name: 'Meeting' },
+        { name: 'scheduled' },
+        { name: 'In-discussion' },
+        { name: 'Quote Sent' },
+        { name: 'Quote accepted' },
+        { name: 'Project started' },
+        { name: 'Cancelled' }
     ];
 
+    winProbablity: any = [
+        { name: 'High' },
+        { name: 'Medium' },
+        { name: 'Low' }
+    ];
+
+    sourceList: any = [
+        { name: 'Referal' },
+        { name: 'Social Media' },
+        { name: 'Company website' },
+        { name: 'Marketing Efforts' }
+    ];
 
     quantity: any = [
         { type: 'Forestry and Logging', quantity: 0.5, subType: 'Forestry' },
