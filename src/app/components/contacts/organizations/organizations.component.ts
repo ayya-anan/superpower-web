@@ -22,6 +22,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   tinoAverage: number = 500;
   countries = COUNTRIES_LIST;
 
+  value1: any;
+  value2: any;
+
   columns = [
     { header: 'Name', field: 'name' },
     { header: 'Industry Type', field: 'type' },

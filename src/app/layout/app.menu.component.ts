@@ -30,8 +30,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Lead Management',
                 icon: 'pi pi-fw pi-sitemap',
                 items: [
-                    { label: 'Deals', routerLink: ['/leadManagement/deals'] },
-                    { label: 'Quote', routerLink: ['/'] },
+                    { label: 'Deals & Quotes', routerLink: ['/leadManagement/deals'] },
+                    // { label: 'Quote', routerLink: ['/'] },
                     { label: 'Contracts', routerLink: ['/'] },
                 ]
             },

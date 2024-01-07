@@ -36,16 +36,11 @@
 								[options]="status" optionLabel="name" optionValue="name"
 								placeholder="Select Status"></p-dropdown>
 						</div>
-						<div class="field col">
-							<label for="name">Company Website</label>
-							<input formControlName="website" type="text"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-						</div>
 					</div>
 					<div class="formgrid grid">
 						<div class="field col" formArrayName="phones">
 							<ng-container *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i">
-								<label for="lastname">Primary Contact</label><br>
+								<label for="lastname">Primary Phone Number</label><br>
 								<input formControlName="phoneNumber" type="text"
 									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 							</ng-container>
@@ -55,13 +50,11 @@
 								<label for="lastname">Primary Email Address</label><br>
 								<input [formControlName]="i" type="email"
 									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-
 							</ng-container>
 						</div>
 					</div>
 					<ng-container formArrayName="addresses">
 						<ng-container *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
-
 							<div class="formgrid grid">
 								<div class="field col">
 									<label for="address">Address</label>
@@ -70,22 +63,27 @@
 								</div>
 							</div>
 							<div class="formgrid grid">
-								<div class="field col">
+								<div class="field col-3">
 									<label for="zipCode">Post Code</label>
 									<input formControlName="zipCode" type="text"
 										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 								</div>
-								<div class="field col">
+								<div class="field col-3">
 									<label for="country">Country</label><br>
 									<p-dropdown appendTo="body" formControlName="country" [filter]="true"
 										filterBy="name" [options]="countries" optionLabel="name" optionValue="name"
 										placeholder="Country"></p-dropdown>
 								</div>
+								<div class="field col-6">
+									<label for="name">Company Website</label>
+									<input formControlName="website" type="text"
+										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+								</div>
 							</div>
 						</ng-container>
 					</ng-container>
 				</p-accordionTab>
-				<p-accordionTab header="Segment">
+				<p-accordionTab header="Industry Segment">
 					<div class="formgrid grid" formGroupName="segmant">
 						<div class="field col">
 							<label for="industryType">Industry Type</label><br>
@@ -99,7 +97,7 @@
 								[options]="subType" optionLabel="name" optionValue="name"
 								placeholder="Select Type"></p-dropdown>
 						</div>
-						<div class="field col">
+						<div class="field col-3">
 							<label for="revenueRange">Revenue Range</label><br>
 							<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="revenueRange"
 								[options]="revenueRange" optionLabel="name" optionValue="name"
@@ -119,7 +117,7 @@
 							<p-card class="field col-12">
 								<div class="field col-12">
 									<div class="formgrid grid">
-										<div class="field col-3">
+										<div class="field col-4">
 											<label for="type">Type</label><br>
 											<p-dropdown appendTo="body" formControlName="type" [filter]="true"
 												filterBy="name" [options]="facilityType" optionLabel="name"
@@ -130,7 +128,7 @@
 											<p-inputNumber formControlName="employeeCount"></p-inputNumber>
 										</div>
 
-										<div class="col-6 mt-4">
+										<div class="col mt-4">
 											<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
 												<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
 													*ngIf="i === facilities.controls.length - 1"
@@ -174,7 +172,7 @@
 					<ng-container formArrayName="services">
 						<div class="formgrid grid" *ngFor="let service of services.controls;let i = index"
 							[formGroupName]="i">
-							<div class="field col">
+							<div class="field col-3">
 								<label for="type">Type</label><br>
 								<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
 									optionLabel="name" optionValue="name" placeholder="Select Type"></p-dropdown>
@@ -186,16 +184,16 @@
 							</div>
 							<div class="field col">
 								<label for="companyAverage">Company Average</label><br>
-								<p-inputNumber formControlName="companyAverage" mode="currency"
+								<p-inputNumber [disabled]="true" formControlName="companyAverage" mode="currency"
 									inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
 							</div>
 							<div class="field col">
 								<label for="tinoAverage">Tino's Average</label><br>
-								<p-inputNumber formControlName="tinoAverage" mode="currency" inputId="currency-germany"
+								<p-inputNumber [disabled]="true" formControlName="tinoAverage" mode="currency" inputId="currency-germany"
 									currency="EUR" locale="de-DE"> </p-inputNumber>
 							</div>
-							<div class="field col-1">
-								<div class="flex gap-2 float-end flex-row flex-wrap mt-4">
+							<div class="field col-2">
+								<div class="flex gap-2 float-between flex-row flex-wrap mt-4">
 									<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
 										*ngIf="i === services.controls.length - 1"
 										class="p-button-rounded p-button-info" (click)="initServicesArray()"></button>
