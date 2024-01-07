@@ -96,6 +96,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.individualService.getAllIndividuals();
     this.subscribeToGetAllOrganization();
     this.subscribeToGetAllIndividuals();
+    this.subscribeToAddOrganization();
     this.initForm();
   }
   initForm(){
