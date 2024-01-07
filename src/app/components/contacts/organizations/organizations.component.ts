@@ -42,11 +42,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { name: 'Suspended' }
   ];
 
-  company: any = [
-    { name: 'TeamLeader' },
-    { name: 'HubSpot' },
-  ];
-
   industryType: any = [
     { name: 'Forestry and Logging' },
     { name: 'Coal Mining' },
@@ -74,11 +69,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { name: 'External Audit', unitRate: 96 },
   ];
 
-  roles: any = [
-    { name: 'Decision Maker' },
-    { name: 'Advisor' },
-    { name: 'Influencer' },
-  ];
 
   organizationForm: FormGroup = this.fb.group({});
   phones: FormArray = this.fb.array([]);
@@ -211,7 +201,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   editData(event: any) {
     const updateData = this.organizationData[event.index];
-    this.initForm();
     // Patching the primaryDetails form group
     this.organizationForm.get('primaryDetails')?.patchValue(updateData.primaryDetails);
 
@@ -245,6 +234,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     updateData.emailAddresses.forEach((email: any) => {
       emailAddressesFormArray.push(this.fb.control(email));
     });
+
+    // Patching the Service form array
+    // const servicesFormArray = this.organizationForm.get('services') as FormArray;
+    // servicesFormArray.clear(); // Clear existing controls if any
+    // updateData.services.forEach((service: any) => {
+    //   servicesFormArray.push(this.fb.control(service));
+    // });
     this.organizationView = true;
   }
 
