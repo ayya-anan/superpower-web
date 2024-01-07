@@ -9,53 +9,53 @@
                     <div class="flex flex-column">
                         <div class="mb-3 text-2xl font-medium">Deal Details</div>
                         <div class="formgrid grid">
-                            <div class="field col-6">
-                                <label for="firstname">Name / Number</label>
+                            <div class="field col-4">
+                                <label for="firstname">Number</label>
                                 <input formControlName="firstname" type="text"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label for="middlename">Value</label>
                                 <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
                                         [value]="getFinalTotal()" type="number"
                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                                 </p-inputGroup>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Organization</label>
                                 <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
                                     optionLabel="name" placeholder="Mr"></p-dropdown>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Start Date</label><br>
                                 <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Customer Contact</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Win Probability</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Account Manager</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Source</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
-                            <!-- <div class="field col-6">
+                            <div class="field col-4">
                                 <label>Status</label>
                                 <p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
                                     optionLabel="name" placeholder="Mr"></p-dropdown>
                             </div>
-                            <div class="field col-2">
+                            <!--  <div class="field col-2">
                                 <label>Deal Currency</label><br>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>

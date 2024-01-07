@@ -11,12 +11,12 @@ export class OrganizationService {
     deleteOrganizationEmit: EventEmitter<any> = new EventEmitter();
 
     constructor(
-        private individualsAPI: OrganizationAPI
+        private organizationAPI: OrganizationAPI
     ) { }
 
     //To get Service Drilldown Details
     getAllOrganization() {
-        this.individualsAPI.getOrganization().subscribe(
+        this.organizationAPI.getOrganization().subscribe(
             (res: any) => {
                 this.allOrganization.emit(res);
             },
@@ -27,7 +27,7 @@ export class OrganizationService {
     }
 
     postOrganization(value: any) {
-        this.individualsAPI.postOrganization(value).subscribe(
+        this.organizationAPI.postOrganization(value).subscribe(
             (res: any) => {
                 this.addOrganization.emit(res);
             },
@@ -38,7 +38,7 @@ export class OrganizationService {
     }
 
     updateOrganization(postData: any, id: any) {
-        this.individualsAPI.updateOrganization(postData, id).subscribe(
+        this.organizationAPI.updateOrganization(postData, id).subscribe(
             (res: any) => {
                 this.updateOrganizationEmit.emit(res);
             },
@@ -49,7 +49,7 @@ export class OrganizationService {
     }
     
     deleteOrganization(id: any) {
-        this.individualsAPI.deleteOrganization(id).subscribe(
+        this.organizationAPI.deleteOrganization(id).subscribe(
             (res: any) => {
                 this.deleteOrganizationEmit.emit(res);
             },
