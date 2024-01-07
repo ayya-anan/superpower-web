@@ -6,8 +6,8 @@
             "cards" : [
                 {
                     "id": "11",
-                    "title": "Qualitative resarch planning",
-                    "description": "Hey there, we’re just writing to let you know",
+                    "title": "BMW Deal",
+                    "description": "Organization: BMW",
                     "startDate":"2022-05-18",
                     "dueDate":"2022-05-18",
                     "completed": false,
