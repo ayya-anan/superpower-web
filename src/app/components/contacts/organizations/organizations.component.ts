@@ -15,6 +15,9 @@ import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
 })
 export class OrganizationsComponent implements OnInit, OnDestroy {
 
+  searchValue: any;
+  originalData: any = [];
+  loading: boolean = false;
   organizationView: boolean = false;
   additionalDetails: boolean = false;
   addDetails: boolean = false;
@@ -92,6 +95,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.organizationService.getAllOrganization();
     this.individualService.getAllIndividuals();
     this.subscribeToGetAllOrganization();
@@ -272,6 +276,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   subscribeToGetAllOrganization() {
     this.organizationSubscription = this.organizationService.allOrganization.subscribe(
       (res: any) => {
+        this.loading = false;
         this.tableData = [];
         this.organizationData = res.results;
         _.forEach(res.results, (item: any) => {
@@ -288,6 +293,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
           }
           this.tableData.push(obj);
         });
+        this.originalData = _.cloneDeep(this.tableData);
       }
     );
   }
@@ -312,5 +318,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  searchResults(event: any) {
+    this.searchValue = this.searchValue.toLowerCase();        
+    this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue)) : this.originalData;
   }
 }

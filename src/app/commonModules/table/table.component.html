@@ -1,7 +1,7 @@
 <p-table [columns]="selectedColumns" [value]="tableData" [resizableColumns]="true" styleClass="p-datatable-striped"
     [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{key}}"[stateKey]="'table_'+key" [reorderableColumns]="true" 
-    [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px">
+    [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px" [loading]="loading">
     <ng-template pTemplate="caption"> 
         <p-multiSelect
             [options]="columns" 

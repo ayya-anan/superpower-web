@@ -11,6 +11,7 @@ export class TableComponent implements OnInit, OnDestroy {
   constructor(
   ) { }
 
+  @Input() loading = false;
   @Input() key: any;
   @Input() columns: any;
   @Input() tableData: any;

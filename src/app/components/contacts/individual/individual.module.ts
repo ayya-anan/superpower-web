@@ -31,6 +31,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
 	imports: [
@@ -65,7 +66,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 		AllTableModule,
 		ToastModule,
 		ToolbarModule,
-		ConfirmDialogModule
+		ConfirmDialogModule,
+		BadgeModule
 	],
 	declarations: [IndividualComponent]
 })

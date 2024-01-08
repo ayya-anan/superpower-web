@@ -247,12 +247,12 @@
 				tooltipPosition="bottom"></button>
 		</div>
 		<div class="p-toolbar-group-center">
-			<span class="p-input-icon-left">
+			<span class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="Search keyword" />
+				<input pInputText type="text" placeholder="Search By Name" [(ngModel)]="searchValue"/>
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [key]="'Organizations'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)"
+	<app-table [loading]="loading" [key]="'Organizations'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)"
 		(deleteContent)="delete($event)"></app-table>
 </div>

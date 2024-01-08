@@ -13,7 +13,13 @@
 	<div class="col-12">
 		<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
 			<p-accordion [multiple]="true">
-				<p-accordionTab header="Personal Details">
+				<p-accordionTab>
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Personal Details</span>
+							<p-badge value="First Name, Last Name, Status" class="ml-auto" />
+						</span>
+					</ng-template>
 					<div class="formgrid grid">
 						<div class="field ml-2" style="width: 70px;">
 							<label>Salutation</label>
@@ -42,10 +48,16 @@
 						</div>
 					</div>
 				</p-accordionTab>
-				<p-accordionTab header="Contact">
+				<p-accordionTab>
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Contact</span>
+							<p-badge value="Email, Phone, Address, Postcode" class="ml-auto" />
+						</span>
+					</ng-template>
 					<div class="formgrid grid">
 						<div class="field col">
-							<label for="emailAddress">Email Address</label>
+							<label for="emailAddress">Primary Email Address</label>
 							<input formControlName="emailAddress" type="text"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
@@ -57,7 +69,7 @@
 					</div>
 					<div class="formgrid grid">
 						<div class="field col">
-							<label for="lastname">Primary Contact</label><br>
+							<label for="lastname">Primary Phone Number</label><br>
 							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999" placeholder="(999) 999-9999"></p-inputMask>
 						</div>
 						<div class="field col">
@@ -91,7 +103,13 @@
 					</div>
 					<button pButton pRipple label="Add Address" class="p-button-info text-center"></button>
 				</p-accordionTab>
-				<p-accordionTab header="Professional">
+				<p-accordionTab>
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Professional</span>
+							<p-badge value="Job Title, Company, Role" class="ml-auto" />
+						</span>
+					</ng-template>
 					<div class="formgrid grid">
 						<div class="field col">
 							<label for="jobtitle">Job Title</label>
@@ -157,11 +175,11 @@
 				tooltipPosition="bottom"></button>
 		</div>
 		<div class="p-toolbar-group-center">
-			<span class="p-input-icon-left">
+			<span style="width: 210px;" class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="Search keyword" />
+				<input pInputText type="text" placeholder="Search By Name, Company" [(ngModel)]="searchValue"/>
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [key]="'Individuals'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+	<app-table [loading]="loading" [key]="'Individuals'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 </div>

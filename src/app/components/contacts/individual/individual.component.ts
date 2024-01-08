@@ -18,6 +18,9 @@ export class IndividualComponent implements OnInit {
     addIndividuals: any = Subscription;
 
     // Variables
+    originalData: any = [];
+    searchValue: any;
+    loading: boolean = false;
     tableData: any = [];
     contactView: boolean = false;
     showCompany: boolean = false;
@@ -87,6 +90,7 @@ export class IndividualComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.loading = true;
         this.individualService.getAllIndividuals();
         this.subscribeToGetAllIndividuals();
         this.subscribeToAddIndividuals();
@@ -96,6 +100,7 @@ export class IndividualComponent implements OnInit {
     subscribeToGetAllIndividuals() {
         this.individualsList = this.individualService.allIndividuals.subscribe(
             (res: any) => {
+                this.loading = false;
                 this.tableData = [];
                 _.forEach(res.results, (item: any) => {
                     const obj = {
@@ -118,6 +123,7 @@ export class IndividualComponent implements OnInit {
                     }
                     this.tableData.push(obj);
                 });
+                this.originalData = _.cloneDeep(this.tableData);
             }
         );
     }
@@ -148,6 +154,11 @@ export class IndividualComponent implements OnInit {
                 }
             }
         );
+    }
+
+    searchResults(event: any) {
+        this.searchValue = this.searchValue.toLowerCase();        
+        this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue) || _.includes(obj.company.toLowerCase(), this.searchValue)) : this.originalData;
     }
 
     addContact() {
