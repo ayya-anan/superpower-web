@@ -3,7 +3,7 @@
     <ng-template pTemplate="content">
 
         <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
-            <div class="card  overflow-auto">
+            <div class="card overflow-auto">
                 <div
                     class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border">
                     <div class="flex flex-column">
@@ -61,135 +61,229 @@
                                 <label>Close Date</label><br>
                                 <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"></p-calendar>
                             </div>
-
-                            <!--  <div class="field col-2">
-                                <label>Deal Currency</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div
+                        class="col flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border">
+                        <div class="flex flex-column">
+                            <div class="mb-3 text-2xl font-medium">Quotes</div>
+                            <div class="flex mb-3 flex-wrap gap-2 flex-end">
+                                <button pButton pRipple label="Add New" icon="pi pi-plus"
+                                    (click)="addNewService()"></button>
                             </div>
-                            <div class="field col-2">
-                                <label>Est. Profitability</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
-                            </div> -->
                         </div>
                     </div>
-                </div>
-                <div
-                    class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
-                    <div class="flex flex-column">
-                        <div class="mb-3 text-2xl font-medium">Services</div>
-                    </div>
-                    <div class="flex mb-3 flex-wrap gap-2">
-                        <button pButton pRipple label="Add New" icon="pi pi-plus" (click)="addNewService()"></button>
-                    </div>
-                </div>
-                <div>
-                    <div class="grid mt-2">
-                        <div
-                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Facility </label>
-                        </div>
-                        <div
-                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Service Type</label>
-                        </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Service Rate</label>
-                        </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Employee Count</label>
-                        </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Quantity</label>
-                        </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <label> Total</label>
-                        </div>
-                    </div>
-                    <div class="grid mt-2" *ngFor="let control of dynamicInputs; let i = index">
-                        <div
-                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="control.facility" [options]="selectedOrganization.facilities"
-                                optionLabel="type" (onChange)="onValueChange(i)"
-                                placeholder="Select Facility"></p-dropdown>
-                        </div>
-                        <div
-                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="control.service" [options]="selectedOrganization.services"
-                                optionLabel="type" (onChange)="onValueChange(i)"
-                                placeholder="Select Service"></p-dropdown>
-                        </div>
-                        <div
-                            class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
-                                [disabled]="true" type="number"
-                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+                </ng-template>
+                <p-accordion class="w-full">
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="10000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="21-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                                <!-- <p-chip label="21-Jan 2024" icon="pi pi-calendar" class="ml-auto" styleClass="bg-red-500"></p-chip> -->
+                                
+                                <!-- <i class="pi pi-times-circle p-text-secondary" style="font-size: 1.5rem" value="2"></i> -->
 
-                        </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <input [ngModelOptions]="{standalone: true}" [disabled]="true"
-                                [(ngModel)]="control.employeeCount" type="number"
-                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                <!-- <p-badge value="<i class='pi pi-user></i>' class="ml-auto " styleClass="p-badge-danger" /> -->
+                            </span>
+                        </ng-template>
 
-                        </div>
                         <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <input [ngModelOptions]="{standalone: true}" [disabled]="true"
-                                [(ngModel)]="control.quantity" type="number"
-                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
+                            <div class="flex flex-column">
+                                <div class="mb-3 text-2xl font-medium">Services</div>
+                            </div>
+                            <div class="flex mb-3 flex-wrap gap-2">
+                                <button pButton pRipple label="Add New" icon="pi pi-plus"
+                                    (click)="addNewService()"></button>
+                            </div>
                         </div>
-                        <div
-                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total" [disabled]="true"
-                                type="number"
-                                class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+                        <div>
+                            <div class="grid mt-2">
+                                <div
+                                    class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Facility </label>
+                                </div>
+                                <div
+                                    class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Service Type</label>
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Service Rate</label>
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Employee Count</label>
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Quantity</label>
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <label> Total</label>
+                                </div>
+                            </div>
+                            <div class="grid mt-2" *ngFor="let control of dynamicInputs; let i = index">
+                                <div
+                                    class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="control.facility" [options]="selectedOrganization.facilities"
+                                        optionLabel="type" (onChange)="onValueChange(i)"
+                                        placeholder="Select Facility"></p-dropdown>
+                                </div>
+                                <div
+                                    class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <p-dropdown appendTo="body" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="control.service" [options]="selectedOrganization.services"
+                                        optionLabel="type" (onChange)="onValueChange(i)"
+                                        placeholder="Select Service"></p-dropdown>
+                                </div>
+                                <div
+                                    class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.unitRate"
+                                        [disabled]="true" type="number"
+                                        class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <input [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                        [(ngModel)]="control.employeeCount" type="number"
+                                        class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <input [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                        [(ngModel)]="control.quantity" type="number"
+                                        class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                </div>
+                                <div
+                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="control.total"
+                                        [disabled]="true" type="number"
+                                        class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border  border-round appearance-none outline-none focus:border-primary w-full">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+                            <div class="font-semibold mb-3 md:mb-0"></div>
+                            <div class="flex flex-column">
+                                <div class="flex justify-content-between align-items-center mb-2">
+                                    <span class="font-semibold mr-6">SUBTOTAL</span>
+                                    <span>${{ total }}.00</span>
+                                </div>
+                                <div class="flex justify-content-between align-items-center mb-2">
+                                    <span class="font-semibold mr-6">VAT %</span>
+                                    <span>{{ vat }}</span>
+                                </div>
+                                <div class="flex justify-content-between align-items-center mb-2">
+                                    <span class="font-semibold mr-6">Discount</span>
+                                    <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
+                                            (change)="getFinalTotal()" type="number"
+                                            class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
+                                    </p-inputGroup>
+                                </div>
+                                <div class="flex justify-content-between align-items-center">
+                                    <span class="font-semibold mr-6">TOTAL</span>
+                                    <span>${{ getFinalTotal() }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
+
+                            <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
+                                class="p-button-primary h-3rem"></button>
+                            <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Generate PDF"
+                                class="p-button-primary h-3rem"></button>
+                            <button pButton pRipple type="submit" icon="pi pi-envelope" label="Email"
+                                class="p-button-primary h-3rem"></button>
+                        </div>
+                    </p-accordionTab>
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="8000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="12-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                                <!-- <p-chip label="21-Jan 2024" icon="pi pi-calendar" class="ml-auto" styleClass="bg-red-500"></p-chip> -->
+                                
+                                <!-- <i class="pi pi-times-circle p-text-secondary" style="font-size: 1.5rem" value="2"></i> -->
+
+                                <!-- <p-badge value="<i class='pi pi-user></i>' class="ml-auto " styleClass="p-badge-danger" /> -->
+                            </span>
+                        </ng-template>
+                        <p class="m-0">
+                        </p>
+                    </p-accordionTab>
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="7000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="06-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                                <!-- <p-chip label="21-Jan 2024" icon="pi pi-calendar" class="ml-auto" styleClass="bg-red-500"></p-chip> -->
+                                
+                                <!-- <i class="pi pi-times-circle p-text-secondary" style="font-size: 1.5rem" value="2"></i> -->
+
+                                <!-- <p-badge value="<i class='pi pi-user></i>' class="ml-auto " styleClass="p-badge-danger" /> -->
+                            </span>
+                        </ng-template>
+                        <p class="m-0">
+                        </p>
+                    </p-accordionTab>
+                </p-accordion>
+            </p-card>
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div
+                        class="col flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border">
+                        <div class="flex flex-column">
+                            <div class="mb-3 text-2xl font-medium">Payments</div>
+                            <div class="flex mb-3 flex-wrap gap-2 flex-end">
+                                <button pButton pRipple label="Add New" icon="pi pi-plus"
+                                    (click)="addNewService()"></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
-                    <div class="font-semibold mb-3 md:mb-0"></div>
-                    <div class="flex flex-column">
-                        <div class="flex justify-content-between align-items-center mb-2">
-                            <span class="font-semibold mr-6">SUBTOTAL</span>
-                            <span>${{ total }}.00</span>
-                        </div>
-                        <div class="flex justify-content-between align-items-center mb-2">
-                            <span class="font-semibold mr-6">VAT %</span>
-                            <span>{{ vat }}</span>
-                        </div>
-                        <div class="flex justify-content-between align-items-center mb-2">
-                            <span class="font-semibold mr-6">Discount</span>
-                            <p-inputGroup class="w-full"> <p-inputGroupAddon>$</p-inputGroupAddon><input
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="discount"
-                                    (change)="getFinalTotal()" type="number"
-                                    class="text-right text-color surface-overlay p-2 border-1 border-solid surface-border appearance-none outline-none focus:border-primary w-full">
-                            </p-inputGroup>
-                        </div>
-                        <div class="flex justify-content-between align-items-center">
-                            <span class="font-semibold mr-6">TOTAL</span>
-                            <span>${{ getFinalTotal() }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex w-full justify-content-end border-top-1 surface-border py-5 px-5 gap-3">
-
-                <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
-                    class="p-button-primary h-3rem"></button>
-                <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Generate PDF"
-                    class="p-button-primary h-3rem"></button>
-                <button pButton pRipple type="submit" icon="pi pi-envelope" label="Email"
-                    class="p-button-primary h-3rem"></button>
-            </div>
+                </ng-template>
+                <p-accordion class="w-full">
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="10000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="21-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                            </span>
+                        </ng-template>
+                    </p-accordionTab>
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="8000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="12-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                            </span>
+                        </ng-template>
+                        <p class="m-0">
+                        </p>
+                    </p-accordionTab>
+                    <p-accordionTab>
+                        <ng-template pTemplate="header">
+                            <span class="flex align-items-center gap-2 w-full">
+                                <p-chip label="7000" icon="pi pi-dollar" styleClass="bg-primary"></p-chip>
+                                <p-chip label="06-Jan 2024" icon="pi pi-calendar" styleClass="bg-primary"></p-chip>
+                            </span>
+                        </ng-template>
+                        <p class="m-0">
+                        </p>
+                    </p-accordionTab>
+                </p-accordion>
+            </p-card>
         </form>
     </ng-template>
 </p-sidebar>
