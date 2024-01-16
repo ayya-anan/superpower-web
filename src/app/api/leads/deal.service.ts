@@ -9,6 +9,7 @@ export class DealService {
     addDeal: EventEmitter<any> = new EventEmitter();
     updateDealEmit: EventEmitter<any> = new EventEmitter();
     deleteDealEmit: EventEmitter<any> = new EventEmitter();
+    dealAsPdf: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private dealAPI: DealAPI
@@ -52,6 +53,18 @@ export class DealService {
         this.dealAPI.deleteDeal(id).subscribe(
             (res: any) => {
                 this.deleteDealEmit.emit(res);
+            },
+            (err: any) => {
+              
+            }
+        );
+    }
+
+    // Deal As Pdf
+    saveDealAsPdf(data: any) {
+        this.dealAPI.saveAsPdf(data).subscribe(
+            (res: any) => {
+                this.dealAsPdf.emit(res);
             },
             (err: any) => {
               

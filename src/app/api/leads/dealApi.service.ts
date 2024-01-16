@@ -26,4 +26,8 @@ export class DealAPI {
     deleteDeal(value: any) {
         return this.httpClient.delete(this.url.deal + value);
     }
+
+    saveAsPdf(data: any) {
+        return this.httpClient.post(this.url.template, data);
+    }
 }

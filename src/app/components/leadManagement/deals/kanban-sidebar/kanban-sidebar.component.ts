@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import * as _ from 'lodash';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
+import { DealService } from 'src/app/api/leads/deal.service';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -102,27 +103,20 @@ export class KanbanSidebarComponent implements OnDestroy {
     };
 
     dealForm = new FormGroup({
-        salutation: new FormControl(),
-        firstname: new FormControl("", [Validators.required]),
-        middlename: new FormControl("", [Validators.required]),
-        lastname: new FormControl("", [Validators.required]),
-        status: new FormControl(),
-        emailAddress: new FormControl(),
-        alternateEmailAddress: new FormControl(),
-        primaryContact: new FormControl(),
-        alternateContact: new FormControl(),
-        address: new FormControl(),
-        city: new FormControl(),
-        state: new FormControl(),
-        zipCode: new FormControl(),
-        jobtitle: new FormControl(),
-        companyname: new FormControl(),
+        dealName: new FormControl(),
         org: new FormControl(),
-        rolename: new FormControl()
+        status: new FormControl(),
+        customerContact: new FormControl(),
+        winProbablity: new FormControl(),
+        accountManager: new FormControl(),
+        startDate: new FormControl(),
+        source: new FormControl(),
+        closeDate: new FormControl(),
     });
     individualSubscription: Subscription = new Subscription;
     individualsData: { name: string; id: any; }[] = [];
     organizationSubscription: Subscription = new Subscription;
+    templateSubscription: Subscription = new Subscription;
     organizationData: { name: any; id: any; }[] = [];
     selectedOrganization: any = { facilities: [], services: [] };
     organizationFilterData: { name: string; id: any; }[] = [];
@@ -135,7 +129,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         private memberService: MemberService,
         private organizationService: OrganizationService,
         private individualService: IndividualService,
-        private kanbanService: KanbanService
+        private kanbanService: KanbanService,
+        private dealService: DealService
     ) {
         this.memberService.getMembers().then(members => this.assignees = members);
 
@@ -153,6 +148,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllOrganization();
         this.subscribeToGetAllIndividuals();
         this.addNewService();
+        this.subscribeToSavedTemplate();
     }
     changeOrg(event: any) {
         this.selectedOrganization = _.find(this.organizationData, (org) => org.id == event.value);
@@ -172,6 +168,13 @@ export class KanbanSidebarComponent implements OnDestroy {
                 this.individualsData = _.map(res.results, (i) => {
                     return { name: `${i.personalDetails.firstName} ${i.personalDetails.middleName} ${i.personalDetails.lastName}`, id: i.id }
                 });
+            }
+        );
+    }
+    subscribeToSavedTemplate() {
+        this.templateSubscription = this.dealService.dealAsPdf.subscribe(
+            (res: any) => {
+                console.log(res);
             }
         );
     }
@@ -223,10 +226,45 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     }
 
+    generatePdf() {
+        console.log(this.dealForm.value);
+        console.log(this.total);
+        console.log(this.vat);
+        console.log(this.discount);
+        console.log(this.total * (this.vat/100));
+        console.log(this.getFinalTotal());
+        // this.dealService.saveDealAsPdf(this.dealForm.value);
+        this.dealService.saveDealAsPdf({
+            "logo": "https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png",
+            "name": "Reif Baugeseilschaft mbH & Co. KG",
+            "address1": "Schmale Straße 14",
+            "address2": "04435 Schkeuditz rechnung",           
+            "ourSign":"JW/MS",
+            "project":"179/23/9089",
+            "invoiceNumber":"23/0997",
+            "customerNumber":"11800",
+            "date":"01.14.2024",
+            "subject":"Rechnung",
+            "email":"rechnungenreif-leipzig.de",
+            "salutation":"Sehr geehrte Damen und Herren",
+            "servicePeriod":"Oktober bis Dezember 2023",
+            "tee": this.total.toString(),
+            "vatText": `${this.vat}% MwStauf ${this.total}`,
+            "vatAmount":"752,40",
+            "totalAmount":this.getFinalTotal().toString(),
+            "creditInstitution":"Commerzbank Dresden",
+            "iban":"DE48 850800000103331100",
+            "bic":"DRESDEFF 850",
+            "signedBy":"Janette Wolf",
+            "signedByNote":"Leite.rjn, hnungswesen"
+        });
+    }
+
     ngOnDestroy() {
         this.cardSubscription.unsubscribe();
         this.listSubscription.unsubscribe();
         this.listNameSubscription.unsubscribe();
+        this.templateSubscription.unsubscribe();
         clearTimeout(this.timeout);
     }
 

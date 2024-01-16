@@ -11,7 +11,7 @@
                         <div class="formgrid grid">
                             <div class="field col-6">
                                 <label for="firstname">Name</label>
-                                <input formControlName="status" type="text"
+                                <input formControlName="dealName" type="text"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             </div>
                             <div class="field col-6">
@@ -28,33 +28,33 @@
                             </div>
                             <div class="field col-6">
                                 <label>Status</label>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="status"
+                                <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="name" placeholder="Select Status"></p-dropdown>
                             </div>
                             <div class="field col-6">
                                 <label>Customer Contact</label><br>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
+                                <p-dropdown appendTo="body" formControlName="customerContact" [options]="individualsData"
                                     optionLabel="name" optionValue="id"
                                     placeholder="Select Customer Contact"></p-dropdown>
                             </div>
                             <div class="field col-6">
                                 <label>Win Probability</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="winProbablity"
+                                <p-dropdown appendTo="body" formControlName="winProbablity" [options]="winProbablity"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
                             <div class="field col-6">
                                 <label>Account Manager</label><br>
-                                <p-dropdown appendTo="body" formControlName="salutation" [options]="individualsData"
+                                <p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
                                     optionLabel="name" optionValue="id"
                                     placeholder="Select Customer Contact"></p-dropdown>
                             </div>
                             <div class="field col-6">
                                 <label>Start Date</label><br>
-                                <p-calendar formControlName="salutation" dateFormat="dd-M-yy"></p-calendar>
+                                <p-calendar formControlName="startDate" dateFormat="dd-M-yy"></p-calendar>
                             </div>
                             <div class="field col-6">
                                 <label>Source</label><br>
-                                <p-dropdown appendTo="body" formControlName="status" [options]="sourceList"
+                                <p-dropdown appendTo="body" formControlName="source" [options]="sourceList"
                                     optionLabel="name" placeholder="Prospect"></p-dropdown>
                             </div>
                             <div class="field col-6">
@@ -186,7 +186,7 @@
                 <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
                     class="p-button-primary h-3rem"></button>
                 <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Generate PDF"
-                    class="p-button-primary h-3rem"></button>
+                    class="p-button-primary h-3rem" (click)="generatePdf()"></button>
                 <button pButton pRipple type="submit" icon="pi pi-envelope" label="Email"
                     class="p-button-primary h-3rem"></button>
             </div>
