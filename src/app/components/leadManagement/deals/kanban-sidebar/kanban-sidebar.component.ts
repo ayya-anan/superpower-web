@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -120,6 +121,27 @@ export class KanbanSidebarComponent implements OnDestroy {
     organizationData: { name: any; id: any; }[] = [];
     selectedOrganization: any = { facilities: [], services: [] };
     organizationFilterData: { name: string; id: any; }[] = [];
+    showQuote: boolean = false;
+    showTableView: boolean = false;
+    paymentValue: any;
+    showPaymentsTable: boolean = false;
+
+    columns: any = [
+        { header : 'Quote Created Date', field: 'createdDate'},
+        { header : 'Quote Value', field: 'value'},
+        { header : 'Status', field: 'status'},
+        { header : 'Actions', field: 'action'},
+    ];
+    paymentColumns: any = [
+        {header : 'Milestone Date', field: 'milestoneDate'},
+        {header : 'Milestone Criteria', field: 'milestoneCriteria'},
+        {header : 'Percentage', field: 'percentage'},
+        {header : 'Amount', field: 'amount'},
+        {header : 'Actions', field: 'action'},
+    ];
+    tableData: any = [];
+    paymentData: any = [];
+    loading: boolean = false;
 
     constructor(
         private messageService: MessageService,
@@ -183,6 +205,37 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
     subscribeToGetAllDealaddedits() {
 
+    }
+    saveQuote() {
+        this.showQuote = false;
+        this.showTableView = true;
+        let result = this.dealForm.value;
+        // console.log(this.dealForm.value);
+        // console.log(this.total);
+        // console.log(this.vat);
+        // console.log(this.discount);
+        // console.log(this.total * (this.vat/100));
+        // console.log(this.getFinalTotal());
+        this.tableData.push({
+            createdDate: moment(result.startDate).format('MMMM Do YYYY'),
+            status: result.status.name,
+            value : this.getFinalTotal()
+        });
+    }
+    createPaymentMilestone() {
+        this.showPaymentsTable = true;
+        const result = (this.getFinalTotal()/this.paymentValue);
+        console.log(result);
+        let i;
+        for(i=0; i<this.paymentValue; i++) {
+            const obj = {
+                milestoneDate : '16th Jan 2024',
+                milestoneCriteria: '',
+                percentage: (100/this.paymentValue).toFixed(2),
+                amount: result.toFixed(2)
+            }
+            this.paymentData.push(obj);
+        }
     }
 
     onValueChange(index: number) {

@@ -32,6 +32,11 @@ import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { AccordionModule, AccordionTab } from 'primeng/accordion';
+import { CardModule } from 'primeng/card';
+import { BadgeModule } from 'primeng/badge';
+import { ChipModule } from 'primeng/chip';
+import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 
 @NgModule({
 	imports: [
@@ -59,10 +64,12 @@ import { InputGroupModule } from 'primeng/inputgroup';
         RippleModule,
         ProgressBarModule,
         AvatarModule,
+        AccordionModule,
         AvatarGroupModule,
         InputTextModule,
         ChipsModule,
         CalendarModule,
+        ChipModule,
         DropdownModule,
         InputTextareaModule,
         SidebarModule,
@@ -72,7 +79,10 @@ import { InputGroupModule } from 'primeng/inputgroup';
         TooltipModule,
         TieredMenuModule,
         OverlayPanelModule,
-        CheckboxModule
+        CardModule,
+        BadgeModule,
+        CheckboxModule,
+        AllTableModule
 	],
 	declarations: [
         DealsComponent,
