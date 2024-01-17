@@ -122,7 +122,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     selectedOrganization: any = { facilities: [], services: [] };
     organizationFilterData: { name: string; id: any; }[] = [];
     showQuote: boolean = false;
-    showTableView: boolean = false;
+    showTableView: boolean = true;
     paymentValue: any;
     showPaymentsTable: boolean = false;
 
@@ -139,7 +139,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         {header : 'Amount', field: 'amount'},
         {header : 'Actions', field: 'action'},
     ];
-    tableData: any = [];
+    tableData: any = [
+        { createdDate: 'January 16th 2024', value: '1622', status: 'meeting' }
+    ];
     paymentData: any = [];
     loading: boolean = false;
 
@@ -206,6 +208,10 @@ export class KanbanSidebarComponent implements OnDestroy {
     subscribeToGetAllDealaddedits() {
 
     }
+
+    duplicateData(event: any) {
+        this.tableData.push(event.data[0]);
+    }
     saveQuote() {
         this.showQuote = false;
         this.showTableView = true;
@@ -235,6 +241,21 @@ export class KanbanSidebarComponent implements OnDestroy {
                 amount: result.toFixed(2)
             }
             this.paymentData.push(obj);
+        }
+    }
+    editPaymentTable(event: any) {
+        let resultPer: any;
+        if(event.data) {
+            if(event.field === 'field') {
+                resultPer = (100 - parseInt(event.data))/(parseInt(this.paymentValue)-1);
+            }
+            console.log(resultPer);
+            // _.forEach(this.paymentData, (obj) => {
+            //     if(obj.percentage !== parseInt(event.data)) {
+            //         obj.percentage = resultPer;
+            //     }
+            // });
+            // this.paymentData = [...this.paymentData];
         }
     }
 
@@ -277,6 +298,17 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
+    }
+
+    quoteView() {
+        this.showQuote = !this.showQuote;
+        this.showTableView = (this.showQuote) ? false : true;
+    }
+
+    showDetailsView(event: any) {
+        console.log(event);
+        this.showTableView = false;
+        this.showQuote = true;
     }
 
     generatePdf() {

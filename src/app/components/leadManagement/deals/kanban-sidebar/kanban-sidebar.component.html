@@ -69,8 +69,12 @@
                 <div class="col-9">
                     <div class="col-12">
                         <button pButton pRipple label="Add New Quote" icon="pi pi-plus"
-                            (click)="showQuote = !showQuote"></button>
+                            (click)="quoteView()"></button>
                     </div>
+                    <ng-container *ngIf="showTableView">
+                        <app-table [loading]="loading" [key]="'Quotes'" [columns]="columns"
+                            [tableData]="tableData" (cloneContent)="duplicateData($event)" (showContent)="showDetailsView($event)"></app-table>
+                    </ng-container>
                     <ng-container *ngIf="showQuote">
                         <div class="col-12">
                             <div
@@ -197,22 +201,18 @@
                                 <div class="col-8 justify-content-end flex justify-content gap-3">
                                     <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
                                         class="p-button-primary h-3rem" (click)="saveQuote()"></button>
-                                    <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Document Preview"
+                                    <button pButton pRipple type="submit" icon="pi pi-file-pdf" label="Quote Preview"
                                         class="p-button-primary h-3rem"></button>
                                     <button pButton pRipple type="submit" icon="pi pi-envelope" label="Email Quote"
                                         class="p-button-primary h-3rem"></button>
                                 </div>
                             </div>
                             <ng-container *ngIf="showPaymentsTable">
-                                <div class="col-12 text-2xl font-medium">Payments</div>
+                                <div class="col-12 text-2xl font-medium">Payments Milestones</div>
                                 <app-table [loading]="loading" [key]="'Payments'" [columns]="paymentColumns"
-                                [tableData]="paymentData"></app-table>
+                                [tableData]="paymentData" (editedContent)="editPaymentTable($event)"></app-table>
                             </ng-container>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="showTableView">
-                        <app-table [loading]="loading" [key]="'Quotes'" [columns]="columns"
-                            [tableData]="tableData"></app-table>
                     </ng-container>
                 </div>
             </div>

@@ -16,7 +16,11 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() columns: any;
   @Input() tableData: any;
   @Output() editContent = new EventEmitter();
+  @Output() cloneContent = new EventEmitter();
   @Output() deleteContent = new EventEmitter();
+  @Output() showContent = new EventEmitter();
+  @Output() editedContent = new EventEmitter();
+  
   _selectedColumns: any[] = [];
 
   ngOnInit() {
@@ -32,8 +36,20 @@ export class TableComponent implements OnInit, OnDestroy {
     this.editContent.emit({ data: this.tableData, rowData: data, index: rowindex });
   }
 
+  clone(data: any, rowindex: number) {
+    this.cloneContent.emit({ data: this.tableData, rowData: data, index: rowindex });
+  }
+
   delete(data: any, rowindex: number) {
     this.deleteContent.emit({ data: this.tableData, rowData: data, index: rowindex });
+  }
+
+  onEditComplete(event: any) {
+    this.editedContent.emit({ data: event });
+  }
+
+  showDetails(event: any) {
+    this.showContent.emit( {data: event.data });
   }
 
   ngOnDestroy() {
