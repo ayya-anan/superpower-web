@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { KanbanCard, KanbanList } from 'src/app/api/kanban';
+import { XService } from 'src/app/api/x/x.service';
 
 @Injectable()
 export class KanbanService {
@@ -24,7 +25,7 @@ export class KanbanService {
 
     listNames$ = this.listNames.asObservable();
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private xService : XService) {
         this.http.get<any>('assets/jsons/kanban.json')
         .toPromise()
         .then(res => res.data as KanbanList[])

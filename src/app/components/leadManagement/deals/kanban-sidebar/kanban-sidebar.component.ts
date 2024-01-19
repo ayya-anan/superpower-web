@@ -12,6 +12,7 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -132,6 +133,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         private organizationService: OrganizationService,
         private individualService: IndividualService,
         private kanbanService: KanbanService,
+        private xService: XService,
         private dealService: DealService
     ) {
         this.memberService.getMembers().then(members => this.assignees = members);
@@ -304,7 +306,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.showQuote = false;
         this.showTableView = true;
         let result = this.dealForm.value;
-        console.log(result);
+        this.xService.postX('deal', this.dealForm.value);
         this.tableData.push({
             createdDate: moment(result.startDate).format('MMMM Do YYYY'),
             status: result.status.name,
