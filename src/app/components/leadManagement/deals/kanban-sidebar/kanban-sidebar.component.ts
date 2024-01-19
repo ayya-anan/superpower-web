@@ -13,6 +13,7 @@ import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
 import { XService } from 'src/app/api/x/x.service';
+import { dealStatus } from '../deals.helper';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -58,16 +59,7 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
-    status: any = [
-        { name: 'New' },
-        { name: 'Meeting' },
-        { name: 'scheduled' },
-        { name: 'In-discussion' },
-        { name: 'Quote Sent' },
-        { name: 'Quote accepted' },
-        { name: 'Project started' },
-        { name: 'Cancelled' }
-    ];
+    status: any = _.cloneDeep(dealStatus);
 
     winProbablity: any = [
         { name: 'High' },
