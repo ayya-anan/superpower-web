@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="contactView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
+<!-- <p-dialog [(visible)]="contactView" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw' }"
 	[draggable]="false" [resizable]="false" (onHide)="clearDetails()">
 	<ng-template pTemplate="header">
 		<div class="m-auto">
@@ -10,8 +10,116 @@
 			<label>Additional Details</label>
 		</span>
 	</ng-template>
-	<div class="col-12">
-		<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+
+
+	<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+		<div class="col-12 grid">
+			<div class="col-3 formClass">
+				<div class="formgrid grid">
+					<div class="field col-12">
+						<label>Salutation</label>
+						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="name" placeholder="Mr"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="firstname">First Name</label>
+						<input formControlName="firstname" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="middlename">Middle Name</label>
+						<input formControlName="middlename" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="lastname">Last Name</label>
+						<input formControlName="lastname" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="jobtitle">Organization Name</label>
+						<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
+							placeholder="Company"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="jobtitle">Job Title</label>
+						<p-dropdown formControlName="jobtitle" [editable]="true" [options]="company" optionLabel="name"
+							placeholder="Job Title"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label>Status</label><br>
+						<p-dropdown appendTo="body" formControlName="status" [options]="status" optionLabel="name"
+							placeholder="Prospect"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="jobtitle">Role Name</label>
+						<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
+							placeholder="Role"></p-dropdown>
+					</div>
+				</div>
+			</div>
+			<div class="col-9">
+				<p-fieldset legend="Contact Details" [toggleable]="true">
+					<div class="col-12 p-0">
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">Primary Email Address</label>
+								<input formControlName="emailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="middlename">Alternate Email Address</label>
+								<input formControlName="alternateEmailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="lastname">Primary Phone Number</label><br>
+								<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
+									placeholder="(999) 999-9999"></p-inputMask>
+							</div>
+							<div class="field col">
+								<label for="lastname">Alternate Phone Number</label><br>
+								<p-inputMask formControlName="alternateContact" mask="(999) 999-9999"
+									placeholder="(999) 999-9999"></p-inputMask>
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">Address</label>
+								<input formControlName="address" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">PostCode</label>
+								<input formControlName="city" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="emailAddress">Country</label><br>
+								<input type="text" formControlName="state"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+					</div>
+					<div class="col-12 p-0 text-right">
+						<button class="text-right" pButton pRipple label="Add Another Address" icon="pi pi-plus" (click)="addAdditionalAddress()"></button>
+					</div>
+				</p-fieldset>
+				<div class="col-12 m-auto" style="width: 100px;">
+					<button [disabled]="!contactForm.valid" pButton pRipple label="Submit" class="p-button-success text-center"></button>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<div class="col-12" *ngIf="false">
 			<p-accordion [multiple]="true">
 				<p-accordionTab [selected]="true">
 					<ng-template pTemplate="header">
@@ -70,11 +178,13 @@
 					<div class="formgrid grid">
 						<div class="field col">
 							<label for="lastname">Primary Phone Number</label><br>
-							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999" placeholder="(999) 999-9999"></p-inputMask>
+							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
+								placeholder="(999) 999-9999"></p-inputMask>
 						</div>
 						<div class="field col">
 							<label for="lastname">Alternate Contact</label><br>
-							<p-inputMask formControlName="alternateContact" mask="(999) 999-9999" placeholder="(999) 999-9999"></p-inputMask>
+							<p-inputMask formControlName="alternateContact" mask="(999) 999-9999"
+								placeholder="(999) 999-9999"></p-inputMask>
 						</div>
 					</div>
 					<div class="formgrid grid">
@@ -98,7 +208,7 @@
 					</div>
 					<button pButton pRipple label="Add Address" class="p-button-info text-center"></button>
 				</p-accordionTab>
-				<p-accordionTab>
+				<p-accordionTab *ngIf="false">
 					<ng-template pTemplate="header">
 						<span class="flex align-items-center gap-2 w-full">
 							<span class="font-bold white-space-nowrap">Professional</span>
@@ -112,25 +222,29 @@
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</div>
 						<div class="field col">
-							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showCompanyDetails()"><i class="pi pi-plus mr-1"></i>Add New</div>
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showCompanyDetails()"><i
+									class="pi pi-plus mr-1"></i>Add New
+							</div>
 							<ng-container *ngIf="showCompany; else ElseContent">
 								<input type="text" formControlName="companyname"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 							</ng-container>
 							<ng-template #ElseContent>
 								<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
-								placeholder="Company"></p-dropdown>
+									placeholder="Company"></p-dropdown>
 							</ng-template>
 						</div>
 						<div class="field col">
-							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showRoleDetails()"><i class="pi pi-plus mr-1"></i>Add New</div>
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showRoleDetails()">
+								<i class="pi pi-plus mr-1"></i>Add New
+							</div>
 							<ng-container *ngIf="showRole; else ElseContent2">
 								<input type="text" formControlName="rolename"
-								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 							</ng-container>
 							<ng-template #ElseContent2>
-								<p-dropdown appendTo="body" formControlName="rolename" [options]="roles" optionLabel="name"
-									placeholder="Role"></p-dropdown>
+								<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
+									optionLabel="name" placeholder="Role"></p-dropdown>
 							</ng-template>
 						</div>
 					</div>
@@ -143,11 +257,271 @@
 				</p-accordionTab>
 			</p-accordion>
 			<div class="col-12 m-auto" style="width: 100px;">
-				<button [disabled]="!contactForm.valid" pButton pRipple label="Submit" class="p-button-success text-center"></button>
+				<button [disabled]="!contactForm.valid" pButton pRipple label="Submit"
+					class="p-button-success text-center"></button>
 			</div>
-		</form>
+		</div>
+	</form>
+</p-dialog> -->
+
+<p-sidebar #sidebar [(visible)]="contactView" position="right" [baseZIndex]="10000" styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+	<div class="col-12 p-0 pb-3 drawLine text-left">
+		<!-- <span><i class="pi pi-user" style="font-size: 1.5rem;"></i></span> -->
+		<span class="text-xl ml-2 font-bold">Add Contact Details</span>
 	</div>
-</p-dialog>
+
+	<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+		<div class="col-12 grid">
+			<div class="col-3 formClass">
+				<div class="formgrid grid">
+					<div class="field col-12">
+						<label>Salutation</label>
+						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+							optionLabel="name" placeholder="Mr"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="firstname">First Name</label>
+						<input formControlName="firstname" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="middlename">Middle Name</label>
+						<input formControlName="middlename" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="lastname">Last Name</label>
+						<input formControlName="lastname" type="text"
+							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+					</div>
+					<div class="field col-12">
+						<label for="companyname">Organization Name</label>
+						<p-dropdown formControlName="companyname" [editable]="true" [options]="company" optionLabel="name"
+							placeholder="Company"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="jobtitle">Job Title</label>
+						<p-dropdown formControlName="jobtitle" [editable]="true" [options]="company" optionLabel="name"
+							placeholder="Job Title"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label>Status</label><br>
+						<p-dropdown appendTo="body" formControlName="status" [options]="status" optionLabel="name"
+							placeholder="Prospect"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="rolename">Role Name</label>
+						<p-dropdown appendTo="body" [editable]="true" formControlName="rolename" [options]="roles" optionLabel="name"
+							placeholder="Role"></p-dropdown>
+					</div>
+				</div>
+			</div>
+			<div class="col-9">
+				<p-fieldset legend="Contact Details" [toggleable]="true">
+					<div class="col-12 p-0">
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">Primary Email Address</label>
+								<input formControlName="emailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="middlename">Alternate Email Address</label>
+								<input formControlName="alternateEmailAddress" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="lastname">Primary Phone Number</label><br>
+								<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
+									placeholder="(999) 999-9999"></p-inputMask>
+							</div>
+							<div class="field col">
+								<label for="lastname">Alternate Phone Number</label><br>
+								<p-inputMask formControlName="alternateContact" mask="(999) 999-9999"
+									placeholder="(999) 999-9999"></p-inputMask>
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">Address</label>
+								<input formControlName="address" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<label for="emailAddress">PostCode</label>
+								<input formControlName="city" type="text"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+							<div class="field col">
+								<label for="emailAddress">Country</label><br>
+								<input type="text" formControlName="state"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</div>
+						</div>
+					</div>
+					<div class="col-12 p-0 text-right">
+						<button class="text-right" pButton pRipple label="Add Another Address" icon="pi pi-plus"
+							(click)="addAdditionalAddress()"></button>
+					</div>
+				</p-fieldset>
+				<div class="col-12 m-auto" style="width: 100px;">
+					<button [disabled]="!contactForm.valid" pButton pRipple label="Submit"
+						class="p-button-success text-center"></button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Old Design -->
+		<div class="col-12" *ngIf="false">
+			<p-accordion [multiple]="true">
+				<p-accordionTab [selected]="true">
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Personal Details</span>
+							<p-badge value="First Name, Last Name, Status" class="ml-auto" />
+						</span>
+					</ng-template>
+					<div class="formgrid grid">
+						<div class="field ml-2" style="width: 70px;">
+							<label>Salutation</label>
+							<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations"
+								optionLabel="name" placeholder="Mr"></p-dropdown>
+						</div>
+						<div class="field col">
+							<label for="firstname">First Name</label>
+							<input formControlName="firstname" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="middlename">Middle Name</label>
+							<input formControlName="middlename" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="lastname">Last Name</label>
+							<input formControlName="lastname" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col-2">
+							<label>Status</label><br>
+							<p-dropdown appendTo="body" formControlName="status" [options]="status" optionLabel="name"
+								placeholder="Prospect"></p-dropdown>
+						</div>
+					</div>
+				</p-accordionTab>
+				<p-accordionTab>
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Contact</span>
+							<p-badge value="Email, Phone, Address, Postcode" class="ml-auto" />
+						</span>
+					</ng-template>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="emailAddress">Primary Email Address</label>
+							<input formControlName="emailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="middlename">Alternate Email Address</label>
+							<input formControlName="alternateEmailAddress" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="lastname">Primary Phone Number</label><br>
+							<p-inputMask formControlName="primaryContact" mask="(999) 999-9999"
+								placeholder="(999) 999-9999"></p-inputMask>
+						</div>
+						<div class="field col">
+							<label for="lastname">Alternate Contact</label><br>
+							<p-inputMask formControlName="alternateContact" mask="(999) 999-9999"
+								placeholder="(999) 999-9999"></p-inputMask>
+						</div>
+					</div>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="emailAddress">Address</label>
+							<input formControlName="address" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="emailAddress">PostCode</label>
+							<input formControlName="city" type="text"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<label for="emailAddress">Country</label><br>
+							<input type="text" formControlName="state"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+					</div>
+					<button pButton pRipple label="Add Address" class="p-button-info text-center"></button>
+				</p-accordionTab>
+				<p-accordionTab *ngIf="false">
+					<ng-template pTemplate="header">
+						<span class="flex align-items-center gap-2 w-full">
+							<span class="font-bold white-space-nowrap">Professional</span>
+							<p-badge value="Job Title, Company, Role" class="ml-auto" />
+						</span>
+					</ng-template>
+					<div class="formgrid grid">
+						<div class="field col">
+							<label for="jobtitle">Job Title</label>
+							<input type="text" formControlName="jobtitle"
+								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+						</div>
+						<div class="field col">
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showCompanyDetails()"><i
+									class="pi pi-plus mr-1"></i>Add New
+							</div>
+							<ng-container *ngIf="showCompany; else ElseContent">
+								<input type="text" formControlName="companyname"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</ng-container>
+							<ng-template #ElseContent>
+								<p-dropdown formControlName="companyname" [options]="company" optionLabel="name"
+									placeholder="Company"></p-dropdown>
+							</ng-template>
+						</div>
+						<div class="field col">
+							<div style="margin-bottom: 0.5rem;" class="actionLink" (click)="showRoleDetails()">
+								<i class="pi pi-plus mr-1"></i>Add New
+							</div>
+							<ng-container *ngIf="showRole; else ElseContent2">
+								<input type="text" formControlName="rolename"
+									class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+							</ng-container>
+							<ng-template #ElseContent2>
+								<p-dropdown appendTo="body" formControlName="rolename" [options]="roles"
+									optionLabel="name" placeholder="Role"></p-dropdown>
+							</ng-template>
+						</div>
+					</div>
+				</p-accordionTab>
+				<p-accordionTab header="Open Opportunities" *ngIf="additionalDetails">
+
+				</p-accordionTab>
+				<p-accordionTab header="Activity Log" *ngIf="additionalDetails">
+
+				</p-accordionTab>
+			</p-accordion>
+			<div class="col-12 m-auto" style="width: 100px;">
+				<button [disabled]="!contactForm.valid" pButton pRipple label="Submit"
+					class="p-button-success text-center"></button>
+			</div>
+		</div>
+	</form>
+
+</p-sidebar>
+
 <p-toast></p-toast>
 <p-confirmDialog>
 	<ng-template pTemplate="message" let-message>
@@ -172,9 +546,10 @@
 		<div class="p-toolbar-group-center">
 			<span style="width: 210px;" class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="Search By Name, Company" [(ngModel)]="searchValue"/>
+				<input pInputText type="text" placeholder="Search By Name, Company" [(ngModel)]="searchValue" />
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [loading]="loading" [key]="'Individuals'" [columns]="columns" [tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+	<app-table [loading]="loading" [key]="'Individuals'" [columns]="columns" [tableData]="tableData"
+		(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 </div>
