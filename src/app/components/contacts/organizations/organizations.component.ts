@@ -109,13 +109,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         name: ['', [Validators.required]],
         pointofContact: [''],
         accountManager: [''],
-        website: [''],
         status: ['active', Validators.required],
-      }),
-      segmant: this.fb.group({
         industryType: ['', [Validators.required]],
         subType: ['', [Validators.required]],
         revenueRange: ['', [Validators.required]],
+      }),
+      segmant: this.fb.group({
         notes: [''],
       }),
       facilities: this.facilities,
@@ -124,6 +123,26 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       emailAddresses: this.emailAddresses,
       services: this.services,
     });
+    // this.organizationForm = this.fb.group({
+    //   primaryDetails: this.fb.group({
+    //     name: ['', [Validators.required]],
+    //     pointofContact: [''],
+    //     accountManager: [''],
+    //     website: [''],
+    //     status: ['active', Validators.required],
+    //   }),
+    //   segmant: this.fb.group({
+    //     industryType: ['', [Validators.required]],
+    //     subType: ['', [Validators.required]],
+    //     revenueRange: ['', [Validators.required]],
+    //     notes: [''],
+    //   }),
+    //   facilities: this.facilities,
+    //   addresses: this.addresses,
+    //   phones: this.phones,
+    //   emailAddresses: this.emailAddresses,
+    //   services: this.services,
+    // });
 
     this.initFacilitiesArray(); // Initialize facilities array
     this.initAddressesArray(); // Initialize addresses array

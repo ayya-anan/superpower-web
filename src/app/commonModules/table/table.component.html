@@ -1,39 +1,60 @@
 <p-table [columns]="selectedColumns" [value]="tableData" [resizableColumns]="true" styleClass="p-datatable-striped"
     [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{key}}"[stateKey]="'table_'+key" [reorderableColumns]="true" 
-    [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px" [loading]="loading">
-    <ng-template pTemplate="caption"> 
-        <p-multiSelect
-            [options]="columns" 
-            [(ngModel)]="selectedColumns" 
-            optionLabel="header"
-            placeholder="Please select columns"> 
-        </p-multiSelect> 
-    </ng-template> 
-    <ng-template pTemplate="header"  let-columns>
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{key}}" [stateKey]="'table_'+key"
+    [reorderableColumns]="true" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px"
+    [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)">
+    <ng-template pTemplate="caption">
+        <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
+            placeholder="Please select columns">
+        </p-multiSelect>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
         <tr>
             <th style="width: 4rem">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <ng-container *ngFor="let col of columns">
-                <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header }} <p-sortIcon field="{{col.field}}"></p-sortIcon>
+                <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header }} <p-sortIcon
+                        field="{{col.field}}"></p-sortIcon>
                 </th>
             </ng-container>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-columns="columns" let-rowData let-rowIndex="rowIndex">
+    <ng-template pTemplate="body" let-columns="columns" let-rowData let-rowIndex="rowIndex" let-editing="editing">
         <tr>
             <td>
                 <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
             </td>
             <ng-container *ngFor="let col of columns">
-                <td *ngIf="col.field !='action' && col.field != 'status'">{{ rowData[col.field] }}</td>
+                <ng-container *ngIf="col.field !='action' && col.field != 'status'">
+                    <ng-container *ngIf="key === 'Payments'; else ElseContent">
+                        <td [pEditableColumn]="rowData[col.field]" [pEditableColumnField]="col.field">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        [(ngModel)]="rowData[col.field]" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ rowData[col.field] }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </ng-container>
+                    <ng-template #ElseContent>
+                        <td *ngIf="col.field !='action' && col.field != 'status'">{{ rowData[col.field] }}</td>
+                    </ng-template>
+                </ng-container>
                 <td *ngIf="col.field =='status'">
                     <span class="customer-badge {{rowData[col.field]}}">{{ rowData[col.field] }}</span>
                 </td>
                 <td *ngIf="col.field =='action'">
-                    <span class="actionLink" (click)="edit(rowData, rowIndex)"><i class="pi pi-pencil text-xl text-blue-500"></i></span>
-                    <span class="ml-3 actionLink" (click)="delete(rowData, rowIndex)"><i class="pi pi-trash text-xl text-blue-500"></i></span>
+                    <span class="actionLink" (click)="edit(rowData, rowIndex)"><i
+                            class="pi pi-pencil text-xl text-blue-500"></i></span>
+                    <span *ngIf="key === 'Quotes'" class="ml-3 actionLink" (click)="clone(rowData, rowIndex)"><i
+                            class="pi pi-clone text-xl text-blue-500"></i></span>
+                    <span class="ml-3 actionLink" (click)="delete(rowData, rowIndex)"><i
+                            class="pi pi-trash text-xl text-blue-500"></i></span>
                 </td>
             </ng-container>
         </tr>

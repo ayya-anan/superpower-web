@@ -1,6 +1,6 @@
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -27,6 +27,9 @@ export class IndividualComponent implements OnInit {
     showRole: boolean = false;
     additionalDetails: boolean = false;
     editId: any;
+
+    // contactForm: FormGroup = this.fb.group({});
+
     columns = [
         { header: 'Name', field: 'name' },
         { header: 'Company', field: 'company' },
@@ -62,7 +65,7 @@ export class IndividualComponent implements OnInit {
         { name: 'Advisor' },
         { name: 'Influencer' },
         { name: 'Senior Technical Lead' },
-    ];
+    ]; 
 
     contactForm = new FormGroup({
         salutation: new FormControl(),
@@ -76,7 +79,7 @@ export class IndividualComponent implements OnInit {
         alternateContact: new FormControl(),
         address: new FormControl(),
         city: new FormControl(),
-        state: new FormControl(),
+        country: new FormControl(),
         zipCode: new FormControl(),
         jobtitle: new FormControl(),
         companyname: new FormControl(),
@@ -84,6 +87,7 @@ export class IndividualComponent implements OnInit {
     });
 
     constructor(
+        private fb: FormBuilder,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private individualService: IndividualService
@@ -161,6 +165,10 @@ export class IndividualComponent implements OnInit {
         this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue) || _.includes(obj.company.toLowerCase(), this.searchValue)) : this.originalData;
     }
 
+    addAdditionalAddress() {
+
+    }
+
     addContact() {
         this.contactView = true;
     }
@@ -185,9 +193,9 @@ export class IndividualComponent implements OnInit {
                 status: (result.status) ? result.status.name : this.status[0].name
             },
             professionalDetails: {
-                jobTitle: result.jobtitle,
-                companyName: (this.showCompany) ? result.companyname : result.companyname.name,
-                roleName: (this.showRole) ? result.rolename : result.rolename.name,
+                jobTitle: (result.jobtitle) ? result.jobtitle : result.jobtitle.name,
+                companyName: (result.companyname) ? result.companyname : result.companyname.name,
+                roleName: (result.rolename) ? result.rolename : result.rolename.name,
             },
             addresses: [
                 {
@@ -195,7 +203,7 @@ export class IndividualComponent implements OnInit {
                     streetNumber: "125",
                     streetName: result.address,
                     city: result.city,
-                    state: result.state,
+                    country: result.country,
                     county: "active",
                     zipCode: result.zipCode
                 }
@@ -239,7 +247,7 @@ export class IndividualComponent implements OnInit {
             primaryContact: result.contact,
             address: result.address,
             city: result.city,
-            state: result.state,
+            country: result.country,
             zipCode: result.zipCode,
             jobtitle: result.jobTitle,
             companyname: (this.showCompany) ? result.company : { name: result.company },

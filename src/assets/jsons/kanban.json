@@ -1,0 +1,113 @@
+{
+    "data": [
+        {
+            "listId": "1",
+            "title": "New",
+            "cards" : [
+                {
+                    "id": "11",
+                    "title": "BMW Deal",
+                    "description": "Organization: BMW",
+                    "startDate":"2022-05-18",
+                    "dueDate":"2022-05-18",
+                    "completed": false,
+                    "progress": 0,
+                    "assignees": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png"}
+                    ],
+                    "comments": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png", "text": "How likely are you to recommend our company"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png", "text": "Ok thanks!"}
+                    ],
+                    "priority": {"color": "#3b82f6", "title": "Medium"},
+                    "attachments": 4,
+                    "taskList" : {
+                        "id" : "1234",
+                        "title": "Tasklist",
+                        "tasks" : []
+                    }
+                },
+                {
+                    "id": "12",
+                    "title": "Toyota Deal",
+                    "description": "Organization: Toyota",
+                    "startDate":"2022-05-18",
+                    "dueDate":"2022-05-18",
+                    "completed": false,
+                    "progress": 0,
+                    "assignees": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png"}
+                    ],
+                    "comments": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png", "text": "How likely are you to recommend our company"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png", "text": "Ok thanks!"}
+                    ],
+                    "priority": {"color": "#3b82f6", "title": "Medium"},
+                    "attachments": 4,
+                    "taskList" : {
+                        "id" : "1234",
+                        "title": "Tasklist",
+                        "tasks" : []
+                    }
+                }
+            ]
+        },
+        {
+            "listId": "2",
+            "title": "Meeting Scheduled",
+            "cards" : [
+                {
+                    "id": "13",
+                    "title": "Workez Deal",
+                    "description": "Organization: Workez",
+                    "startDate":"2022-05-18",
+                    "dueDate":"2022-05-18",
+                    "completed": false,
+                    "progress": 0,
+                    "assignees": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png"}
+                    ],
+                    "comments": [
+                        {"name": "Ioni Bowcher", "image": "ionibowcher.png", "text": "How likely are you to recommend our company"},
+                        {"name": "Amy Elsner", "image": "amyelsner.png", "text": "Ok thanks!"}
+                    ],
+                    "priority": {"color": "#3b82f6", "title": "Medium"},
+                    "attachments": 4,
+                    "taskList" : {
+                        "id" : "1234",
+                        "title": "Tasklist",
+                        "tasks" : []
+                    }
+                }
+            ]
+        },
+        {
+            "listId": "3",
+            "title": "In Discussion",
+            "cards" : []
+        },
+        {
+            "listId": "4",
+            "title": "Quote Sent",
+            "cards" : []
+        },
+        {
+            "listId": "5",
+            "title": "Quote Accepted",
+            "cards" : []
+        },
+        {
+            "listId": "6",
+            "title": "Project Started",
+            "cards" : []
+        },
+        {
+            "listId": "7",
+            "title": "Cancelled",
+            "cards" : []
+        }
+    ]
+}

@@ -112,7 +112,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         { header: 'Amount', field: 'amount' },
         { header: 'Actions', field: 'action' },
     ];
-    tableData: any = [];
+    tableData: any = [
+        { createdDate: 'January 16th 2024', value: '1622', status: 'meeting' }
+    ];
     paymentData: any = [];
     loading: boolean = false;
 
@@ -302,6 +304,10 @@ export class KanbanSidebarComponent implements OnDestroy {
     subscribeToGetAllDealaddedits() {
 
     }
+
+    duplicateData(event: any) {
+        this.tableData.push(event.data[0]);
+    }
     saveQuote() {
         this.showQuote = false;
         this.showTableView = true;
@@ -332,6 +338,17 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
+    }
+
+    quoteView() {
+        this.showQuote = !this.showQuote;
+        this.showTableView = (this.showQuote) ? false : true;
+    }
+
+    showDetailsView(event: any) {
+        console.log(event);
+        this.showTableView = false;
+        this.showQuote = true;
     }
 
     generatePdf() {
