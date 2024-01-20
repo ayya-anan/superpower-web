@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { KanbanCard, KanbanList } from 'src/app/api/kanban';
+import { XService } from 'src/app/api/x/x.service';
+import { dealStatus } from '../deals.helper';
 
 @Injectable()
 export class KanbanService {
 
-    private _lists: KanbanList[] = [];
+    private _lists: KanbanList[] = _.cloneDeep(dealStatus);
 
     private selectedCard = new Subject<KanbanCard>();
 
@@ -24,21 +27,23 @@ export class KanbanService {
 
     listNames$ = this.listNames.asObservable();
 
-    constructor(private http: HttpClient) {
-        this.http.get<any>('assets/jsons/kanban.json')
-        .toPromise()
-        .then(res => res.data as KanbanList[])
-        .then(data => {
-            this.updateLists(data);
-        });
+    constructor(private http: HttpClient, private xService: XService) {
+        this.xService.getAllX('deal').subscribe(
+            (res: any) => {
+                this.updateLists(res.results);
+            }
+        )
     }
 
     private updateLists(data: any[]) {
-        this._lists = data;
-        let small = data.map(l => ({listId: l.listId, title: l.title}));
+        // this._lists = data;
+        _.each(this._lists,(list)=>{
+            list.cards = _.filter(data,(d) => d.status === list.name) || [];
+        });
+        let small = this._lists.map(l => ({ listId: l.listId, name: l.name }));
 
         this.listNames.next(small)
-        this.lists.next(data);
+        this.lists.next(this._lists);
     }
 
     addList() {
@@ -47,7 +52,7 @@ export class KanbanService {
         const newList = {
             listId: listId,
             title: title,
-            cards:[]
+            cards: []
         };
 
         this._lists.push(newList);
@@ -57,15 +62,15 @@ export class KanbanService {
     addCard(listId: string) {
         const cardId = this.generateId();
         const title = "Untitled card";
-        const newCard = {id: cardId, title: title, description: '', progress: '', assignees: [], attachments: 0, comments: [], startDate: '', dueDate: '', completed: false, taskList: {title:'Untitled Task List', tasks: []}};
+        const newCard = { id: cardId, title: title, description: '', progress: '', assignees: [], attachments: 0, comments: [], startDate: '', dueDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
 
         let lists = [];
-        lists = this._lists.map(l => l.listId === listId ? ({...l, cards: [...l.cards || [], newCard]}) : l);
+        lists = this._lists.map(l => l.listId === listId ? ({ ...l, cards: [...l.cards || [], newCard] }) : l);
         this.updateLists(lists);
     }
 
     updateCard(card: KanbanCard, listId: string) {
-        let lists = this._lists.map(l => l.listId === listId ? ({...l, cards: l.cards.map(c => c.id === card.id ? {...card} : c)}) : l);
+        let lists = this._lists.map(l => l.listId === listId ? ({ ...l, cards: l.cards.map(c => c.id === card.id ? { ...card } : c) }) : l);
         this.updateLists(lists);
     }
 
@@ -76,7 +81,7 @@ export class KanbanService {
 
     copyList(list: KanbanList) {
         let newId = this.generateId();
-        let newList = {...list, listId: newId};
+        let newList = { ...list, listId: newId };
 
         this._lists.push(newList);
         this.lists.next(this._lists);
@@ -107,7 +112,7 @@ export class KanbanService {
             if (list.listId === listId && list.cards) {
                 let cardIndex = list.cards.indexOf(card);
                 let newId = this.generateId();
-                let newCard = {...card, id: newId};
+                let newCard = { ...card, id: newId };
                 list.cards.splice(cardIndex, 0, newCard);
             }
 
@@ -120,7 +125,7 @@ export class KanbanService {
     moveCard(card: KanbanCard, targetListId: string, sourceListId: string) {
         if (card.id) {
             this.deleteCard(card.id, sourceListId);
-            let lists = this._lists.map(l => l.listId === targetListId ? ({...l, cards: [...l.cards || [], card]}) : l);
+            let lists = this._lists.map(l => l.listId === targetListId ? ({ ...l, cards: [...l.cards || [], card] }) : l);
             this.updateLists(lists);
         }
     }

@@ -20,7 +20,7 @@ export class KanbanCardComponent implements OnDestroy {
 
     constructor(private kanbanService: KanbanService) {
         this.subscription = this.kanbanService.lists$.subscribe(data => {
-            let subMenu = data.map(d => ({ id: d.listId, label: d.title, command: () => this.onMove(d.listId) }));
+            let subMenu = data.map(d => ({ id: d.listId, label: d.name, command: () => this.onMove(d.listId) }));
             this.generateMenu(subMenu);
         })
     }
