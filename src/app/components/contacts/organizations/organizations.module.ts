@@ -33,6 +33,8 @@ import { OrganizationsComponent } from './organizations.component';
 import { OrganizationsRoutingModule } from './organizations-routing.module';
 import { BadgeModule } from 'primeng/badge';
 import { CardModule } from 'primeng/card';
+import { SidebarModule } from 'primeng/sidebar';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
 	imports: [
@@ -69,7 +71,9 @@ import { CardModule } from 'primeng/card';
 		AllTableModule,
 		ToastModule,
 		ToolbarModule,
-		ConfirmDialogModule
+		ConfirmDialogModule,
+		SidebarModule,
+		FieldsetModule
 	],
 	declarations: [OrganizationsComponent]
 })
