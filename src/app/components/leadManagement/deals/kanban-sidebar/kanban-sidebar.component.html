@@ -205,10 +205,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ng-container *ngIf="showPaymentsTable">
+                                            <ng-container *ngIf="payments.controls && payments.controls.length > 0">
                                                 <div class="col-12 text-2xl font-medium">Payments</div>
                                                 <app-table [loading]="loading" [key]="'Payments'"
-                                                    [columns]="paymentColumns" [tableData]="paymentData"></app-table>
+                                                    [columns]="paymentColumns" [tableData]="getPaymentData(i)"></app-table>
                                             </ng-container>
                                             <div class="flex w-full border-top-1 surface-border py-5 gap-3">
                                                 <div class="col-4 justify-content-start">
@@ -242,10 +242,6 @@
                                     </ng-container>
                                 </p-accordion>
                             </div>
-                        </ng-container>
-                        <ng-container *ngIf="showTableView">
-                            <app-table [loading]="loading" [key]="'Quotes'" [columns]="columns"
-                                [tableData]="tableData"></app-table>
                         </ng-container>
                     </div>
                 </div>

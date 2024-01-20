@@ -12,6 +12,7 @@ export interface KanbanCard {
     completed?: boolean;
     priority?: Object;
     taskList: TaskList;
+    quotes?: []
 }
 
 export interface KanbanList {
