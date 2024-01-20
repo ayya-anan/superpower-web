@@ -128,11 +128,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         private xService: XService,
         private dealService: DealService
     ) {
-        this.memberService.getMembers().then(members => this.assignees = members);
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = data;
             this.formValue = { ...data };
+            this.initForm()
 
         });
         this.listSubscription = this.kanbanService.selectedListId$.subscribe(data => this.listId = data);
@@ -144,22 +144,31 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllOrganization();
         this.subscribeToGetAllIndividuals();
         this.subscribeToSavedTemplate();
-        this.dealForm = this.fb.group({
-            dealName: ['', [Validators.required]],
-            org: ['', [Validators.required]],
-            status: ['New', [Validators.required]],
-            customerContact: ['', [Validators.required]],
-            winProbablity: ['', [Validators.required]],
-            accountManager: ['', [Validators.required]],
-            startDate: [new Date(), [Validators.required]],
-            source: ['', []],
-            value: ['0', [Validators.required]],
-            closeDate: [new Date(), [Validators.required]],
-            quotes: this.quotes
-        });
-        this.initQuotesArray();
         this.subscribeFormChanges();
+        this.initForm();
     }
+    initForm() {
+        if (this.card.org) {
+            this.dealForm.patchValue(this.card);
+            this.changeOrg(this.card.org);
+        } else {
+            this.dealForm = this.fb.group({
+                dealName: ['', [Validators.required]],
+                org: ['', [Validators.required]],
+                status: ['New', [Validators.required]],
+                customerContact: ['', [Validators.required]],
+                winProbablity: ['', [Validators.required]],
+                accountManager: ['', [Validators.required]],
+                startDate: [new Date(), [Validators.required]],
+                source: ['', []],
+                value: ['0', [Validators.required]],
+                closeDate: [new Date(), [Validators.required]],
+                quotes: this.quotes
+            });
+            this.initQuotesArray();
+        }
+    }
+
     subscribeFormChanges() {
         // Subscribe to value changes of org
         this.dealForm.get('org')?.valueChanges.subscribe(newValue => {
@@ -174,7 +183,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     // Helper methods to initialize form arrays
     initQuotesArray(): void {
         const QuotesArray = this.dealForm.get('quotes') as FormArray;
-        QuotesArray.push(this.fb.group({
+        QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
             subTotal: ['0', [Validators.required]],
@@ -185,7 +194,6 @@ export class KanbanSidebarComponent implements OnDestroy {
             services: this.services,
             payments: this.payments
         }));
-        this.initServicesArray(QuotesArray.length - 1);
     }
     get QuotesArray(): FormArray {
         return this.dealForm.get('quotes') as FormArray;
@@ -408,7 +416,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     resetForm() {
-        this.formValue = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+        this.card = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+        this.initForm();
     }
 
     addTaskList() {
