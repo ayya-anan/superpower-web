@@ -24,7 +24,7 @@ import { REMOVEIDS } from 'src/app/coreModules/common.function';
 })
 export class KanbanSidebarComponent implements OnDestroy {
 
-    card: KanbanCard = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+    card: KanbanCard = { id: '', startDate: '', closeDate: '', taskList: { title: 'Untitled Task List', tasks: [] } };
 
     formValue!: KanbanCard;
 
@@ -161,18 +161,20 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.initQuotesArray();
         this.subscribeFormChanges();
         if (this.card.org) {
+            this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
+            this.card.closeDate = new Date(Date.parse(this.card.closeDate.toString()));
             this.dealForm.patchValue(this.card);
             const quotesArray = this.dealForm.get('quotes') as FormArray;
             quotesArray.clear();  // Clear existing controls
             this.card.quotes?.forEach((quote: any) => {
                 const quoteGroup = this.patchQuoteGroup(quote);
-                quotesArray.push(quoteGroup); 
+                quotesArray.push(quoteGroup);
             });
             this.changeOrg(this.card.org);
         }
     }
 
-    patchQuoteGroup(quote:any){
+    patchQuoteGroup(quote: any) {
         const quoteGroup = this.fb.group({
             date: [quote.date],
             status: [quote.status],
@@ -226,10 +228,10 @@ export class KanbanSidebarComponent implements OnDestroy {
             payments: this.fb.array([])
         }));
     }
-    cloneQuote(event: Event, quoteFormIndex: number) {    
+    cloneQuote(event: Event, quoteFormIndex: number) {
         event.stopPropagation();
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
-        this.QuotesArray.insert(0,this.patchQuoteGroup(quotesFormGroup.value))
+        this.QuotesArray.insert(0, this.patchQuoteGroup(quotesFormGroup.value))
     }
     get QuotesArray(): FormArray {
         return this.dealForm.get('quotes') as FormArray;
@@ -369,7 +371,14 @@ export class KanbanSidebarComponent implements OnDestroy {
     saveQuote() {
         this.showQuote = false;
         this.showTableView = true;
-        this.xService.postX('deal', this.dealForm.value);
+        if (this.card.id) {
+            this.xService.updateX('deal', this.dealForm.value, this.card.id);
+        } else {
+            this.xService.postX('deal', this.dealForm.value);
+        }
+        this.card = { ...this.dealForm.value };
+        this.kanbanService.updateCard(this.card, this.listId);
+        this.close();
     }
 
     subscribeToAddDealaddedits() {
@@ -390,17 +399,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
-    }
-
-    quoteView() {
-        this.showQuote = !this.showQuote;
-        this.showTableView = (this.showQuote) ? false : true;
-    }
-
-    showDetailsView(event: any) {
-        console.log(event);
-        this.showTableView = false;
-        this.showQuote = true;
     }
 
     generatePdf() {
@@ -485,7 +483,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     resetForm() {
-        this.card = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+        // this.card = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
         this.initForm();
     }
 

@@ -7,8 +7,8 @@ export interface KanbanCard {
     assignees?: Assignee[];
     attachments?: number;
     comments?: Comment[];
-    startDate?: string;
-    closeDate?: string;
+    startDate: Date | string;
+    closeDate: Date | string;
     completed?: boolean;
     priority?: Object;
     taskList: TaskList;

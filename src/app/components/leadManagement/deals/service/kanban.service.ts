@@ -9,7 +9,7 @@ import { dealStatus } from '../deals.helper';
 @Injectable()
 export class KanbanService {
 
-    private _lists: KanbanList[] = _.cloneDeep(dealStatus);
+    private _lists: KanbanList[] = [];
 
     private selectedCard = new Subject<KanbanCard>();
 
@@ -30,20 +30,23 @@ export class KanbanService {
     constructor(private http: HttpClient, private xService: XService) {
         this.xService.getAllX('deal').subscribe(
             (res: any) => {
-                this.updateLists(res.results);
+                const data =  _.cloneDeep(dealStatus);
+                _.each(data, (list) => {
+                    list.cards = _.filter(res.results, (d) => d.status === list.name) || [];
+                });
+                this.updateLists(data);
             }
         )
     }
 
     private updateLists(data: any[]) {
-        // this._lists = data;
-        _.each(this._lists, (list) => {
-            list.cards = _.filter(data, (d) => d.status === list.name) || [];
-        });
-        let small = this._lists.map(l => ({ listId: l.listId, name: l.name }));
+        
+        this._lists = data;
+        let small = data.map(l => ({listId: l.listId, title: l.title}));
 
         this.listNames.next(small)
-        this.lists.next(this._lists);
+        this.lists.next(data);
+
     }
 
     addList() {
@@ -62,7 +65,7 @@ export class KanbanService {
     addCard(listId: string) {
         const cardId = this.generateId();
         const name = "Untitled card";
-        const newCard: KanbanCard = { id: cardId, dealName: name, quotes: [], attachments: 0, comments: [], startDate: '', closeDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
+        const newCard: KanbanCard = { id: cardId, dealName: name, quotes: [], attachments: 0, comments: [], startDate:'', closeDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
         let lists = [];
         lists = this._lists.map(l => l.listId === listId ? ({ ...l, cards: [...l.cards || [], newCard] }) : l);
         this.updateLists(lists);
