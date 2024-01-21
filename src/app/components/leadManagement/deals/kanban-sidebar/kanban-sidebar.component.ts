@@ -303,7 +303,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (servicesFormGroup.get('facility')?.value && servicesFormGroup.get('service')?.value) {
             const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
-            const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.segmant.industryType && q.subType == this.selectedOrganization.segmant.subType);
+            const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
             servicesFormGroup.patchValue({
                 employeeCount: facility.employeeCount,
                 unitRate: service.amount,
@@ -368,14 +368,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     duplicateData(event: any) {
 
     }
-    saveQuote() {
+    saveQuote(event : Event) {
+        event.preventDefault();
         this.showQuote = false;
         this.showTableView = true;
-        if (this.card.id) {
+        if (this.card.org) {
             this.xService.updateX('deal', this.dealForm.value, this.card.id);
         } else {
             this.xService.postX('deal', this.dealForm.value);
         }
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deals Saved Successfully' });
         this.card = { ...this.dealForm.value };
         this.kanbanService.updateCard(this.card, this.listId);
         this.close();
@@ -473,7 +475,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     onMove(listId: string) {
-        this.kanbanService.moveCard(this.formValue, listId, this.listId);
+        this.kanbanService.moveCard(this.dealForm.value, listId, this.listId);
     }
 
     onDelete() {
@@ -483,8 +485,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     resetForm() {
-        // this.card = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
-        this.initForm();
+        this.dealForm.reset();
     }
 
     addTaskList() {
