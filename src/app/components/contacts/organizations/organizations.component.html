@@ -33,6 +33,12 @@
 							placeholder="Select Revenue"></p-dropdown>
 					</div>
 					<div class="field col-12">
+						<label>Status</label><br>
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
+							[options]="status" optionLabel="name" optionValue="name"
+							placeholder="Select Status" (onChange)="statusChange($event)"></p-dropdown>
+					</div>
+					<div class="field col-12" *ngIf="false">
 						<label for="pointofContact">Point Of Contact</label>
 						<p-dropdown appendTo="body" formControlName="pointofContact" [options]="individualsData"
 							optionLabel="name" optionValue="id" placeholder="Select Point Of Contact"></p-dropdown>
@@ -42,15 +48,43 @@
 						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
 							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
 					</div>
-					<div class="field col-12">
-						<label>Status</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
-							[options]="status" optionLabel="name" optionValue="name"
-							placeholder="Select Status"></p-dropdown>
-					</div>
+					<ng-container *ngIf="activeContract">
+						<div class="field col-12 verticalLineClass">Active Contract</div>
+						<div class="field col-12">
+							<label for="rolename">Invoice Frequency</label>
+							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+						</div>
+						<div class="field col-12">
+							<label for="rolename">Current Contract Start Date</label>
+							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+						</div>
+						<div class="field col-12">
+							<label for="rolename">Current Contract End Date</label>
+							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+						</div>
+						<div class="field col-12">
+							<label for="rolename">Customer Since</label>
+							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+						</div>
+					</ng-container>
 				</div>
 			</div>
 			<div class="col-9">
+				<div class="p-0 mb-3">
+					<p-fieldset legend="Point Of Contacts" [toggleable]="true">
+						<div class="col-12 p-0">
+							<button pButton pRipple label="Add Point Of Contact" class="p-button-success text-center" (click)="addPOC()"></button>
+						</div>
+						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
+							<app-table [loading]="loading" [key]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
+							(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+						</div>
+					</p-fieldset>
+				</div>
 				<div class="p-0 mb-3">
 					<p-fieldset legend="Contact Details" [toggleable]="true">
 						<div class="formgrid grid">
@@ -90,7 +124,7 @@
 											[options]="countries" optionLabel="name" optionValue="name"
 											placeholder="Country"></p-dropdown>
 									</div>
-									<div class="field col-6">
+									<div class="field col-6" *ngIf="false">
 										<label for="name">Company Website</label>
 										<input formControlName="website" type="text"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
@@ -168,7 +202,7 @@
 								<div class="field col-3">
 									<label for="type">Type</label><br>
 									<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
-										optionLabel="name" optionValue="name" placeholder="Select Type"></p-dropdown>
+										optionLabel="name" optionValue="name" placeholder="Service Type"></p-dropdown>
 								</div>
 								<div class="field col">
 									<label for="amount">Rate</label><br>
@@ -180,13 +214,13 @@
 									<p-inputNumber [disabled]="true" formControlName="companyAverage" mode="currency"
 										inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
 								</div>
-								<div class="field col">
+								<div class="field col" *ngIf="false">
 									<label for="tinoAverage">Tino's Average</label><br>
 									<p-inputNumber [disabled]="true" formControlName="tinoAverage" mode="currency"
 										inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
 								</div>
-								<div class="field col-2">
-									<div class="flex gap-2 float-between flex-row flex-wrap mt-4">
+								<div class="col-2 mt-4">
+									<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
 										<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
 											*ngIf="i === services.controls.length - 1" class="p-button-rounded p-button-info"
 											(click)="initServicesArray()"></button>
@@ -433,7 +467,7 @@
 			</p-accordionTab>
 		</p-accordion>
 		<div class="col-12 m-auto" style="width: 100px;">
-			<button pButton pRipple label="Submit" class="p-button-success text-center"></button>
+			<button pButton pRipple label="Save" class="p-button-success text-center"></button>
 		</div>
 	</form>
 </p-sidebar>

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -75,6 +76,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { name: 'External Audit', unitRate: 96 },
   ];
 
+  pocTableCols = [
+    {header: 'First Name', field: 'firstName'},
+    {header: 'Last Name', field: 'lastName'},
+    {header: 'Email Address', field: 'email'},
+    {header: 'Phone Number', field: 'phone'},
+    {header: 'Job Title', field: 'jobTitle'},
+  ]
+  pocTableData = [];
+
 
   organizationForm: FormGroup = this.fb.group({});
   phones: FormArray = this.fb.array([]);
@@ -87,8 +97,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   individualSubscription: Subscription = new Subscription;
   individualsData: any;
   organizationData: any;
+  activeContract: boolean = false;
 
   constructor(private fb: FormBuilder,
+    private router: Router,
     private messageService: MessageService,
     private organizationService: OrganizationService,
     private individualService: IndividualService,
@@ -114,9 +126,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         subType: ['', [Validators.required]],
         revenueRange: ['', [Validators.required]],
       }),
-      segmant: this.fb.group({
-        notes: [''],
-      }),
+      // segmant: this.fb.group({
+      //   notes: [''],
+      // }),
       facilities: this.facilities,
       addresses: this.addresses,
       phones: this.phones,
@@ -173,7 +185,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       type: ['', [Validators.required]],
       amount: ['', [Validators.required]],
       companyAverage: ['', [Validators.required]],
-      tinoAverage: ['', [Validators.required]],
+      // tinoAverage: ['', [Validators.required]],
     }));
   }
   removeFacilitiesArray(index: number) {
@@ -191,6 +203,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       address: ['', [Validators.required]],
       country: ['Germany', [Validators.required]],
       zipCode: ['', [Validators.required]],
+      // website: ['']
     }));
   }
 
@@ -220,9 +233,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationView = true;
   }
 
+  statusChange(event: any) {
+    this.activeContract = (event.value === 'Prospect') ? false : true;
+  }
+
   onSubmit() {
     if (this.organizationForm.valid) {
-      this.organizationView = false;
+      // this.organizationView = false;
       this.organizationService.postOrganization(this.organizationForm.value)
     }
   }
@@ -270,6 +287,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     //   servicesFormArray.push(this.fb.control(service));
     // });
     this.organizationView = true;
+    this.pocTableData = updateData.primaryDetails.pointofContact;
   }
 
   delete(event: any) {
@@ -297,13 +315,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.loading = false;
         this.tableData = [];
+        this.pocTableData = [];
         this.organizationData = res.results;
         _.forEach(res.results, (item: any) => {
           const obj: any = {
             id: item.id,
             name: item.primaryDetails.name,
-            type: item.segmant.industryType,
-            subType: item.segmant.subType,
+            type: item.primaryDetails.industryType,
+            subType: item.primaryDetails.subType,
             status: item.primaryDetails.status,
             email: item.emailAddresses[0],
             contact: item.phones[0].phoneNumber,
@@ -337,6 +356,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  addPOC() {
+    this.organizationService.activeOrganizationView = true;
+    this.router.navigateByUrl('/contacts/individual');
   }
 
   searchResults(event: any) {

@@ -297,7 +297,7 @@
 					<div class="field col-12">
 						<label for="companyname">Organization Name</label>
 						<p-dropdown formControlName="companyname" [editable]="true" [options]="company" optionLabel="name"
-							placeholder="Company"></p-dropdown>
+							placeholder="Organization"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="jobtitle">Job Title</label>
@@ -369,7 +369,7 @@
 					</div>
 				</p-fieldset>
 				<div class="col-12 m-auto" style="width: 100px;">
-					<button [disabled]="!contactForm.valid" pButton pRipple label="Submit"
+					<button [disabled]="!contactForm.valid" pButton pRipple label="Save"
 						class="p-button-success text-center"></button>
 				</div>
 			</div>

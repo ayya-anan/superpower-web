@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
+import { OrganizationService } from 'src/app/api/contacts/organization.service';
 
 @Component({
     templateUrl: './individual.component.html',
@@ -90,10 +91,12 @@ export class IndividualComponent implements OnInit {
         private fb: FormBuilder,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        private individualService: IndividualService
+        private individualService: IndividualService,
+        private organizationService: OrganizationService
     ) { }
 
     ngOnInit() {
+        if(this.organizationService.activeOrganizationView) { this.contactView = true; }
         this.loading = true;
         this.individualService.getAllIndividuals();
         this.subscribeToGetAllIndividuals();
@@ -119,7 +122,7 @@ export class IndividualComponent implements OnInit {
                         contact: item.phones[0].phoneNumber,
                         address: item.addresses[0].streetName,
                         city: item.addresses[0].city,
-                        state: item.addresses[0].state,
+                        country: item.addresses[0].country,
                         zipCode: item.addresses[0].zipCode,
                         company: (item.professionalDetails) ? item.professionalDetails.companyName : '',
                         jobTitle: (item.professionalDetails) ? item.professionalDetails.jobTitle : '',
@@ -202,16 +205,15 @@ export class IndividualComponent implements OnInit {
                     type: "home",
                     streetNumber: "125",
                     streetName: result.address,
-                    city: result.city,
+                    // city: result.city,
                     country: result.country,
-                    county: "active",
+                    // county: "active",
                     zipCode: result.zipCode
                 }
             ],
             phones: [{ type: "personal", phoneNumber: result.primaryContact }],
             emailAddresses: [result.emailAddress],
-            socialMediaLinks: [{ "type": "linkedin", "url": "https://www.linkedin.com/in/jerinjjose/" }
-            ],
+            // socialMediaLinks: [{ "type": "linkedin", "url": "https://www.linkedin.com/in/jerinjjose/" }],
         }
         if (this.editId) {
             this.individualService.updateIndividuals(obj, this.editId);
@@ -246,7 +248,7 @@ export class IndividualComponent implements OnInit {
             emailAddress: result.email,
             primaryContact: result.contact,
             address: result.address,
-            city: result.city,
+            // city: result.city,
             country: result.country,
             zipCode: result.zipCode,
             jobtitle: result.jobTitle,

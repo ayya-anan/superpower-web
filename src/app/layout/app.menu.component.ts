@@ -21,8 +21,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Contacts',
                 icon: 'pi pi-fw pi-users',
                 items: [
-                    { label: 'Individual', routerLink: ['/contacts/individual'] },
-                    { label: 'Organizations', routerLink: ['/contacts/organizations'] }
+                    { label: 'Organizations', routerLink: ['/contacts/organizations'] },
+                    { label: 'Individual', routerLink: ['/contacts/individual'] }
                 ]
             },
             { separator: true },
