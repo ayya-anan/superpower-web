@@ -1,17 +1,18 @@
 export interface KanbanCard {
     id: string;
     dealName?: string;
-    description?: string;
+    org?: string;
     progress?: number;
     value?: number;
     assignees?: Assignee[];
     attachments?: number;
     comments?: Comment[];
-    startDate?: string;
-    closeDate?: string;
+    startDate: Date | string;
+    closeDate: Date | string;
     completed?: boolean;
     priority?: Object;
     taskList: TaskList;
+    quotes?: []
 }
 
 export interface KanbanList {

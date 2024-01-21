@@ -1,4 +1,4 @@
-export const dealStatus = [
+export const dealStatus:any = [
     {
         listId: "1",
         name: "New",

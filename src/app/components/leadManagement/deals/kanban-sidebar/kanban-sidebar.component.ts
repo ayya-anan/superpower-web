@@ -14,6 +14,7 @@ import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
 import { XService } from 'src/app/api/x/x.service';
 import { dealStatus } from '../deals.helper';
+import { REMOVEIDS } from 'src/app/coreModules/common.function';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -23,7 +24,7 @@ import { dealStatus } from '../deals.helper';
 })
 export class KanbanSidebarComponent implements OnDestroy {
 
-    card: KanbanCard = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+    card: KanbanCard = { id: '', startDate: '', closeDate: '', taskList: { title: 'Untitled Task List', tasks: [] } };
 
     formValue!: KanbanCard;
 
@@ -83,9 +84,6 @@ export class KanbanSidebarComponent implements OnDestroy {
         { type: 'Coal Mining', quantity: 5.5, subType: 'Brown Coal Mining' },
     ];
 
-    quotes: FormArray = this.fb.array([]);
-    services: FormArray = this.fb.array([]);
-    payments: FormArray = this.fb.array([]);
     dealForm: FormGroup = new FormGroup({});
     individualSubscription: Subscription = new Subscription;
     individualsData: { name: string; id: any; }[] = [];
@@ -106,15 +104,13 @@ export class KanbanSidebarComponent implements OnDestroy {
         { header: 'Actions', field: 'action' },
     ];
     paymentColumns: any = [
-        { header: 'Milestone Date', field: 'milestoneDate' },
-        { header: 'Milestone Criteria', field: 'milestoneCriteria' },
+        { header: 'Milestone Date', field: 'date' },
+        { header: 'Milestone Criteria', field: 'criteria' },
         { header: 'Percentage', field: 'percentage' },
         { header: 'Amount', field: 'amount' },
         { header: 'Actions', field: 'action' },
     ];
-    tableData: any = [
-        { createdDate: 'January 16th 2024', value: '1622', status: 'meeting' }
-    ];
+
     paymentData: any = [];
     loading: boolean = false;
 
@@ -130,11 +126,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         private xService: XService,
         private dealService: DealService
     ) {
-        this.memberService.getMembers().then(members => this.assignees = members);
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = data;
             this.formValue = { ...data };
+            this.initForm()
 
         });
         this.listSubscription = this.kanbanService.selectedListId$.subscribe(data => this.listId = data);
@@ -146,6 +142,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllOrganization();
         this.subscribeToGetAllIndividuals();
         this.subscribeToSavedTemplate();
+    }
+    initForm() {
+        this.dealForm.reset();
         this.dealForm = this.fb.group({
             dealName: ['', [Validators.required]],
             org: ['', [Validators.required]],
@@ -157,11 +156,53 @@ export class KanbanSidebarComponent implements OnDestroy {
             source: ['', []],
             value: ['0', [Validators.required]],
             closeDate: [new Date(), [Validators.required]],
-            quotes: this.quotes
+            quotes: this.fb.array([])
         });
         this.initQuotesArray();
         this.subscribeFormChanges();
+        if (this.card.org) {
+            this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
+            this.card.closeDate = new Date(Date.parse(this.card.closeDate.toString()));
+            this.dealForm.patchValue(this.card);
+            const quotesArray = this.dealForm.get('quotes') as FormArray;
+            quotesArray.clear();  // Clear existing controls
+            this.card.quotes?.forEach((quote: any) => {
+                const quoteGroup = this.patchQuoteGroup(quote);
+                quotesArray.push(quoteGroup);
+            });
+            this.changeOrg(this.card.org);
+        }
     }
+
+    patchQuoteGroup(quote: any) {
+        const quoteGroup = this.fb.group({
+            date: [quote.date],
+            status: [quote.status],
+            subTotal: [quote.subTotal],
+            vat: [quote.vat],
+            discount: [quote.discount],
+            total: [quote.total],
+            paymentMilestone: [quote.paymentMilestone],
+            services: this.fb.array([]),
+            payments: this.fb.array([])
+        });
+        quoteGroup.patchValue(quote);
+        // Add services to the services FormArray
+        const servicesArray = quoteGroup.get('services') as FormArray;
+        servicesArray.clear();  // Clear existing controls
+        quote.services.forEach((service: any) => {
+            servicesArray.push(this.fb.group(service));
+        });
+
+        // Add payments to the payments FormArray
+        const paymentsArray = quoteGroup.get('payments') as FormArray;
+        paymentsArray.clear();  // Clear existing controls
+        quote.payments.forEach((payment: any) => {
+            paymentsArray.push(this.fb.group(payment));
+        });
+        return quoteGroup;
+    }
+
     subscribeFormChanges() {
         // Subscribe to value changes of org
         this.dealForm.get('org')?.valueChanges.subscribe(newValue => {
@@ -175,8 +216,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
     // Helper methods to initialize form arrays
     initQuotesArray(): void {
-        const QuotesArray = this.dealForm.get('quotes') as FormArray;
-        QuotesArray.push(this.fb.group({
+        this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
             subTotal: ['0', [Validators.required]],
@@ -184,19 +224,31 @@ export class KanbanSidebarComponent implements OnDestroy {
             discount: ['0', [Validators.required]],
             total: ['0', [Validators.required]],
             paymentMilestone: ['0', []],
-            services: this.services,
-            payments: this.payments
+            services: this.fb.array([]),
+            payments: this.fb.array([])
         }));
-        this.initServicesArray(QuotesArray.length - 1);
+    }
+    cloneQuote(event: Event, quoteFormIndex: number) {
+        event.stopPropagation();
+        const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
+        this.QuotesArray.insert(0, this.patchQuoteGroup(quotesFormGroup.value))
     }
     get QuotesArray(): FormArray {
         return this.dealForm.get('quotes') as FormArray;
     }
-    // Helper methods to initialize form arrays
-    initServicesArray(quoteFormIndex: any): void {
+    getServiceArray(quoteFormIndex: number): FormArray {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
-        servicesArray.push(this.fb.group({
+        return servicesArray;
+    }
+    getPaymentArray(quoteFormIndex: number): FormArray {
+        const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
+        const paymentsArray = quotesFormGroup.get('payments') as FormArray;
+        return paymentsArray;
+    }
+    // Helper methods to initialize form arrays
+    initServicesArray(quoteFormIndex: any): void {
+        this.getServiceArray(quoteFormIndex).push(this.fb.group({
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
             unitRate: ['0', [Validators.required]],
@@ -206,27 +258,43 @@ export class KanbanSidebarComponent implements OnDestroy {
         }));
     }
     createPaymentMilestone(quoteFormIndex: number) {
-        this.showPaymentsTable = true;
+        const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
+        const paymentMilestone = +quotesFormGroup.get('paymentMilestone')?.value;
+        if (paymentMilestone) {
+            const result = (this.getDealFinalAmount() / paymentMilestone);
+            for (let i = 0; i < paymentMilestone; i++) {
+                this.getPaymentArray(quoteFormIndex).push(this.fb.group({
+                    date: [new Date(), [Validators.required]],
+                    criteria: ['Auto payment generation', []],
+                    percentage: [(100 / paymentMilestone).toFixed(2), [Validators.required]],
+                    amount: [result.toFixed(2), [Validators.required]],
+                    status: ['New', [Validators.required]],
+                }));
+                const obj = {
+                    date: '19th Jan 2024',
+                    criteria: 'Auto payment generation',
+                    percentage: (100 / paymentMilestone).toFixed(2),
+                    amount: result.toFixed(2)
+                }
+                this.paymentData.push(obj);
+            }
+        } else {
+            this.getPaymentArray(quoteFormIndex).push(this.fb.group({
+                date: ['', [Validators.required]],
+                criteria: ['', []],
+                percentage: ['', [Validators.required]],
+                amount: ['', [Validators.required]],
+                status: ['', [Validators.required]],
+            }));
+        }
+
+    }
+    getPaymentData(quoteFormIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         const paymentsArray = quotesFormGroup.get('payments') as FormArray;
-        const paymentMilestone = +quotesFormGroup.get('paymentMilestone')?.value;
-        const result = (this.getDealFinalAmount() / paymentMilestone);
-        for (let i = 0; i < paymentMilestone; i++) {
-            paymentsArray.push(this.fb.group({
-                date: [new Date(), [Validators.required]],
-                criteria: ['Auto payment generation', []],
-                percentage: [(100 / paymentMilestone).toFixed(2), [Validators.required]],
-                amount: [result.toFixed(2), [Validators.required]],
-                status: ['New', [Validators.required]],
-            }));
-            const obj = {
-                milestoneDate: '19th Jan 2024',
-                milestoneCriteria: 'Auto payment generation',
-                percentage: (100 / paymentMilestone).toFixed(2),
-                amount: result.toFixed(2)
-            }
-            this.paymentData.push(obj);
-        }
+        _.each(paymentsArray, (payment) => {
+            console.log(payment);
+        })
     }
     onServiceChange(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
@@ -298,18 +366,19 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     duplicateData(event: any) {
-        this.tableData.push(event.data[0]);
+
     }
     saveQuote() {
         this.showQuote = false;
         this.showTableView = true;
-        let result = this.dealForm.value;
-        this.xService.postX('deal', this.dealForm.value);
-        this.tableData.push({
-            createdDate: moment(result.startDate).format('MMMM Do YYYY'),
-            status: result.status.name,
-            value: this.getDealFinalAmount()
-        });
+        if (this.card.id) {
+            this.xService.updateX('deal', this.dealForm.value, this.card.id);
+        } else {
+            this.xService.postX('deal', this.dealForm.value);
+        }
+        this.card = { ...this.dealForm.value };
+        this.kanbanService.updateCard(this.card, this.listId);
+        this.close();
     }
 
     subscribeToAddDealaddedits() {
@@ -330,17 +399,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
-    }
-
-    quoteView() {
-        this.showQuote = !this.showQuote;
-        this.showTableView = (this.showQuote) ? false : true;
-    }
-
-    showDetailsView(event: any) {
-        console.log(event);
-        this.showTableView = false;
-        this.showQuote = true;
     }
 
     generatePdf() {
@@ -425,7 +483,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     resetForm() {
-        this.formValue = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+        // this.card = { id: '', taskList: { title: 'Untitled Task List', tasks: [] } };
+        this.initForm();
     }
 
     addTaskList() {
