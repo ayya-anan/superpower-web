@@ -37,6 +37,7 @@ import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
 import { ChipModule } from 'primeng/chip';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
+import { InvoiceComponent } from '../invoice/invoice.component';
 
 @NgModule({
 	imports: [
@@ -88,6 +89,7 @@ import { AllTableModule } from 'src/app/commonModules/table/table.Module';
         DealsComponent,
         KanbanListComponent,
         KanbanSidebarComponent,
+        InvoiceComponent,
         KanbanCardComponent
     ],
     providers: [KanbanService]

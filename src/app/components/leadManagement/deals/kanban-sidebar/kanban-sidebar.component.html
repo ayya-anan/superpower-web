@@ -244,11 +244,11 @@
                                                     <div class="col-8 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
                                                             label="Save" class="p-button-primary h-3rem"
-                                                            (click)="saveQuote()"></button>
-                                                        <button pButton pRipple type="submit" icon="pi pi-file-pdf"
-                                                            label="Document Preview"
-                                                            class="p-button-primary h-3rem"></button>
-                                                        <button pButton pRipple type="submit" icon="pi pi-envelope"
+                                                            (click)="saveQuote($event)"></button>
+                                                        <button pButton pRipple icon="pi pi-file-pdf"
+                                                            label="Document Preview" class="p-button-primary h-3rem"
+                                                            (click)="documentPreview($event, i)"></button>
+                                                        <button pButton pRipple icon="pi pi-envelope"
                                                             label="Email Quote"
                                                             class="p-button-primary h-3rem"></button>
                                                     </div>
@@ -266,3 +266,16 @@
         </div>
     </ng-template>
 </p-sidebar>
+<p-dialog header="Header" *ngIf="quoteVisible" [(visible)]="quoteVisible" [modal]="true" [style]="{ width: '80%' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            
+        </div>
+    </ng-template>
+    <div #printComponent><app-invoice [deal]="dealForm.value" [organization]="selectedOrganization" [quote]="selectedQuote"></app-invoice></div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-print" label="Print" (click)="printComponentContent()" pAutoFocus
+            [autofocus]="true"></p-button>
+    </ng-template>
+</p-dialog>
