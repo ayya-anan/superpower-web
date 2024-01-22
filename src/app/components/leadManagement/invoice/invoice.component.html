@@ -1,0 +1,131 @@
+<div class="py-4 px-4 md:px-4 overflow-auto">
+	<div
+		class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border pb-5 min-w-max">
+		<div class="flex flex-column">
+
+			<img style="width: 10rem;"
+				src="https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png" />
+			<div class="my-3 text-4xl font-bold text-900">Reif Baugeseilschaft mbH & Co. KG</div>
+			<span class="mb-2">Schmale Straße 14</span>
+			<span>04435 Schkeuditz rechnung</span>
+		</div>
+		<div class="flex flex-column mt-5 md:mt-0">
+			<div class="text-2xl font-semibold text-left md:text-right mb-3">QUOTE</div>
+			<div class="flex flex-column">
+				<div class="flex justify-content-between align-items-center mb-2">
+					<span class="font-semibold mr-6">DATE</span>
+					<span>{{ quote.date | date:'mediumDate' }}</span>
+				</div>
+				<div class="flex justify-content-between align-items-center mb-2">
+					<span class="font-semibold mr-6">Name #</span>
+					<span>{{ deal.dealName }}</span>
+				</div>
+				<div class="flex justify-content-between align-items-center">
+					<span class="font-semibold mr-6">CUSTOMER ID</span>
+					<span>{{ deal.org }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-5 mb-8 flex flex-column">
+		<div class="mb-3 text-2xl font-medium">QUOTE TO</div>
+		<span class="mb-2">TOYOTA, 148 Hope Lane</span>
+		<span>Palo Alto, CA 94304.</span>
+	</div>
+
+	<div class="overflow-x-auto">
+		<h4>Services</h4>
+		<table class="w-full" style="border-collapse: collapse; table-layout: auto">
+			<thead>
+				<tr>
+					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Facility
+					</th>
+					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Service
+					</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+						Rate</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Employee
+						Count</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Quantity
+					</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Total
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let service of quote.services">
+					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+						getName(service.facility , 'facility') }}</td>
+					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+						getName(service.service,'service') }}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
+						currency:'EUR':true}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.employeeCount}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
+						currency:'EUR':true}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.total | currency:'EUR':true}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+		<div class="font-semibold mb-3 md:mb-0">Notes goes here </div>
+		<div class="flex flex-column">
+			<div class="flex justify-content-between align-items-center mb-2">
+				<span class="font-semibold mr-6">SUBTOTAL</span>
+				<span>{{ quote.subTotal | currency:'EUR':true}}</span>
+			</div>
+			<div class="flex justify-content-between align-items-center mb-2">
+				<span class="font-semibold mr-6">VAT</span>
+				<span>{{ (quote.subTotal * (quote.vat / 100) ) | currency:'EUR':true }}</span>
+			</div>
+			<div class="flex justify-content-between align-items-center">
+				<span class="font-semibold mr-6">DISCOUNT</span>
+				<span> - {{ quote.discount | currency:'EUR':true}}</span>
+			</div>
+			<div class="flex justify-content-between align-items-center">
+				<span class="font-semibold mr-6">TOTAL</span>
+				<span>{{ quote.total | currency:'EUR':true}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="overflow-x-auto" *ngIf="false">
+		<h4>Services</h4>
+		<table class="w-full" style="border-collapse: collapse; table-layout: auto">
+			<thead>
+				<tr>
+					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Facility
+					</th>
+					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Service
+					</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+						Rate</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Employee
+						Count</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Quantity
+					</th>
+					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Total
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let service of quote.services">
+					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+						getName(service.facility , 'facility') }}</td>
+					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+						getName(service.service,'service') }}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
+						currency:'EUR':true}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.employeeCount}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
+						currency:'EUR':true}}</td>
+					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.total | currency:'EUR':true}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

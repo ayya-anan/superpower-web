@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { KanbanCard, Comment, ListName, Task } from 'src/app/api/kanban';
 import { Member } from 'src/app/api/member';
 import { MemberService } from 'src/app/service/member.service';
@@ -27,6 +27,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     card: KanbanCard = { id: '', startDate: '', closeDate: '', taskList: { title: 'Untitled Task List', tasks: [] } };
 
     formValue!: KanbanCard;
+
+    @ViewChild('printComponent') printComponent!: ElementRef;
 
     listId: string = '';
 
@@ -113,6 +115,8 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     paymentData: any = [];
     loading: boolean = false;
+    quoteVisible: boolean = false;
+    selectedQuote: any;
 
     constructor(
         private messageService: MessageService,
@@ -368,7 +372,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     duplicateData(event: any) {
 
     }
-    saveQuote(event : Event) {
+    saveQuote(event: Event) {
         event.preventDefault();
         this.showQuote = false;
         this.showTableView = true;
@@ -464,6 +468,30 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.newComment = { ...this.newComment, text: this.comment }
             this.formValue?.comments?.unshift(this.newComment);
             this.comment = '';
+        }
+    }
+
+    documentPreview(event: Event, i: number) {
+        this.selectedQuote = this.dealForm.value.quotes[i];
+        this.quoteVisible = true;
+    }
+
+    printComponentContent() {
+        if (this.printComponent && this.printComponent.nativeElement) {
+
+            const printContents = this.printComponent.nativeElement.outerHTML;
+            const popupWin: any = window.open('', '_blank', 'width=600,height=600');
+            popupWin.document.open();
+            popupWin.document.write(`
+                <html>
+                    <head>
+                    <title>Print</title>
+                    <!-- Include any stylesheets or scripts needed for the print view -->
+                    </head>
+                    <body onload="window.print();window.onafterprint=function(){window.close()}">${printContents}</body>
+                </html>`
+            );
+            popupWin.document.close();
         }
     }
 
