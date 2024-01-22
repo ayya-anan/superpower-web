@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
+import { templateContent } from './invoice.helper';
 
 @Component({
     selector: 'app-invoice',
@@ -9,7 +10,7 @@ export class InvoiceComponent implements OnInit {
     @Input() deal: any;
     @Input() organization: any;
     @Input() quote: any;
-
+    templateContent = _.cloneDeep(templateContent)
     ngOnInit() {
         
     }
