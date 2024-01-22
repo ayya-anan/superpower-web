@@ -15,15 +15,27 @@
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="industryType">Industry Type</label><br>
+						<label for="industryType">Section</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryType" optionLabel="name" optionValue="name"
-							placeholder="Select Type"></p-dropdown>
+							[options]="section" optionLabel="section_title" optionValue="industry_types"
+							placeholder="Select Type" (onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label for="subType">Sub Type</label><br>
+						<label for="industryType">Industry Type</label><br>
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
+							[options]="industryType" optionLabel="industry_type_title" optionValue="industry_subtypes"
+							placeholder="Select Type" (onChange)="industryTypeChange($event)"></p-dropdown>
+					</div>
+					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
+						<label for="subType">Sub Type 1</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType"
-							[options]="subType" optionLabel="name" optionValue="name"
+							[options]="industrySubType1" optionLabel="industry_subtype_title" optionValue="industry_subtypes2"
+							placeholder="Select Type" (onChange)="industrySubTypeChange($event)"></p-dropdown>
+					</div>
+					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
+						<label for="subType">Sub Type 2</label><br>
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType"
+							[options]="industrySubType2" optionLabel="industry_subtype_title" optionValue="name"
 							placeholder="Select Type"></p-dropdown>
 					</div>
 					<div class="field col-12">
@@ -329,7 +341,7 @@
 					<div class="field col">
 						<label for="subType">Sub Type</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType"
-							[options]="subType" optionLabel="name" optionValue="name"
+							[options]="industrySubType1" optionLabel="name" optionValue="name"
 							placeholder="Select Type"></p-dropdown>
 					</div>
 					<div class="field col-3">

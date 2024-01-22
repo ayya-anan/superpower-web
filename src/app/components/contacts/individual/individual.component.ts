@@ -1,6 +1,7 @@
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -17,6 +18,7 @@ export class IndividualComponent implements OnInit {
     // Subscription
     individualsList: any = Subscription;
     addIndividuals: any = Subscription;
+    organizationSubscription: any = Subscription;
 
     // Variables
     originalData: any = [];
@@ -28,6 +30,7 @@ export class IndividualComponent implements OnInit {
     showRole: boolean = false;
     additionalDetails: boolean = false;
     editId: any;
+    organizations: any = [];
 
     // contactForm: FormGroup = this.fb.group({});
 
@@ -89,6 +92,7 @@ export class IndividualComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private router: Router,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private individualService: IndividualService,
@@ -96,12 +100,26 @@ export class IndividualComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.organizationService.getAllOrganization();
+        this.subscribeToOrgData();
         if(this.organizationService.activeOrganizationView) { this.contactView = true; }
         this.loading = true;
         this.individualService.getAllIndividuals();
         this.subscribeToGetAllIndividuals();
         this.subscribeToAddIndividuals();
         this.subscribeToUpdateIndividuals();
+    }
+
+    subscribeToOrgData() {
+        this.organizationService.allOrganization.subscribe(
+            (res: any) => {
+                console.log(res.results);
+                this.organizations = [];
+                // this.organizations = res.results;
+                this.organizations = _.map(res.results, (i) => {
+                    return { name: i.primaryDetails.name }
+                });
+            });
     }
 
     subscribeToGetAllIndividuals() {
@@ -219,6 +237,9 @@ export class IndividualComponent implements OnInit {
             this.individualService.updateIndividuals(obj, this.editId);
         } else {
             this.individualService.postIndividuals(obj);
+        }
+        if(this.organizationService.activeOrganizationView) {
+            this.router.navigateByUrl('/contacts/organizations');
         }
     }
 

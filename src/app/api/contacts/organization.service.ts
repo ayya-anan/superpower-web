@@ -10,6 +10,7 @@ export class OrganizationService {
     updateOrganizationEmit: EventEmitter<any> = new EventEmitter();
     deleteOrganizationEmit: EventEmitter<any> = new EventEmitter();
     activeOrganizationView: boolean = false;
+    organizationDetails: any = {};
 
     constructor(
         private organizationAPI: OrganizationAPI

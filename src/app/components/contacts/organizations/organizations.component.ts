@@ -49,15 +49,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { name: 'Suspended' }
   ];
 
-  industryType: any = [
-    { name: 'Forestry and Logging' },
-    { name: 'Coal Mining' },
-  ];
-  subType: any = [
-    { name: 'Forestry' },
-    { name: 'Hard Coal Mining' },
-    { name: 'Brown Coal Mining' },
-  ];
+  // industryType: any = [
+  //   { name: 'Forestry and Logging' },
+  //   { name: 'Coal Mining' },
+  // ];
+  // subType: any = [
+  //   { name: 'Forestry' },
+  //   { name: 'Hard Coal Mining' },
+  //   { name: 'Brown Coal Mining' },
+  // ];
   revenueRange: any = [
     { name: '0 - 10 million' },
     { name: '10 - 100 million' },
@@ -77,13 +77,348 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ];
 
   pocTableCols = [
-    {header: 'First Name', field: 'firstName'},
-    {header: 'Last Name', field: 'lastName'},
-    {header: 'Email Address', field: 'email'},
-    {header: 'Phone Number', field: 'phone'},
-    {header: 'Job Title', field: 'jobTitle'},
+    { header: 'First Name', field: 'firstName' },
+    { header: 'Last Name', field: 'lastName' },
+    { header: 'Email Address', field: 'email' },
+    { header: 'Phone Number', field: 'phone' },
+    { header: 'Job Title', field: 'jobTitle' },
   ]
-  pocTableData = [];
+  pocTableData: any = [];
+
+  // Industry Types
+  section: any = [];
+  industryType: any = [];
+  industrySubType1: any = [];
+  industrySubType2: any = [];
+
+  industryDetails: any = {
+    "sections": [
+      {
+        "section_code": 1,
+        "section_title": "COUNTRY- AND FORESTRY, FISHING",
+        "industry_types": [
+          {
+            "industry_type_code": 1.5,
+            "industry_type_title": "Mixed Agriculture",
+            "industry_subtypes": []
+          },
+          {
+            "industry_type_code": 2,
+            "industry_type_title": "forestry and logging",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "forestry"
+              },
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "logging"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "section_code": "B",
+        "section_title": "MINING AND WINNING OF STONES AND EARTH",
+        "industry_types": [
+          {
+            "industry_type_code": 5,
+            "industry_type_title": "Coal mining",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Hard coal mining"
+              },
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Brown coal mining"
+              }
+            ]
+          },
+          {
+            "industry_type_code": 6,
+            "industry_type_title": "extraction from oil and natural gas",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "extraction from oil"
+              },
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "extraction from natural gas"
+              }
+            ]
+          },
+          {
+            "industry_type_code": 7,
+            "industry_type_title": "Ore mining",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Iron ore mining"
+              },
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Non-ferrous metal ore mining"
+              }
+            ]
+          },
+          {
+            "industry_type_code": 8,
+            "industry_type_title": "extraction from stones and Earth, other Mining",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": null,
+                "industry_subtype_title": "extraction from natural stones, Gravel, Sand, volume and Kaolin _",
+                "industry_subtypes2": [
+                  {
+                    "industry_subtype_code": 2.5,
+                    "industry_subtype_title": "extraction from Natural stones and Natural stone, limestone and gypsum stone, chalk and slate"
+                  },
+                  {
+                    "industry_subtype_code": 1.5,
+                    "industry_subtype_title": "extraction from volume and kaolin"
+                  }
+                ]
+              },
+              {
+                "industry_subtype_code": null,
+                "industry_subtype_title": "Other Mining; extraction from stones and Earth a. n. G.\"",
+                "industry_subtypes2": [
+                  {
+                    "industry_subtype_code": 1.5,
+                    "industry_subtype_title": "Peat extraction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "industry_type_code": 9,
+            "industry_type_title": "Delivery from Services for the Mining and for the extraction of stones and earth",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Delivery from Services for the extraction of oil and natural gas"
+              },
+              {
+                "industry_subtype_code": 2.5,
+                "industry_subtype_title": "Providing services for other mining and the extraction from stones and Earth"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "section_code": "K",
+        "section_title": "DELIVERY FROM FINANCIAL- AND INSURANCE SERVICES",
+        "industry_types": [
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Delivery from Financial Services",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Central banks and Credit institutions"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Investment companies"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "trust and other Fund and similar Financial institutions"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Other Financing institutions"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "insurance, Reinsurance and Pension funds (without social insurance)",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Insurance",
+                "industry_subtypes2": [
+                  {
+                    "industry_subtype_code": 0.5,
+                    "industry_subtype_title": "Health insurance (company health insurance companies)"
+                  }
+                ]
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Reinsurance"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Pension funds and Pension fund"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "With financial and Insurance services related activities",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "With Financial Services connected activities"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "With Insurance services and Pension funds"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "connected activities"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Fund management"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "section_code": "L",
+        "section_title": "PROPERTY AND HOUSING",
+        "industry_types": [
+          {
+            "industry_type_code": null,
+            "industry_type_title": "property and Housing",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "purchase and sale from own properties, buildings and apartments"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Rental, leasing from own or leased land, buildings and apartments"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "mediation and Administration from properties, Buildings and apartments for third parties"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "section_code": "M",
+        "section_title": "PROVISION OF FREELANCER WORK, SCIENTIFIC AND TECHNICAL SERVICES",
+        "industry_types": [
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Right- and tax advice, Audit",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Legal advice"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Audit and tax advice; Accounting"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Administration and guide from Pursue and operated; Business consulting",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Administration and guide from Pursue and Operated _"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "public relations and Business consulting"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Architecture- and engineering offices; technical, physical and chemical examination",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Architecture- and Engineering offices"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Technical, physical and chemical Investigation _"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Research and Development",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 1.5,
+                "industry_subtype_title": "Research and Development in the Area Nature-, Engineering, agricultural sciences and medicine",
+                "industry_subtypes2": [
+                  {
+                    "industry_subtype_code": 1.5,
+                    "industry_subtype_title": "Other Research and Development in the Area Natural sciences, engineering, agricultural sciences and medicine"
+                  }
+                ]
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Research and Development in the Area Right-, Economics and social sciences as well as in the areas of language, cultural and art studies"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Advertising and Market research",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Advertising"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Market- and opinion research"
+              }
+            ]
+          },
+          {
+            "industry_type_code": null,
+            "industry_type_title": "Other freelance, scientific and technical activities",
+            "industry_subtypes": [
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "studios for Textile-, Jewelry-, Graphic- u. ä. design"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "photography and Photo laboratories"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Translate and Interpreting"
+              },
+              {
+                "industry_subtype_code": 0.5,
+                "industry_subtype_title": "Other freelance, scientific and technical activities etc"
+              }
+            ]
+          },
+          {
+            "industry_type_code": 0.5,
+            "industry_type_title": "Veterinary",
+            "industry_subtypes": []
+          }
+        ]
+      }
+    ]
+  }
 
 
   organizationForm: FormGroup = this.fb.group({});
@@ -107,15 +442,37 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.getIndustryDetails();
+    if (this.organizationService.activeOrganizationView) {
+      this.initForm();
+      this.organizationView = true;
+      this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails);
+      this.individualService.allIndividuals.subscribe(
+        (res: any) => {
+          this.pocTableData = [];
+          const data: any = _.filter(res.results, (obj) => obj.professionalDetails && (obj.professionalDetails.companyName.toLowerCase() === this.organizationService.organizationDetails.name.toLowerCase()));
+          _.forEach(data, (dataObj: any) => {
+            let obj = {
+              firstName: dataObj.personalDetails.firstName,
+              lastName: dataObj.personalDetails.lastName,
+              email: dataObj.emailAddresses[0],
+              phone: dataObj.phones[0].phoneNumber,
+              jobTitle: dataObj.professionalDetails.jobTitle
+            }
+            this.pocTableData.push(obj);
+          });
+        });
+    } else {
+      this.initForm();
+    }
     this.loading = true;
     this.organizationService.getAllOrganization();
     this.individualService.getAllIndividuals();
     this.subscribeToGetAllOrganization();
     this.subscribeToGetAllIndividuals();
     this.subscribeToAddOrganization();
-    this.initForm();
   }
-  initForm(){
+  initForm() {
     this.organizationForm = this.fb.group({
       primaryDetails: this.fb.group({
         name: ['', [Validators.required]],
@@ -240,6 +597,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.organizationForm.valid) {
       // this.organizationView = false;
+      this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
       this.organizationService.postOrganization(this.organizationForm.value)
     }
   }
@@ -360,11 +718,33 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   addPOC() {
     this.organizationService.activeOrganizationView = true;
+    this.organizationService.organizationDetails = this.organizationForm.value.primaryDetails;
     this.router.navigateByUrl('/contacts/individual');
   }
 
+  getIndustryDetails() {
+    // this.section = this.industryDetails.sections;
+    console.log(this.industryDetails.sections);
+    this.section = this.industryDetails.sections;
+  }
+
+  sectionChange(event: any) {
+    console.log(event);
+    this.industryType = event.value;
+  }
+
+  industryTypeChange(event: any) {
+    console.log(event);
+    this.industrySubType1 = event.value;
+  }
+
+  industrySubTypeChange(event: any) {
+    console.log(event);
+    this.industrySubType2 = event.value;
+  }
+
   searchResults(event: any) {
-    this.searchValue = this.searchValue.toLowerCase();        
+    this.searchValue = this.searchValue.toLowerCase();
     this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue)) : this.originalData;
   }
 }
