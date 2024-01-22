@@ -36,6 +36,14 @@ $gutter: 1rem; //for primeflex grid system
     }
 }
 
+.p-fieldset-legend {
+    background: var(--blue-100);
+}
+
 .formClass {
     border-right: 2px solid var(--gray-300);
+}
+
+.verticalLineClass {
+    border-bottom: 2px solid var(--gray-300);
 }
