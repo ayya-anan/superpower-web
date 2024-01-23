@@ -682,8 +682,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             type: item.primaryDetails.industryType,
             subType: item.primaryDetails.subType,
             status: item.primaryDetails.status,
-            email: item.emailAddresses[0],
-            contact: item.phones[0].phoneNumber,
+            email: (item.emailAddresses.length > 0) ? item.emailAddresses[0] : '',
+            contact: (item.phones.length > 0) ? item.phones[0].phoneNumber : '',
             poc: item.primaryDetails.pointofContact,
             accountManager: item.primaryDetails.accountManager,
           }

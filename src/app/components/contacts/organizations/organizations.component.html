@@ -86,18 +86,7 @@
 				</div>
 			</div>
 			<div class="col-9">
-				<div class="p-0 mb-3">
-					<p-fieldset legend="Point Of Contacts" [toggleable]="true">
-						<div class="col-12 p-0">
-							<button pButton pRipple label="Add Point Of Contact" class="p-button-success text-center" (click)="addPOC()"></button>
-						</div>
-						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
-							<app-table [loading]="loading" [key]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
-							(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
-						</div>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3">
+				<div class="p-0 mb-3" *ngIf="false">
 					<p-fieldset legend="Contact Details" [toggleable]="true">
 						<div class="formgrid grid">
 							<div class="field col" formArrayName="emailAddresses">
@@ -178,8 +167,22 @@
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="field col-12">
+										<div class="formgrid grid">
+											<div class="field col" formArrayName="emailAddresses">
+												<ng-container *ngFor="let email of emailAddresses.controls; let i = index">
+													<label for="lastname">Primary Email Address</label><br>
+													<input [formControlName]="i" type="email"
+														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+												</ng-container>
+											</div>
+											<div class="field col" formArrayName="phones">
+												<ng-container *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i">
+													<label for="lastname">Primary Phone Number</label><br>
+													<input formControlName="phoneNumber" type="text"
+														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+												</ng-container>
+											</div>
+										</div>
 										<div class="formgrid grid">
 											<div class="field col">
 												<label for="address">Address</label>
@@ -243,6 +246,17 @@
 								</div>
 							</div>
 						</ng-container>
+					</p-fieldset>
+				</div>
+				<div class="p-0 mb-3">
+					<p-fieldset legend="Point Of Contacts" [toggleable]="true">
+						<div class="col-12 p-0">
+							<button pButton pRipple label="Add Point Of Contact" class="p-button-success text-center" (click)="addPOC()"></button>
+						</div>
+						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
+							<app-table [loading]="loading" [key]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
+							(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+						</div>
 					</p-fieldset>
 				</div>
 			</div>
