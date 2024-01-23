@@ -86,8 +86,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   pocTableData: any = [];
 
   // Industry Types
-  section: any = [];
-  industryType: any = [];
+  sections: any = [];
+  industryTypes: any = [];
   industrySubType1: any = [];
   industrySubType2: any = [];
 
@@ -422,9 +422,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
 
   organizationForm: FormGroup = this.fb.group({});
-  phones: FormArray = this.fb.array([]);
+  // phones: FormArray = this.fb.array([]);
   facilities: FormArray = this.fb.array([]);
-  emailAddresses: FormArray = this.fb.array([]);
+  // emailAddresses: FormArray = this.fb.array([]);
   addresses: FormArray = this.fb.array([]);
   services: FormArray = this.fb.array([]);
   organizationSubscription: Subscription = new Subscription;
@@ -479,17 +479,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         pointofContact: [''],
         accountManager: [''],
         status: ['active', Validators.required],
-        industryType: ['', [Validators.required]],
-        subType: ['', [Validators.required]],
+        section: '',
+        industryType: '',
+        subType1: '',
+        subType2: '',
         revenueRange: ['', [Validators.required]],
       }),
       // segmant: this.fb.group({
       //   notes: [''],
       // }),
       facilities: this.facilities,
-      addresses: this.addresses,
-      phones: this.phones,
-      emailAddresses: this.emailAddresses,
+      // addresses: this.addresses,
+
       services: this.services,
     });
     // this.organizationForm = this.fb.group({
@@ -514,9 +515,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     // });
 
     this.initFacilitiesArray(); // Initialize facilities array
-    this.initAddressesArray(); // Initialize addresses array
-    this.initPhonesArray(); // Initialize phones array
-    this.initEmailAddressesArray(); // Initialize emailAddresses array
+    // this.initAddressesArray(); // Initialize addresses array
     this.initServicesArray(); // Initialize Services array
   }
   ngOnDestroy(): void {
@@ -533,6 +532,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       employeeCount: ['', [Validators.required]],
       country: ['Germany', [Validators.required]],
       zipCode: ['', [Validators.required]],
+      phoneNumber: '',
+      emailAddress: '',
     }));
   }
   // Helper methods to initialize form arrays
@@ -597,6 +598,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.organizationForm.valid) {
       // this.organizationView = false;
+      console.log(this.organizationForm.value.primaryDetails);
+      this.organizationForm.value.primaryDetails.section = '';
+      this.organizationForm.value.primaryDetails.industryType = '';
       this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
       this.organizationService.postOrganization(this.organizationForm.value)
     }
@@ -608,7 +612,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationForm.get('primaryDetails')?.patchValue(updateData.primaryDetails);
 
     // Patching the segmant form group
-    this.organizationForm.get('segmant')?.patchValue(updateData.segmant);
+    // this.organizationForm.get('segmant')?.patchValue(updateData.segmant);
 
     // Patching the facilities form array
     const facilitiesFormArray = this.organizationForm.get('facilities') as FormArray;
@@ -618,25 +622,25 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     });
 
     // Patching the addresses form array
-    const addressesFormArray = this.organizationForm.get('addresses') as FormArray;
-    addressesFormArray.clear(); // Clear existing controls if any
-    updateData.addresses.forEach((address: any) => {
-      addressesFormArray.push(this.fb.group(address));
-    });
+    // const addressesFormArray = this.organizationForm.get('addresses') as FormArray;
+    // addressesFormArray.clear(); // Clear existing controls if any
+    // updateData.addresses.forEach((address: any) => {
+    //   addressesFormArray.push(this.fb.group(address));
+    // });
 
     // Patching the phones form array
-    const phonesFormArray = this.organizationForm.get('phones') as FormArray;
-    phonesFormArray.clear(); // Clear existing controls if any
-    updateData.phones.forEach((phone: any) => {
-      phonesFormArray.push(this.fb.group(phone));
-    });
+    // const phonesFormArray = this.organizationForm.get('phones') as FormArray;
+    // phonesFormArray.clear(); // Clear existing controls if any
+    // updateData.phones.forEach((phone: any) => {
+    //   phonesFormArray.push(this.fb.group(phone));
+    // });
 
     // Patching the emailAddresses form array
-    const emailAddressesFormArray = this.organizationForm.get('emailAddresses') as FormArray;
-    emailAddressesFormArray.clear(); // Clear existing controls if any
-    updateData.emailAddresses.forEach((email: any) => {
-      emailAddressesFormArray.push(this.fb.control(email));
-    });
+    // const emailAddressesFormArray = this.organizationForm.get('emailAddresses') as FormArray;
+    // emailAddressesFormArray.clear(); // Clear existing controls if any
+    // updateData.emailAddresses.forEach((email: any) => {
+    //   emailAddressesFormArray.push(this.fb.control(email));
+    // });
 
     // Patching the Service form array
     // const servicesFormArray = this.organizationForm.get('services') as FormArray;
@@ -682,8 +686,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             type: item.primaryDetails.industryType,
             subType: item.primaryDetails.subType,
             status: item.primaryDetails.status,
-            email: (item.emailAddresses.length > 0) ? item.emailAddresses[0] : '',
-            contact: (item.phones.length > 0) ? item.phones[0].phoneNumber : '',
+            email: (item.emailAddresses && item.emailAddresses.length > 0) ? item.emailAddresses[0] : '',
+            contact: (item.phones && item.phones.length > 0) ? item.phones[0].phoneNumber : '',
             poc: item.primaryDetails.pointofContact,
             accountManager: item.primaryDetails.accountManager,
           }
@@ -725,22 +729,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   getIndustryDetails() {
     // this.section = this.industryDetails.sections;
     console.log(this.industryDetails.sections);
-    this.section = this.industryDetails.sections;
+    this.sections = this.industryDetails.sections;
   }
 
   sectionChange(event: any) {
     console.log(event);
-    this.industryType = event.value;
+    this.industryTypes = event.value;
   }
 
   industryTypeChange(event: any) {
-    console.log(event);
-    this.industrySubType1 = event.value;
+    this.industrySubType1 = (event.value) ? event.value : [];
   }
 
   industrySubTypeChange(event: any) {
     console.log(event);
-    this.industrySubType2 = event.value;
+    this.industrySubType2 = (event.value) ? event.value : [];
   }
 
   searchResults(event: any) {

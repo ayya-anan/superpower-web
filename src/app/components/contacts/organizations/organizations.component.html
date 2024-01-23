@@ -16,25 +16,25 @@
 					</div>
 					<div class="field col-12">
 						<label for="industryType">Section</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="section" optionLabel="section_title" optionValue="industry_types"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="section"
+							[options]="sections" optionLabel="section_title" optionValue="industry_types"
 							placeholder="Select Type" (onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="industryType">Industry Type</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryType" optionLabel="industry_type_title" optionValue="industry_subtypes"
+							[options]="industryTypes" optionLabel="industry_type_title" optionValue="industry_subtypes"
 							placeholder="Select Type" (onChange)="industryTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
 						<label for="subType">Sub Type 1</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType1"
 							[options]="industrySubType1" optionLabel="industry_subtype_title" optionValue="industry_subtypes2"
 							placeholder="Select Type" (onChange)="industrySubTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
 						<label for="subType">Sub Type 2</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType2"
 							[options]="industrySubType2" optionLabel="industry_subtype_title" optionValue="name"
 							placeholder="Select Type"></p-dropdown>
 					</div>
@@ -88,7 +88,7 @@
 			<div class="col-9">
 				<div class="p-0 mb-3" *ngIf="false">
 					<p-fieldset legend="Contact Details" [toggleable]="true">
-						<div class="formgrid grid">
+						<!-- <div class="formgrid grid">
 							<div class="field col" formArrayName="emailAddresses">
 								<ng-container *ngFor="let email of emailAddresses.controls; let i = index">
 									<label for="lastname">Primary Email Address</label><br>
@@ -103,7 +103,7 @@
 										class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 								</ng-container>
 							</div>
-						</div>
+						</div> -->
 						<ng-container formArrayName="addresses">
 							<ng-container *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
 								<div class="formgrid grid">
@@ -168,19 +168,15 @@
 											</div>
 										</div>
 										<div class="formgrid grid">
-											<div class="field col" formArrayName="emailAddresses">
-												<ng-container *ngFor="let email of emailAddresses.controls; let i = index">
-													<label for="lastname">Primary Email Address</label><br>
-													<input [formControlName]="i" type="email"
-														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-												</ng-container>
+											<div class="field col">
+												<label for="emailAddress">Primary Email Address</label>
+												<input formControlName="emailAddress" type="text"
+													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 											</div>
-											<div class="field col" formArrayName="phones">
-												<ng-container *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i">
-													<label for="lastname">Primary Phone Number</label><br>
-													<input formControlName="phoneNumber" type="text"
-														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-												</ng-container>
+											<div class="field col">
+												<label for="phoneNumber">Primary Phone Number</label><br>
+												<p-inputMask formControlName="phoneNumber" mask="(999) 999-9999"
+													placeholder="(999) 999-9999"></p-inputMask>
 											</div>
 										</div>
 										<div class="formgrid grid">
@@ -293,7 +289,7 @@
 					</div>
 				</div>
 				<div class="formgrid grid">
-					<div class="field col" formArrayName="phones">
+					<!-- <div class="field col" formArrayName="phones">
 						<ng-container *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i">
 							<label for="lastname">Primary Phone Number</label><br>
 							<input formControlName="phoneNumber" type="text"
@@ -306,7 +302,7 @@
 							<input [formControlName]="i" type="email"
 								class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 						</ng-container>
-					</div>
+					</div> -->
 				</div>
 				<ng-container formArrayName="addresses">
 					<ng-container *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
@@ -349,7 +345,7 @@
 					<div class="field col">
 						<label for="industryType">Industry Type</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryType" optionLabel="name" optionValue="name"
+							[options]="industryTypes" optionLabel="name" optionValue="name"
 							placeholder="Select Type"></p-dropdown>
 					</div>
 					<div class="field col">
@@ -484,11 +480,11 @@
 						<label for="emailAddress">Activity Timestamp</label><br>
 						<p-calendar [showIcon]="true"></p-calendar>
 					</div>
-					<div class="field col-9">
+					<!-- <div class="field col-9">
 						<label for="emailAddress">Notes</label><br>
 						<input formControlName="emailAddress" type="text"
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-					</div>
+					</div> -->
 				</div>
 			</p-accordionTab>
 		</p-accordion>
