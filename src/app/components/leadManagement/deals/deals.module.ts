@@ -38,6 +38,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ChipModule } from 'primeng/chip';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 import { InvoiceComponent } from '../invoice/invoice.component';
+import { EditorModule } from "primeng/editor";
 
 @NgModule({
 	imports: [
@@ -83,6 +84,7 @@ import { InvoiceComponent } from '../invoice/invoice.component';
         CardModule,
         BadgeModule,
         CheckboxModule,
+        EditorModule,
         AllTableModule
 	],
 	declarations: [
