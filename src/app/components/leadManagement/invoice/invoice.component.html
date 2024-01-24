@@ -1,127 +1,151 @@
-<div class="py-4 px-4 md:px-4 overflow-auto">
-	<div
-		class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
-		<div class="flex flex-column">
+<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '80%' }"
+	[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+	<ng-template pTemplate="header">
+		<div class="inline-flex align-items-center justify-content-center gap-2">
+		</div>
+	</ng-template>
+	<div>
+		<div class="py-4 px-4 md:px-4 overflow-auto" *ngIf="quote">
+			<div #printHeader
+				class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
+				<div class="flex flex-column">
 
-			<img style="width: 10rem;"
-				src="https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png" />
-			<div class="mt-5 mb-8 flex flex-column">
-				<div class="mb-3 text-2xl font-medium">QUOTE TO</div>
-				<span class="mb-2">TOYOTA, 148 Hope Lane</span>
-				<span>Palo Alto, CA 94304.</span>
-			</div>
-		</div>
-		<div class="flex flex-column mt-5 md:mt-0">
-			<div class="text-2xl font-semibold text-left md:text-right mb-3">QUOTE</div>
-			<div class="flex flex-column">
-				<div class="flex justify-content-between align-items-center mb-2">
-					<span class="font-semibold mr-6">DATE</span>
-					<span>{{ quote.date | date:'mediumDate' }}</span>
+					<img style="width: 10rem;"
+						src="https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png" />
+					<div class="mt-5 mb-8 flex flex-column">
+						<div class="mb-3 text-2xl font-medium"> TO</div>
+						<span class="mb-2">{{ organization?.primaryDetails?.name}}</span>
+						<span>{{ organization?.addresses[0]?.address}}</span>
+						<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span>
+					</div>
 				</div>
-				<div class="flex justify-content-between align-items-center mb-2">
-					<span class="font-semibold mr-6">Name #</span>
-					<span>{{ deal.dealName }}</span>
-				</div>
-				<div class="flex justify-content-between align-items-center">
-					<span class="font-semibold mr-6">CUSTOMER ID</span>
-					<span>{{ deal.org }}</span>
+				<div class="flex flex-column mt-5 md:mt-0">
+					<div class="flex flex-column">
+						<div class="flex justify-content-between align-items-center mb-2">
+							<span class="font-semibold mr-6">DATE</span>
+							<span>{{ quote.date | date:'mediumDate' }}</span>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<p-editor [style]="{'height':'250px','margin':'1rem 0'}" [(ngModel)]="templateContent"></p-editor>
-	<div class="overflow-x-auto">
-		<h4>Services</h4>
-		<table class="w-full" style="border-collapse: collapse; table-layout: auto">
-			<thead>
-				<tr>
-					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Facility
-					</th>
-					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Service
-					</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-						Rate</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Employee
-						Count</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Quantity
-					</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Total
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let service of quote.services">
-					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
-						getName(service.facility , 'facility') }}</td>
-					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
-						getName(service.service,'service') }}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
-						currency:'EUR':true}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.employeeCount}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
-						currency:'EUR':true}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.total | currency:'EUR':true}}
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+			<p-editor [style]="{'height':'250px','margin':'1rem 0'}" [(ngModel)]="templateContent"></p-editor>
+			<div #printComponent>
+				<div class="overflow-x-auto">
+					<h4>Services</h4>
+					<table class="w-full" style="border-collapse: collapse; table-layout: auto">
+						<thead>
+							<tr>
+								<th
+									class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Facility
+								</th>
+								<th
+									class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Service
+								</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+									Rate</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Employee
+									Count</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Quantity
+								</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Total
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let service of quote.services">
+								<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+									getName(service.facility , 'facility') }}</td>
+								<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+									getName(service.service,'service') }}</td>
+								<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
+									currency:'EUR':true}}</td>
+								<td class="text-right py-3 border-bottom-1 surface-border px-3">{{
+									service.employeeCount}}
+								</td>
+								<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
+									currency:'EUR':true}}</td>
+								<td class="text-right py-3 border-bottom-1 surface-border">{{ service.total |
+									currency:'EUR':true}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-	<div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
-		<div class="font-semibold mb-3 md:mb-0">Notes goes here </div>
-		<div class="flex flex-column">
-			<div class="flex justify-content-between align-items-center mb-2">
-				<span class="font-semibold mr-6">SUBTOTAL</span>
-				<span>{{ quote.subTotal | currency:'EUR':true}}</span>
+				<div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+					<div class="font-semibold mb-3 md:mb-0"> </div>
+					<div class="flex flex-column">
+						<div class="flex justify-content-between align-items-center mb-2">
+							<span class="font-semibold mr-6">SUBTOTAL</span>
+							<span>{{ quote.subTotal | currency:'EUR':true}}</span>
+						</div>
+						<div class="flex justify-content-between align-items-center mb-2">
+							<span class="font-semibold mr-6">VAT</span>
+							<span>{{ (quote.subTotal * (quote.vat / 100) ) | currency:'EUR':true }}</span>
+						</div>
+						<div class="flex justify-content-between align-items-center">
+							<span class="font-semibold mr-6">DISCOUNT</span>
+							<span> - {{ quote.discount | currency:'EUR':true}}</span>
+						</div>
+						<div class="flex justify-content-between align-items-center">
+							<span class="font-semibold mr-6">TOTAL</span>
+							<span>{{ quote.total | currency:'EUR':true}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="overflow-x-auto" *ngIf="quote.payments && quote.payments.length > 0">
+					<h4>Payment MileStones</h4>
+					<table class="w-full" style="border-collapse: collapse; table-layout: auto">
+						<thead>
+							<tr>
+								<th
+									class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									MileStone Date
+								</th>
+								<th
+									class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									MileStone Criteria
+								</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
+									Percentage</th>
+								<th
+									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+									Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let payment of quote.payments">
+								<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">
+									{{payment.date
+									| date }}</td>
+								<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
+									payment.criteria }}</td>
+								<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ payment.percentage}}
+								</td>
+								<td class="text-right py-3 border-bottom-1 surface-border">{{ payment.amount |
+									currency:'EUR':true}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			<div class="flex justify-content-between align-items-center mb-2">
-				<span class="font-semibold mr-6">VAT</span>
-				<span>{{ (quote.subTotal * (quote.vat / 100) ) | currency:'EUR':true }}</span>
-			</div>
-			<div class="flex justify-content-between align-items-center">
-				<span class="font-semibold mr-6">DISCOUNT</span>
-				<span> - {{ quote.discount | currency:'EUR':true}}</span>
-			</div>
-			<div class="flex justify-content-between align-items-center">
-				<span class="font-semibold mr-6">TOTAL</span>
-				<span>{{ quote.total | currency:'EUR':true}}</span>
-			</div>
+			<p-editor [style]="{'height':'150px','margin':'1rem 0'}" [(ngModel)]="notesContent"></p-editor>
 		</div>
 	</div>
-	<div class="overflow-x-auto" *ngIf="false">
-		<h4>Services</h4>
-		<table class="w-full" style="border-collapse: collapse; table-layout: auto">
-			<thead>
-				<tr>
-					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Facility
-					</th>
-					<th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Service
-					</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-						Rate</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Employee
-						Count</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Quantity
-					</th>
-					<th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Total
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let service of quote.services">
-					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
-						getName(service.facility , 'facility') }}</td>
-					<td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{
-						getName(service.service,'service') }}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
-						currency:'EUR':true}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.employeeCount}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
-						currency:'EUR':true}}</td>
-					<td class="text-right py-3 border-bottom-1 surface-border">{{ service.total | currency:'EUR':true}}
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</div>
+	<ng-template pTemplate="footer">
+		<p-button icon="pi pi-print" label="Print" (click)="printComponentContent()" pAutoFocus
+			[autofocus]="true"></p-button>
+		<button pButton pRipple icon="pi pi-envelope" (click)="emailComponentContent()" label="Email"
+			class="p-button-primary"></button>
+	</ng-template>
+</p-dialog>

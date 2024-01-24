@@ -48,14 +48,14 @@ export class DealService {
             }
         );
     }
-    
+
     deleteDeal(id: any) {
         this.dealAPI.deleteDeal(id).subscribe(
             (res: any) => {
                 this.deleteDealEmit.emit(res);
             },
             (err: any) => {
-              
+
             }
         );
     }
@@ -67,7 +67,17 @@ export class DealService {
                 this.dealAsPdf.emit(res);
             },
             (err: any) => {
-              
+
+            }
+        );
+    }
+    sentEmail(content: any) {
+        this.dealAPI.sentEmail(content).subscribe(
+            (res: any) => {
+                this.dealAsPdf.emit(res);
+            },
+            (err: any) => {
+
             }
         );
     }

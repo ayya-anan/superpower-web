@@ -30,4 +30,8 @@ export class DealAPI {
     saveAsPdf(data: any) {
         return this.httpClient.post(this.url.template, data);
     }
+
+    sentEmail(data: any) {
+        return this.httpClient.post(this.url.template, data);
+    }
 }

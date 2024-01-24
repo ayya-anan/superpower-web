@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { KanbanCard, Comment, ListName, Task } from 'src/app/api/kanban';
 import { Member } from 'src/app/api/member';
 import { MemberService } from 'src/app/service/member.service';
@@ -128,6 +128,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         private individualService: IndividualService,
         private kanbanService: KanbanService,
         private xService: XService,
+        private changeDetectorRef: ChangeDetectorRef,
         private dealService: DealService
     ) {
 
@@ -272,21 +273,15 @@ export class KanbanSidebarComponent implements OnDestroy {
         const paymentMilestone = +quotesFormGroup.get('paymentMilestone')?.value;
         if (paymentMilestone) {
             const result = (this.getDealFinalAmount() / paymentMilestone);
+            const monthIncrement = Math.round(12 / paymentMilestone);
             for (let i = 0; i < paymentMilestone; i++) {
                 this.getPaymentArray(quoteFormIndex).push(this.fb.group({
-                    date: [new Date(), [Validators.required]],
+                    date: [new Date().setMonth(new Date().getMonth() + (monthIncrement * (i + 1))), [Validators.required]],
                     criteria: ['Auto payment generation', []],
                     percentage: [(100 / paymentMilestone).toFixed(2), [Validators.required]],
                     amount: [result.toFixed(2), [Validators.required]],
                     status: ['New', [Validators.required]],
                 }));
-                const obj = {
-                    date: '19th Jan 2024',
-                    criteria: 'Auto payment generation',
-                    percentage: (100 / paymentMilestone).toFixed(2),
-                    amount: result.toFixed(2)
-                }
-                this.paymentData.push(obj);
             }
         } else {
             this.getPaymentArray(quoteFormIndex).push(this.fb.group({
@@ -481,6 +476,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     documentPreview(event: Event, i: number) {
+        this.quoteVisible = false;
+        this.changeDetectorRef.detectChanges();
         this.selectedQuote = this.dealForm.value.quotes[i];
         this.quoteVisible = true;
     }

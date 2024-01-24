@@ -81,9 +81,10 @@
                                         <p-accordionTab>
                                             <ng-template pTemplate="header">
                                                 <span class="flex align-items-center gap-2 w-full">
+                                                    <p-chip label="Quote # : {{ QuotesArray.controls.length - i }}"></p-chip>
                                                     <p-chip
-                                                        label="{{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
-                                                    <p-chip label="{{ quote.get('date')?.value | date }}"
+                                                        label="Quote Amount : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
+                                                    <p-chip label="Created Date : {{ quote.get('date')?.value | date }}"
                                                         icon="pi pi-calendar"></p-chip>
                                                     <p-button icon="pi pi-copy" class="ml-auto" label="Clone Quote"
                                                         (click)="cloneQuote($event,i)" size="small"
@@ -226,8 +227,8 @@
                                                 </ng-container>
                                                 <div class="flex w-full border-top-1 surface-border py-5 gap-3">
                                                     <div class="col-4 justify-content-start">
-                                                        <button pButton pRipple [disabled]="dealForm.invalid" icon="pi pi-credit-card"
-                                                            label="Create Payment Milestones"
+                                                        <button pButton pRipple [disabled]="dealForm.invalid"
+                                                            icon="pi pi-credit-card" label="Create Payment Milestones"
                                                             class="p-button-primary h-3rem justify-content-start"
                                                             (click)="op.toggle($event)"></button>
                                                     </div>
@@ -243,14 +244,13 @@
                                                     </p-overlayPanel>
                                                     <div class="col-8 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
-                                                            label="Save" class="p-button-primary h-3rem" [disabled]="dealForm.invalid"
+                                                            label="Save" class="p-button-primary h-3rem"
+                                                            [disabled]="dealForm.invalid"
                                                             (click)="saveQuote($event)"></button>
                                                         <button pButton pRipple icon="pi pi-file-pdf"
                                                             label="Document Preview" class="p-button-primary h-3rem"
-                                                            (click)="documentPreview($event, i)" [disabled]="dealForm.invalid"></button>
-                                                        <button pButton pRipple icon="pi pi-envelope"
-                                                            label="Email Quote"
-                                                            class="p-button-primary h-3rem" [disabled]="dealForm.invalid"></button>
+                                                            (click)="documentPreview($event, i)"
+                                                            [disabled]="dealForm.invalid"></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -266,8 +266,7 @@
         </div>
     </ng-template>
 </p-sidebar>
-<p-dialog header="Header" *ngIf="quoteVisible" [(visible)]="quoteVisible" [modal]="true" [style]="{ width: '80%' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-    <app-invoice [deal]="dealForm.value" [organization]="selectedOrganization" [quote]="selectedQuote"></app-invoice>
-</p-dialog>
+<app-invoice [deal]="dealForm.value" [visible]="quoteVisible" [organization]="selectedOrganization"
+    [quote]="selectedQuote"></app-invoice>
+
 <p-toast></p-toast>
