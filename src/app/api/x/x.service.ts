@@ -11,7 +11,7 @@ export class XService {
     deletexEmit: EventEmitter<any> = new EventEmitter();
 
     constructor(
-        private xAPI: XAPI
+        private xAPI: XAPI,
     ) { }
 
     //To get Service Drilldown Details
@@ -33,10 +33,10 @@ export class XService {
     updateX(type: any, postData: any, id: any) {
         this.xAPI.updateX(type, postData, id).subscribe(
             (res: any) => {
-                this.updatexEmit.emit(res);
+                this.addx.emit(res);
             },
             (err: any) => {
-                this.updatexEmit.emit(err);
+                this.addx.emit(err);
             }
         );
     }

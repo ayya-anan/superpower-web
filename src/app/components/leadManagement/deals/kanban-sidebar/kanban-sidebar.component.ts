@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { KanbanCard, Comment, ListName, Task } from 'src/app/api/kanban';
 import { Member } from 'src/app/api/member';
 import { MemberService } from 'src/app/service/member.service';
@@ -13,7 +13,7 @@ import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
 import { XService } from 'src/app/api/x/x.service';
-import { dealStatus } from '../deals.helper';
+import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 
 @Component({
@@ -28,7 +28,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     formValue!: KanbanCard;
 
-    @ViewChild('printComponent') printComponent!: ElementRef;
 
     listId: string = '';
 
@@ -63,6 +62,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
     status: any = _.cloneDeep(dealStatus);
+    industryDetails: any = _.cloneDeep(industryDetails);
 
     winProbablity: any = [
         { name: 'High' },
@@ -128,6 +128,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         private individualService: IndividualService,
         private kanbanService: KanbanService,
         private xService: XService,
+        private changeDetectorRef: ChangeDetectorRef,
         private dealService: DealService
     ) {
 
@@ -153,9 +154,9 @@ export class KanbanSidebarComponent implements OnDestroy {
             dealName: ['', [Validators.required]],
             org: ['', [Validators.required]],
             status: ['New', [Validators.required]],
-            customerContact: ['', [Validators.required]],
-            winProbablity: ['', [Validators.required]],
-            accountManager: ['', [Validators.required]],
+            customerContact: ['', []],
+            winProbablity: ['High', []],
+            accountManager: ['', []],
             startDate: [new Date(), [Validators.required]],
             source: ['', []],
             value: ['0', [Validators.required]],
@@ -214,9 +215,15 @@ export class KanbanSidebarComponent implements OnDestroy {
         });
     }
     changeOrg(value: any) {
-        this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
-        this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact);
-        this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
+        if (value) {
+            this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
+            if (this.selectedOrganization.primaryDetails.pointofContact && typeof this.selectedOrganization.primaryDetails.pointofContact === 'string') {
+                this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact);
+            }
+            if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
+                this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
+            }
+        }
     }
     // Helper methods to initialize form arrays
     initQuotesArray(): void {
@@ -266,21 +273,15 @@ export class KanbanSidebarComponent implements OnDestroy {
         const paymentMilestone = +quotesFormGroup.get('paymentMilestone')?.value;
         if (paymentMilestone) {
             const result = (this.getDealFinalAmount() / paymentMilestone);
+            const monthIncrement = Math.round(12 / paymentMilestone);
             for (let i = 0; i < paymentMilestone; i++) {
                 this.getPaymentArray(quoteFormIndex).push(this.fb.group({
-                    date: [new Date(), [Validators.required]],
+                    date: [new Date().setMonth(new Date().getMonth() + (monthIncrement * (i + 1))), [Validators.required]],
                     criteria: ['Auto payment generation', []],
                     percentage: [(100 / paymentMilestone).toFixed(2), [Validators.required]],
                     amount: [result.toFixed(2), [Validators.required]],
                     status: ['New', [Validators.required]],
                 }));
-                const obj = {
-                    date: '19th Jan 2024',
-                    criteria: 'Auto payment generation',
-                    percentage: (100 / paymentMilestone).toFixed(2),
-                    amount: result.toFixed(2)
-                }
-                this.paymentData.push(obj);
             }
         } else {
             this.getPaymentArray(quoteFormIndex).push(this.fb.group({
@@ -294,11 +295,13 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     }
     getPaymentData(quoteFormIndex: number) {
+        const result: any = []
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         const paymentsArray = quotesFormGroup.get('payments') as FormArray;
-        _.each(paymentsArray, (payment) => {
-            console.log(payment);
+        _.each(paymentsArray.controls, (payment) => {
+            result.push(payment.value);
         })
+        return result;
     }
     onServiceChange(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
@@ -308,11 +311,12 @@ export class KanbanSidebarComponent implements OnDestroy {
             const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
             const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
+            const employeeCount = +facility.employeeCount || 95
             servicesFormGroup.patchValue({
-                employeeCount: facility.employeeCount,
+                employeeCount: employeeCount,
                 unitRate: service.amount,
                 quantity: hours.quantity,
-                total: Math.round(facility.employeeCount * service.amount * hours.quantity)
+                total: Math.round(employeeCount * service.amount * hours.quantity)
             });
             this.getFinalTotal(quoteIndex);
         }
@@ -353,7 +357,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.individualSubscription = this.individualService.allIndividuals.subscribe(
             (res: any) => {
                 this.individualsData = _.map(res.results, (i) => {
-                    return { name: `${i.personalDetails.firstName} ${i.personalDetails.middleName} ${i.personalDetails.lastName}`, id: i.id }
+                    return { name: `${(i.personalDetails.firstName) ? i.personalDetails.firstName : ''} ${(i.personalDetails.middleName) ? i.personalDetails.middleName : ''} ${(i.personalDetails.lastName) ? i.personalDetails?.lastName : ''}`, id: i.id }
                 });
             }
         );
@@ -472,28 +476,12 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     documentPreview(event: Event, i: number) {
+        this.quoteVisible = false;
+        this.changeDetectorRef.detectChanges();
         this.selectedQuote = this.dealForm.value.quotes[i];
         this.quoteVisible = true;
     }
 
-    printComponentContent() {
-        if (this.printComponent && this.printComponent.nativeElement) {
-
-            const printContents = this.printComponent.nativeElement.outerHTML;
-            const popupWin: any = window.open('', '_blank', 'width=600,height=600');
-            popupWin.document.open();
-            popupWin.document.write(`
-                <html>
-                    <head>
-                    <title>Print</title>
-                    <!-- Include any stylesheets or scripts needed for the print view -->
-                    </head>
-                    <body onload="window.print();window.onafterprint=function(){window.close()}">${printContents}</body>
-                </html>`
-            );
-            popupWin.document.close();
-        }
-    }
 
     onSave(event: any) {
         event.preventDefault();

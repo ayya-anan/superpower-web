@@ -9,7 +9,7 @@
             <p-tieredMenu #menu [model]="menuItems" appendTo="body" [popup]="true"></p-tieredMenu>
         </div>
     </div>
-    <div *ngIf="card.org" style="word-break: break-word" class="text-700">{{card.org}}</div>
+    <div *ngIf="card.org" style="word-break: break-word" class="text-700">{{ getOrgName(card.org) }}</div>
     <!-- <p-progressBar *ngIf="card.taskList.tasks.length" [value]="card.progress" [showValue]="false" [style]="{'height':'.5rem'}"></p-progressBar> -->
 
     <div class="flex align-items-center justify-content-end flex-column md:flex-row gap-4 md:gap-0">

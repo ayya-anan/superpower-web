@@ -46,7 +46,7 @@
                                         [(ngModel)]="rowData[col.field]" />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ rowData[col.field] }}
+                                    {{ (col.field ==='date')? (rowData[col.field] | date ) :rowData[col.field] }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>

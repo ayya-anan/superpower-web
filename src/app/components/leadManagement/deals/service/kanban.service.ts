@@ -28,9 +28,13 @@ export class KanbanService {
     listNames$ = this.listNames.asObservable();
 
     constructor(private http: HttpClient, private xService: XService) {
+        this.init();
+    }
+
+    init() {
         this.xService.getAllX('deal').subscribe(
             (res: any) => {
-                const data =  _.cloneDeep(dealStatus);
+                const data = _.cloneDeep(dealStatus);
                 _.each(data, (list) => {
                     list.cards = _.filter(res.results, (d) => d.status === list.name) || [];
                 });
@@ -40,9 +44,9 @@ export class KanbanService {
     }
 
     private updateLists(data: any[]) {
-        
+
         this._lists = data;
-        let small = data.map(l => ({listId: l.listId, title: l.title}));
+        let small = data.map(l => ({ listId: l.listId, title: l.title }));
 
         this.listNames.next(small)
         this.lists.next(data);
@@ -65,7 +69,7 @@ export class KanbanService {
     addCard(listId: string) {
         const cardId = this.generateId();
         const name = "Untitled card";
-        const newCard: KanbanCard = { id: cardId, dealName: name, quotes: [], attachments: 0, comments: [], startDate:'', closeDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
+        const newCard: KanbanCard = { id: cardId, dealName: name, quotes: [], attachments: 0, comments: [], startDate: '', closeDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
         let lists = [];
         lists = this._lists.map(l => l.listId === listId ? ({ ...l, cards: [...l.cards || [], newCard] }) : l);
         this.updateLists(lists);
