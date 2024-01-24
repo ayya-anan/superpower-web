@@ -5,3 +5,13 @@
     </div>
     <app-kanban-sidebar></app-kanban-sidebar>
 </div>
+
+<p-toast></p-toast>
+<p-confirmDialog>
+	<ng-template pTemplate="message" let-message>
+		<div class="flex flex-column align-items-center w-full gap-3 surface-border">
+			<i class="pi pi-exclamation-triangle text-6xl text-primary-500"></i>
+			<p>{{ message.message }}</p>
+		</div>
+	</ng-template>
+</p-confirmDialog>

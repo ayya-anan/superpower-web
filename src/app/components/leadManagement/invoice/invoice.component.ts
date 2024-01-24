@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { templateContent } from './invoice.helper';
 
@@ -11,6 +11,9 @@ export class InvoiceComponent implements OnInit {
     @Input() organization: any;
     @Input() quote: any;
     templateContent = _.cloneDeep(templateContent)
+    
+    @ViewChild('printComponent') printComponent!: ElementRef;
+
     ngOnInit() {
         
     }
@@ -25,5 +28,23 @@ export class InvoiceComponent implements OnInit {
                     break;
         }
         return name;
+    }
+    printComponentContent() {
+        if (this.printComponent && this.printComponent.nativeElement) {
+
+            const printContents = this.printComponent.nativeElement.outerHTML;
+            const popupWin: any = window.open('', '_blank', 'width=600,height=600');
+            popupWin.document.open();
+            popupWin.document.write(`
+                <html>
+                    <head>
+                    <title>Print</title>
+                    <!-- Include any stylesheets or scripts needed for the print view -->
+                    </head>
+                    <body onload="window.print();window.onafterprint=function(){window.close()}">${printContents}</body>
+                </html>`
+            );
+            popupWin.document.close();
+        }
     }
 }

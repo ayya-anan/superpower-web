@@ -3,53 +3,61 @@ import { KanbanList } from 'src/app/api/kanban';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { KanbanService } from './service/kanban.service';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
-  selector: 'app-deals',
-  templateUrl: './deals.component.html',
-  styleUrl: './deals.component.scss'
+    selector: 'app-deals',
+    templateUrl: './deals.component.html',
+    styleUrl: './deals.component.scss'
 })
 export class DealsComponent {
 
-  sidebarVisible: boolean = false;
+    sidebarVisible: boolean = false;
 
-  lists: KanbanList[] = [];
+    lists: KanbanList[] = [];
 
-  listIds: string[] = [];
+    listIds: string[] = [];
 
-  subscription = new Subscription();
+    subscription = new Subscription();
 
-  style!: HTMLStyleElement;
+    style!: HTMLStyleElement;
 
-  isMobileDevice: boolean = false;
+    isMobileDevice: boolean = false;
 
-  constructor(private kanbanService: KanbanService) {
-      this.subscription = this.kanbanService.lists$.subscribe(data => {
-          this.lists = data;
-          this.listIds = this.lists.map(l => l.listId || '');
-      });
-  }
+    constructor(private kanbanService: KanbanService, private xService: XService) {
+        this.subscription = this.kanbanService.lists$.subscribe(data => {
+            this.lists = data;
+            this.listIds = this.lists.map(l => l.listId || '');
+        });
+    }
 
-  ngOnInit() {
-      this.removeLayoutResponsive();
-      this.isMobileDevice = this.kanbanService.isMobileDevice();
-  }
+    ngOnInit() {
+        this.removeLayoutResponsive();
+        this.subscribeXChange();
+        this.isMobileDevice = this.kanbanService.isMobileDevice();
+    }
+    subscribeXChange() {
+        this.xService.addx.subscribe(
+            (res) => {
+                this.kanbanService.init();
+            }
+        )
+    }
+    toggleSidebar() {
+        this.sidebarVisible = true;
+    }
 
-  toggleSidebar() {
-      this.sidebarVisible = true;
-  }
+    addList() {
+        this.kanbanService.addList();
+    }
 
-  addList() {
-      this.kanbanService.addList();
-  }
+    dropList(event: CdkDragDrop<KanbanList[]>) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    }
 
-  dropList(event: CdkDragDrop<KanbanList[]>) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  }
-
-  removeLayoutResponsive() {
-      this.style = document.createElement('style');
-      this.style.innerHTML = `
+    removeLayoutResponsive() {
+        this.style = document.createElement('style');
+        this.style.innerHTML = `
               .layout-content {
                   width: 100%;
               }
@@ -58,11 +66,11 @@ export class DealsComponent {
                   width: 100%;
               }
           `;
-      document.head.appendChild(this.style);
-  }
+        document.head.appendChild(this.style);
+    }
 
-  ngOnDestroy(): void {
-      this.subscription.unsubscribe();
-      document.head.removeChild(this.style)
-  }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        document.head.removeChild(this.style)
+    }
 }

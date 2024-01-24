@@ -45,7 +45,7 @@
                                 <label>Account Manager</label><br>
                                 <p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
                                     optionLabel="name" optionValue="id"
-                                    placeholder="Select Customer Contact"></p-dropdown>
+                                    placeholder="Select Account Manager"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>Start Date</label><br>
@@ -226,7 +226,7 @@
                                                 </ng-container>
                                                 <div class="flex w-full border-top-1 surface-border py-5 gap-3">
                                                     <div class="col-4 justify-content-start">
-                                                        <button pButton pRipple type="submit" icon="pi pi-credit-card"
+                                                        <button pButton pRipple [disabled]="dealForm.invalid" icon="pi pi-credit-card"
                                                             label="Create Payment Milestones"
                                                             class="p-button-primary h-3rem justify-content-start"
                                                             (click)="op.toggle($event)"></button>
@@ -243,14 +243,14 @@
                                                     </p-overlayPanel>
                                                     <div class="col-8 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
-                                                            label="Save" class="p-button-primary h-3rem"
+                                                            label="Save" class="p-button-primary h-3rem" [disabled]="dealForm.invalid"
                                                             (click)="saveQuote($event)"></button>
                                                         <button pButton pRipple icon="pi pi-file-pdf"
                                                             label="Document Preview" class="p-button-primary h-3rem"
-                                                            (click)="documentPreview($event, i)"></button>
+                                                            (click)="documentPreview($event, i)" [disabled]="dealForm.invalid"></button>
                                                         <button pButton pRipple icon="pi pi-envelope"
                                                             label="Email Quote"
-                                                            class="p-button-primary h-3rem"></button>
+                                                            class="p-button-primary h-3rem" [disabled]="dealForm.invalid"></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -268,14 +268,6 @@
 </p-sidebar>
 <p-dialog header="Header" *ngIf="quoteVisible" [(visible)]="quoteVisible" [modal]="true" [style]="{ width: '80%' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-    <ng-template pTemplate="header">
-        <div class="inline-flex align-items-center justify-content-center gap-2">
-            
-        </div>
-    </ng-template>
-    <div #printComponent><app-invoice [deal]="dealForm.value" [organization]="selectedOrganization" [quote]="selectedQuote"></app-invoice></div>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-print" label="Print" (click)="printComponentContent()" pAutoFocus
-            [autofocus]="true"></p-button>
-    </ng-template>
+    <app-invoice [deal]="dealForm.value" [organization]="selectedOrganization" [quote]="selectedQuote"></app-invoice>
 </p-dialog>
+<p-toast></p-toast>

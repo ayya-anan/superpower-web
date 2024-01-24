@@ -39,6 +39,9 @@ import { ChipModule } from 'primeng/chip';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 import { InvoiceComponent } from '../invoice/invoice.component';
 import { EditorModule } from "primeng/editor";
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
 	imports: [
@@ -85,6 +88,8 @@ import { EditorModule } from "primeng/editor";
         BadgeModule,
         CheckboxModule,
         EditorModule,
+        ToastModule,
+        ConfirmDialogModule,
         AllTableModule
 	],
 	declarations: [
@@ -94,6 +99,6 @@ import { EditorModule } from "primeng/editor";
         InvoiceComponent,
         KanbanCardComponent
     ],
-    providers: [KanbanService]
+    providers: [KanbanService,ConfirmationService,MessageService]
 })
 export class DealsModule { }

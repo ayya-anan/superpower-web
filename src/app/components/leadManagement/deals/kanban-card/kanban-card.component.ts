@@ -3,6 +3,9 @@ import { MenuItem } from 'primeng/api';
 import { KanbanCard } from 'src/app/api/kanban';
 import { KanbanService } from '../service/kanban.service';
 import { Subscription } from 'rxjs';
+import { OrganizationService } from 'src/app/api/contacts/organization.service';
+import * as _ from 'lodash';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
     selector: 'app-kanban-card',
@@ -17,19 +20,40 @@ export class KanbanCardComponent implements OnDestroy {
     menuItems: MenuItem[] = [];
 
     subscription: Subscription;
+    organizationSubscription: Subscription = new Subscription;
+    organizationData: any;
 
-    constructor(private kanbanService: KanbanService) {
+    constructor(
+        private kanbanService: KanbanService,
+         private organizationService: OrganizationService,
+         private xService: XService,
+         ) {
+        this.organizationService.getAllOrganization();
+        this.subscribeToGetAllOrganization();
         this.subscription = this.kanbanService.lists$.subscribe(data => {
             let subMenu = data.map(d => ({ id: d.listId, label: d.name, command: () => this.onMove(d.listId) }));
             this.generateMenu(subMenu);
         })
     }
 
+    subscribeToGetAllOrganization() {
+        this.organizationSubscription = this.organizationService.allOrganization.subscribe(
+            (res: any) => {
+                this.organizationData = res.results;
+            });
+    }
     parseDate(dueDate: string) {
         return new Date(dueDate).toDateString().split(' ').slice(1, 3).join(' ');
     }
-
+    getOrgName(id: string) {
+        if (this.organizationData && this.organizationData.length > 0) {
+            const org = _.find(this.organizationData, (org) => org.id === id);
+            if (org) { return org.primaryDetails.name; }
+        }
+        return id;
+    }
     onDelete() {
+        this.xService.deleteX('deal',this.card.id);
         this.kanbanService.deleteCard(this.card.id, this.listId);
     }
 
