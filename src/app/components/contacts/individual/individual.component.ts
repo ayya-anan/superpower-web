@@ -101,7 +101,10 @@ export class IndividualComponent implements OnInit {
     ngOnInit() {
         this.organizationService.getAllOrganization();
         this.subscribeToOrgData();
-        if(this.organizationService.activeOrganizationView) { this.contactView = true; }
+        if(this.organizationService.activeOrganizationView) { 
+            this.contactView = true;
+            this.contactForm.patchValue({ companyname: {name: this.organizationService.organizationDetails.primaryDetails.name} });
+        }
         this.loading = true;
         this.individualService.getAllIndividuals();
         this.subscribeToGetAllIndividuals();
@@ -136,7 +139,7 @@ export class IndividualComponent implements OnInit {
                         status: (item.personalDetails.status) ? item.personalDetails.status : 'Active',
                         name:  (item.personalDetails.firstName && item.personalDetails.lastName) ? `${item.personalDetails.firstName} ${item.personalDetails.lastName}` : (item.personalDetails.firstName) ? item.personalDetails.firstName : (item.personalDetails.lastName) ? item.personalDetails.lastName : '',
                         email: item.emailAddresses[0],
-                        contact: (item.phones.length > 0) ? item.phones[0].number : '',
+                        contact: (item.phones.length > 0) ? item.phones[0].phoneNumber : '',
                         address: (item.addresses.length > 0) ? item.addresses[0].streetName : '',
                         city: (item.addresses.length > 0) ? item.addresses[0].city : '',
                         country: (item.addresses.length > 0) ? item.addresses[0].country : '',
@@ -161,6 +164,9 @@ export class IndividualComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Added Successfully' });
                     this.contactView = false;
                     this.individualService.getAllIndividuals();
+                    if(this.organizationService.activeOrganizationView) {
+                        this.router.navigateByUrl('/contacts/organizations');
+                    }
                 }
             }
         );
@@ -213,9 +219,9 @@ export class IndividualComponent implements OnInit {
                 status: (result.status) ? result.status.name : this.status[0].name
             },
             professionalDetails: {
-                jobTitle: (result.jobtitle) ? result.jobtitle : result.jobtitle.name,
-                companyName: (result.companyname) ? result.companyname : result.companyname.name,
-                roleName: (result.rolename) ? result.rolename : result.rolename.name,
+                jobTitle: (result.jobtitle) ? (result.jobtitle.name) ? result.jobtitle.name : result.jobtitle :  '',
+                companyName: (result.companyname) ? (result.companyname.name) ? result.companyname.name:  result.companyname : '',
+                roleName: (result.rolename) ? (result.rolename.name) ? result.rolename.name: result.rolename : '',
             },
             addresses: [
                 {
@@ -236,9 +242,6 @@ export class IndividualComponent implements OnInit {
             this.individualService.updateIndividuals(obj, this.editId);
         } else {
             this.individualService.postIndividuals(obj);
-        }
-        if(this.organizationService.activeOrganizationView) {
-            this.router.navigateByUrl('/contacts/organizations');
         }
     }
 

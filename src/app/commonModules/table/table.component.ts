@@ -25,7 +25,6 @@ export class TableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._selectedColumns = this.columns;
-
   }
 
   addContact() {

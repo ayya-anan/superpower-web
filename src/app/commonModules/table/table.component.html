@@ -10,9 +10,12 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th style="width: 4rem">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
+            <ng-container *ngIf="key === 'Facilities' || key === 'Point Of Contacts'; else elseContent">
+                <th style="width: 4rem"></th>
+            </ng-container>
+            <ng-template #elseContent>
+                <th style="width: 4rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+            </ng-template>
             <ng-container *ngFor="let col of columns">
                 <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header }} <p-sortIcon
                         field="{{col.field}}"></p-sortIcon>
@@ -22,9 +25,16 @@
     </ng-template>
     <ng-template pTemplate="body" let-columns="columns" let-rowData let-rowIndex="rowIndex" let-editing="editing">
         <tr>
-            <td>
-                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-            </td>
+            <ng-container *ngIf="key === 'Facilities' || key === 'Point Of Contacts'; else elseContent">
+                <td><p-tableRadioButton [value]="rowData"></p-tableRadioButton></td>
+            </ng-container>
+            <ng-template #elseContent>
+                <td><p-tableHeaderCheckbox></p-tableHeaderCheckbox></td>
+            </ng-template>
+           
+            <!-- <td *ngIf="key === 'Facilities' || key === 'Point Of Contacts'">
+                <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </td> -->
             <ng-container *ngFor="let col of columns">
                 <ng-container *ngIf="col.field !='action' && col.field != 'status'">
                     <ng-container *ngIf="key === 'Payments'; else ElseContent">

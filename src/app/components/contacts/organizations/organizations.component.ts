@@ -16,6 +16,8 @@ import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
 })
 export class OrganizationsComponent implements OnInit, OnDestroy {
 
+  individualsList: any = Subscription;
+
   searchValue: any;
   originalData: any = [];
   loading: boolean = false;
@@ -36,7 +38,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { header: 'Email', field: 'email' },
     { header: 'Contact', field: 'contact' },
     { header: 'Point of Contact', field: 'poc' },
-    { header: 'Account Manager', field: 'accountManager' },
+    // { header: 'Account Manager', field: 'accountManager' },
     { header: 'Status', field: 'status' },
     { header: 'Actions', field: 'action' }
   ];
@@ -82,9 +84,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { header: 'Email Address', field: 'email' },
     { header: 'Phone Number', field: 'phone' },
     { header: 'Job Title', field: 'jobTitle' },
-  ]
-  pocTableData: any = [];
+  ];
 
+  facilityCols = [
+    { header: 'Type', field: 'type' },
+    { header: 'Employee Count', field: 'employeeCount' },
+    { header: 'Address', field: 'address' },
+    // { header: 'Phone Number', field: 'phone' },
+    // { header: 'Job Title', field: 'jobTitle' },
+  ];
+
+  pocTableData: any = [];
+  facilitiesTable: boolean = false;
+  facilitiesTableData: any = [];
   // Industry Types
   sections: any = [];
   industryTypes: any = [];
@@ -433,6 +445,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   individualsData: any;
   organizationData: any;
   activeContract: boolean = false;
+  allIndividuals: any = [];
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -443,35 +456,30 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getIndustryDetails();
+    this.individualService.getAllIndividuals();
+    this.subscribeToAllIndividualsList();
+    this.initForm();
     if (this.organizationService.activeOrganizationView) {
-      this.initForm();
       this.organizationView = true;
-      this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails);
-      this.individualService.allIndividuals.subscribe(
-        (res: any) => {
-          this.pocTableData = [];
-          const data: any = _.filter(res.results, (obj) => obj.professionalDetails && (obj.professionalDetails.companyName.toLowerCase() === this.organizationService.organizationDetails.name.toLowerCase()));
-          _.forEach(data, (dataObj: any) => {
-            let obj = {
-              firstName: dataObj.personalDetails.firstName,
-              lastName: dataObj.personalDetails.lastName,
-              email: dataObj.emailAddresses[0],
-              phone: dataObj.phones[0].phoneNumber,
-              jobTitle: dataObj.professionalDetails.jobTitle
-            }
-            this.pocTableData.push(obj);
-          });
-        });
-    } else {
-      this.initForm();
+      this.organizationService.activeOrganizationView = false;
+      this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails.primaryDetails);
+      this.organizationForm.get('facilities')?.patchValue(this.organizationService.organizationDetails.facilities);
+      this.organizationForm.get('services')?.patchValue(this.organizationService.organizationDetails.services);
     }
     this.loading = true;
     this.organizationService.getAllOrganization();
-    this.individualService.getAllIndividuals();
     this.subscribeToGetAllOrganization();
     this.subscribeToGetAllIndividuals();
     this.subscribeToAddOrganization();
   }
+
+  subscribeToAllIndividualsList() {
+    this.individualsList =  this.individualService.allIndividuals.subscribe(
+      (res: any) => {
+        this.allIndividuals = res.results;
+      });
+  }
+
   initForm() {
     this.organizationForm = this.fb.group({
       primaryDetails: this.fb.group({
@@ -522,6 +530,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     if (this.addOrganizationSubscription) { this.addOrganizationSubscription.unsubscribe() }
     if (this.individualSubscription) { this.individualSubscription.unsubscribe() }
     if (this.individualSubscription) { this.individualSubscription.unsubscribe() }
+    if (this.individualsList) { this.individualsList.unsubscribe(); }
   }
   // Helper methods to initialize form arrays
   initFacilitiesArray(): void {
@@ -540,9 +549,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   initServicesArray(): void {
     const servicesArray = this.organizationForm.get('services') as FormArray;
     servicesArray.push(this.fb.group({
-      type: ['', [Validators.required]],
-      amount: ['', [Validators.required]],
-      companyAverage: ['', [Validators.required]],
+      type: '',
+      amount: 0,
+      companyAverage: 0,
       // tinoAverage: ['', [Validators.required]],
     }));
   }
@@ -588,7 +597,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
 
   addContact() {
+    this.organizationForm.reset();
     this.organizationView = true;
+    this.organizationService.organizationDetails = {};
+    this.facilitiesTable = false;
   }
 
   statusChange(event: any) {
@@ -596,14 +608,49 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.organizationForm.valid) {
-      // this.organizationView = false;
+    // if (this.organizationForm.valid) {
+      this.organizationService.organizationDetails = {};
       console.log(this.organizationForm.value.primaryDetails);
       this.organizationForm.value.primaryDetails.section = '';
       this.organizationForm.value.primaryDetails.industryType = '';
+      this.organizationForm.value.primaryDetails.subType1 = '';
+      this.organizationForm.value.primaryDetails.subType2 = '';
+      this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
       this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
-      this.organizationService.postOrganization(this.organizationForm.value)
-    }
+      this.organizationService.postOrganization(this.organizationForm.value);
+    // }
+  }
+
+  updateFacility() {
+    this.facilitiesTable = false;
+    this.initFacilitiesArray();
+  }
+
+  addFacilityTable(data: any) {
+    this.facilitiesTableData = [];
+    _.forEach(data, (dataObj) => {
+      const obj = {
+        type: dataObj.type,
+        employeeCount: dataObj.employeeCount,
+        address: dataObj.address
+      }
+      this.facilitiesTableData.push(obj);
+    });
+  }
+
+  addPOCDetails(name: any) {
+    this.pocTableData = [];
+    const data: any = _.filter(this.allIndividuals, (obj) => obj.professionalDetails && (obj.professionalDetails.companyName.toLowerCase() === name.toLowerCase()));
+    _.forEach(data, (dataObj: any) => {
+      let obj = {
+        firstName: dataObj.personalDetails.firstName,
+        lastName: dataObj.personalDetails.lastName,
+        email: (dataObj.emailAddresses) ? dataObj.emailAddresses[0]: '',
+        phone: (dataObj.phones && dataObj.phones.length > 0) ? dataObj.phones[0].number : '',
+        jobTitle: dataObj.professionalDetails.jobTitle
+      }
+      this.pocTableData.push(obj);
+    });
   }
 
   editData(event: any) {
@@ -648,8 +695,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     // updateData.services.forEach((service: any) => {
     //   servicesFormArray.push(this.fb.control(service));
     // });
+    _.forEach(updateData.services, (serviceObj) => {
+      serviceObj['type'] = { name: serviceObj.type}
+    });
+    this.organizationForm.get('services')?.patchValue(updateData.services);
     this.organizationView = true;
-    this.pocTableData = updateData.primaryDetails.pointofContact;
+    // this.pocTableData = updateData.primaryDetails.pointofContact;
+    this.addPOCDetails(updateData.primaryDetails.name);
+    this.facilitiesTable = true;
+    this.addFacilityTable(updateData.facilities);
   }
 
   delete(event: any) {
@@ -679,16 +733,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         this.tableData = [];
         this.pocTableData = [];
         this.organizationData = res.results;
+        // this.organizationView = false;
         _.forEach(res.results, (item: any) => {
+          const pocDetails = _.filter(this.allIndividuals, (obj) => obj.professionalDetails && (obj.professionalDetails.companyName.toLowerCase() === item.primaryDetails.name.toLowerCase()));
           const obj: any = {
             id: item.id,
             name: item.primaryDetails.name,
             type: item.primaryDetails.industryType,
             subType: item.primaryDetails.subType,
             status: item.primaryDetails.status,
-            email: (item.emailAddresses && item.emailAddresses.length > 0) ? item.emailAddresses[0] : '',
-            contact: (item.phones && item.phones.length > 0) ? item.phones[0].phoneNumber : '',
-            poc: item.primaryDetails.pointofContact,
+            email:  (pocDetails.length > 0) ? pocDetails[0].emailAddresses[0] : '',
+            contact: (pocDetails.length > 0 && pocDetails[0].phones.length > 0) ? pocDetails[0].phones[0].number : '',
+            poc: (pocDetails.length > 0) ? `${pocDetails[0].personalDetails.firstName} ${pocDetails[0].personalDetails.lastName}`  : '',
             accountManager: item.primaryDetails.accountManager,
           }
           this.tableData.push(obj);
@@ -713,7 +769,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
         } else {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Added Successfully' });
-          this.organizationView = false;
           this.organizationService.getAllOrganization();
         }
       }
@@ -722,7 +777,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   addPOC() {
     this.organizationService.activeOrganizationView = true;
-    this.organizationService.organizationDetails = this.organizationForm.value.primaryDetails;
+    this.organizationService.organizationDetails = this.organizationForm.value;
     this.router.navigateByUrl('/contacts/individual');
   }
 
