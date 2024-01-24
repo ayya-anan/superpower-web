@@ -67,8 +67,7 @@ export class IndividualComponent implements OnInit {
     roles: any = [
         { name: 'Decision Maker' },
         { name: 'Advisor' },
-        { name: 'Influencer' },
-        { name: 'Senior Technical Lead' },
+        { name: 'Influencer' }
     ]; 
 
     contactForm = new FormGroup({
@@ -134,8 +133,8 @@ export class IndividualComponent implements OnInit {
                         firstname: item.personalDetails.firstName,
                         middlename: item.personalDetails.middleName,
                         lastname: item.personalDetails.lastName,
-                        status: item.personalDetails.status,
-                        name: `${item.personalDetails.firstName} ${item.personalDetails.lastName}`,
+                        status: (item.personalDetails.status) ? item.personalDetails.status : 'Active',
+                        name:  (item.personalDetails.firstName && item.personalDetails.lastName) ? `${item.personalDetails.firstName} ${item.personalDetails.lastName}` : (item.personalDetails.firstName) ? item.personalDetails.firstName : (item.personalDetails.lastName) ? item.personalDetails.lastName : '',
                         email: item.emailAddresses[0],
                         contact: (item.phones.length > 0) ? item.phones[0].number : '',
                         address: (item.addresses.length > 0) ? item.addresses[0].streetName : '',
@@ -272,9 +271,9 @@ export class IndividualComponent implements OnInit {
             // city: result.city,
             country: result.country,
             zipCode: result.zipCode,
-            jobtitle: result.jobTitle,
-            companyname: (this.showCompany) ? result.company : { name: result.company },
-            rolename: (this.showRole) ? result.roleName : { name: result.roleName }
+            jobtitle: { name: result.jobTitle } ,
+            companyname: { name: result.company },
+            rolename: { name: 'Influencer' }
         });
     }
 
