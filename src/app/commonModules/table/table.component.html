@@ -11,7 +11,7 @@
     <ng-template pTemplate="header" let-columns>
         <tr>
             <ng-container *ngIf="key === 'Facilities' || key === 'Point Of Contacts'; else elseContent">
-                <th style="width: 4rem"></th>
+                <th style="width: 4rem">Primary</th>
             </ng-container>
             <ng-template #elseContent>
                 <th style="width: 4rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>

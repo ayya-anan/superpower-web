@@ -465,6 +465,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails.primaryDetails);
       this.organizationForm.get('facilities')?.patchValue(this.organizationService.organizationDetails.facilities);
       this.organizationForm.get('services')?.patchValue(this.organizationService.organizationDetails.services);
+      // this.addPOCDetails(this.organizationService.organizationDetails.primaryDetails.name);
     }
     this.loading = true;
     this.organizationService.getAllOrganization();
@@ -474,7 +475,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   subscribeToAllIndividualsList() {
-    this.individualsList =  this.individualService.allIndividuals.subscribe(
+    this.individualsList = this.individualService.allIndividuals.subscribe(
       (res: any) => {
         this.allIndividuals = res.results;
       });
@@ -609,15 +610,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     // if (this.organizationForm.valid) {
-      this.organizationService.organizationDetails = {};
-      console.log(this.organizationForm.value.primaryDetails);
-      this.organizationForm.value.primaryDetails.section = '';
-      this.organizationForm.value.primaryDetails.industryType = '';
-      this.organizationForm.value.primaryDetails.subType1 = '';
-      this.organizationForm.value.primaryDetails.subType2 = '';
-      this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
-      this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
-      this.organizationService.postOrganization(this.organizationForm.value);
+    this.organizationService.organizationDetails = {};
+    console.log(this.organizationForm.value.primaryDetails);
+    this.organizationForm.value.primaryDetails.section = '';
+    this.organizationForm.value.primaryDetails.industryType = '';
+    this.organizationForm.value.primaryDetails.subType1 = '';
+    this.organizationForm.value.primaryDetails.subType2 = '';
+
+    this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
+    _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
+      delete facilityObj['_id'];
+    });
+    this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
+    this.organizationService.postOrganization(this.organizationForm.value);
     // }
   }
 
@@ -645,7 +650,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       let obj = {
         firstName: dataObj.personalDetails.firstName,
         lastName: dataObj.personalDetails.lastName,
-        email: (dataObj.emailAddresses) ? dataObj.emailAddresses[0]: '',
+        email: (dataObj.emailAddresses) ? dataObj.emailAddresses[0] : '',
         phone: (dataObj.phones && dataObj.phones.length > 0) ? dataObj.phones[0].number : '',
         jobTitle: dataObj.professionalDetails.jobTitle
       }
@@ -695,9 +700,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     // updateData.services.forEach((service: any) => {
     //   servicesFormArray.push(this.fb.control(service));
     // });
-    _.forEach(updateData.services, (serviceObj) => {
-      serviceObj['type'] = { name: serviceObj.type}
-    });
+    // _.forEach(updateData.services, (serviceObj) => {
+    //   serviceObj['type'] = { name: serviceObj.type}
+    // });
     this.organizationForm.get('services')?.patchValue(updateData.services);
     this.organizationView = true;
     // this.pocTableData = updateData.primaryDetails.pointofContact;
@@ -742,9 +747,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             type: item.primaryDetails.industryType,
             subType: item.primaryDetails.subType,
             status: item.primaryDetails.status,
-            email:  (pocDetails.length > 0) ? pocDetails[0].emailAddresses[0] : '',
+            email: (pocDetails.length > 0) ? pocDetails[0].emailAddresses[0] : '',
             contact: (pocDetails.length > 0 && pocDetails[0].phones.length > 0) ? pocDetails[0].phones[0].number : '',
-            poc: (pocDetails.length > 0) ? `${pocDetails[0].personalDetails.firstName} ${pocDetails[0].personalDetails.lastName}`  : '',
+            poc: (pocDetails.length > 0) ? `${pocDetails[0].personalDetails.firstName} ${pocDetails[0].personalDetails.lastName}` : '',
             accountManager: item.primaryDetails.accountManager,
           }
           this.tableData.push(obj);
@@ -756,8 +761,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   subscribeToGetAllIndividuals() {
     this.individualSubscription = this.individualService.allIndividuals.subscribe(
       (res: any) => {
-        this.individualsData = _.map(res.results, (i) => {
-          return { name: `${i.personalDetails.firstName} ${i.personalDetails.middleName} ${i.personalDetails.lastName}`, id: i.id }
+        const accountManagers: any = _.filter(res.results, (obj) => obj.professionalDetails.jobTitle === 'Account Manager' && obj.professionalDetails.companyName === 'Expert People Management GmbH');
+        this.individualsData = _.map(accountManagers, (i) => {
+          return { name: `${i.personalDetails.firstName} ${i.personalDetails.lastName}`, id: i.id }
         });
       }
     );

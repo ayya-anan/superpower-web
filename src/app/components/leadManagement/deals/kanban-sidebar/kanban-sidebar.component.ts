@@ -81,9 +81,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         { type: 'Forestry and Logging', quantity: 0.5, subType: 'Forestry' },
         { type: 'Forestry and Logging', quantity: 1.5, subType: 'Hard Coal Mining' },
         { type: 'Forestry and Logging', quantity: 2.5, subType: 'Brown Coal Mining' },
-        { type: 'Coal Mining', quantity: 3.5, subType: 'Forestry' },
-        { type: 'Coal Mining', quantity: 4.5, subType: 'Hard Coal Mining' },
-        { type: 'Coal Mining', quantity: 5.5, subType: 'Brown Coal Mining' },
+        { type: 'Coal Mining', quantity: 0.5, subType: 'Forestry' },
+        { type: 'Coal Mining', quantity: 1.5, subType: 'Hard Coal Mining' },
+        { type: 'Coal Mining', quantity: 2.5, subType: 'Brown Coal Mining' },
     ];
 
     dealForm: FormGroup = new FormGroup({});

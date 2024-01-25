@@ -139,7 +139,7 @@ export class IndividualComponent implements OnInit {
                         status: (item.personalDetails.status) ? item.personalDetails.status : 'Active',
                         name:  (item.personalDetails.firstName && item.personalDetails.lastName) ? `${item.personalDetails.firstName} ${item.personalDetails.lastName}` : (item.personalDetails.firstName) ? item.personalDetails.firstName : (item.personalDetails.lastName) ? item.personalDetails.lastName : '',
                         email: item.emailAddresses[0],
-                        contact: (item.phones.length > 0) ? item.phones[0].phoneNumber : '',
+                        contact: (item.phones.length > 0) ? (item.phones[0].number) ? item.phones[0].number : (item.phones[0].phoneNumber) ? item.phones[0].phoneNumber : '' : '',
                         address: (item.addresses.length > 0) ? item.addresses[0].streetName : '',
                         city: (item.addresses.length > 0) ? item.addresses[0].city : '',
                         country: (item.addresses.length > 0) ? item.addresses[0].country : '',
