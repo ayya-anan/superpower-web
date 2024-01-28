@@ -23,7 +23,7 @@
                             <div class="field col-12">
                                 <label>Organization</label>
                                 <p-dropdown appendTo="body" formControlName="org" [options]="organizationFilterData"
-                                    optionLabel="name" optionValue="id" placeholder="Select Organization"></p-dropdown>
+                                    optionLabel="name" optionValue="id" placeholder="Select Organization" (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>Status</label>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="field col-12">
                                 <label>Account Manager</label><br>
-                                <p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+                                <p-dropdown appendTo="body" formControlName="accountManager" [options]="accountManagerList"
                                     optionLabel="name" optionValue="id"
                                     placeholder="Select Account Manager"></p-dropdown>
                             </div>
@@ -86,8 +86,11 @@
                                                         label="Quote Amount : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
                                                     <p-chip label="Created Date : {{ quote.get('date')?.value | date }}"
                                                         icon="pi pi-calendar"></p-chip>
-                                                    <p-button icon="pi pi-copy" class="ml-auto" label="Clone Quote"
+                                                    <p-button icon="pi pi-copy" class="ml-auto"
                                                         (click)="cloneQuote($event,i)" size="small"
+                                                        [rounded]="true"></p-button>
+                                                    <p-button icon="pi pi-trash" class="mr-2" *ngIf="false"
+                                                        (click)="deleteQuote($event,i)" size="small"
                                                         [rounded]="true"></p-button>
 
                                                 </span>
@@ -137,7 +140,7 @@
                                                             <div
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-dropdown appendTo="body" formControlName="facility"
-                                                                    [options]="selectedOrganization.facilities"
+                                                                    [options]="selectedOrganization && selectedOrganization.facilities"
                                                                     optionLabel="type" optionValue="_id"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Facility"></p-dropdown>
@@ -145,7 +148,7 @@
                                                             <div
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-dropdown appendTo="body" formControlName="service"
-                                                                    [options]="selectedOrganization.services"
+                                                                    [options]="selectedOrganization && selectedOrganization.services"
                                                                     optionLabel="type" optionValue="_id"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Service"></p-dropdown>

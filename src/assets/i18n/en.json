@@ -1,19 +1,130 @@
 {
     "COMMON": {
-        "EDIT": "Edit",
-        "ADD": "Add"
+        "SAVE": "Save",
+        "ADD": "Add",
+        "NAME": "Name",
+        "VALUE": "Value",
+        "CONTACTS": "CONTACTS",
+        "INDIVIDUAL": "INDIVIDUALS",
+        "ORGANIZATIONS": "ORGANIZATIONS",
+        "STATUS": "Status",
+        "START_DATE": "Start Date",
+        "END_DATE": "End Date",
+        "ACTIONS": "Actions"
     },
     "MENU": {
-        "NAME": "Traces"
+        "DASHBOARD": "Dashboard",
+        "CONTACTS": "Contacts",
+        "ORGANIZATIONS": "Organizations",
+        "INDIVIDUALS": "Individuals",
+        "LEAD_MANAGEMENT": "Lead Management",
+        "DEALS_QUOTE": "Deals & Quote",
+        "CONTRACTS": "Contracts",
+        "ACTIVEWORK": "Active Work",
+        "TEAM_SCHEDULE": "Team Schedule",
+        "TIME_TRACKING": "Time Tracking",
+        "INVOICE": "Invoice",
+        "PAYMENTTS": "Payments",
+        "RECONCILLATION": "Reconcillation",
+        "REMINDERS": "Reminders",
+        "INSIGHTS_ANALYTICS": "Insights & Analytics",
+        "CUSTOMER_SURVEY": "Customer Survey",
+        "EMPLOYEE_SURVEY": "Employee Survey",
+        "REPORTING": "Reporting",
+        "BUSINESS_ADMINISTRATION": "Business Administration",
+        "GOVERNMENT_REGULATIONS": "Government Regulations",
+        "USER_MANAGEMENT": "User Management",
+        "TEAM_MANAGEMENT": "Team Management"
     },
     "DASHBOARD": {
         "MAIN": {
-            "NAME": ""
+
+
         }
     },
     "CONTACTS": {
         "INDIVIDUAL": {
-            "NAME": ""
+            "ADD_CONTACT": "Add Contact",
+            "IMPORT": "Import",
+            "DELETE": "Delete",
+            "NAME": "Name",
+            "COMPANY": "Company",
+            "JOB_TITLE": "Job Title",
+            "EMAIL_ADDRESS": "Email Address",
+            "CONTACT": "Contact",
+            "STATUS": "Status",
+            "ACTIONS": "Actions",
+            "SALUTATION": "Salutation",
+            "FIRSTNAME": "First Name",
+            "MIDDLENAME": "Middle Name",
+            "LASTNAME": "Last Name",
+            "ORGANIZATION_NAME": "Organization Name",
+            "JOBTITLE": "Job Title",
+            "ROLE": "Role",
+            "PRIMARY_EMAILADDRESS": "Primary Email Address",
+            "ALTERNATE_EMAILADDRESS": "Alternate Email Address",
+            "PRIMARY_PHONE_NUMBER": "Primary Phone Number",
+            "ALTERNATE_PHONE_NUMBER": "Alternate Phone Number",
+            "ADDRESS": "Address",
+            "POSTCODE": "Postcode",
+            "COUNTRY": "Country",
+            "ADD_ANOTHER_ADDRESS": "Add Another Address"
+        },
+        "ORGANIZATIONS" : {
+            "ADD_ORGANIZATION": "Add Organization",
+            "IMPORT": "Import",
+            "Delete": "Delete",
+            "NAME": "Name",
+            "INDUSTRY_TYPE": "Industry Type",
+            "SUB_TYPE": "Sub Type",
+            "EMAIL_ADDRESS": "Email Address",
+            "CONTACT": "Contact",
+            "POINT_OF_CONTACT": "Point Of Contact",
+            "STATUS": "Status",
+            "ACTIONS": "Actions",
+            "SECTION": "Section",
+            "SUB_TYPE_1": "Sub Type 1",
+            "SUB_TYPE_2": "Sub Type 2",
+            "REVENUE_RANGE": "Revenue Range",
+            "ACCOUNT_MANAGER": "Account Manager",
+            "FACILITIES": "Facilities",
+            "TYPE": "Type",
+            "EMPLOYEE_COUNT": "Employee Count",
+            "PRIMARY_EMAILADDRESS": "Primary Email Address",
+            "PRIMARY_PHONE_NUMBER": "Primary Phone Number",
+            "ADDRESS": "Address",
+            "POSTCODE": "Postcode",
+            "COUNTRY": "Country",
+            "SERVICE_RATES": "Service Rates",
+            "RATE": "Rate",
+            "COMPANY_AVERAGE": "Company Average",
+            "POINT_OF_CONTACTS": "Point Of Contacts",
+            "ADD_POINT_OF_CONTACT": "Add Point Of Contact"
         }
-    }
+    },
+    "LEAD_MANAGEMENT": {
+        "CUSTOMER_CONATCT": "Customer Contact",
+        "ACCOUNT_MANAGER": "Account Manager",
+        "DEAL_DETAILS": "Deal Details",
+        "QUOTE_DETAILS": "Qoute Details",
+        "CLONE_QUOTE": "Clone Quote",
+        "SERVICES": "Services",
+        "FACILITY": "Facility",
+        "SERVICE_TYPE": "Service Type",
+        "Service_RATE": "Service Rate",
+        "EMPLOYEE_COUNT": "Employee Count",
+        "QUANTITY": "Quantity",
+        "TOTAL": "Total",
+        "SUBTOTAL": "Sub Total",
+        "VAT": "VAT",
+        "DISCOUNT": "Discount",
+        "PAYMENTS": "Payments",
+        "MIILESTONE_DATE": "Milestone Date",
+        "MILESTONE_CRITERIA": "Milestone Criteria",
+        "PERCENTAGE": "Percentage",
+        "AMOUNT": "Amount",
+        "CREATE_PAYMENT_MILESTONE": "Create Payment Milestone",
+        "DOCUMENT_PREVIEW": "Document Preview"
+
+    }   
 }

@@ -3,7 +3,7 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{key}}" [stateKey]="'table_'+key"
     [reorderableColumns]="true" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px"
     [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)">
-    <ng-template pTemplate="caption">
+    <ng-template pTemplate="caption" *ngIf="key != 'Point Of Contacts'">
         <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
             placeholder="Please select columns">
         </p-multiSelect>
@@ -17,7 +17,7 @@
                 <th style="width: 4rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
             </ng-template>
             <ng-container *ngFor="let col of columns">
-                <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header }} <p-sortIcon
+                <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header | translate }} <p-sortIcon
                         field="{{col.field}}"></p-sortIcon>
                 </th>
             </ng-container>
@@ -52,11 +52,11 @@
                         </td>
                     </ng-container>
                     <ng-template #ElseContent>
-                        <td *ngIf="col.field !='action' && col.field != 'status'">{{ rowData[col.field] }}</td>
+                        <td *ngIf="col.field !='action' && col.field != 'status'">{{ rowData[col.field] | translate }}</td>
                     </ng-template>
                 </ng-container>
                 <td *ngIf="col.field =='status'">
-                    <span class="customer-badge {{rowData[col.field]}}">{{ rowData[col.field] }}</span>
+                    <span class="customer-badge {{rowData[col.field]}}">{{ rowData[col.field] | translate }}</span>
                 </td>
                 <td *ngIf="col.field =='action'">
                     <span class="actionLink" (click)="edit(rowData, rowIndex)"><i

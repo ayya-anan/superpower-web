@@ -98,6 +98,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     showTableView: boolean = false;
     paymentMilestone: any;
     showPaymentsTable: boolean = false;
+    accountManagerList: { name: string; id: any; }[] = [];
+    allIndividualsList: any;
 
     columns: any = [
         { header: 'Quote Created Date', field: 'createdDate' },
@@ -163,7 +165,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             closeDate: [new Date(), [Validators.required]],
             quotes: this.fb.array([])
         });
-        this.initQuotesArray();
+        // this.initQuotesArray();
         this.subscribeFormChanges();
         if (this.card.org) {
             this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
@@ -244,6 +246,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         this.QuotesArray.insert(0, this.patchQuoteGroup(quotesFormGroup.value))
     }
+    deleteQuote(event: Event, quoteFormIndex: number) {
+        // this.QuotesArray.controls.splice(quoteFormIndex,1);
+    }
     get QuotesArray(): FormArray {
         return this.dealForm.get('quotes') as FormArray;
     }
@@ -303,6 +308,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         })
         return result;
     }
+
+    calculateHours(data: any) {
+        return (data.subType2.name) ? data.subType2.value : (data.subType1.name) ?  data.subType1.value : (data.industryType.name) ? data.industryType.value : 0
+    }
+
     onServiceChange(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
@@ -310,13 +320,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (servicesFormGroup.get('facility')?.value && servicesFormGroup.get('service')?.value) {
             const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
-            const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
+            // const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
+            const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails);
             const employeeCount = +facility.employeeCount || 95
             servicesFormGroup.patchValue({
                 employeeCount: employeeCount,
                 unitRate: service.amount,
-                quantity: hours.quantity,
-                total: Math.round(employeeCount * service.amount * hours.quantity)
+                quantity: hours,
+                total: Math.round(employeeCount * service.amount * hours)
             });
             this.getFinalTotal(quoteIndex);
         }
@@ -356,9 +367,14 @@ export class KanbanSidebarComponent implements OnDestroy {
     subscribeToGetAllIndividuals() {
         this.individualSubscription = this.individualService.allIndividuals.subscribe(
             (res: any) => {
+                const accountManagers: any = _.filter(res.results, (obj) => obj.primaryDetails.jobTitle === 'Account Manager' && obj.primaryDetails.companyName === 'Expert People Management GmbH');
+                this.accountManagerList = _.sortBy(_.map(accountManagers, (i) => {
+                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
+                }), 'name');
                 this.individualsData = _.map(res.results, (i) => {
-                    return { name: `${(i.personalDetails.firstName) ? i.personalDetails.firstName : ''} ${(i.personalDetails.middleName) ? i.personalDetails.middleName : ''} ${(i.personalDetails.lastName) ? i.personalDetails?.lastName : ''}`, id: i.id }
+                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
                 });
+                this.allIndividualsList = _.cloneDeep(this.individualsData);
             }
         );
     }
@@ -376,6 +392,14 @@ export class KanbanSidebarComponent implements OnDestroy {
     duplicateData(event: any) {
 
     }
+
+    updateCustomerContact(event: any) {
+        const result: any = _.filter(this.organizationFilterData, (obj) => obj.id == event.value);
+        if(result.length > 0) { 
+            this.individualsData = _.filter(this.allIndividualsList, (obj: any) => obj.company === result[0].name);
+        }
+    }
+
     saveQuote(event: Event) {
         event.preventDefault();
         this.showQuote = false;

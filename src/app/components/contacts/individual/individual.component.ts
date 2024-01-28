@@ -1,6 +1,6 @@
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -21,6 +21,7 @@ export class IndividualComponent implements OnInit {
     organizationSubscription: any = Subscription;
 
     // Variables
+    allIndividuals: any = [];
     originalData: any = [];
     searchValue: any;
     loading: boolean = false;
@@ -31,63 +32,27 @@ export class IndividualComponent implements OnInit {
     additionalDetails: boolean = false;
     editId: any;
     organizations: any = [];
+    copyAddressBtn: boolean = false;
 
-    // contactForm: FormGroup = this.fb.group({});
+    //Form Groups
+    contactForm: FormGroup = this.fb.group({});
+    addresses: FormArray = this.fb.array([]);
 
     columns = [
-        { header: 'Name', field: 'name' },
-        { header: 'Company', field: 'company' },
-        { header: 'Job Title', field: 'jobTitle' },
-        { header: 'Email Address', field: 'email' },
-        { header: 'Contact', field: 'contact' },
-        { header: 'Status', field: 'status' },
-        { header: 'Actions', field: 'action' }
+        { header: 'CONTACTS.INDIVIDUAL.NAME', field: 'name' },
+        { header: 'CONTACTS.INDIVIDUAL.COMPANY', field: 'company' },
+        { header: 'CONTACTS.INDIVIDUAL.JOB_TITLE', field: 'jobTitle' },
+        { header: 'CONTACTS.INDIVIDUAL.EMAIL_ADDRESS', field: 'email' },
+        { header: 'CONTACTS.INDIVIDUAL.CONTACT', field: 'contact' },
+        { header: 'CONTACTS.INDIVIDUAL.STATUS', field: 'status' },
+        { header: 'CONTACTS.INDIVIDUAL.ACTIONS', field: 'action' }
     ];
+    Salutations: any = [{ name: 'Mr' }, { name: 'Ms' }, { name: 'Mrs' }, { name: 'Dr' }];
+    status: any = [{ name: 'Active' }, { name: 'Inactive' },{ name: 'Prospect' }, { name: 'Suspended' }];
+    // company: any = [{ name: 'TeamLeader' }, { name: 'HubSpot' }, { name: 'Wipro' }];
+    company: any =[];
+    roles: any = [{ name: 'Advisor' },{ name: 'Decision Maker' },{ name: 'Influencer' }];
 
-    Salutations: any = [
-        { name: 'Mr.' },
-        { name: 'Ms.' },
-        { name: 'Mrs.' },
-        { name: 'Dr.' },
-    ];
-
-    status: any = [
-        { name: 'Prospect' },
-        { name: 'Active' },
-        { name: 'Inactive' },
-        { name: 'Suspended' }
-    ];
-
-    company: any = [
-        { name: 'TeamLeader' },
-        { name: 'HubSpot' },
-        { name: 'Wipro' },
-    ];
-
-    roles: any = [
-        { name: 'Decision Maker' },
-        { name: 'Advisor' },
-        { name: 'Influencer' }
-    ]; 
-
-    contactForm = new FormGroup({
-        salutation: new FormControl(),
-        firstname: new FormControl("", [Validators.required]),
-        middlename: new FormControl("", [Validators.required]),
-        lastname: new FormControl("", [Validators.required]),
-        status: new FormControl(),
-        emailAddress: new FormControl(),
-        alternateEmailAddress: new FormControl(),
-        primaryContact: new FormControl(),
-        alternateContact: new FormControl(),
-        address: new FormControl(),
-        city: new FormControl(),
-        country: new FormControl(),
-        zipCode: new FormControl(),
-        jobtitle: new FormControl(),
-        companyname: new FormControl(),
-        rolename: new FormControl()
-    });
 
     constructor(
         private fb: FormBuilder,
@@ -99,14 +64,17 @@ export class IndividualComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.initForm();
+        this.initiateAddressArray();
+        this.loading = true;
+        this.individualService.getAllIndividuals();
         this.organizationService.getAllOrganization();
         this.subscribeToOrgData();
         if(this.organizationService.activeOrganizationView) { 
             this.contactView = true;
-            this.contactForm.patchValue({ companyname: {name: this.organizationService.organizationDetails.primaryDetails.name} });
+            this.contactForm.value.primaryDetails.companyName = this.organizationService.organizationDetails.primaryDetails.name;
+            this.copyAddressBtn = true;
         }
-        this.loading = true;
-        this.individualService.getAllIndividuals();
         this.subscribeToGetAllIndividuals();
         this.subscribeToAddIndividuals();
         this.subscribeToUpdateIndividuals();
@@ -117,11 +85,13 @@ export class IndividualComponent implements OnInit {
             (res: any) => {
                 console.log(res.results);
                 this.organizations = [];
-                // this.organizations = res.results;
-                this.organizations = _.map(res.results, (i) => {
-                    return { name: i.primaryDetails.name }
-                });
+                this.organizations = _.sortBy(_.map(res.results, (i) => { return { name: i.primaryDetails.name } }), 'name');
+                this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) =>  { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name'); 
             });
+    }
+
+    getName(i: any) {
+        return `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`
     }
 
     subscribeToGetAllIndividuals() {
@@ -129,24 +99,16 @@ export class IndividualComponent implements OnInit {
             (res: any) => {
                 this.loading = false;
                 this.tableData = [];
+                this.allIndividuals = res.results;
                 _.forEach(res.results, (item: any) => {
                     const obj = {
                         id: item.id,
-                        salutation: item.personalDetails.salutation,
-                        firstname: item.personalDetails.firstName,
-                        middlename: item.personalDetails.middleName,
-                        lastname: item.personalDetails.lastName,
-                        status: (item.personalDetails.status) ? item.personalDetails.status : 'Active',
-                        name:  (item.personalDetails.firstName && item.personalDetails.lastName) ? `${item.personalDetails.firstName} ${item.personalDetails.lastName}` : (item.personalDetails.firstName) ? item.personalDetails.firstName : (item.personalDetails.lastName) ? item.personalDetails.lastName : '',
-                        email: item.emailAddresses[0],
-                        contact: (item.phones.length > 0) ? (item.phones[0].number) ? item.phones[0].number : (item.phones[0].phoneNumber) ? item.phones[0].phoneNumber : '' : '',
-                        address: (item.addresses.length > 0) ? item.addresses[0].streetName : '',
-                        city: (item.addresses.length > 0) ? item.addresses[0].city : '',
-                        country: (item.addresses.length > 0) ? item.addresses[0].country : '',
-                        zipCode: (item.addresses.length > 0) ? item.addresses[0].zipCode : '',
-                        company: (item.professionalDetails) ? item.professionalDetails.companyName : '',
-                        jobTitle: (item.professionalDetails) ? item.professionalDetails.jobTitle : '',
-                        roleName: (item.professionalDetails) ? item.professionalDetails.roleName : '',
+                        name: this.getName(item),
+                        company: item.primaryDetails.companyName,
+                        jobTitle: item.primaryDetails.jobTitle,
+                        email: (item.addresses.length > 0) ? item.addresses[0].primaryEmail : '',
+                        contact: (item.addresses.length > 0) ? item.addresses[0].primaryPhone : '',
+                        status: (item.primaryDetails.status) ? item.primaryDetails.status: this.status[0].name
                     }
                     this.tableData.push(obj);
                 });
@@ -164,9 +126,11 @@ export class IndividualComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Added Successfully' });
                     this.contactView = false;
                     this.individualService.getAllIndividuals();
-                    if(this.organizationService.activeOrganizationView) {
-                        this.router.navigateByUrl('/contacts/organizations');
-                    }
+                    setTimeout(() => {
+                        if (this.organizationService.activeOrganizationView) {
+                            this.router.navigateByUrl('/contacts/organizations');
+                        }
+                    }, 500);
                 }
             }
         );
@@ -186,97 +150,84 @@ export class IndividualComponent implements OnInit {
         );
     }
 
-    searchResults(event: any) {
-        this.searchValue = this.searchValue.toLowerCase();        
-        this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue) || _.includes(obj.company.toLowerCase(), this.searchValue)) : this.originalData;
+    copyAddress() {
+        const result = this.organizationService.organizationDetails?.facilities[0];
+        this.contactForm.value.addresses[0].address = result.address;
+        this.contactForm.value.addresses[0].zipCode = result.zipCode;
+        this.contactForm.value.addresses[0].country = result.country;
+        this.contactForm.get('addresses')?.patchValue(this.contactForm.value.addresses);
     }
 
-    addAdditionalAddress() {
+    initForm() {
+        this.contactForm = this.fb.group({
+            primaryDetails: this.fb.group({
+                salutation: ['Mr'],
+                firstName: new FormControl("", [Validators.required]),
+                middleName: new FormControl(""),
+                lastName: new FormControl("", [Validators.required]),
+                status: ['Prospect'],
+                jobTitle: [''],
+                companyName: [''],
+                roleName: ['Influencer']
+            }),
+            addresses: this.addresses,
+        });
+    }
 
+    initiateAddressArray() {
+        const addresses = this.contactForm.get('addresses') as FormArray;
+        addresses.push(this.fb.group({
+            primaryEmail: [''],
+            alternateEmail: [''],
+            primaryPhone: [''],
+            alternatePhone: [''],
+            address: [''],
+            zipCode: [''],
+            country: ['Germany']
+        }));
+    }
+
+    searchResults(event: any) {
+        this.searchValue = this.searchValue.toLowerCase();
+        this.tableData = (this.searchValue) ? _.filter(this.originalData, (obj) => _.includes(obj.name.toLowerCase(), this.searchValue) || _.includes(obj.company.toLowerCase(), this.searchValue)) : this.originalData;
     }
 
     addContact() {
         this.contactView = true;
-    }
-
-    showContent() {
-        this.additionalDetails = true;
-    }
-
-    clearDetails() {
         this.contactForm.reset();
+        this.initForm();
     }
 
     onSubmit() {
-        console.log(this.contactForm.value);
         const result = this.contactForm.value;
-        const obj = {
-            personalDetails: {
-                salutation: (result.salutation) ? result.salutation.name : this.Salutations[0].name,
-                firstName: result.firstname,
-                middleName: result.middlename,
-                lastName: result.lastname,
-                status: (result.status) ? result.status.name : this.status[0].name
-            },
-            professionalDetails: {
-                jobTitle: (result.jobtitle) ? (result.jobtitle.name) ? result.jobtitle.name : result.jobtitle :  '',
-                companyName: (result.companyname) ? (result.companyname.name) ? result.companyname.name:  result.companyname : '',
-                roleName: (result.rolename) ? (result.rolename.name) ? result.rolename.name: result.rolename : '',
-            },
-            addresses: [
-                {
-                    type: "home",
-                    streetNumber: "125",
-                    streetName: result.address,
-                    // city: result.city,
-                    country: result.country,
-                    // county: "active",
-                    zipCode: result.zipCode
-                }
-            ],
-            phones: [{ type: "personal", phoneNumber: result.primaryContact }],
-            emailAddresses: [result.emailAddress],
-            // socialMediaLinks: [{ "type": "linkedin", "url": "https://www.linkedin.com/in/jerinjjose/" }],
+        if(result.primaryDetails) {
+            result.primaryDetails.companyName = (_.isObject(result.primaryDetails.companyName)) ? result.primaryDetails.companyName.name : result.primaryDetails.companyName;
+            result.primaryDetails.jobTitle = (_.isObject(result.primaryDetails.jobTitle)) ? result.primaryDetails.jobTitle.name : result.primaryDetails.jobTitle;
+            result.primaryDetails.roleName = (_.isObject(result.primaryDetails.roleName)) ? result.primaryDetails.roleName.name : result.primaryDetails.roleName;
         }
         if (this.editId) {
-            this.individualService.updateIndividuals(obj, this.editId);
+            this.individualService.updateIndividuals(result, this.editId);
         } else {
-            this.individualService.postIndividuals(obj);
+            this.individualService.postIndividuals(result);
         }
-    }
-
-    showCompanyDetails() {
-        this.contactForm.patchValue({ companyname: '' });
-        this.showCompany = !this.showCompany;
-    }
-
-    showRoleDetails() {
-        this.contactForm.patchValue({ rolename: '' });
-        this.showRole = !this.showRole;
     }
 
     editData(event: any) {
         this.editId = event.rowData.id;
         this.contactForm.reset();
         this.contactView = true;
-        const result = event.rowData;
-        this.showCompany = (_.findIndex(this.company, (obj: any) => obj.name === result.company) == -1) ? true : false;
-        this.showRole = (_.findIndex(this.roles, (obj: any) => obj.name === result.roleName) == -1) ? true : false;
-        this.contactForm.patchValue({
-            salutation: { name: result.salutation },
-            firstname: result.firstname,
-            middlename: result.middlename,
-            lastname: result.lastname,
-            status: { name: result.status },
-            emailAddress: result.email,
-            primaryContact: result.contact,
-            address: result.address,
-            // city: result.city,
-            country: result.country,
-            zipCode: result.zipCode,
-            jobtitle: { name: result.jobTitle } ,
-            companyname: { name: result.company },
-            rolename: { name: 'Influencer' }
+        const result = this.allIndividuals[event.index];
+        // Patching the primary details
+        this.contactForm.get('primaryDetails')?.patchValue(result.primaryDetails);
+        this.contactForm.get('primaryDetails.companyName')?.patchValue({ name: result.primaryDetails.companyName });
+        this.contactForm.get('primaryDetails.jobTitle')?.patchValue({ name: result.primaryDetails.jobTitle });
+        this.contactForm.get('primaryDetails.roleName')?.patchValue({ name: result.primaryDetails.roleName });
+        // Patching the Addresses form array
+        const addressesFormArray = this.contactForm.get('addresses') as FormArray;
+        addressesFormArray.clear();
+        if(result.addresses.length > 0) { delete result.addresses[0]._id; }
+        result.addresses.forEach((address: any) => {
+            addressesFormArray.push(this.fb.group(address));
         });
     }
 

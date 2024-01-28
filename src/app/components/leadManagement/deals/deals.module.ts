@@ -42,6 +42,7 @@ import { EditorModule } from "primeng/editor";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
 	imports: [
@@ -90,7 +91,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         EditorModule,
         ToastModule,
         ConfirmDialogModule,
-        AllTableModule
+        AllTableModule,
+        NgxPrintModule
 	],
 	declarations: [
         DealsComponent,

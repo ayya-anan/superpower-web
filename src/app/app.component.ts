@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
     constructor(
         private primengConfig: PrimeNGConfig,
         private layoutService: LayoutService,
-        translate: TranslateService
+        private translate: TranslateService
     ) {
         // this language will be used as a fallback when a translation isn't found in the current language
         translate.setDefaultLang('en');
@@ -35,4 +35,5 @@ export class AppComponent implements OnInit {
         };
         this.layoutService.config.set(config);
     }
+
 }

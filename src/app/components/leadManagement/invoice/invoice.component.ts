@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@ang
 import * as _ from 'lodash';
 import { templateContent } from './invoice.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
+import { NgxPrintService, PrintOptions } from 'ngx-print';
 
 @Component({
     selector: 'app-invoice',
@@ -12,12 +13,16 @@ export class InvoiceComponent implements OnInit,OnChanges {
     @Input() organization: any;
     @Input() quote: any;
     @Input() visible: boolean = false;
+    
     templateContent = _.cloneDeep(templateContent)
     notesContent = 'Notes here';
     @ViewChild('printHeader') printHeader!: ElementRef;
     @ViewChild('printComponent') printComponent!: ElementRef;
+    
+    showPrintContent: boolean = false;
 
-    constructor( private dealService: DealService){}
+    constructor( private dealService: DealService, 
+      private printService: NgxPrintService){}
     ngOnInit() {
     }
     ngOnChanges() {
@@ -44,6 +49,7 @@ export class InvoiceComponent implements OnInit,OnChanges {
         }
         return content;
     }
+
     printComponentContent() {
         let content = this.getContent();
         if (content) {
@@ -53,10 +59,13 @@ export class InvoiceComponent implements OnInit,OnChanges {
                 <head>
                 <title>Print</title>
                 <!-- Include any stylesheets or scripts needed for the print view -->
+                <link type="text/html"  href="styles.scss">
+                <link type="text/html" href="src/assets/layout/styles/layout/preloading.scss">
                 </head>
-                <body onload="window.print();window.onafterprint=function(){window.close()}">${content}</body>
+                <body onload="window.onafterprint=function(){window.close()}">${content}</body>
             </html>`);
             popupWin.document.close();
+            // window.print();
         }
     }
     emailComponentContent() {
@@ -107,4 +116,15 @@ export class InvoiceComponent implements OnInit,OnChanges {
             this.dealService.sentEmail({content : body});
         }
     }
+
+    printMe() {
+      this.showPrintContent = true;
+      const customPrintOptions: PrintOptions = new PrintOptions({
+        printSectionId: 'printContent',
+        useExistingCss: true,
+        previewOnly: true
+      });
+      this.printService.print(customPrintOptions);
+  }
+
 }

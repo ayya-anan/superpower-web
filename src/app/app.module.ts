@@ -10,6 +10,7 @@ import localeDe from '@angular/common/locales/de'; // Import German locale data
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 // Register the German locale data
 registerLocaleData(localeDe);
 @NgModule({
@@ -24,6 +25,7 @@ registerLocaleData(localeDe);
         CommonModule,
         AppProviderModule,
         ToastModule,
+        TranslateModule,
         AppApiModule.forRoot(),
     ],
     providers: [

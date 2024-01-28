@@ -34,6 +34,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BadgeModule } from 'primeng/badge';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SidebarModule } from 'primeng/sidebar';
+import { NgxPrintModule } from 'ngx-print';
+import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child.module';
 
 @NgModule({
 	imports: [
@@ -71,7 +73,9 @@ import { SidebarModule } from 'primeng/sidebar';
 		ConfirmDialogModule,
 		BadgeModule,
 		FieldsetModule,
-		SidebarModule
+		SidebarModule,
+		NgxPrintModule,
+		AppTranslateChildModule
 	],
 	declarations: [IndividualComponent]
 })

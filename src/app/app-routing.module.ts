@@ -12,7 +12,7 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
             { path: 'dashboard', data: { breadcrumb: 'Dashboard' }, loadChildren: () => import('./components/dashboards/dashboards.module').then(m => m.DashboardsModule) },
-            { path: 'contacts', data: { breadcrumb: 'Contacts' }, loadChildren: () => import('./components/contacts/contacts.module').then(m => m.ContactsModule) },
+            { path: 'contacts', data: { breadcrumb: 'COMMON.CONTACTS' }, loadChildren: () => import('./components/contacts/contacts.module').then(m => m.ContactsModule) },
             { path: 'leadManagement', data: { breadcrumb: 'Lead Management' }, loadChildren: () => import('./components/leadManagement/leadManagement.module').then(m => m.LeadManagementModule) },
         ]
     },
