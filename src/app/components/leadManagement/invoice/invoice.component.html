@@ -148,10 +148,7 @@
 		<div class="p-4" [innerHTML]="getContent()"></div>
 	</div>
 	<ng-template pTemplate="footer">
-		<!-- <p-button icon="pi pi-print" label="Print" (click)="printComponentContent()" pAutoFocus
-			[autofocus]="true"></p-button> -->
 		<p-button icon="pi pi-print" label="Print" (click)="printMe()" pAutoFocus [autofocus]="true"></p-button>
-		<!-- <button #printBtn pButton pRipple icon="pi pi-print" class="p-button-primary" (click)="printMe()" printSectionId="printContent"  [previewOnly]="true" [useExistingCss]="true" label="Print" ngxPrint></button> -->
 		<button pButton pRipple icon="pi pi-envelope" class="p-button-primary" (click)="emailComponentContent()" label="Email"></button>
 	</ng-template>
 </p-dialog>
