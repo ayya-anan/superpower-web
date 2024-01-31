@@ -225,6 +225,9 @@ export class KanbanSidebarComponent implements OnDestroy {
             if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
                 this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
             }
+            _.each(this.selectedOrganization.facilities, (facility) => {
+                facility.name = `${facility.type} - ${facility.address}`;
+            });
         }
     }
     // Helper methods to initialize form arrays
@@ -310,7 +313,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     calculateHours(data: any) {
-        return (data.subType2.name) ? data.subType2.value : (data.subType1.name) ?  data.subType1.value : (data.industryType.name) ? data.industryType.value : 0
+        return (data.subType2.name) ? data.subType2.value : (data.subType1.name) ? data.subType1.value : (data.industryType.name) ? data.industryType.value : 0
     }
 
     onServiceChange(quoteIndex: number, index: number) {
@@ -352,6 +355,11 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.dealForm.get('value')?.setValue(finalAmount)
         }
     }
+
+    customFacilityLabel(option: any): string {
+        return `${option.type} - ${option.address}`;
+    }
+
     getDealFinalAmount() {
         return Number(this.dealForm.get('value')?.value);
     }
@@ -395,7 +403,7 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     updateCustomerContact(event: any) {
         const result: any = _.filter(this.organizationFilterData, (obj) => obj.id == event.value);
-        if(result.length > 0) { 
+        if (result.length > 0) {
             this.individualsData = _.filter(this.allIndividualsList, (obj: any) => obj.company === result[0].name);
         }
     }

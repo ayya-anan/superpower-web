@@ -23,7 +23,8 @@
                             <div class="field col-12">
                                 <label>Organization</label>
                                 <p-dropdown appendTo="body" formControlName="org" [options]="organizationFilterData"
-                                    optionLabel="name" optionValue="id" placeholder="Select Organization" (onChange)="updateCustomerContact($event)"></p-dropdown>
+                                    optionLabel="name" optionValue="id" placeholder="Select Organization"
+                                    (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>Status</label>
@@ -43,8 +44,8 @@
                             </div>
                             <div class="field col-12">
                                 <label>Account Manager</label><br>
-                                <p-dropdown appendTo="body" formControlName="accountManager" [options]="accountManagerList"
-                                    optionLabel="name" optionValue="id"
+                                <p-dropdown appendTo="body" formControlName="accountManager"
+                                    [options]="accountManagerList" optionLabel="name" optionValue="id"
                                     placeholder="Select Account Manager"></p-dropdown>
                             </div>
                             <div class="field col-12">
@@ -81,7 +82,8 @@
                                         <p-accordionTab>
                                             <ng-template pTemplate="header">
                                                 <span class="flex align-items-center gap-2 w-full">
-                                                    <p-chip label="Quote # : {{ QuotesArray.controls.length - i }}"></p-chip>
+                                                    <p-chip
+                                                        label="Quote # : {{ QuotesArray.controls.length - i }}"></p-chip>
                                                     <p-chip
                                                         label="Quote Amount : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
                                                     <p-chip label="Created Date : {{ quote.get('date')?.value | date }}"
@@ -141,7 +143,7 @@
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-dropdown appendTo="body" formControlName="facility"
                                                                     [options]="selectedOrganization && selectedOrganization.facilities"
-                                                                    optionLabel="type" optionValue="_id"
+                                                                    optionLabel="name" optionValue="_id"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Facility"></p-dropdown>
                                                             </div>
