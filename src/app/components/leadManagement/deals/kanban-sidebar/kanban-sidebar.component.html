@@ -159,7 +159,8 @@
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
-                                                                    currency="EUR" locale="de-DE">
+                                                                    (change)="onServiceChange(i,j)" currency="EUR"
+                                                                    locale="de-DE">
                                                                 </p-inputNumber>
 
                                                             </div>
@@ -199,17 +200,21 @@
                                                         </div>
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">VAT </label>
-                                                            <p-inputNumber formControlName="vat" inputId="percent"
-                                                                suffix="%">
+                                                            <label class="mr-2">Discount</label>
+                                                            <p-inputNumber formControlName="discount" mode="currency"
+                                                                inputId="currency-germany" currency="EUR" locale="de-DE"
+                                                                (onInput)="getFinalTotal(i)">
                                                             </p-inputNumber>
                                                         </div>
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">Discount</label>
-                                                            <p-inputNumber formControlName="discount" mode="currency"
-                                                                inputId="currency-germany" currency="EUR" locale="de-DE"
-                                                                (onChange)="getFinalTotal(i)">
+                                                            <label class="mr-2">VAT % </label>
+                                                            <p-dropdown appendTo="body" formControlName="vat"
+                                                                [options]="[0,5,7,19]"
+                                                                (onChange)="getFinalTotal(i)"></p-dropdown>
+                                                            <p-inputNumber mode="currency" inputId="currency-germany"
+                                                                currency="EUR" locale="de-DE"
+                                                                formControlName="vatValue">
                                                             </p-inputNumber>
                                                         </div>
                                                         <div

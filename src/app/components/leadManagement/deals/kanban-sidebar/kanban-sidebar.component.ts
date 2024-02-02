@@ -236,7 +236,8 @@ export class KanbanSidebarComponent implements OnDestroy {
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
             subTotal: ['0', [Validators.required]],
-            vat: ['18', [Validators.required]],
+            vat: [19, [Validators.required]],
+            vatValue: [0, []],
             discount: ['0', [Validators.required]],
             total: ['0', [Validators.required]],
             paymentMilestone: ['0', []],
@@ -345,17 +346,27 @@ export class KanbanSidebarComponent implements OnDestroy {
             total += +servicesFormGroup.get('total')?.value;
         }
         if (total) {
-            const vat = +quotesFormGroup.get('vat')?.value;
+            quotesFormGroup.patchValue({ subTotal: total });
+            const vatValue = this.getVatValue(quoteIndex);
             const discount = +quotesFormGroup.get('discount')?.value;
-            finalAmount = Math.round(((total * (vat / 100)) + total) - discount)
-            quotesFormGroup.patchValue({
-                subTotal: total,
-                total: finalAmount
-            });
+            finalAmount = (total - discount) + vatValue;
+            quotesFormGroup.patchValue({ total: finalAmount });
             this.dealForm.get('value')?.setValue(finalAmount)
         }
     }
 
+    getVatValue(quoteIndex: number) {
+        let result = 0;
+        const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
+        const vat = +quotesFormGroup.get('vat')?.value;
+        const total = +quotesFormGroup.get('subTotal')?.value;
+        const discount = +quotesFormGroup.get('discount')?.value;
+        if (total) {
+            result = Math.round((total - discount) * (vat / 100));
+            quotesFormGroup.patchValue({ vatValue: result });
+        }
+        return result;
+    }
     customFacilityLabel(option: any): string {
         return `${option.type} - ${option.address}`;
     }
