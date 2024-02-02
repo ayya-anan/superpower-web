@@ -96,7 +96,12 @@ export class KanbanSidebarComponent implements OnDestroy {
     organizationFilterData: { name: string; id: any; }[] = [];
     showQuote: boolean = false;
     showTableView: boolean = false;
-    paymentMilestone: any;
+    paymentMilestone = [
+        { label: 'Annual', value: 1 },
+        { label: ' Semi-Annual', value: 2 },
+        { label: 'Quarterly', value: 4 },
+        { label: 'Monthly', value: 12 }
+    ];
     showPaymentsTable: boolean = false;
     accountManagerList: { name: string; id: any; }[] = [];
     allIndividualsList: any;
@@ -105,13 +110,6 @@ export class KanbanSidebarComponent implements OnDestroy {
         { header: 'Quote Created Date', field: 'createdDate' },
         { header: 'Quote Value', field: 'value' },
         { header: 'Status', field: 'status' },
-        { header: 'Actions', field: 'action' },
-    ];
-    paymentColumns: any = [
-        { header: 'Milestone Date', field: 'date' },
-        { header: 'Milestone Criteria', field: 'criteria' },
-        { header: 'Percentage', field: 'percentage' },
-        { header: 'Amount', field: 'amount' },
         { header: 'Actions', field: 'action' },
     ];
 
@@ -183,7 +181,7 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     patchQuoteGroup(quote: any) {
         const quoteGroup = this.fb.group({
-            date: [quote.date],
+            date: [new Date(quote.date)],
             status: [quote.status],
             subTotal: [quote.subTotal],
             vat: [quote.vat],
@@ -205,6 +203,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         const paymentsArray = quoteGroup.get('payments') as FormArray;
         paymentsArray.clear();  // Clear existing controls
         quote.payments.forEach((payment: any) => {
+            payment.date = new Date(payment.date)
             paymentsArray.push(this.fb.group(payment));
         });
         return quoteGroup;
@@ -277,16 +276,18 @@ export class KanbanSidebarComponent implements OnDestroy {
             total: ['0', [Validators.required]],
         }));
     }
+
     createPaymentMilestone(quoteFormIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         const paymentMilestone = +quotesFormGroup.get('paymentMilestone')?.value;
         if (paymentMilestone) {
             const result = (this.getDealFinalAmount() / paymentMilestone);
             const monthIncrement = Math.round(12 / paymentMilestone);
+            this.getPaymentArray(quoteFormIndex).clear();  // Clear existing controls
             for (let i = 0; i < paymentMilestone; i++) {
                 this.getPaymentArray(quoteFormIndex).push(this.fb.group({
-                    date: [new Date().setMonth(new Date().getMonth() + (monthIncrement * (i + 1))), [Validators.required]],
-                    criteria: ['Auto payment generation', []],
+                    date: [new Date(new Date().setMonth(new Date().getMonth() + (monthIncrement * (i + 1)))), [Validators.required]],
+                    criteria: ['Payment ' + (i + 1), []],
                     percentage: [(100 / paymentMilestone).toFixed(2), [Validators.required]],
                     amount: [result.toFixed(2), [Validators.required]],
                     status: ['New', [Validators.required]],
@@ -294,7 +295,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             }
         } else {
             this.getPaymentArray(quoteFormIndex).push(this.fb.group({
-                date: ['', [Validators.required]],
+                date: [new Date(), [Validators.required]],
                 criteria: ['', []],
                 percentage: ['', [Validators.required]],
                 amount: ['', [Validators.required]],
@@ -303,14 +304,20 @@ export class KanbanSidebarComponent implements OnDestroy {
         }
 
     }
-    getPaymentData(quoteFormIndex: number) {
-        const result: any = []
+    validatePayment(quoteFormIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
-        const paymentsArray = quotesFormGroup.get('payments') as FormArray;
-        _.each(paymentsArray.controls, (payment) => {
-            result.push(payment.value);
-        })
-        return result;
+        const payments = this.getPaymentArray(quoteFormIndex).value;
+        let percentage = 0;
+        let amount = 0;
+        _.each(payments, (payment) => {
+            percentage += +payment.percentage;
+            amount += +payment.amount;
+        });
+        if (percentage === 100 && amount === this.getDealFinalAmount()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     calculateHours(data: any) {

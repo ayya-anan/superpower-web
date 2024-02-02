@@ -230,10 +230,57 @@
                                                 </div>
                                                 <ng-container
                                                     *ngIf="getPaymentArray(i).controls && getPaymentArray(i).controls.length > 0">
-                                                    <div class="col-12 text-2xl font-medium">Payments</div>
-                                                    <app-table [loading]="loading" [key]="'Payments'"
-                                                        [columns]="paymentColumns"
-                                                        [tableData]="getPaymentData(i)"></app-table>
+
+                                                    <div>
+                                                        <div class="grid mt-2">
+                                                            <div
+                                                                class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <label> Milestone Date </label>
+                                                            </div>
+                                                            <div
+                                                                class="col-5 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <label> Milestone Criteria </label>
+                                                            </div>
+                                                            <div
+                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <label> Percentage </label>
+                                                            </div>
+                                                            <div
+                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <label> Amount </label>
+                                                            </div>
+                                                        </div>
+                                                        <ng-container formArrayName="payments">
+                                                            <div class="grid mt-2"
+                                                                *ngFor="let payment of getPaymentArray(i).controls; let k = index"
+                                                                [formGroupName]="k">
+                                                                <div
+                                                                    class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                    <p-calendar formControlName="date"
+                                                                        dateFormat="dd-M-yy"
+                                                                        [showIcon]="true"></p-calendar>
+                                                                </div>
+                                                                <div
+                                                                    class="col-5 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                    <input formControlName="criteria" pInputText />
+                                                                </div>
+                                                                <div
+                                                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                    <p-inputNumber formControlName="percentage"
+                                                                        >
+                                                                    </p-inputNumber>
+                                                                </div>
+                                                                <div
+                                                                    class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                    <p-inputNumber formControlName="amount"
+                                                                        mode="currency" inputId="currency-germany"
+                                                                        
+                                                                        currency="EUR" locale="de-DE">
+                                                                    </p-inputNumber>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
                                                 </ng-container>
                                                 <div class="flex w-full border-top-1 surface-border py-5 gap-3">
                                                     <div class="col-4 justify-content-start">
@@ -242,11 +289,15 @@
                                                             class="p-button-primary h-3rem justify-content-start"
                                                             (click)="op.toggle($event)"></button>
                                                     </div>
-                                                    <p-overlayPanel #op [styleClass]="'partitionClass'">
+                                                    <p-overlayPanel #op [styleClass]="'partitionClass'"
+                                                        [dismissable]="false">
                                                         <ng-template pTemplate="content">
                                                             <label for="firstname">Number of Payment Milestones</label>
-                                                            <input type="text" formControlName="paymentMilestone"
-                                                                class="text-base  text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                                                            <p-dropdown appendTo="body"
+                                                                formControlName="paymentMilestone"
+                                                                [options]="paymentMilestone" optionLabel="label"
+                                                                optionValue="value"
+                                                                placeholder="Select Milestone"></p-dropdown>
                                                             <button pButton pRipple type="submit" label="Create"
                                                                 class="p-button-primary h-2.5rem mt-2"
                                                                 (click)="createPaymentMilestone(i)"></button>
@@ -255,12 +306,12 @@
                                                     <div class="col-8 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
                                                             label="Save" class="p-button-primary h-3rem"
-                                                            [disabled]="dealForm.invalid"
+                                                            [disabled]="dealForm.invalid || !validatePayment(i)"
                                                             (click)="saveQuote($event)"></button>
                                                         <button pButton pRipple icon="pi pi-file-pdf"
                                                             label="Document Preview" class="p-button-primary h-3rem"
                                                             (click)="documentPreview($event, i)"
-                                                            [disabled]="dealForm.invalid"></button>
+                                                            [disabled]="dealForm.invalid || !validatePayment(i)"></button>
                                                     </div>
                                                 </div>
                                             </div>
