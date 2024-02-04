@@ -183,10 +183,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         const quoteGroup = this.fb.group({
             date: [new Date(quote.date)],
             status: [quote.status],
-            subTotal: [quote.subTotal],
+            subTotal: [{ value: quote.subTotal, disabled: true }],
             vat: [quote.vat],
+            vatValue: [{ value: Math.round((quote.subTotal - quote.discount) * (quote.vat / 100)), disabled: true }],
             discount: [quote.discount],
-            total: [quote.total],
+            total: [{ value: quote.total, disabled: true }],
             paymentMilestone: [quote.paymentMilestone],
             services: this.fb.array([]),
             payments: this.fb.array([])
@@ -196,6 +197,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quoteGroup.get('services') as FormArray;
         servicesArray.clear();  // Clear existing controls
         quote.services.forEach((service: any) => {
+            service.quantity = { value: service.quantity, disabled: true }
+            service.total = { value: service.total, disabled: true }
             servicesArray.push(this.fb.group(service));
         });
 
@@ -225,7 +228,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
             }
             _.each(this.selectedOrganization.facilities, (facility) => {
-                facility.name = `${facility.type} - ${facility.address}`;
+                facility.name = `${facility.type} - ${(facility.address) ? facility.address : ''}`;
             });
         }
     }
@@ -234,11 +237,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
-            subTotal: ['0', [Validators.required]],
+            subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
-            vatValue: [0, []],
+            vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
-            total: ['0', [Validators.required]],
+            total: [{ value: '0', disabled: true }, [Validators.required]],
             paymentMilestone: ['0', []],
             services: this.fb.array([]),
             payments: this.fb.array([])
@@ -271,9 +274,9 @@ export class KanbanSidebarComponent implements OnDestroy {
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
             unitRate: ['0', [Validators.required]],
-            quantity: ['0', [Validators.required]],
+            quantity: [{ value: '0', disabled: true }, [Validators.required]],
             employeeCount: ['0', [Validators.required]],
-            total: ['0', [Validators.required]],
+            total: [{ value: '0', disabled: true }, [Validators.required]],
         }));
     }
 
@@ -343,6 +346,15 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.getFinalTotal(quoteIndex);
         }
     }
+    onServiceCountChange(quoteIndex: number, index: number) {
+        const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
+        const servicesArray = quotesFormGroup.get('services') as FormArray;
+        const servicesFormGroup = servicesArray.at(index) as FormGroup;
+        const total = (+servicesFormGroup.get('employeeCount')?.value) * (+servicesFormGroup.get('quantity')?.value) * (+servicesFormGroup.get('unitRate')?.value)
+        servicesFormGroup.patchValue({ total: total });
+        this.getFinalTotal(quoteIndex);
+    }
+
     getFinalTotal(quoteIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;

@@ -104,7 +104,7 @@
                                                         <div class="mb-3 text-2xl font-medium">Services</div>
                                                     </div>
                                                     <div class="flex mb-3 flex-wrap gap-2">
-                                                        <button pButton pRipple label="Add New" icon="pi pi-plus"
+                                                        <button pButton pRipple label="Add New Services" icon="pi pi-plus"
                                                             (click)="initServicesArray(i)"></button>
                                                     </div>
                                                 </div>
@@ -159,14 +159,14 @@
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
-                                                                    (change)="onServiceChange(i,j)" currency="EUR"
+                                                                    (onInput)="onServiceCountChange(i,j)" currency="EUR"
                                                                     locale="de-DE">
                                                                 </p-inputNumber>
 
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <p-inputNumber formControlName="employeeCount">
+                                                                <p-inputNumber formControlName="employeeCount" (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
 
                                                             </div>
