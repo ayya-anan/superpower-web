@@ -354,7 +354,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         servicesFormGroup.patchValue({ total: total });
         this.getFinalTotal(quoteIndex);
     }
-
+    onPaymentPercentageChange(quoteIndex: number, index: number) {
+        const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
+        const paymentsArray = quotesFormGroup.get('payments') as FormArray;
+        const paymentsFormGroup = paymentsArray.at(index) as FormGroup;
+        const total = this.getDealFinalAmount();
+        const percentage = paymentsFormGroup.get('percentage')?.value;
+        paymentsFormGroup.patchValue({ amount: Math.round((percentage / 100) * total) });
+    }
     getFinalTotal(quoteIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
