@@ -96,7 +96,7 @@
 								<button pButton pRipple icon="pi pi-plus" label="Add Facility" class="p-button-primary text-center" (click)="updateFacility()"></button>
 							</div>
 							<ng-container *ngIf="facilitiesTableData.length > 0">
-								<app-table [loading]="loading" [key]="'Facilities'" [columns]="facilityCols" [tableData]="facilitiesTableData"
+								<app-table [loading]="loading" [key]="'facilities'" [footerKey]="'Facilities'" [columns]="facilityCols" [tableData]="facilitiesTableData"
 								(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 							</ng-container>
 						</ng-container>
@@ -215,7 +215,7 @@
 							<button pButton pRipple icon="pi pi-plus" label="Add Point Of Contact" class="p-button-primary text-center" (click)="addPOC()"></button>
 						</div>
 						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
-							<app-table [loading]="loading" [key]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
+							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
 							(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 						</div>
 					</p-fieldset>
@@ -256,6 +256,6 @@
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [loading]="loading" [key]="'Organizations'" [columns]="columns" [tableData]="tableData"
+	<app-table [loading]="loading" [key]="'organizations'" [footerKey]="'Organizations'" [columns]="columns" [tableData]="tableData"
 		(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 </div>

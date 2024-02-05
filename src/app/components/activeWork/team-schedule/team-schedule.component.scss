@@ -1,0 +1,21 @@
+.fieldClassMargin {
+    margin-top: 3px;
+}
+
+.activeLinks {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.tableClass {
+    border: 1px solid var(--gray-300);
+    text-align: center;
+    height: auto;
+    line-height: 28px;
+}
+
+.totalHours {
+    background: var(--green-50);
+    border-top: 1px solid var(--gray-300);
+    border-bottom: 1px solid var(--gray-300);
+}

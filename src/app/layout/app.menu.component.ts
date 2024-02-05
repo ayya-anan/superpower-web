@@ -39,11 +39,10 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'MENU.ACTIVEWORK',
-
                 icon: 'pi pi-fw pi-stopwatch',
                 items: [
-                    { label: 'MENU.TEAM_SCHEDULE', routerLink: ['/'] },
-                    { label: 'MENU.TIME_TRACKING', routerLink: ['/'] },
+                    { label: 'MENU.TEAM_SCHEDULE', routerLink: ['/activeWork/schedule'] },
+                    { label: 'MENU.TIME_TRACKING', routerLink: ['/activeWork/tracking'] },
                     { label: 'MENU.INVOICE', routerLink: ['/'] },
                 ]
             },

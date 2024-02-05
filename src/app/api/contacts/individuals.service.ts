@@ -10,6 +10,8 @@ export class IndividualService {
     updateIndividual: EventEmitter<any> = new EventEmitter();
     deleteIndividual: EventEmitter<any> = new EventEmitter();
 
+    saveAllocationData: any = [];
+
     constructor(
         private individualsAPI: IndividualsAPI
     ) { }

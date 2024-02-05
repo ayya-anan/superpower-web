@@ -1,0 +1,5 @@
+<div class="rangeSelection inline-flex">
+    <ng-container *ngFor="let item of results">
+        <div class="pl-2 pr-2 rangeItem" [ngClass]="{'active' : item.state, 'inactive': !item.state}">{{item.label}}</div>
+    </ng-container>
+</div>

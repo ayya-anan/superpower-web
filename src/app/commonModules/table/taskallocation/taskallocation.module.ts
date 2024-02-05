@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { TableComponent } from './table.component';
+import { TaskallocationComponent } from './taskallocation.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child.module';
 import { ButtonModule } from 'primeng/button';
-import { TaskAlloactionModule } from './taskallocation/taskallocation.module';
-import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -17,12 +18,13 @@ import { DialogModule } from 'primeng/dialog';
 		ReactiveFormsModule,
 		MultiSelectModule,
 		TableModule,
+		DropdownModule,
+		CalendarModule,
 		ButtonModule,
-		TaskAlloactionModule,
-		DialogModule,
+		ToastModule,
 		AppTranslateChildModule
 	],
-	declarations: [TableComponent],
-    exports: [TableComponent],
+	declarations: [TaskallocationComponent],
+    exports: [TaskallocationComponent],
 })
-export class AllTableModule { }
+export class TaskAlloactionModule { }

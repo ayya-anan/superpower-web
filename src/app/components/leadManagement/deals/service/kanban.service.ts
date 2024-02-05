@@ -35,6 +35,7 @@ export class KanbanService {
         this.xService.getAllX('deal').subscribe(
             (res: any) => {
                 const data = _.cloneDeep(dealStatus);
+                console.log(res.results);
                 _.each(data, (list) => {
                     list.cards = _.filter(res.results, (d) => d.status === list.name) || [];
                 });

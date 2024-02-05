@@ -1,0 +1,21 @@
+.rangeSelection {
+    border: 1px solid grey;
+    height: 34px;
+    // border-radius: 9px;
+    line-height: 32px;
+    font-weight: 600;
+
+    .rangeItem:not(:last-child) {
+        border-right: 1px solid grey;
+        cursor: pointer;
+    }
+
+    .active {
+        background: var(--primary-200);
+    }
+
+    .inactive {
+        background: var(--gray-200);
+    }
+
+}

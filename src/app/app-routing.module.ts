@@ -14,6 +14,7 @@ const routes: Routes = [
             { path: 'dashboard', data: { breadcrumb: 'Dashboard' }, loadChildren: () => import('./components/dashboards/dashboards.module').then(m => m.DashboardsModule) },
             { path: 'contacts', data: { breadcrumb: 'COMMON.CONTACTS' }, loadChildren: () => import('./components/contacts/contacts.module').then(m => m.ContactsModule) },
             { path: 'leadManagement', data: { breadcrumb: 'Lead Management' }, loadChildren: () => import('./components/leadManagement/leadManagement.module').then(m => m.LeadManagementModule) },
+            { path: 'activeWork', data: { breadcrumb: 'Active Work' }, loadChildren: () => import('./components/activeWork/activeWork.module').then(m => m.ActiveWorkModule) },
         ]
     },
     { path: 'auth', data: { breadcrumb: 'Auth' }, loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
