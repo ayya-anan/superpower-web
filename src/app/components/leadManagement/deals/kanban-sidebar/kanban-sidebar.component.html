@@ -103,9 +103,16 @@
                                                     <div class="flex flex-column">
                                                         <div class="mb-3 text-2xl font-medium">Services</div>
                                                     </div>
+                                                    <div class="flex flex-column">
+                                                        <div class="mb-3 font-medium">Multiplier : {{
+                                                            calculateHours(selectedOrganization?.primaryDetails) }} <i
+                                                                [pTooltip]="industryType" tooltipPosition="left"
+                                                                class="pi pi-info-circle"></i>
+                                                        </div>
+                                                    </div>
                                                     <div class="flex mb-3 flex-wrap gap-2">
-                                                        <button pButton pRipple label="Add New" icon="pi pi-plus"
-                                                            (click)="initServicesArray(i)"></button>
+                                                        <button pButton pRipple label="Add New Services"
+                                                            icon="pi pi-plus" (click)="initServicesArray(i)"></button>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -128,7 +135,7 @@
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> Multiplier</label>
+                                                            <label> Hours </label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
@@ -159,20 +166,22 @@
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
-                                                                    (change)="onServiceChange(i,j)" currency="EUR"
+                                                                    (onInput)="onServiceCountChange(i,j)" currency="EUR"
                                                                     locale="de-DE">
                                                                 </p-inputNumber>
 
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <p-inputNumber formControlName="employeeCount">
+                                                                <p-inputNumber formControlName="employeeCount"
+                                                                    (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
 
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <p-inputNumber formControlName="quantity">
+                                                                <p-inputNumber formControlName="quantity"
+                                                                    (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
                                                             </div>
                                                             <div
@@ -267,14 +276,13 @@
                                                                 <div
                                                                     class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                     <p-inputNumber formControlName="percentage"
-                                                                        >
+                                                                        (onInput)="onPaymentPercentageChange(i,k)">
                                                                     </p-inputNumber>
                                                                 </div>
                                                                 <div
                                                                     class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                     <p-inputNumber formControlName="amount"
                                                                         mode="currency" inputId="currency-germany"
-                                                                        
                                                                         currency="EUR" locale="de-DE">
                                                                     </p-inputNumber>
                                                                 </div>
@@ -331,3 +339,16 @@
     [quote]="selectedQuote"></app-invoice>
 
 <p-toast></p-toast>
+<ng-template #industryType>
+    <div *ngIf="selectedOrganization && selectedOrganization.primaryDetails">
+        <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.industryType">
+            <b>Industry Type : </b> &nbsp;<span>{{ selectedOrganization.primaryDetails.industryType.name }}</span>
+        </div>
+        <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.subType1">
+            <b>Industry Subtype : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType1.name }}</span>
+        </div>
+        <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.subType2">
+            <b>Industry Subtype : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType2.name }}</span>
+        </div>
+    </div>
+</ng-template>

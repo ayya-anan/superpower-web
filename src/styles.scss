@@ -17,11 +17,13 @@ $gutter: 1rem; //for primeflex grid system
     width: 100%;
 }
 
-.p-inputtext, .p-calendar, .p-chips, .p-inputnumber {
+.p-inputtext,
+.p-calendar,
+.p-chips {
     width: 100%;
 }
 
-.layout-root-menuitem > ul {
+.layout-root-menuitem>ul {
     width: 16rem;
 }
 
@@ -31,7 +33,10 @@ $gutter: 1rem; //for primeflex grid system
 
 .p-accordion {
     .p-accordion-tab {
-        .p-accordion-header { border-top: 1px solid #dee2e6 !important; }
+        .p-accordion-header {
+            border-top: 1px solid #dee2e6 !important;
+        }
+
         margin-bottom: 5px;
     }
 }
@@ -48,10 +53,13 @@ $gutter: 1rem; //for primeflex grid system
     border-bottom: 2px solid var(--gray-300);
 }
 
-
 .assigneeView{
     .p-dialog-content {
         padding-top: 0px;
         padding-bottom: 0px;
     }
+}
+
+.p-tooltip>.p-tooltip-text {
+    width: 350px !important;
 }

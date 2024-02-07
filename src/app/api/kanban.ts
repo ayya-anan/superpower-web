@@ -1,6 +1,7 @@
 export interface KanbanCard {
     id: string;
     dealName?: string;
+    status?: string;
     org?: string;
     progress?: number;
     value?: number;

@@ -9,8 +9,6 @@
         [attr.target]="item.target"
         tabindex="0"
         pRipple
-        [pTooltip]="item.label | translate"
-        [tooltipDisabled]="!(isSlim && root && !active)"
     >
         <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
         <span class="layout-menuitem-text">{{ item.label | translate }}</span>
@@ -34,8 +32,6 @@
         [attr.target]="item.target"
         tabindex="0"
         pRipple
-        [pTooltip]="item.label | translate"
-        [tooltipDisabled]="!(isSlim && root)"
     >
         <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
         <span class="layout-menuitem-text">{{ item.label | translate }}</span>
