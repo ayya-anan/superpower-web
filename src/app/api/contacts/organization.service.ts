@@ -11,6 +11,7 @@ export class OrganizationService {
     deleteOrganizationEmit: EventEmitter<any> = new EventEmitter();
     activeOrganizationView: boolean = false;
     organizationDetails: any = {};
+    allorg: any;
 
     constructor(
         private organizationAPI: OrganizationAPI
@@ -18,19 +19,24 @@ export class OrganizationService {
 
     //To get Service Drilldown Details
     getAllOrganization() {
-        this.organizationAPI.getOrganization().subscribe(
-            (res: any) => {
-                this.allOrganization.emit(res);
-            },
-            (err: any) => {
-                this.allOrganization.emit(err);
-            }
-        );
+        if (this.allorg) { this.allOrganization.emit(this.allorg); }
+        else {
+            this.organizationAPI.getOrganization().subscribe(
+                (res: any) => {
+                    this.allorg = _.cloneDeep(res);
+                    this.allOrganization.emit(res);
+                },
+                (err: any) => {
+                    this.allOrganization.emit(err);
+                }
+            );
+        }
     }
 
     postOrganization(value: any) {
         this.organizationAPI.postOrganization(value).subscribe(
             (res: any) => {
+                this.allorg = null;
                 this.addOrganization.emit(res);
             },
             (err: any) => {
@@ -49,14 +55,14 @@ export class OrganizationService {
             }
         );
     }
-    
+
     deleteOrganization(id: any) {
         this.organizationAPI.deleteOrganization(id).subscribe(
             (res: any) => {
                 this.deleteOrganizationEmit.emit(res);
             },
             (err: any) => {
-              
+
             }
         );
     }

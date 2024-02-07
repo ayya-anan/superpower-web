@@ -4,6 +4,9 @@ import { KanbanCard, KanbanList } from 'src/app/api/kanban';
 import { KanbanService } from '../service/kanban.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DealsComponent } from '../deals.component';
+import * as _ from 'lodash';
+import { dealStatus } from '../deals.helper';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
     selector: 'app-kanban-list',
@@ -28,7 +31,11 @@ export class KanbanListComponent implements OnInit {
 
     @ViewChild('listEl') listEl!: ElementRef;
 
-    constructor(public parent: DealsComponent, private kanbanService: KanbanService) { }
+    constructor(
+        public parent: DealsComponent,
+        private kanbanService: KanbanService,
+        private xService: XService
+    ) { }
 
     ngOnInit(): void {
         this.isMobileDevice = this.kanbanService.isMobileDevice();
@@ -38,11 +45,13 @@ export class KanbanListComponent implements OnInit {
                 label: 'List actions', items: [
                     { separator: true },
                     { label: 'Copy list', command: () => this.onCopy(this.list) },
-                    { label: 'Remove list', command: () =>  {
-                        if (this.list.listId) {
-                            this.onDelete(this.list.listId)
+                    {
+                        label: 'Remove list', command: () => {
+                            if (this.list.listId) {
+                                this.onDelete(this.list.listId)
+                            }
                         }
-                    }},
+                    },
                 ]
             }
         ];
@@ -81,6 +90,9 @@ export class KanbanListComponent implements OnInit {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
+            const card = event.previousContainer.data[event.previousIndex];
+            card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
+            this.xService.updateX('deal', card, card.id);
             transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
         }
     }
