@@ -151,7 +151,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             startDate: [new Date(), [Validators.required]],
             source: ['', []],
             value: ['0', [Validators.required]],
-            closeDate: [new Date(), [Validators.required]],
+            closeDate: [new Date(new Date().setMonth(new Date().getMonth() + 2)), [Validators.required]],
             quotes: this.fb.array([])
         });
         // this.initQuotesArray();
