@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import * as _ from 'lodash';
 import { XService } from 'src/app/api/x/x.service';
+import { dealStatus } from '../deals.helper';
 
 @Component({
     selector: 'app-kanban-card',
@@ -25,9 +26,9 @@ export class KanbanCardComponent implements OnDestroy {
 
     constructor(
         private kanbanService: KanbanService,
-         private organizationService: OrganizationService,
-         private xService: XService,
-         ) {
+        private organizationService: OrganizationService,
+        private xService: XService,
+    ) {
         this.organizationService.getAllOrganization();
         this.subscribeToGetAllOrganization();
         this.subscription = this.kanbanService.lists$.subscribe(data => {
@@ -53,7 +54,7 @@ export class KanbanCardComponent implements OnDestroy {
         return id;
     }
     onDelete() {
-        this.xService.deleteX('deal',this.card.id);
+        this.xService.deleteX('deal', this.card.id);
         this.kanbanService.deleteCard(this.card.id, this.listId);
     }
 
@@ -62,6 +63,8 @@ export class KanbanCardComponent implements OnDestroy {
     }
 
     onMove(listId: string) {
+        this.card.status = _.find(dealStatus, (s) => s.listId === listId)?.name
+        this.xService.updateX('deal', this.card, this.card.id);
         this.kanbanService.moveCard(this.card, listId, this.listId);
     }
 
