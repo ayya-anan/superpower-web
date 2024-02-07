@@ -1,13 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-time-range',
   templateUrl: './time-range.component.html',
-  styleUrl: './time-range.component.scss'
+  styleUrl: './time-range.component.scss',
+  providers: []
 })
 export class TimeRangeComponent implements OnInit {
 
   @Input() key: any;
+  @Output() updateRange = new EventEmitter();
+
+  activeState: any;
 
   yearlyRange = [
     { label: 'Quaterly', field: 'quaterly', value: 'Q', state: true},
@@ -24,6 +28,12 @@ export class TimeRangeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+   this.activeState = 'Quaterly';
    this.results = (this.key === 'monthlyView') ? this.monthRange : this.yearlyRange;
+  }
+
+  updateView(value: any) {
+    this.activeState = value.label;
+    this.updateRange.emit({data: value.label }); 
   }
 }

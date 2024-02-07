@@ -15,6 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { TableModule } from 'primeng/table';
 		InputSwitchModule,
 		DividerModule,
 		TableModule,
-		TimeRangeModule
+		TimeRangeModule,
+		ToastModule
 	],
 	declarations: [TeamScheduleComponent]
 })

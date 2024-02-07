@@ -2,7 +2,8 @@
     [tableData]="tableData" (manageActivity)="manageActivity($event)" (viewActivity)="viewActivity($event)"></app-table>
 
 <p-sidebar #sidebar [(visible)]="teamSchedule" position="right" [baseZIndex]="10000"
-    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+    styleClass="w-full md:w-11 lg:w-11 xl:w-11" [showCloseIcon]="false">
+    <p-toast></p-toast>
     <form [formGroup]="activeWork" (ngSubmit)="onSubmit()">
         <div class="col-12 grid">
             <div class="col-3 formClass" formGroupName="projectDetails">
@@ -47,13 +48,15 @@
                             <button class="text-right" pButton pRipple label="Add Task" icon="pi pi-plus"></button>
                         </div>
                     </div>
-                    <app-table [loading]="loading" [key]="'tasks'" [footerKey]="'Tasks'" [columns]="taskColumns"
-                        [tableData]="taskTableData" (addAssigneeDetail)="showAssigneeDetails($event)" (showAllocationDetails)="showAllocation($event)"></app-table>
+                    <app-table [loading]="loading" [key]="'tasks'" [footerKey]="'Services'" [columns]="taskColumns"
+                        [tableData]="taskTableData" (addAssigneeDetail)="showAssigneeDetails($event)"
+                        (showAllocationDetails)="showAllocation($event)"></app-table>
                 </p-fieldset>
-                <div class="mt-3" *ngIf="false">
+                <div class="mt-3" *ngIf="resourcesData.length > 0">
                     <p-fieldset legend="Manage User(s)" [toggleable]="true">
                         <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns"
-                            [tableData]="usersTableData"></app-table>
+                            [tableData]="resourcesData" (editContent)="editData($event)"
+                            (deleteContent)="delete($event)"></app-table>
                     </p-fieldset>
                 </div>
             </div>
@@ -61,21 +64,23 @@
     </form>
 </p-sidebar>
 
-<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '50vw', height: '330px' }">
-    <div class="col-12 grid" *ngIf="assigneeView; else allocationView">
+<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '50vw', height: '350px' }">
+    <div class="col-12 grid" *ngIf="assigneeView">
         <div class="col-3 p-0">
             <div class="mb-3">
                 <label>Assignee</label><br>
-                <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label" optionValue="label"
-                    placeholder="Select Assignee"></p-dropdown>
+                <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
+                    optionValue="label" placeholder="Select Assignee"></p-dropdown>
             </div>
             <div class="mb-3">
                 <label>Allocation</label><br>
-                <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100" (onInput)="updateAllocationData()"> </p-inputNumber>
+                <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100"
+                    (onInput)="updateAllocationData()"> </p-inputNumber>
             </div>
             <div class="mb-3">
                 <label class="mb-2">Auto Allocate</label><br>
-                <div><p-inputSwitch [(ngModel)]="toggleStatus" (onChange)="updateAllocationData()"></p-inputSwitch></div>
+                <div><p-inputSwitch [(ngModel)]="toggleStatus" (onChange)="updateAllocationData()"></p-inputSwitch>
+                </div>
             </div>
             <div class="mb-3">
                 <p-button label="Allocate" (onClick)="allocate()"></p-button>
@@ -86,11 +91,69 @@
         <div class="col p-0">
             <div class="col-12 mb-3 p-0">
                 <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
-                <div style="text-align: right;"><app-time-range></app-time-range></div>
+                <div style="text-align: right;"><app-time-range (updateRange)="updateRangeView($event)"></app-time-range></div>
             </div>
             <div class="col-12 p-0" style="overflow-y: auto;">
                 <div class="col-12 p-0 inline-flex">
-                    <ng-container *ngFor="let item of headers">
+                    <ng-container *ngFor="let item of timeRangeHeaders">
+                        <div class="p-0 tableClass" [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">{{item.name}}</div>
+                    </ng-container>
+                </div>
+                <div class="col-12 p-0 inline-flex">
+                    <ng-container *ngFor="let time of timeData; let index = index; trackBy:trackByIndex;">
+                        <div class="p-2 tableClass" [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
+                            <p-inputNumber inputId=a{{index}} [(ngModel)]="timeData[index]"> </p-inputNumber>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-12 p-1 mt-5 totalHours">
+                <span class="text-xl">Total Hours: {{totalHours}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- <ng-template #allocationView>
+        <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns" [tableData]="usersTableData"
+        (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+    </ng-template> -->
+</p-dialog>
+
+<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="updateAssignee" [style]="{ width: '50vw', height: '450px' }">
+    <div class="col-12 grid" *ngIf="assigneeView">
+        <div class="col-3 p-0">
+            <div class="mb-3">
+                <label>Assignee</label><br>
+                <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
+                    optionValue="label" placeholder="Select Assignee"></p-dropdown>
+            </div>
+            <div class="mb-3">
+                <label>Allocation</label><br>
+                <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100"
+                    (onInput)="updateAllocationData()"> </p-inputNumber>
+            </div>
+            <div class="mb-3">
+                <label>Start Date</label><br>
+                <p-calendar [(ngModel)]="updatedStartDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
+            </div>
+            <div class="mb-3">
+                <label>End Date</label><br>
+                <p-calendar [(ngModel)]="updatedEndDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
+            </div>
+            <div class="mb-3 text-center">
+                <p-button label="Update" (onClick)="updateAssigneeDetails()"></p-button>
+                <p-button class="ml-3" label="Cancel"></p-button>
+            </div>
+        </div>
+        <p-divider layout="vertical"></p-divider>
+        <div class="col p-0">
+            <div class="col-12 mb-3 p-0">
+                <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
+                <div style="text-align: right;"><app-time-range (updateRange)="updateRangeView($event)"></app-time-range></div>
+            </div>
+            <div class="col-12 p-0" style="overflow-y: auto;">
+                <div class="col-12 p-0 inline-flex">
+                    <ng-container *ngFor="let item of timeRangeHeaders">
                         <div class="col p-0 tableClass">{{item.name}}</div>
                     </ng-container>
                 </div>
@@ -107,7 +170,5 @@
             </div>
         </div>
     </div>
-    <ng-template #allocationView>
-        <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns" [tableData]="usersTableData"></app-table>
-    </ng-template>
+
 </p-dialog>

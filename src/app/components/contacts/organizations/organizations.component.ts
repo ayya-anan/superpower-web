@@ -182,6 +182,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             contact: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryPhone : '',
             poc: (pocDetails.length > 0) ? `${pocDetails[0].primaryDetails.firstName} ${pocDetails[0].primaryDetails.lastName}` : '',
             accountManager: item.primaryDetails.accountManager,
+            actualData: item
           }
           this.tableData.push(obj);
         });
@@ -419,7 +420,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   editData(event: any) {
     this.editId = event.rowData.id;
-    const updateData = this.organizationData[event.index];
+    // const updateData = this.organizationData[event.index];
+    const updateData = event.rowData.actualData;
     this.updateIndustryDetails(updateData.primaryDetails);
     // Patching the primaryDetails form group
     this.organizationForm.get('primaryDetails')?.patchValue(updateData.primaryDetails);
