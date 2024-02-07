@@ -108,7 +108,8 @@ export class IndividualComponent implements OnInit {
                         jobTitle: item.primaryDetails.jobTitle,
                         email: (item.addresses.length > 0) ? item.addresses[0].primaryEmail : '',
                         contact: (item.addresses.length > 0) ? item.addresses[0].primaryPhone : '',
-                        status: (item.primaryDetails.status) ? item.primaryDetails.status: this.status[0].name
+                        status: (item.primaryDetails.status) ? item.primaryDetails.status: this.status[0].name,
+                        actualData: item
                     }
                     this.tableData.push(obj);
                 });
@@ -216,7 +217,8 @@ export class IndividualComponent implements OnInit {
         this.editId = event.rowData.id;
         this.contactForm.reset();
         this.contactView = true;
-        const result = this.allIndividuals[event.index];
+        // const result = this.allIndividuals[event.index];
+        const result = event.rowData.actualData;
         // Patching the primary details
         this.contactForm.get('primaryDetails')?.patchValue(result.primaryDetails);
         this.contactForm.get('primaryDetails.companyName')?.patchValue({ name: result.primaryDetails.companyName });
