@@ -77,15 +77,6 @@ export class KanbanSidebarComponent implements OnDestroy {
         { name: 'Marketing Efforts' }
     ];
 
-    quantity: any = [
-        { type: 'Forestry and Logging', quantity: 0.5, subType: 'Forestry' },
-        { type: 'Forestry and Logging', quantity: 1.5, subType: 'Hard Coal Mining' },
-        { type: 'Forestry and Logging', quantity: 2.5, subType: 'Brown Coal Mining' },
-        { type: 'Coal Mining', quantity: 0.5, subType: 'Forestry' },
-        { type: 'Coal Mining', quantity: 1.5, subType: 'Hard Coal Mining' },
-        { type: 'Coal Mining', quantity: 2.5, subType: 'Brown Coal Mining' },
-    ];
-
     dealForm: FormGroup = new FormGroup({});
     individualSubscription: Subscription = new Subscription;
     individualsData: { name: string; id: any; }[] = [];
@@ -197,7 +188,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quoteGroup.get('services') as FormArray;
         servicesArray.clear();  // Clear existing controls
         quote.services.forEach((service: any) => {
-            service.quantity = { value: service.quantity, disabled: true }
+            service.employeeCount = { value: service.employeeCount, disabled: true }
             service.total = { value: service.total, disabled: true }
             servicesArray.push(this.fb.group(service));
         });
@@ -274,8 +265,8 @@ export class KanbanSidebarComponent implements OnDestroy {
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
             unitRate: ['0', [Validators.required]],
-            quantity: [{ value: '0', disabled: true }, [Validators.required]],
-            employeeCount: ['0', [Validators.required]],
+            quantity: ['0', [Validators.required]],
+            employeeCount: [{ value: '0', disabled: true }, [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
         }));
     }
@@ -340,7 +331,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             servicesFormGroup.patchValue({
                 employeeCount: employeeCount,
                 unitRate: service.amount,
-                quantity: hours,
+                quantity: Math.round(hours * employeeCount),
                 total: Math.round(employeeCount * service.amount * hours)
             });
             this.getFinalTotal(quoteIndex);
@@ -350,7 +341,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
         const servicesFormGroup = servicesArray.at(index) as FormGroup;
-        const total = (+servicesFormGroup.get('employeeCount')?.value) * (+servicesFormGroup.get('quantity')?.value) * (+servicesFormGroup.get('unitRate')?.value)
+        const total = (+servicesFormGroup.get('quantity')?.value) * (+servicesFormGroup.get('unitRate')?.value)
         servicesFormGroup.patchValue({ total: total });
         this.getFinalTotal(quoteIndex);
     }
