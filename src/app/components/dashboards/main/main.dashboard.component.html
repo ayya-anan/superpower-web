@@ -4,7 +4,7 @@
             <div class="mx-auto sm:mx-0">                
                 <h1 *ngIf="userData$ | async; let userData">
                     <span>                        
-                      {{ userData.userData.name}}
+                      {{ userData?.userData?.name}}
                     </span>
                 </h1>
             </div>

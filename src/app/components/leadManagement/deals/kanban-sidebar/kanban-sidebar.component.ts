@@ -212,8 +212,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     changeOrg(value: any) {
         if (value) {
             this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
-            if (this.selectedOrganization.primaryDetails.pointofContact && typeof this.selectedOrganization.primaryDetails.pointofContact === 'string') {
-                this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact);
+            if (this.selectedOrganization.primaryDetails.pointofContact && this.selectedOrganization.primaryDetails.pointofContact.length > 0 ) {
+                this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact[0].name);
             }
             if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
                 this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
@@ -405,10 +405,10 @@ export class KanbanSidebarComponent implements OnDestroy {
             (res: any) => {
                 const accountManagers: any = _.filter(res.results, (obj) => obj.primaryDetails.jobTitle === 'Account Manager' && obj.primaryDetails.companyName === 'Expert People Management GmbH');
                 this.accountManagerList = _.sortBy(_.map(accountManagers, (i) => {
-                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
+                    return { name: `${i.primaryDetails.firstName} ${i.primaryDetails.lastName}`, id: i.id, company: i.primaryDetails.companyName }
                 }), 'name');
                 this.individualsData = _.map(res.results, (i) => {
-                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
+                    return { name: `${i.primaryDetails.firstName} ${i.primaryDetails.lastName}`, id: i.id, company: i.primaryDetails.companyName }
                 });
                 this.allIndividualsList = _.cloneDeep(this.individualsData);
             }
