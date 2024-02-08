@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { AppConfig, LayoutService } from './layout/service/app.layout.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,8 @@ export class AppComponent implements OnInit {
     constructor(
         private primengConfig: PrimeNGConfig,
         private layoutService: LayoutService,
-        private translate: TranslateService
+        translate: TranslateService,
+        public oidcSecurityService: OidcSecurityService
     ) {
         // this language will be used as a fallback when a translation isn't found in the current language
         translate.setDefaultLang('en');
@@ -34,6 +36,22 @@ export class AppComponent implements OnInit {
             scale: 14                           //size of the body font size to scale the whole application
         };
         this.layoutService.config.set(config);
-    }
 
+        this.oidcSecurityService
+        .checkAuth()
+        .subscribe(
+          ({ isAuthenticated, userData, accessToken, idToken, configId }) => {
+            console.log('callback authenticated', isAuthenticated);
+          }
+        );
+    }
+    login() {
+        this.oidcSecurityService.authorize();
+      }
+    
+      logout() {
+        this.oidcSecurityService
+          .logoff()
+          .subscribe((result) => console.log(result));
+      }
 }

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 import { MenuItem } from 'primeng/api';
-import { Subscription, debounceTime } from 'rxjs';
+import { Observable, Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 interface MonthlyPayment {
@@ -14,6 +15,7 @@ interface MonthlyPayment {
     templateUrl: './main.dashboard.component.html',
 })
 export class MainDashboardComponent implements OnInit, OnDestroy {
+    userData$: Observable<UserDataResult> |undefined;
     metrics: any = [];
 
     transactions: any = [];
@@ -30,7 +32,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
     items: MenuItem[] = [];
 
-    constructor(private layoutService: LayoutService) {
+    constructor(private layoutService: LayoutService, private oidcSecurityService: OidcSecurityService) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -39,6 +41,10 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.userData$ = this.oidcSecurityService.userData$;
+        this.userData$.subscribe(u => {
+
+        });
         this.metrics = [
             {
                 title: 'Invoice',

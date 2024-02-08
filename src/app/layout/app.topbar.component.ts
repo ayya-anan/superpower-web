@@ -1,21 +1,26 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html',
 })
-export class AppTopbarComponent {
-
+export class AppTopbarComponent implements OnInit {
+    userData$: Observable<UserDataResult> |undefined;
     languageUpdate: boolean = false;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
-    constructor(public layoutService: LayoutService, public el: ElementRef, private translate: TranslateService) {}
+    constructor(public layoutService: LayoutService, public el: ElementRef, private translate: TranslateService, private oidcSecurityService: OidcSecurityService) {}
+    ngOnInit(): void {
+        this.userData$ = this.oidcSecurityService.userData$;
+    }
 
     onMenuButtonClick() {
         this.layoutService.onMenuToggle();
