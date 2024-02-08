@@ -3,7 +3,7 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { CallbackComponent } from './components/callback/callback.component';
-import { AuthorizationGuard } from './authorization.guard';
+
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
