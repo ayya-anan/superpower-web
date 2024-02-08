@@ -26,7 +26,6 @@ export class InvoiceComponent implements OnInit,OnChanges {
     ngOnInit() {
     }
     ngOnChanges() {
-        console.log(this.organization)
     }
     getName(value: string, type: string) {
         let name = '';

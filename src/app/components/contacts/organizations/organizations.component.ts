@@ -404,7 +404,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   industrySubType2Change(event: any) {
-    // console.log(event.value);
   }
 
   searchResults(event: any) {
