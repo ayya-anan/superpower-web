@@ -10,14 +10,14 @@
             </ng-template>
         </p-inplace> -->
         <div>
-            <button pButton pRipple type="button" icon="pi pi-ellipsis-h" class="p-button-rounded p-button-text p-button-secondary" (click)="menu.toggle($event)"></button>
+            <button *ngIf="false" pButton pRipple type="button" icon="pi pi-ellipsis-h" class="p-button-rounded p-button-text p-button-secondary" (click)="menu.toggle($event)"></button>
             <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
         </div>
     </div>
     <div [id]="list.listId" class="flex flex-column gap-3 overflow-y-auto  mt-3 scrollable kanban-list" cdkDropList (cdkDropListDropped)="dropCard($event)" (cdkDropListEntered)="insertHeight($event)" (cdkDropListExited)="removeHeight($event)" [cdkDropListData]="list.cards" [cdkDropListConnectedTo]="listIds" #listEl style="min-height:2rem">
         <app-kanban-card *ngFor="let card of list.cards" [card]="card" [listId]="list.listId" (click)="onCardClick($event, card)" cdkDrag cdkDragHandle [cdkDragDisabled]="isMobileDevice"></app-kanban-card>
     </div>
-    <div class="px-4 mb-3 w-full mt-4 flex">
+    <div class="px-4 mb-3 w-full mt-4 flex" *ngIf="keycloakService.isUserInRole('add-deal')">
         <button pButton pRipple label="New Deals" icon="pi pi-plus font-semibold" class="py-3 justify-content-center font-semibold w-full border-round" (click)="insertCard()"></button>
     </div>
 </div> 

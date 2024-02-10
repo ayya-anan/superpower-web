@@ -7,6 +7,7 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import * as _ from 'lodash';
 import { XService } from 'src/app/api/x/x.service';
 import { dealStatus } from '../deals.helper';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
     selector: 'app-kanban-card',
@@ -23,6 +24,7 @@ export class KanbanCardComponent implements OnDestroy {
     constructor(
         private kanbanService: KanbanService,
         private organizationService: OrganizationService,
+        public keycloakService: KeycloakService,
         private xService: XService,
     ) {
         this.organizationService.getAllOrganization();

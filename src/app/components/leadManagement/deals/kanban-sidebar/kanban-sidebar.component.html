@@ -63,7 +63,7 @@
                                 <p-calendar formControlName="closeDate" dateFormat="dd-M-yy"
                                     [showIcon]="true"></p-calendar>
                             </div>
-                            <div class="col-12 justify-content-end flex justify-content gap-3">
+                            <div class="col-12 justify-content-end flex justify-content gap-3" *ngIf="canUpdateDeal()">
                                 <button pButton pRipple type="submit" icon="pi pi-check" label="Save"
                                     class="p-button-primary" [disabled]="dealForm.invalid"
                                     (click)="saveQuote($event)"></button>
@@ -75,7 +75,7 @@
                     <div class="col-9">
                         <div class="grid">
                             <div class="col-8 mb-3 text-2xl font-medium">Quote Details</div>
-                            <div class="col-4 float-end text-right">
+                            <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
                                 <button pButton pRipple label="Add New Quote" icon="pi pi-plus"
                                     (click)="initQuotesArray()"></button>
                             </div>
@@ -95,7 +95,7 @@
                                                         label="Quote Amount : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
                                                     <p-chip label="Created Date : {{ quote.get('date')?.value | date }}"
                                                         icon="pi pi-calendar"></p-chip>
-                                                    <p-button icon="pi pi-copy" class="ml-auto"
+                                                    <p-button icon="pi pi-copy" class="ml-auto" *ngIf="canUpdateDeal()"
                                                         (click)="cloneQuote($event,i)" size="small"
                                                         [rounded]="true"></p-button>
                                                     <p-button icon="pi pi-trash" class="mr-2" *ngIf="false"
@@ -117,7 +117,7 @@
                                                                 class="pi pi-info-circle"></i>
                                                         </div>
                                                     </div>
-                                                    <div class="flex mb-3 flex-wrap gap-2">
+                                                    <div class="flex mb-3 flex-wrap gap-2" *ngIf="canUpdateDeal()">
                                                         <button pButton pRipple label="Add New Services"
                                                             icon="pi pi-plus" (click)="initServicesArray(i)"></button>
                                                     </div>
@@ -297,7 +297,7 @@
                                                         </ng-container>
                                                     </div>
                                                 </ng-container>
-                                                <div class="flex w-full border-top-1 surface-border py-4 gap-3">
+                                                <div class="flex w-full border-top-1 surface-border py-4 gap-3" *ngIf="canUpdateDeal()">
                                                     <div class="col-6 justify-content-start flex justify-content gap-3">
                                                         <p-dropdown appendTo="body" formControlName="paymentMilestone"
                                                             [options]="paymentMilestone" optionLabel="label"

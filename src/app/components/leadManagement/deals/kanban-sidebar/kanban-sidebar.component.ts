@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -118,6 +119,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         private organizationService: OrganizationService,
         private individualService: IndividualService,
         private kanbanService: KanbanService,
+        private keycloakService: KeycloakService,
         private xService: XService,
         private changeDetectorRef: ChangeDetectorRef,
         private dealService: DealService
@@ -138,6 +140,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllOrganization();
         this.subscribeToGetAllIndividuals();
         this.subscribeToSavedTemplate();
+    }
+    canUpdateDeal() {
+        return this.keycloakService.isUserInRole('edit-deal');
     }
     initForm() {
         if (!this.dealForm.value.dealName) {
