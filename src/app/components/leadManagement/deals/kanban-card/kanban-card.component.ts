@@ -17,12 +17,8 @@ export class KanbanCardComponent implements OnDestroy {
     @Input() card!: KanbanCard;
 
     @Input() listId!: string;
-
     menuItems: MenuItem[] = [];
-
     subscription: Subscription;
-    organizationSubscription: Subscription = new Subscription;
-    organizationData: any;
 
     constructor(
         private kanbanService: KanbanService,
@@ -30,25 +26,18 @@ export class KanbanCardComponent implements OnDestroy {
         private xService: XService,
     ) {
         this.organizationService.getAllOrganization();
-        this.subscribeToGetAllOrganization();
         this.subscription = this.kanbanService.lists$.subscribe(data => {
             let subMenu = data.map(d => ({ id: d.listId, label: d.name, command: () => this.onMove(d.listId) }));
             this.generateMenu(subMenu);
         })
     }
 
-    subscribeToGetAllOrganization() {
-        this.organizationSubscription = this.organizationService.allOrganization.subscribe(
-            (res: any) => {
-                this.organizationData = res.results;
-            });
-    }
     parseDate(dueDate: string) {
         return new Date(dueDate).toDateString().split(' ').slice(1, 3).join(' ');
     }
     getOrgName(id: string) {
-        if (this.organizationData && this.organizationData.length > 0) {
-            const org = _.find(this.organizationData, (org) => org.id === id);
+        if (this.organizationService.allorg && this.organizationService.allorg.results && this.organizationService.allorg.results.length > 0) {
+            const org = _.find(this.organizationService.allorg.results, (org) => org.id === id);
             if (org) { return org.primaryDetails.name; }
         }
         return id;
