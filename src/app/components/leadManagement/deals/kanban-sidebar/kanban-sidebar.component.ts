@@ -446,7 +446,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.xService.postX('deal', this.dealForm.getRawValue());
         }
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deals Saved Successfully' });
-        this.card = { ...this.dealForm.value };
+        this.card = { ...this.dealForm.getRawValue() };
         this.kanbanService.updateCard(this.card, this.listId);
         this.close(event);
     }
@@ -539,7 +539,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     documentPreview(event: Event, i: number) {
         this.quoteVisible = false;
         this.changeDetectorRef.detectChanges();
-        this.selectedQuote = this.dealForm.value.quotes[i];
+        this.selectedQuote = this.dealForm.getRawValue().quotes[i];
         this.quoteVisible = true;
     }
 

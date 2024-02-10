@@ -5,71 +5,73 @@ import { DealService } from 'src/app/api/leads/deal.service';
 import { NgxPrintService, PrintOptions } from 'ngx-print';
 
 @Component({
-    selector: 'app-invoice',
-    templateUrl: './invoice.component.html'
+  selector: 'app-invoice',
+  templateUrl: './invoice.component.html'
 })
-export class InvoiceComponent implements OnInit,OnChanges {
-    @Input() deal: any;
-    @Input() organization: any;
-    @Input() quote: any;
-    @Input() visible: boolean = false;
-    
-    templateContent = _.cloneDeep(templateContent)
-    notesContent = 'Notes here';
-    @ViewChild('printHeader') printHeader!: ElementRef;
-    @ViewChild('printComponent') printComponent!: ElementRef;
-    
-    showPrintContent: boolean = false;
+export class InvoiceComponent implements OnInit, OnChanges {
+  @Input() deal: any;
+  @Input() organization: any;
+  @Input() quote: any;
+  @Input() visible: boolean = false;
 
-    constructor( private dealService: DealService, 
-      private printService: NgxPrintService){}
-    ngOnInit() {
-    }
-    ngOnChanges() {
-    }
-    getName(value: string, type: string) {
-        let name = '';
-        switch (type) {
-            case 'facility':
-                name = _.find(this.organization.facilities, (facility) => facility._id === value)?.address;
-                break;
-            case 'service':
-                name = _.find(this.organization.services, (service) => service._id === value)?.type;
-                break;
-        }
-        return name;
-    }
-    getContent() {
-        let content = '';
-        if (this.printComponent && this.printComponent.nativeElement) {
-            const printContents = this.printComponent.nativeElement.outerHTML;
-            const printHeader = this.printHeader.nativeElement.outerHTML;
-            content = `${printHeader}${this.templateContent}${printContents}${this.notesContent}`;
-        }
-        return content;
-    }
+  templateContent = _.cloneDeep(templateContent)
+  notesContent = 'Notes here';
+  @ViewChild('printHeader') printHeader!: ElementRef;
+  @ViewChild('printFooter') printFooter!: ElementRef;
+  @ViewChild('printComponent') printComponent!: ElementRef;
 
-    printComponentContent() {
-        let content = this.getContent();
-        if (content) {
-            const popupWin: any = window.open('', '_blank', 'width=600,height=600');
-            popupWin.document.open();
-            popupWin.document.write(`<html>
+
+  showPrintContent: boolean = false;
+
+  constructor(private dealService: DealService,
+    private printService: NgxPrintService) { }
+  ngOnInit() {
+  }
+  ngOnChanges() {
+  }
+  getName(value: string, type: string) {
+    let name = '';
+    switch (type) {
+      case 'facility':
+        name = _.find(this.organization.facilities, (facility) => facility._id === value)?.address;
+        break;
+      case 'service':
+        name = _.find(this.organization.services, (service) => service._id === value)?.type;
+        break;
+    }
+    return name;
+  }
+  getContent() {
+    let content = '';
+    if (this.printComponent && this.printComponent.nativeElement) {
+      const printContents = this.printComponent.nativeElement.outerHTML;
+      const printHeader = this.printHeader.nativeElement.outerHTML;
+      const printFooter = this.printFooter.nativeElement.outerHTML;
+      content = `${printHeader}${this.templateContent}${printContents}${this.notesContent}${printFooter}`;
+    }
+    return content;
+  }
+
+  printComponentContent() {
+    let content = this.getContent();
+    if (content) {
+      const popupWin: any = window.open('', '_blank', 'width=600,height=600');
+      popupWin.document.open();
+      popupWin.document.write(`<html>
                 <head>
                 <title>Print</title>
                 <!-- Include any stylesheets or scripts needed for the print view -->
-                <link type="text/html"  href="styles.scss">
-                <link type="text/html" href="src/assets/layout/styles/layout/preloading.scss">
+                <link type="text/css" href="styles.scss">
+                <link type="text/css" href="src/assets/layout/styles/layout/preloading.scss">
                 </head>
-                <body onload="window.onafterprint=function(){window.close()}">${content}</body>
+               <body onload="window.print(); window.onafterprint = function(){ window.close(); }">${content}</body>
             </html>`);
-            popupWin.document.close();
-            // window.print();
-        }
+      popupWin.document.close();
     }
-    emailComponentContent() {
-        let content = this.getContent();
-        const body = `<!DOCTYPE html>
+  }
+  emailComponentContent() {
+    let content = this.getContent();
+    const body = `<!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8">
@@ -111,19 +113,19 @@ export class InvoiceComponent implements OnInit,OnChanges {
         ${content}
         </body>
         </html>`
-        if (content) {
-            this.dealService.sentEmail({content : body});
-        }
+    if (content) {
+      this.dealService.sentEmail({ content: body });
     }
+  }
 
-    printMe() {
-      this.showPrintContent = true;
-      const customPrintOptions: PrintOptions = new PrintOptions({
-        printSectionId: 'printContent',
-        useExistingCss: true,
-        previewOnly: true
-      });
-      this.printService.print(customPrintOptions);
+  printMe() {
+    this.showPrintContent = true;
+    const customPrintOptions: PrintOptions = new PrintOptions({
+      printSectionId: 'printContent',
+      useExistingCss: true,
+      previewOnly: true
+    });
+    this.printService.print(customPrintOptions);
   }
 
 }

@@ -16,10 +16,12 @@
 						<div class="mb-3 text-xl font-medium"> To</div>
 						<span>{{ organization?.primaryDetails?.name}}</span>
 						<span>{{ organization?.facilities[0]?.address}}</span>
-						<span>{{ organization?.facilities[0]?.country}} , {{ organization?.facilities[0]?.zipCode}}</span>
+						<span>{{ organization?.facilities[0]?.country}} , {{
+							organization?.facilities[0]?.zipCode}}</span>
 						<!-- <span>{{ organization?.addresses[0]?.address}}</span>
 						<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span> -->
 					</div>
+					<div class="mb-2">Dear {{ deal?.customerContact }},</div>
 				</div>
 				<div class="flex flex-column mt-5 md:mt-0">
 					<div class="flex flex-column">
@@ -54,7 +56,7 @@
 									Count</th>
 								<th
 									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-									Multiplier
+									Hours
 								</th>
 								<th
 									class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
@@ -71,7 +73,7 @@
 								<td class="text-right py-3 border-bottom-1 surface-border px-3">{{ service.unitRate |
 									currency:'EUR':true}}</td>
 								<td class="text-right py-3 border-bottom-1 surface-border px-3">{{
-									service.employeeCount}}
+									service.employeeCount }}
 								</td>
 								<td class="text-right py-3 border-bottom-1 surface-border">{{ service.quantity |
 									currency:'EUR':true}}</td>
@@ -91,12 +93,13 @@
 							<span>{{ quote.subTotal | currency:'EUR':true}}</span>
 						</div>
 						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-semibold mr-6">VAT</span>
-							<span>{{ (quote.subTotal * (quote.vat / 100) ) | currency:'EUR':true }}</span>
+							<span class="font-semibold mr-6">DISCOUNT</span>
+							<span>{{ quote.discount | currency:'EUR':true}}</span>
 						</div>
 						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-semibold mr-6">DISCOUNT</span>
-							<span> - {{ quote.discount | currency:'EUR':true}}</span>
+							<span class="font-semibold mr-6">VAT</span>
+							<span>{{ ((quote.subTotal - quote.discount) * (quote.vat / 100) ) | currency:'EUR':true
+								}}</span>
 						</div>
 						<div class="flex justify-content-between align-items-center">
 							<span class="font-semibold mr-6">TOTAL</span>
@@ -142,13 +145,17 @@
 				</div>
 			</div>
 			<p-editor [style]="{'height':'150px','margin':'1rem 0'}" [(ngModel)]="notesContent"></p-editor>
+			<div id="printFooter" #printFooter>
+				signature
+			</div>
 		</div>
 	</div>
-	<div id="printContent" *ngIf="showPrintContent">
+	<div id="printContent" style="display: none;">
 		<div class="p-4" [innerHTML]="getContent()"></div>
 	</div>
 	<ng-template pTemplate="footer">
 		<p-button icon="pi pi-print" label="Print" (click)="printMe()" pAutoFocus [autofocus]="true"></p-button>
-		<button pButton pRipple icon="pi pi-envelope" class="p-button-primary" (click)="emailComponentContent()" label="Email"></button>
+		<button pButton pRipple icon="pi pi-envelope" class="p-button-primary" (click)="emailComponentContent()"
+			label="Email"></button>
 	</ng-template>
 </p-dialog>

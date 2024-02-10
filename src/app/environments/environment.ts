@@ -5,5 +5,5 @@
 export const environment = {
   production: false,
   mock: false,
-  api_url: 'https://superpowerwebapi.azurewebsites.net/v1',
+  api_url: 'http://localhost:3001/v1',
 };
