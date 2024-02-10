@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { templateContent } from './invoice.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
 import { NgxPrintService, PrintOptions } from 'ngx-print';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-invoice',
@@ -71,6 +72,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
   }
   emailComponentContent() {
     let content = this.getContent();
+    const doc = new jsPDF();
     const body = `<!DOCTYPE html>
         <html lang="en">
         <head>
@@ -113,6 +115,12 @@ export class InvoiceComponent implements OnInit, OnChanges {
         ${content}
         </body>
         </html>`
+    // doc.html(body, {
+    //   callback: (pdf) => {
+    //     // Save the PDF or display it
+    //     pdf.save('document.pdf');
+    //   }
+    // });
     if (content) {
       this.dealService.sentEmail({ content: body });
     }
