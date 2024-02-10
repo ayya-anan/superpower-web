@@ -92,7 +92,6 @@ export class KanbanListComponent implements OnInit {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
-            console.log(event.container);
             if(!this.keycloakService.isUserInRole('manage-quote') && event.container.id ==='5') { return }
             const card = event.previousContainer.data[event.previousIndex];
             card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
