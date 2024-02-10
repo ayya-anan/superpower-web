@@ -441,9 +441,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.showQuote = false;
         this.showTableView = true;
         if (this.card.org) {
-            this.xService.updateX('deal', this.dealForm.value, this.card.id);
+            this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
         } else {
-            this.xService.postX('deal', this.dealForm.value);
+            this.xService.postX('deal', this.dealForm.getRawValue());
         }
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deals Saved Successfully' });
         this.card = { ...this.dealForm.value };
