@@ -389,7 +389,7 @@
 </p-confirmDialog>
 <div class="col-12 py-0">
 	<p-toolbar>
-		<div class="p-toolbar-group-start">
+		<div class="p-toolbar-group-start"  *ngIf="keycloakService.isUserInRole('add-individual')">
 			
 			<p-button icon="pi pi-user" severity="info" label="{{ 'CONTACTS.INDIVIDUAL.ADD_CONTACT' | translate }}" (click)="addContact()"></p-button>
 			<!-- <p-button icon="pi pi-user" severity="info" label="Add Contact" (click)="addContact()"></p-button> -->
