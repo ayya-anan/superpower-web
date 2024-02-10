@@ -3,23 +3,24 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { KeycloakService } from 'keycloak-angular';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html',
 })
 export class AppTopbarComponent implements OnInit {
-    userData$: Observable<UserDataResult> |undefined;
     languageUpdate: boolean = false;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
+    username: string | undefined;
 
-    constructor(public layoutService: LayoutService, public el: ElementRef, private translate: TranslateService, private oidcSecurityService: OidcSecurityService) {}
+    constructor(public layoutService: LayoutService, public el: ElementRef, private translate: TranslateService,private keycloakService: KeycloakService) {}
     ngOnInit(): void {
-        this.userData$ = this.oidcSecurityService.userData$;
+        this.username = _.upperFirst(this.keycloakService.getUsername());
     }
 
     onMenuButtonClick() {
@@ -50,5 +51,8 @@ export class AppTopbarComponent implements OnInit {
                 ? 'dark'
                 : 'white';
         return logo;
+    }
+    logout(){
+        this.keycloakService.logout();
     }
 }

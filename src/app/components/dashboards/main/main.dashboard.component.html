@@ -2,9 +2,9 @@
     <div class="grid">
         <div class="col-12 align-items-center justify-content-between">
             <div class="mx-auto sm:mx-0">                
-                <h1 *ngIf="userData$ | async; let userData">
+                <h1 >
                     <span>                        
-                      {{ userData?.userData?.name}}
+                      {{ username }}
                     </span>
                 </h1>
             </div>
@@ -85,4 +85,3 @@
 
     </div>
 </div>
-<pre>{{userData$ | async |json}}</pre>

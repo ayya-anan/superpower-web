@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy, CommonModule, registerLocaleData } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +15,22 @@ import { TranslateModule } from '@ngx-translate/core';
 registerLocaleData(localeDe);
 import { AuthInterceptor, AuthModule, LogLevel } from 'angular-auth-oidc-client';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthConfigModule } from './auth-config.module';
+
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { keycloakConfig } from './keycloak-config';
+
+function initializeKeycloak(keycloak: KeycloakService) {
+    return () =>
+        keycloak.init({
+            config: keycloakConfig,
+            loadUserProfileAtStartUp: true,
+            initOptions: {
+                onLoad: 'login-required',
+                silentCheckSsoRedirectUri:
+                    window.location.origin + '/assets/silent-check-sso.html'
+            }
+        });
+}
 
 @NgModule({
     declarations: [
@@ -26,20 +41,25 @@ import { AuthConfigModule } from './auth-config.module';
         AppLayoutModule,
         BrowserModule,
         AppTranslateRootModule,
+        KeycloakAngularModule,
         CommonModule,
         AppProviderModule,
         ToastModule,
         TranslateModule,
         AppApiModule.forRoot(),
-        AuthConfigModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         MessageService,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         // Set the default locale to German
         { provide: LOCALE_ID, useValue: 'de-DE' },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeKeycloak,
+            multi: true,
+            deps: [KeycloakService]
+        }
     ],
     bootstrap: [AppComponent]
 })

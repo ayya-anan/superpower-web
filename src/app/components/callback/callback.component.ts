@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subscription } from 'rxjs';
 
 @Component({

@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { KeycloakService } from 'keycloak-angular';
+import * as _ from 'lodash';
 import { MenuItem } from 'primeng/api';
 import { Observable, Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -15,7 +16,6 @@ interface MonthlyPayment {
     templateUrl: './main.dashboard.component.html',
 })
 export class MainDashboardComponent implements OnInit, OnDestroy {
-    userData$: Observable<UserDataResult> |undefined;
     metrics: any = [];
 
     transactions: any = [];
@@ -31,8 +31,10 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     items: MenuItem[] = [];
+    userProfile: any;
+    username!: string;
 
-    constructor(private layoutService: LayoutService, private oidcSecurityService: OidcSecurityService) {
+    constructor(private layoutService: LayoutService,private keycloakService: KeycloakService ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -41,10 +43,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.userData$ = this.oidcSecurityService.userData$;
-        this.userData$.subscribe(u => {
-
-        });
+        this.username = _.upperFirst(this.keycloakService.getUsername());
         this.metrics = [
             {
                 title: 'Invoice',
