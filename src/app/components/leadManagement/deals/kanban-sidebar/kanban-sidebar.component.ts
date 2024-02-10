@@ -124,7 +124,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     ) {
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
-            this.card = data;
+            this.card = _.cloneDeep(data);
             this.formValue = { ...data };
             this.initForm()
 
