@@ -9,6 +9,12 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { AllTableModule } from 'src/app/commonModules/table/table.Module';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { KnobModule } from 'primeng/knob';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
 	imports: [
@@ -21,6 +27,13 @@ import { AllTableModule } from 'src/app/commonModules/table/table.Module';
 		TimeRangeModule,
 		FieldsetModule,
 		AllTableModule,
+		TimeRangeModule,
+		CardModule,
+		DropdownModule,
+		InputTextModule,
+		TableModule,
+		KnobModule,
+		DividerModule,
 		AppTranslateChildModule
 	],
 	declarations: [TimeTrackingComponent]
