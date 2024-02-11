@@ -35,7 +35,6 @@ export class KanbanService {
         this.xService.getAllX('deal').subscribe(
             (res: any) => {
                 const data = _.cloneDeep(dealStatus);
-                console.log(res.results);
                 _.each(data, (list) => {
                     list.cards = _.filter(res.results, (d) => d.status === list.name) || [];
                 });
@@ -73,7 +72,7 @@ export class KanbanService {
         const newCard: KanbanCard = { id: cardId, dealName: name, quotes: [], attachments: 0, comments: [], startDate: '', closeDate: '', completed: false, taskList: { title: 'Untitled Task List', tasks: [] } };
         let lists = [];
         lists = this._lists.map(l => l.listId === listId ? ({ ...l, cards: [...l.cards || [], newCard] }) : l);
-        this.updateLists(lists);
+        // this.updateLists(lists);
         this.onCardSelect(newCard, listId);
     }
 

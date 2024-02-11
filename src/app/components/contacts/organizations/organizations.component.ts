@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription, generate } from 'rxjs';
@@ -38,7 +39,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   activeContract: boolean = false;
   allIndividuals: any = [];
   editId: any;
-  
+
   // Industry Types
   sections: any = [];
   industryTypes = [];
@@ -58,7 +59,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { header: 'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT', field: 'poc' },
     // { header: 'Account Manager', field: 'accountManager' },
     { header: 'CONTACTS.ORGANIZATIONS.STATUS', field: 'status' },
-    { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' }
   ];
 
   pocTableCols = [
@@ -75,8 +75,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ];
 
   tableData: any = [];
-  status: any = [ { name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' } ];
-  revenueRange: any = [ { name: '0 - 10 million' }, { name: '10 - 100 million' }, { name: '100 - 500 million' },{ name: '500 - 1 billion' } ];
+  status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
+  revenueRange: any = [{ name: '0 - 10 million' }, { name: '10 - 100 million' }, { name: '100 - 500 million' }, { name: '500 - 1 billion' }];
   facilityType: any = [{ name: 'Manufacturing Plant' }, { name: 'Office' }, { name: 'Warehouse' }];
   serviceList: any = [
     { name: 'Basic Care', unitRate: 52 },
@@ -137,6 +137,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private organizationService: OrganizationService,
     private individualService: IndividualService,
+    public keycloakService: KeycloakService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
@@ -148,6 +149,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.subscribeToAddOrganization();
     this.subscribeToUpdateOrganizations();
     this.subscribeToGetAllIndividuals();
+    if (this.keycloakService.isUserInRole('edit-organization')) {
+      this.columns.push({ header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' })
+    }
   }
 
   organizationDetails() {
@@ -198,7 +202,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         const accountManagers: any = _.filter(res.results, (obj) => obj.primaryDetails.jobTitle === 'Account Manager' && obj.primaryDetails.companyName === 'Expert People Management GmbH');
         this.individualsData = _.sortBy(_.map(accountManagers, (i) => { return { name: `${i.primaryDetails.firstName} ${i.primaryDetails.lastName}`, id: i.id } }), 'name');
         this.organizationService.getAllOrganization();
-        if(this.organizationService.activeOrganizationView) {
+        if (this.organizationService.activeOrganizationView) {
           this.organizationDetails();
         }
       }
@@ -222,18 +226,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   subscribeToUpdateOrganizations() {
     this.updateOrganizations = this.organizationService.updateOrganizationEmit.subscribe(
-        (res: any) => {
-            this.messageService.clear();
-            if (res.error) {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
-            } else {  
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Updated Successfully' });
-                this.organizationView = false;
-                this.organizationService.getAllOrganization();
-            }
+      (res: any) => {
+        this.messageService.clear();
+        if (res.error) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
+        } else {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Updated Successfully' });
+          this.organizationView = false;
+          this.organizationService.getAllOrganization();
         }
+      }
     );
-}
+  }
 
   getID() {
     return 'Expert_16'
@@ -313,28 +317,28 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   onSubmit() {
     const result = _.filter(this.organizationData, (obj) => obj.primaryDetails.name.toLowerCase() === this.organizationForm.value.primaryDetails.name.toLowerCase());
     // if (this.organizationForm.valid) {
-      console.log(this.organizationForm.value.primaryDetails);
-      this.organizationService.organizationDetails = {};
-  
-      console.log(this.organizationForm.value.primaryDetails);
-      this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
-      _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
-        delete facilityObj['_id'];
-      });
-      _.forEach(this.organizationForm.value.services, (serviceObj) => {
-        delete serviceObj['_id'];
-      });
-      this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
-      if (this.editId) {
-        this.organizationService.updateOrganization(this.organizationForm.value, this.editId);
+    console.log(this.organizationForm.value.primaryDetails);
+    this.organizationService.organizationDetails = {};
+
+    console.log(this.organizationForm.value.primaryDetails);
+    this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
+    _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
+      delete facilityObj['_id'];
+    });
+    _.forEach(this.organizationForm.value.services, (serviceObj) => {
+      delete serviceObj['_id'];
+    });
+    this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
+    if (this.editId) {
+      this.organizationService.updateOrganization(this.organizationForm.value, this.editId);
+    } else {
+      if (result.length > 0) {
+        this.messageService.clear();
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Organization Name Already Exists' });
       } else {
-        if(result.length > 0) {
-          this.messageService.clear();
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Organization Name Already Exists' });
-        } else {
-          this.organizationService.postOrganization(this.organizationForm.value);
-        }
+        this.organizationService.postOrganization(this.organizationForm.value);
       }
+    }
     // }
   }
 
@@ -380,9 +384,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   clearIndustryDetails() {
-    this.organizationForm.get('primaryDetails.industryType')?.patchValue({ name: ''});
-    this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: ''});
-    this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: ''});
+    this.organizationForm.get('primaryDetails.industryType')?.patchValue({ name: '' });
+    this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
+    this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
   }
 
   sectionChange(event: any) {
@@ -395,16 +399,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   industryTypeChange(event: any) {
     this.industrySubType1 = (this.industryValues[2][event.value.code]);
     this.industrySubType2 = [];
-    this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: ''});
+    this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
   }
 
   industrySubTypeChange(event: any) {
     this.industrySubType2 = (this.industryValues[3][event.value.code]);
-    this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: ''});
+    this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
   }
 
   industrySubType2Change(event: any) {
-    // console.log(event.value);
   }
 
   searchResults(event: any) {

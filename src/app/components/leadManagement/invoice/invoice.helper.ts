@@ -1,6 +1,4 @@
 export const templateContent = `
-<p>Dear Mr. Dipl.-Ing. Steffen,</p>
-<br>
 <p>Thank you for your request for an offer new conent. </p>
 <br>
 <p>Occupational safety is intended to protect the life and health of employees, maintain their workforce, and make work humane. Occupational safety and health protection are the legal basis of the Occupational Safety and Health Act (ArbSchG) and the provisions and regulations issued by the professional associations.</p>

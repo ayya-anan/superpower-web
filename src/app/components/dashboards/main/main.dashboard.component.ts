@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
+import * as _ from 'lodash';
 import { MenuItem } from 'primeng/api';
-import { Subscription, debounceTime } from 'rxjs';
+import { Observable, Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 interface MonthlyPayment {
@@ -29,8 +31,10 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     items: MenuItem[] = [];
+    userProfile: any;
+    username!: string;
 
-    constructor(private layoutService: LayoutService) {
+    constructor(private layoutService: LayoutService,private keycloakService: KeycloakService ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -39,6 +43,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.username = _.upperFirst(this.keycloakService.getUsername());
         this.metrics = [
             {
                 title: 'Invoice',

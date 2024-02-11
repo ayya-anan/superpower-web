@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { CallbackComponent } from './components/callback/callback.component';
+import { AuthGuard } from './AuthGuard.service';
+
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
@@ -17,8 +20,10 @@ const routes: Routes = [
             { path: 'activeWork', data: { breadcrumb: 'Active Work' }, loadChildren: () => import('./components/activeWork/activeWork.module').then(m => m.ActiveWorkModule) },
         ]
     },
-    { path: 'auth', data: { breadcrumb: 'Auth' }, loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
+    { path: 'callback', component: CallbackComponent },
+    //{ path: 'auth', data: { breadcrumb: 'Auth' }, loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
     { path: 'notfound', loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
+
     { path: '**', redirectTo: '/notfound' }
 ];
 

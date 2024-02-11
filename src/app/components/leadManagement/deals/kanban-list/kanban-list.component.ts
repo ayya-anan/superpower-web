@@ -7,6 +7,7 @@ import { DealsComponent } from '../deals.component';
 import * as _ from 'lodash';
 import { dealStatus } from '../deals.helper';
 import { XService } from 'src/app/api/x/x.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
     selector: 'app-kanban-list',
@@ -34,12 +35,12 @@ export class KanbanListComponent implements OnInit {
     constructor(
         public parent: DealsComponent,
         private kanbanService: KanbanService,
+        public keycloakService: KeycloakService,
         private xService: XService
     ) { }
 
     ngOnInit(): void {
         this.isMobileDevice = this.kanbanService.isMobileDevice();
-
         this.menuItems = [
             {
                 label: 'List actions', items: [
@@ -87,9 +88,11 @@ export class KanbanListComponent implements OnInit {
     }
 
     dropCard(event: CdkDragDrop<KanbanCard[]>): void {
+        if(!this.keycloakService.isUserInRole('edit-deal')){ return }
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
+            if(!this.keycloakService.isUserInRole('manage-quote') && event.container.id ==='4') { return }
             const card = event.previousContainer.data[event.previousIndex];
             card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
             this.xService.updateX('deal', card, card.id);

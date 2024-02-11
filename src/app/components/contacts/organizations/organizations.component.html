@@ -239,7 +239,7 @@
 </p-confirmDialog>
 <div class="col-12 py-0">
 	<p-toolbar>
-		<div class="p-toolbar-group-start">
+		<div class="p-toolbar-group-start" *ngIf="keycloakService.isUserInRole('add-organization')">
 			<p-button icon="pi pi-user" severity="info" label="{{ 'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION' | translate }}" (click)="addContact()"></p-button>
 			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true" label="{{ 'CONTACTS.ORGANIZATIONS.IMPORT' | translate }}"></p-button>
 			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true" severity="{{ 'CONTACTS.ORGANIZATIONS.DELETE' | translate }}" label="Delete"

@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -118,13 +119,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         private organizationService: OrganizationService,
         private individualService: IndividualService,
         private kanbanService: KanbanService,
+        private keycloakService: KeycloakService,
         private xService: XService,
         private changeDetectorRef: ChangeDetectorRef,
         private dealService: DealService
     ) {
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
-            this.card = data;
+            this.card = _.cloneDeep(data);
             this.formValue = { ...data };
             this.initForm()
 
@@ -139,23 +141,27 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllIndividuals();
         this.subscribeToSavedTemplate();
     }
+    canUpdateDeal() {
+        return this.keycloakService.isUserInRole('edit-deal');
+    }
     initForm() {
-        this.dealForm.reset();
-        this.dealForm = this.fb.group({
-            dealName: ['', [Validators.required]],
-            org: ['', [Validators.required]],
-            status: ['New', [Validators.required]],
-            customerContact: ['', []],
-            winProbablity: ['High', []],
-            accountManager: ['', []],
-            startDate: [new Date(), [Validators.required]],
-            source: ['', []],
-            value: ['0', [Validators.required]],
-            closeDate: [new Date(new Date().setMonth(new Date().getMonth() + 2)), [Validators.required]],
-            quotes: this.fb.array([])
-        });
-        // this.initQuotesArray();
-        this.subscribeFormChanges();
+        if (!this.dealForm.value.dealName) {
+            this.dealForm = this.fb.group({
+                dealName: ['', [Validators.required]],
+                org: ['', [Validators.required]],
+                status: ['New', [Validators.required]],
+                customerContact: ['', []],
+                winProbablity: ['High', []],
+                accountManager: ['', []],
+                startDate: [new Date(), [Validators.required]],
+                source: ['', []],
+                value: ['0', []],
+                closeDate: [new Date(new Date().setMonth(new Date().getMonth() + 2)), [Validators.required]],
+                quotes: this.fb.array([])
+            });
+            // this.initQuotesArray();
+            this.subscribeFormChanges();
+        }
         if (this.card.org) {
             this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
             this.card.closeDate = new Date(Date.parse(this.card.closeDate.toString()));
@@ -212,8 +218,8 @@ export class KanbanSidebarComponent implements OnDestroy {
     changeOrg(value: any) {
         if (value) {
             this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
-            if (this.selectedOrganization.primaryDetails.pointofContact && typeof this.selectedOrganization.primaryDetails.pointofContact === 'string') {
-                this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact);
+            if (this.selectedOrganization.primaryDetails.pointofContact && this.selectedOrganization.primaryDetails.pointofContact.length > 0) {
+                this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact[0].name);
             }
             if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
                 this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
@@ -405,10 +411,10 @@ export class KanbanSidebarComponent implements OnDestroy {
             (res: any) => {
                 const accountManagers: any = _.filter(res.results, (obj) => obj.primaryDetails.jobTitle === 'Account Manager' && obj.primaryDetails.companyName === 'Expert People Management GmbH');
                 this.accountManagerList = _.sortBy(_.map(accountManagers, (i) => {
-                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
+                    return { name: `${i.primaryDetails.firstName} ${i.primaryDetails.lastName}`, id: i.id, company: i.primaryDetails.companyName }
                 }), 'name');
                 this.individualsData = _.map(res.results, (i) => {
-                    return { name: `${(i.primaryDetails.firstName) ? i.primaryDetails.firstName : ''} ${(i.primaryDetails.middleName) ? i.primaryDetails.middleName : ''} ${(i.primaryDetails.lastName) ? i.primaryDetails?.lastName : ''}`, id: i.id, company: i.primaryDetails.companyName }
+                    return { name: `${i.primaryDetails.firstName} ${i.primaryDetails.lastName}`, id: i.id, company: i.primaryDetails.companyName }
                 });
                 this.allIndividualsList = _.cloneDeep(this.individualsData);
             }
@@ -417,7 +423,6 @@ export class KanbanSidebarComponent implements OnDestroy {
     subscribeToSavedTemplate() {
         this.templateSubscription = this.dealService.dealAsPdf.subscribe(
             (res: any) => {
-                console.log(res);
             }
         );
     }
@@ -441,14 +446,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.showQuote = false;
         this.showTableView = true;
         if (this.card.org) {
-            this.xService.updateX('deal', this.dealForm.value, this.card.id);
+            this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
         } else {
-            this.xService.postX('deal', this.dealForm.value);
+            this.xService.postX('deal', this.dealForm.getRawValue());
         }
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deals Saved Successfully' });
-        this.card = { ...this.dealForm.value };
+        this.card = { ...this.dealForm.getRawValue() };
         this.kanbanService.updateCard(this.card, this.listId);
-        this.close();
+        this.close(event);
     }
 
     subscribeToAddDealaddedits() {
@@ -507,7 +512,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         clearTimeout(this.timeout);
     }
 
-    close() {
+    close(event: any) {
+        event.preventDefault();
         this.parent.sidebarVisible = false;
         this.resetForm();
     }
@@ -538,7 +544,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     documentPreview(event: Event, i: number) {
         this.quoteVisible = false;
         this.changeDetectorRef.detectChanges();
-        this.selectedQuote = this.dealForm.value.quotes[i];
+        this.selectedQuote = this.dealForm.getRawValue().quotes[i];
         this.quoteVisible = true;
     }
 
@@ -547,7 +553,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         event.preventDefault();
         this.card = { ...this.formValue };
         this.kanbanService.updateCard(this.card, this.listId);
-        this.close();
+        this.close(event);
     }
 
     onMove(listId: string) {

@@ -1,13 +1,17 @@
 <div class="layout-dashboard">
     <div class="grid">
         <div class="col-12 align-items-center justify-content-between">
-            <div class="mx-auto sm:mx-0">
-                <h1>Hi Michael...!</h1>
+            <div class="mx-auto sm:mx-0">                
+                <h1 >
+                    <span>                        
+                      {{ username }}
+                    </span>
+                </h1>
             </div>
             <div class="mx-auto sm:mx-0">
                 <h5>Here's What happening with your dashboard today</h5>
             </div>
-        </div>
+        </div>              
         <div class="col-12 md:col-3" *ngFor="let metric of metrics">
             <div class="card flex w-full relative h-14rem overflow-hidden" (mouseenter)="show(btn)"
                 (mouseleave)="hide(btn)">

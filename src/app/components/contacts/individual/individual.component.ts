@@ -2,6 +2,7 @@ import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -45,13 +46,13 @@ export class IndividualComponent implements OnInit {
         { header: 'CONTACTS.INDIVIDUAL.EMAIL_ADDRESS', field: 'email' },
         { header: 'CONTACTS.INDIVIDUAL.CONTACT', field: 'contact' },
         { header: 'CONTACTS.INDIVIDUAL.STATUS', field: 'status' },
-        { header: 'CONTACTS.INDIVIDUAL.ACTIONS', field: 'action' }
+
     ];
     Salutations: any = [{ name: 'Mr' }, { name: 'Ms' }, { name: 'Mrs' }, { name: 'Dr' }];
-    status: any = [{ name: 'Active' }, { name: 'Inactive' },{ name: 'Prospect' }, { name: 'Suspended' }];
+    status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
     // company: any = [{ name: 'TeamLeader' }, { name: 'HubSpot' }, { name: 'Wipro' }];
-    company: any =[];
-    roles: any = [{ name: 'Advisor' },{ name: 'Decision Maker' },{ name: 'Influencer' }];
+    company: any = [];
+    roles: any = [{ name: 'Advisor' }, { name: 'Decision Maker' }, { name: 'Influencer' }];
 
 
     constructor(
@@ -60,17 +61,21 @@ export class IndividualComponent implements OnInit {
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private individualService: IndividualService,
+        public keycloakService: KeycloakService,
         private organizationService: OrganizationService
     ) { }
 
     ngOnInit() {
+        if (this.keycloakService.isUserInRole('edit-individual')) {
+            this.columns.push({ header: 'CONTACTS.INDIVIDUAL.ACTIONS', field: 'action' })
+        }
         this.initForm();
         this.initiateAddressArray();
         this.loading = true;
         this.individualService.getAllIndividuals();
         this.organizationService.getAllOrganization();
         this.subscribeToOrgData();
-        if(this.organizationService.activeOrganizationView) { 
+        if (this.organizationService.activeOrganizationView) {
             this.contactView = true;
             this.contactForm.value.primaryDetails.companyName = this.organizationService.organizationDetails.primaryDetails.name;
             this.copyAddressBtn = true;
@@ -86,7 +91,7 @@ export class IndividualComponent implements OnInit {
                 console.log(res.results);
                 this.organizations = [];
                 this.organizations = _.sortBy(_.map(res.results, (i) => { return { name: i.primaryDetails.name } }), 'name');
-                this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) =>  { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name'); 
+                this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) => { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name');
             });
     }
 
@@ -108,7 +113,7 @@ export class IndividualComponent implements OnInit {
                         jobTitle: item.primaryDetails.jobTitle,
                         email: (item.addresses.length > 0) ? item.addresses[0].primaryEmail : '',
                         contact: (item.addresses.length > 0) ? item.addresses[0].primaryPhone : '',
-                        status: (item.primaryDetails.status) ? item.primaryDetails.status: this.status[0].name,
+                        status: (item.primaryDetails.status) ? item.primaryDetails.status : this.status[0].name,
                         actualData: item
                     }
                     this.tableData.push(obj);
@@ -201,7 +206,7 @@ export class IndividualComponent implements OnInit {
 
     onSubmit() {
         const result = this.contactForm.value;
-        if(result.primaryDetails) {
+        if (result.primaryDetails) {
             result.primaryDetails.companyName = (_.isObject(result.primaryDetails.companyName)) ? result.primaryDetails.companyName.name : result.primaryDetails.companyName;
             result.primaryDetails.jobTitle = (_.isObject(result.primaryDetails.jobTitle)) ? result.primaryDetails.jobTitle.name : result.primaryDetails.jobTitle;
             result.primaryDetails.roleName = (_.isObject(result.primaryDetails.roleName)) ? result.primaryDetails.roleName.name : result.primaryDetails.roleName;
@@ -227,7 +232,7 @@ export class IndividualComponent implements OnInit {
         // Patching the Addresses form array
         const addressesFormArray = this.contactForm.get('addresses') as FormArray;
         addressesFormArray.clear();
-        if(result.addresses.length > 0) { delete result.addresses[0]._id; }
+        if (result.addresses.length > 0) { delete result.addresses[0]._id; }
         result.addresses.forEach((address: any) => {
             addressesFormArray.push(this.fb.group(address));
         });

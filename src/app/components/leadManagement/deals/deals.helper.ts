@@ -6,42 +6,27 @@ export const dealStatus: any = [
   },
   {
     listId: "2",
-    name: "Meeting Scheduled",
+    name: "Quote-In-Progress",
     cards: []
   },
   {
     listId: "3",
-    name: "In Discussion",
-    cards: []
-  },
-  {
-    listId: "4",
     name: "Quote Review",
     cards: []
   },
   {
-    listId: "5",
-    name: "Quote Ready to Send",
-    cards: []
-  },
-  {
-    listId: "6",
+    listId: "4",
     name: "Quote Sent",
     cards: []
   },
   {
-    listId: "7",
+    listId: "5",
     name: "Quote Accepted",
     cards: []
   },
   {
-    listId: "8",
-    name: "Project Started",
-    cards: []
-  },
-  {
-    listId: "9",
-    name: "Cancelled",
+    listId: "6",
+    name: "Deal Lost",
     cards: []
   }
 ];
