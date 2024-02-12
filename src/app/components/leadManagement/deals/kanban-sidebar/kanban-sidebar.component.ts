@@ -323,7 +323,13 @@ export class KanbanSidebarComponent implements OnDestroy {
     calculateHours(data: any) {
         return (data.subType2.name) ? data.subType2.value : (data.subType1.name) ? data.subType1.value : (data.industryType.name) ? data.industryType.value : 0
     }
+    removeService(quoteIndex: number, index: number) {
+        const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
+        const servicesArray = quotesFormGroup.get('services') as FormArray;
+        servicesArray.removeAt(index);
+        this.getFinalTotal(quoteIndex);
 
+    }
     onServiceChange(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
@@ -368,14 +374,12 @@ export class KanbanSidebarComponent implements OnDestroy {
             const servicesFormGroup = servicesArray.at(i) as FormGroup;
             total += +servicesFormGroup.get('total')?.value;
         }
-        if (total) {
-            quotesFormGroup.patchValue({ subTotal: total });
-            const vatValue = this.getVatValue(quoteIndex);
-            const discount = +quotesFormGroup.get('discount')?.value;
-            finalAmount = (total - discount) + vatValue;
-            quotesFormGroup.patchValue({ total: finalAmount });
-            this.dealForm.get('value')?.setValue(finalAmount)
-        }
+        quotesFormGroup.patchValue({ subTotal: total });
+        const vatValue = this.getVatValue(quoteIndex);
+        const discount = +quotesFormGroup.get('discount')?.value;
+        finalAmount = (total - discount) + vatValue;
+        quotesFormGroup.patchValue({ total: finalAmount });
+        this.dealForm.get('value')?.setValue(finalAmount)
     }
 
     getVatValue(quoteIndex: number) {
