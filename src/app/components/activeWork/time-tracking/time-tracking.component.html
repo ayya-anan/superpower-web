@@ -1,4 +1,4 @@
-<div *ngIf="InitialView; else timesheetView">
+<!-- <div *ngIf="InitialView; else timesheetView"> -->
     <div class="col-12 p-0 inline-flex mb-3">
         <div class="col-9 p-0 text-xl">My Timesheet</div>
         <div class="col-3 p-0 inline-flex justify-content-end">
@@ -7,7 +7,7 @@
             <div class="mt-1"><i class="pi pi-step-forward" style="font-size: 1rem"></i></div>
         </div>
     </div>
-    <div class="col-12 p-0 inline-flex mt-5">
+    <div class="col-12 p-0 inline-flex mt-1">
         <div class="col p-0 inline-flex">
             <ng-container *ngFor="let item of weeklyView">
                 <div class="col p-0 text-center weekClass mr-5 mt-3">
@@ -24,39 +24,13 @@
             <div class="text-900">Weekly Report in Hours</div>
         </div>
     </div>
-    <div class="col-12 p-0 mt-5">
+    <div class="col-12 p-0 mt-5" *ngIf="false">
         <p-button label="Fill Timesheet" (onClick)="submitTimesheet()"></p-button>
     </div>
     <p-divider></p-divider>
-    <div class="col-12 p-0 inline-flex">
-        <div class="col-9 p-0 inline-flex">
-            <ng-container *ngFor="let item of leaveView">
-                <div class="col-6">
-                    <p-card header="{{item.title}}">
-                        <div class="text-center">
-                            <p-knob [(ngModel)]="item.value" [min]="0" [max]="item.totalValue"></p-knob>
-                            <div class="text-900 text-xl">{{item.summary}}</div>
-                            <!-- <div class="text-900 mt-3">Overall : {{item.Overall}}</div> -->
-                        </div>
-                    </p-card>
-                </div>
-            </ng-container>
-        </div>
-        <p-divider layout="vertical"></p-divider>
-        <div class="col p-0">
-            <div class="col-12 quickLinks inline-flex mt-2">
-                <div class="col-11 p-0">Holiday List</div>
-                <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
-            </div>
-            <div class="col-12 quickLinks inline-flex">
-                <div class="col-11 p-0">Leave Plans</div>
-                <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
-            </div>
-        </div>
-    </div>
-</div>
-<ng-template #timesheetView>
-    <div class="col-12 p-0 inline-flex mb-3">
+<!-- </div> -->
+<!-- <ng-template #timesheetView> -->
+    <div class="col-12 p-0 inline-flex mb-3" *ngIf="false">
         <div class="col-9 p-0 text-xl">My Timesheet</div>
         <div class="col-3 p-0 inline-flex justify-content-end">
             <div class="mt-1"><i class="pi pi-step-backward" style="font-size: 1rem"></i></div>
@@ -101,4 +75,33 @@
         <p-button label="Submit TimeSheet" (onClick)="timesheetReport()"></p-button>
         <p-button class="ml-3" label="Cancel" (onClick)="reportsView()"></p-button>
     </div>
-</ng-template>
+<!-- </ng-template> -->
+
+ <!-- Information View -->
+ <p-divider></p-divider>
+ <div class="col-12 p-0 inline-flex">
+     <div class="col-9 p-0 inline-flex">
+         <ng-container *ngFor="let item of leaveView">
+             <div class="col-6">
+                 <p-card header="{{item.title}}">
+                     <div class="text-center">
+                         <p-knob [(ngModel)]="item.value" [min]="0" [max]="item.totalValue"></p-knob>
+                         <div class="text-900 text-xl">{{item.summary}}</div>
+                         <!-- <div class="text-900 mt-3">Overall : {{item.Overall}}</div> -->
+                     </div>
+                 </p-card>
+             </div>
+         </ng-container>
+     </div>
+     <p-divider layout="vertical"></p-divider>
+     <div class="col p-0">
+         <div class="col-12 quickLinks inline-flex mt-2">
+             <div class="col-11 p-0">Holiday List</div>
+             <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
+         </div>
+         <div class="col-12 quickLinks inline-flex">
+             <div class="col-11 p-0">Leave Plans</div>
+             <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
+         </div>
+     </div>
+ </div>
