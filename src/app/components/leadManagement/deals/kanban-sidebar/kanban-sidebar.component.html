@@ -297,7 +297,8 @@
                                                         </ng-container>
                                                     </div>
                                                 </ng-container>
-                                                <div class="flex w-full border-top-1 surface-border py-4 gap-3" *ngIf="canUpdateDeal()">
+                                                <div class="flex w-full border-top-1 surface-border py-4 gap-3"
+                                                    *ngIf="canUpdateDeal()">
                                                     <div class="col-6 justify-content-start flex justify-content gap-3">
                                                         <p-dropdown appendTo="body" formControlName="paymentMilestone"
                                                             [options]="paymentMilestone" optionLabel="label"
@@ -305,6 +306,7 @@
                                                             placeholder="Select Payment Milestone"></p-dropdown>
                                                         <button pButton pRipple type="submit" label="Generate"
                                                             class="p-button-primary"
+                                                            [disabled]="quote.get('paymentMilestone')?.value == 0"
                                                             (click)="createPaymentMilestone(i)"></button>
                                                     </div>
                                                     <div class="col-6 justify-content-end flex justify-content gap-3">

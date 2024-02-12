@@ -239,7 +239,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
-            paymentMilestone: ['0', []],
+            paymentMilestone: [0, []],
             services: this.fb.array([]),
             payments: this.fb.array([])
         }));
