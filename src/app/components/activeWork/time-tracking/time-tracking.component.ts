@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-time-tracking',
@@ -66,10 +67,15 @@ export class TimeTrackingComponent {
   ]
 
   InitialView: boolean = true;
+  startDate: any;
+  endDate: any;
 
   constructor() { }
 
   ngOnInit() {
+    this.startDate = moment().startOf('week').add('days', 1).format('Do MMM YY')
+    this.endDate = moment().endOf('week').subtract('days', 1).format('Do MMM YY');
+    this.currentWeek();
   }
 
   updateValue() {
@@ -101,6 +107,29 @@ export class TimeTrackingComponent {
 
   reportsView() {
     this.InitialView = true;
+  }
+
+  updateStartEnd(startDay: any) {
+    this.startDate = moment(startDay).add('days', 1).format('Do MMM YY');
+    this.endDate = moment(startDay).add('days', 5).format('Do MMM YY');
+    _.forEach(this.weeklyView, (item,index: any) => {
+      item.date = startDay.add('days', 1).format('Do MMM YY');
+    });
+  }
+
+  currentWeek() {
+    const startDay = moment().startOf('week');
+    this.updateStartEnd(startDay);
+  }
+
+  previousWeek() {
+    const startDay =  moment().subtract(1, 'weeks').startOf('week');
+    this.updateStartEnd(startDay);
+  }
+
+  nextWeek() {
+    const startDay =  moment().add(1, 'weeks').startOf('week');
+    this.updateStartEnd(startDay);
   }
 
 }
