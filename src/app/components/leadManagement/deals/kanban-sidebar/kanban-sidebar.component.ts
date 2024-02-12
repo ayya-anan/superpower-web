@@ -149,7 +149,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.dealForm = this.fb.group({
                 dealName: ['', [Validators.required]],
                 org: ['', [Validators.required]],
-                status: ['New', [Validators.required]],
+                status: [{ value: 'New', disabled: true }, [Validators.required]],
                 customerContact: ['', []],
                 winProbablity: ['High', []],
                 accountManager: ['', []],
@@ -179,7 +179,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     patchQuoteGroup(quote: any) {
         const quoteGroup = this.fb.group({
             date: [new Date(quote.date)],
-            status: [quote.status],
+            status: [{ value: quote.status, disabled: true }],
             subTotal: [{ value: quote.subTotal, disabled: true }],
             vat: [quote.vat],
             vatValue: [{ value: Math.round((quote.subTotal - quote.discount) * (quote.vat / 100)), disabled: true }],

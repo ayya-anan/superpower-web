@@ -31,6 +31,15 @@ export const dealStatus: any = [
   }
 ];
 
+export const dealStatusHierarchy: any = {
+  0: ["1"],
+  1: ["2", "6"],
+  2: ["3", "6"],
+  3: ["2", "4", "6"],
+  4: ["5", "6"]
+};
+
+
 export const industryDetails = {
   sections: [
     {

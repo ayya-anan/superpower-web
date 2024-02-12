@@ -5,7 +5,7 @@ import { KanbanService } from '../service/kanban.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DealsComponent } from '../deals.component';
 import * as _ from 'lodash';
-import { dealStatus } from '../deals.helper';
+import { dealStatus, dealStatusHierarchy } from '../deals.helper';
 import { XService } from 'src/app/api/x/x.service';
 import { KeycloakService } from 'keycloak-angular';
 
@@ -88,15 +88,19 @@ export class KanbanListComponent implements OnInit {
     }
 
     dropCard(event: CdkDragDrop<KanbanCard[]>): void {
-        if(!this.keycloakService.isUserInRole('edit-deal')){ return }
+        if (!this.keycloakService.isUserInRole('edit-deal')) { return }
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
-            if(!this.keycloakService.isUserInRole('manage-quote') && event.container.id ==='4') { return }
-            const card = event.previousContainer.data[event.previousIndex];
-            card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
-            this.xService.updateX('deal', card, card.id);
-            transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+            if (dealStatusHierarchy[event.previousContainer.id] && dealStatusHierarchy[event.previousContainer.id].includes(event.container.id)) { // move only specific status
+                if (!this.keycloakService.isUserInRole('manage-quote') && event.container.id === '4') { return }
+                const card = event.previousContainer.data[event.previousIndex];
+                card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
+                this.xService.updateX('deal', card, card.id);
+                transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+            } else {
+                return;
+            }
         }
     }
 
