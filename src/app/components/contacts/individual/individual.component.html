@@ -331,13 +331,13 @@
 								<div class="formgrid grid">
 									<div class="field col">
 										<label for="lastname">Primary Phone Number</label><br>
-										<p-inputMask formControlName="primaryPhone" mask="(999) 999-9999"
-											placeholder="(999) 999-9999"></p-inputMask>
+										<p-inputMask formControlName="primaryPhone" mask="(99) 9999-999999"
+											placeholder="(99) 9999-999999"></p-inputMask>
 									</div>
 									<div class="field col">
 										<label for="lastname">Alternate Phone Number</label><br>
-										<p-inputMask formControlName="alternatePhone" mask="(999) 999-9999"
-											placeholder="(999) 999-9999"></p-inputMask>
+										<p-inputMask formControlName="alternatePhone" mask="(99) 9999-999999"
+											placeholder="(99) 9999-999999"></p-inputMask>
 									</div>
 								</div>
 								<div class="formgrid grid">
@@ -395,7 +395,7 @@
 			<!-- <p-button icon="pi pi-user" severity="info" label="Add Contact" (click)="addContact()"></p-button> -->
 			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true" label="{{ 'CONTACTS.INDIVIDUAL.IMPORT' | translate }}"></p-button>
 			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true" severity="danger" label="{{ 'CONTACTS.INDIVIDUAL.DELETE' | translate }}"
-				(click)="addContact()"></p-button>
+			(click)="addContact()"></p-button>
 			<button type="button" pButton pRipple icon="pi pi-file" class="ml-2" pTooltip="CSV"
 				tooltipPosition="bottom"></button>
 			<button type="button" pButton pRipple icon="pi pi-file-pdf" class="p-button-warning ml-2" pTooltip="PDF"

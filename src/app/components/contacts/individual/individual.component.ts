@@ -189,7 +189,7 @@ export class IndividualComponent implements OnInit {
             alternatePhone: [''],
             address: [''],
             zipCode: [''],
-            country: ['Germany']
+            country: 'Germany'
         }));
     }
 

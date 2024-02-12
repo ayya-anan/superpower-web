@@ -52,13 +52,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   // TABLE COLUMNS
   columns = [
     { header: 'CONTACTS.ORGANIZATIONS.NAME', field: 'name' },
-    { header: 'CONTACTS.ORGANIZATIONS.INDUSTRY_TYPE', field: 'type' },
-    { header: 'CONTACTS.ORGANIZATIONS.SUB_TYPE', field: 'subType' },
+    { header: 'CONTACTS.ORGANIZATIONS.STATUS', field: 'status' },
+    { header: 'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT', field: 'poc' },
     { header: 'CONTACTS.ORGANIZATIONS.EMAIL_ADDRESS', field: 'email' },
     { header: 'CONTACTS.ORGANIZATIONS.CONTACT', field: 'contact' },
-    { header: 'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT', field: 'poc' },
+    { header: 'CONTACTS.ORGANIZATIONS.INDUSTRY_TYPE', field: 'type' },
+    { header: 'CONTACTS.ORGANIZATIONS.SUB_TYPE', field: 'subType' },
     // { header: 'Account Manager', field: 'accountManager' },
-    { header: 'CONTACTS.ORGANIZATIONS.STATUS', field: 'status' },
   ];
 
   pocTableCols = [
@@ -73,6 +73,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { header: 'Employee Count', field: 'employeeCount' },
     { header: 'Address', field: 'address' }
   ];
+
+  paymentMilestone = [
+    { label: 'Annual', value: 1 },
+    { label: ' Semi-Annual', value: 2 },
+    { label: 'Quarterly', value: 4 },
+    { label: 'Monthly', value: 12 }
+ ];
 
   tableData: any = [];
   status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
@@ -149,9 +156,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.subscribeToAddOrganization();
     this.subscribeToUpdateOrganizations();
     this.subscribeToGetAllIndividuals();
-    if (this.keycloakService.isUserInRole('edit-organization')) {
-      this.columns.push({ header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' })
-    }
+    // if (this.keycloakService.isUserInRole('edit-organization')) {
+      this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
+    // }
   }
 
   organizationDetails() {
@@ -256,6 +263,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         subType1: '',
         subType2: '',
         revenueRange: [''],
+        invoiceFrequency: '',
+        startDate: '',
+        endDate: '',
+        customerSince: ''
       }),
       facilities: this.facilities,
       services: this.services,
@@ -421,11 +432,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.industrySubType2 = (this.industryValues[3][resultData.subType1.code]) ? this.industryValues[3][resultData.subType1.code] : [];
   }
 
+  updateDateValues(data: any) {
+    data.startDate = new Date(Date.parse(data.startDate.toString()));
+    data.endDate = new Date(Date.parse(data.endDate.toString()));
+    data.customerSince = new Date(Date.parse(data.customerSince.toString()));
+  }
+
   editData(event: any) {
     this.editId = event.rowData.id;
     // const updateData = this.organizationData[event.index];
     const updateData = event.rowData.actualData;
+    this.activeContract = (updateData.primaryDetails.status != 'Prospect') ? true : false;
     this.updateIndustryDetails(updateData.primaryDetails);
+    this.updateDateValues(updateData.primaryDetails);
     // Patching the primaryDetails form group
     this.organizationForm.get('primaryDetails')?.patchValue(updateData.primaryDetails);
     // Patching the facilities form array

@@ -63,27 +63,24 @@
 						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
 							optionLabel="name" optionValue="name" placeholder="Select Account Manager"></p-dropdown>
 					</div>
-					<ng-container *ngIf="false">
-						<div class="field col-12 verticalLineClass">Active Contract</div>
+					<ng-container *ngIf="activeContract">
+						<!-- <div class="field col-12 verticalLineClass">Active Contract</div> -->
 						<div class="field col-12">
 							<label for="rolename">Invoice Frequency</label>
-							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+							<p-dropdown appendTo="body" formControlName="invoiceFrequency" [options]="paymentMilestone"
+							optionLabel="label" optionValue="label" placeholder="Select Frequency"></p-dropdown>
 						</div>
 						<div class="field col-12">
 							<label for="rolename">Current Contract Start Date</label>
-							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+							<p-calendar formControlName="startDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
 						</div>
 						<div class="field col-12">
 							<label for="rolename">Current Contract End Date</label>
-							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+							<p-calendar formControlName="endDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
 						</div>
 						<div class="field col-12">
 							<label for="rolename">Customer Since</label>
-							<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="Select Account Manager"></p-dropdown>
+							<p-calendar formControlName="customerSince" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
 						</div>
 					</ng-container>
 				</div>
@@ -139,8 +136,8 @@
 												</div>
 												<div class="field col">
 													<label for="phoneNumber">Primary Phone Number</label><br>
-													<p-inputMask formControlName="phoneNumber" mask="(999) 999-9999"
-														placeholder="(999) 999-9999"></p-inputMask>
+													<p-inputMask formControlName="phoneNumber" mask="(99) 9999-999999"
+														placeholder="(99) 9999-999999"></p-inputMask>
 												</div>
 											</div>
 											<div class="formgrid grid">
@@ -155,7 +152,7 @@
 													<label for="country">Country</label><br>
 													<p-dropdown [filter]="true" filterBy="name" appendTo="body"
 														formControlName="country" [options]="countries" optionLabel="name"
-														optionValue="name" placeholder="Country"></p-dropdown>
+														optionValue="name" placeholder="Germany"></p-dropdown>
 												</div>
 												<div class="field col">
 													<label for="zipCode">Post Code</label>

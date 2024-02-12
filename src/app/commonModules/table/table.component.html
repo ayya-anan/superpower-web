@@ -14,12 +14,19 @@
                 <th style="width: 4rem">Primary</th>
             </ng-container>
             <ng-template #elseContent>
-                <th style="width: 4rem" *ngIf="showCheckBox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                <th pFrozenColumn style="width: 3rem" *ngIf="showCheckBox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
             </ng-template>
             <ng-container *ngFor="let col of columns">
-                <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header | translate }}
-                    <p-sortIcon field="{{col.field}}"></p-sortIcon>
-                </th>
+                <ng-container *ngIf="col.field === 'name'; else otherTemplate">
+                    <th pFrozenColumn pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header | translate }}
+                        <p-sortIcon field="{{col.field}}"></p-sortIcon>
+                    </th>
+                </ng-container>
+                <ng-template #otherTemplate>
+                    <th pResizableColumn pReorderableColumn pSortableColumn="{{col.field}}">{{ col.header | translate }}
+                        <p-sortIcon field="{{col.field}}"></p-sortIcon>
+                    </th>
+                </ng-template>
             </ng-container>
         </tr>
     </ng-template>
@@ -29,7 +36,7 @@
                 <td><p-tableRadioButton [value]="rowData"></p-tableRadioButton></td>
             </ng-container>
             <ng-template #elseContent>
-                <td *ngIf="showCheckBox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></td>
+                <td pFrozenColumn *ngIf="showCheckBox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></td>
             </ng-template>
 
             <!-- <td *ngIf="key === 'Facilities' || key === 'Point Of Contacts'">
@@ -52,7 +59,12 @@
                         </td>
                     </ng-container>
                     <ng-template #ElseContent>
-                        <td *ngIf="col.field !='action' && col.field != 'status' && col.field != 'assignee'">{{ rowData[col.field] | translate }}</td>
+                        <ng-container *ngIf="col.field === 'name'; else otherTemplate">
+                            <td pFrozenColumn>{{ rowData[col.field] | translate }}</td>
+                        </ng-container>
+                        <ng-template #otherTemplate>
+                            <td *ngIf="col.field !='action' && col.field != 'status' && col.field != 'assignee' && col.field != 'name'">{{ rowData[col.field] | translate }}</td>
+                        </ng-template>
                     </ng-template>
                 </ng-container>
                 <td *ngIf="col.field == 'assignee'">
