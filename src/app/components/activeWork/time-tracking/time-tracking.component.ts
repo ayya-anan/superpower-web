@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-time-tracking',
@@ -8,52 +8,99 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class TimeTrackingComponent {
 
-  activeEfforts: FormGroup = new FormGroup({});
-
-  //TableData
-  loading: boolean = false;
-  taskColumns = [
-    { header: 'Project', field: 'project' },
-    { header: 'Task', field: 'task' },
-    { header: 'W1', field: 'w1', align: 'right' },
-    { header: 'W2', field: 'w2', align: 'right' },
-    { header: 'W3', field: 'w3', align: 'right' },
-    { header: 'W4', field: 'w4', align: 'right' },
-    { header: 'W5', field: 'w5', align: 'right' },
+  timeSheet: any = [
+    { Task: 'Basic Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+    { Task: 'Special Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+    { Task: 'Internal Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+    { Task: 'External Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
   ];
 
-  effortsTableData = [
-    { project: 'Project A', task: 'Basic Care', w1: 40, w2: 40, w3: 40, w4: 0, w5: 0 },
-    { project: 'Project A', task: 'Special Care', w1: 0, w2: 0, w3: 0, w4: 40, w5: 40 },
+  totalHoursView: any = [
+    { Task: 'Total', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
   ];
-  assignmentData: any = [];
 
-  constructor(
-    private fb: FormBuilder,
-  ) { }
+  weeklyTotal: any = 0.00;
+  weeklyView = [
+    {
+      header: 'Monday',
+      date: '5th Feb, 2024',
+      value: 0
+    },
+    {
+      header: 'Tuesday',
+      date: '6th Feb, 2024',
+      value: 0
+    },
+    {
+      header: 'Wednesday',
+      date: '7th Feb, 2024',
+      value: 0
+    },
+    {
+      header: 'Thursday',
+      date: '8th Feb, 2024',
+      value: 0
+    },
+    {
+      header: 'Friday',
+      date: '9th Feb, 2024',
+      value: 0
+    },
+  ];
+
+  leaveView = [
+    {
+      title: 'Annual Leave',
+      value: 2,
+      totalValue: 16,
+      summary: 'Balance : 16 day(s)',
+      Overall: '18 Days'
+    },
+    {
+      title: 'Sick Leave',
+      value: 0,
+      totalValue: 5,
+      summary: 'Balance : 5 day(s)',
+      Overall: '5 Days'
+    }
+  ]
+
+  InitialView: boolean = true;
+
+  constructor() { }
 
   ngOnInit() {
-    this.initForm();
   }
 
-  initForm() {
-    this.activeEfforts.reset();
-    this.activeEfforts = this.fb.group({
-      projectDetails: this.fb.group({
-        firstName: [''],
-        middleName: [''],
-        lastName: [''],
-        phone: [''],
-        email: [''],
-        address: ['']
-      }),
-      efforts: this.fb.array([]),
-      assignment: this.fb.array([]),
+  updateValue() {
+    console.log(this.timeSheet);
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item) => {
+      this.totalHoursView[0][item] = _.sumBy(this.timeSheet, item);
     });
+    this.totalHoursView = [...this.totalHoursView];
   }
 
-  onSubmit() {
-    console.log(this.activeEfforts.value);
+  submitTimesheet() {
+    this.InitialView = false;
+  }
+
+  timesheetReport() {
+    this.InitialView = true;
+    console.log(this.timeSheet);
+    _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item, index: any) => {
+      this.weeklyView[index].value = this.totalHoursView[0][item];
+    });
+    console.log(this.weeklyView);
+    this.weeklyView = [...this.weeklyView];
+    this.weeklyTotal = _.sumBy(this.weeklyView, 'value');
+  }
+
+  reportsView() {
+    this.InitialView = true;
   }
 
 }
