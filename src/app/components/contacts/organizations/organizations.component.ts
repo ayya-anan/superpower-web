@@ -433,9 +433,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   updateDateValues(data: any) {
-    data.startDate = new Date(Date.parse(data.startDate.toString()));
-    data.endDate = new Date(Date.parse(data.endDate.toString()));
-    data.customerSince = new Date(Date.parse(data.customerSince.toString()));
+    data.startDate = (data.startDate) ? new Date(Date.parse(data.startDate.toString())) : '';
+    data.endDate = (data.endDate) ? new Date(Date.parse(data.endDate.toString())) : '';
+    data.customerSince = (data.customerSince) ? new Date(Date.parse(data.customerSince.toString())) : '';
   }
 
   editData(event: any) {
