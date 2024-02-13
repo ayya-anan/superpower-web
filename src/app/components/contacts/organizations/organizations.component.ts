@@ -21,6 +21,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addOrganizationSubscription: Subscription = new Subscription;
   individualSubscription: Subscription = new Subscription;
   updateOrganizations: Subscription = new Subscription;
+  deleteOrganizations: Subscription = new Subscription;
 
   searchValue: any;
   originalData: any = [];
@@ -79,7 +80,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { label: ' Semi-Annual', value: 2 },
     { label: 'Quarterly', value: 4 },
     { label: 'Monthly', value: 12 }
- ];
+  ];
 
   tableData: any = [];
   status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
@@ -156,8 +157,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.subscribeToAddOrganization();
     this.subscribeToUpdateOrganizations();
     this.subscribeToGetAllIndividuals();
+    this.subscribeToDeleteOrg();
     // if (this.keycloakService.isUserInRole('edit-organization')) {
-      this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
+    this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
     // }
   }
 
@@ -198,6 +200,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
           this.tableData.push(obj);
         });
         this.originalData = _.cloneDeep(this.tableData);
+        this.tableData = [...this.tableData];
       }
     );
   }
@@ -242,6 +245,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
           this.organizationView = false;
           this.organizationService.getAllOrganization();
         }
+      }
+    );
+  }
+
+  subscribeToDeleteOrg() {
+    this.deleteOrganizations = this.organizationService.deleteOrganizationEmit.subscribe(
+      (res: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Deleted Successfully' });
+        this.organizationService.getAllOrganization();
       }
     );
   }
@@ -479,12 +491,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       accept: () => {
         event.data.splice(event.index, 1);
         this.organizationService.deleteOrganization(event.rowData.id);
-        this.organizationService.deleteOrganizationEmit.subscribe(
-          (res: any) => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Deleted Successfully' });
-            this.organizationService.getAllOrganization();
-          }
-        );
       },
     });
   }

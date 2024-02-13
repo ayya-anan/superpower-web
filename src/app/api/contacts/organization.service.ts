@@ -19,8 +19,8 @@ export class OrganizationService {
 
     //To get Service Drilldown Details
     getAllOrganization() {
-        if (this.allorg) { this.allOrganization.emit(this.allorg); }
-        else {
+        // if (this.allorg) { this.allOrganization.emit(this.allorg); }
+        // else {
             this.organizationAPI.getOrganization().subscribe(
                 (res: any) => {
                     this.allorg = _.cloneDeep(res);
@@ -30,7 +30,7 @@ export class OrganizationService {
                     this.allOrganization.emit(err);
                 }
             );
-        }
+        // }
     }
 
     postOrganization(value: any) {
