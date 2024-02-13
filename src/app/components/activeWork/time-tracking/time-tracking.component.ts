@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-time-tracking',
   templateUrl: './time-tracking.component.html',
-  styleUrl: './time-tracking.component.scss'
+  styleUrl: './time-tracking.component.scss',
+  providers: [MessageService]
 })
 export class TimeTrackingComponent {
 
@@ -24,27 +26,27 @@ export class TimeTrackingComponent {
   weeklyView = [
     {
       header: 'Monday',
-      date: '5th Feb, 2024',
+      date: '',
       value: 0
     },
     {
       header: 'Tuesday',
-      date: '6th Feb, 2024',
+      date: '',
       value: 0
     },
     {
       header: 'Wednesday',
-      date: '7th Feb, 2024',
+      date: '',
       value: 0
     },
     {
       header: 'Thursday',
-      date: '8th Feb, 2024',
+      date: '',
       value: 0
     },
     {
       header: 'Friday',
-      date: '9th Feb, 2024',
+      date: '',
       value: 0
     },
   ];
@@ -69,23 +71,27 @@ export class TimeTrackingComponent {
   InitialView: boolean = true;
   startDate: any;
   endDate: any;
+  originalTimesheet: any = [];
 
-  constructor() { }
+  constructor(
+    private messageService: MessageService,
+  ) { }
 
   ngOnInit() {
     this.startDate = moment().startOf('week').add('days', 1).format('Do MMM YY')
     this.endDate = moment().endOf('week').subtract('days', 1).format('Do MMM YY');
     this.currentWeek();
+    this.originalTimesheet = _.cloneDeep(this.timeSheet);
   }
 
-  updateValue() {
+  updateValue(event: any) {
     console.log(this.timeSheet);
     this.calculateTotal();
   }
 
   calculateTotal() {
     _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item) => {
-      this.totalHoursView[0][item] = _.sumBy(this.timeSheet, item);
+      this.totalHoursView[0][item] = _.sumBy(this.timeSheet, (obj: any) => (obj[item] > 12) ? 12 : obj[item]);
     });
     this.totalHoursView = [...this.totalHoursView];
   }
@@ -95,18 +101,32 @@ export class TimeTrackingComponent {
   }
 
   timesheetReport() {
-    this.InitialView = true;
     console.log(this.timeSheet);
-    _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item, index: any) => {
-      this.weeklyView[index].value = this.totalHoursView[0][item];
-    });
-    console.log(this.weeklyView);
-    this.weeklyView = [...this.weeklyView];
-    this.weeklyTotal = _.sumBy(this.weeklyView, 'value');
+    const totalHours = this.totalHoursView[0];
+    if(totalHours.Monday <= 12 && totalHours.Tuesday <= 12 && totalHours.Wednesday <= 12 && totalHours.Thursday <= 12 && totalHours.Friday <= 12) {
+      _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item, index: any) => {
+        this.weeklyView[index].value = this.totalHoursView[0][item];
+      });
+      console.log(this.weeklyView);
+      this.weeklyView = [...this.weeklyView];
+      this.weeklyTotal = _.sumBy(this.weeklyView, 'value');
+    } else {
+      this.messageService.clear();
+      this.messageService.add({ severity: 'error', summary: 'Invalid Hours', detail: `Total Hours for a day cannot exceed 12` });
+    }
+
   }
 
-  reportsView() {
-    this.InitialView = true;
+  clearTimesheet() {
+    this.timeSheet = [
+      { Task: 'Basic Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+      { Task: 'Special Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+      { Task: 'Internal Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+      { Task: 'External Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
+    ];
+    _.forEach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], (item) => {
+      this.totalHoursView[0][item] = 0;
+    });
   }
 
   updateStartEnd(startDay: any) {

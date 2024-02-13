@@ -2,7 +2,7 @@
     [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{footerKey}}" [stateKey]="'table_'+key"
     [reorderableColumns]="true" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px"
-    [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)" dataKey="task">
+    [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)" dataKey="id">
     <ng-template pTemplate="caption" *ngIf="showColumnSelection">
         <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
             placeholder="Please select columns">
@@ -36,7 +36,7 @@
                 <td><p-tableRadioButton [value]="rowData"></p-tableRadioButton></td>
             </ng-container>
             <ng-template #elseContent>
-                <td pFrozenColumn *ngIf="showCheckBox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></td>
+                <td pFrozenColumn *ngIf="showCheckBox"> <p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
             </ng-template>
 
             <!-- <td *ngIf="key === 'Facilities' || key === 'Point Of Contacts'">

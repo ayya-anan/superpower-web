@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { KnobModule } from 'primeng/knob';
 import { DividerModule } from 'primeng/divider';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
 	imports: [
@@ -34,6 +35,7 @@ import { DividerModule } from 'primeng/divider';
 		TableModule,
 		KnobModule,
 		DividerModule,
+		ToastModule,
 		AppTranslateChildModule
 	],
 	declarations: [TimeTrackingComponent]
