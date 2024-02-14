@@ -31,7 +31,7 @@ export class KanbanListComponent implements OnInit {
     @ViewChild('inputEl') inputEl!: ElementRef;
 
     @ViewChild('listEl') listEl!: ElementRef;
-
+    total = 0;
     constructor(
         public parent: DealsComponent,
         private kanbanService: KanbanService,
@@ -40,6 +40,7 @@ export class KanbanListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.total = _.reduce(this.list.cards, (sum, c: any) => +c.value + sum, 0)
         this.isMobileDevice = this.kanbanService.isMobileDevice();
         this.menuItems = [
             {
