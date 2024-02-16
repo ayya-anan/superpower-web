@@ -255,7 +255,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
                     datasets: [
                         {
                             data: values,
-                            backgroundColor: ['#FFF1C9', '#F7B7A3', '#EA5F89', '#9B3192', '#57167E', ' #2B0B3F', '#64B5F6', '#7986CB', '#4DB6AC'],
+                            backgroundColor: ['#FFF1C9', '#F7B7A3', '#EA5F89', '#9B3192', '#00ff00', ' #2B0B3F', '#64B5F6', '#7986CB', '#4DB6AC'],
                             borderColor: [surfaceBorder],
                         },
                     ],
