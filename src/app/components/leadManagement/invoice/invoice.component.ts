@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
-import { templateContent } from './invoice.helper';
+import { notesContent, templateContent } from './invoice.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
 import { NgxPrintService, PrintOptions } from 'ngx-print';
 import jsPDF from 'jspdf';
@@ -16,7 +16,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
   @Input() visible: boolean = false;
 
   templateContent = _.cloneDeep(templateContent)
-  notesContent = 'Notes here';
+  notesContent = _.cloneDeep(notesContent);
   @ViewChild('printHeader') printHeader!: ElementRef;
   @ViewChild('printFooter') printFooter!: ElementRef;
   @ViewChild('printComponent') printComponent!: ElementRef;
@@ -131,7 +131,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
     const customPrintOptions: PrintOptions = new PrintOptions({
       printSectionId: 'printContent',
       useExistingCss: true,
-      previewOnly: true
+      previewOnly: false
     });
     this.printService.print(customPrintOptions);
   }

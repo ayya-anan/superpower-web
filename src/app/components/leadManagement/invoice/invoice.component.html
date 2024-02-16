@@ -6,29 +6,30 @@
 	</ng-template>
 	<div id="printView">
 		<div class="py-4 px-4 md:px-4 overflow-auto" *ngIf="quote">
-			<div id="printHeader" #printHeader
-				class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
-				<div class="flex flex-column">
+			<div id="printHeader" #printHeader><span class="font-bold mr-2"> &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DATE : {{ quote.date | date:'mediumDate' }}</span>
+				<div
+					class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
 
-					<img style="width: 10rem;"
-						src="https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png" />
-					<div class="mt-5 mb-8 flex flex-column">
-						<div class="mb-3 text-xl font-medium"> To</div>
-						<span>{{ organization?.primaryDetails?.name}}</span>
-						<span>{{ organization?.facilities[0]?.address}}</span>
-						<span>{{ organization?.facilities[0]?.country}} , {{
-							organization?.facilities[0]?.zipCode}}</span>
-						<!-- <span>{{ organization?.addresses[0]?.address}}</span>
-						<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span> -->
-					</div>
-					<div class="mb-2">Dear {{ deal?.customerContact }},</div>
-				</div>
-				<div class="flex flex-column mt-5 md:mt-0">
 					<div class="flex flex-column">
-						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-bold mr-2">DATE :</span>
-							<span>{{ quote.date | date:'mediumDate' }}</span>
+
+						<img style="width: 10rem;"
+							src="https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png" />
+						<div class="mt-5 mb-4 flex flex-column">
+							<div class="mb-3 text-xl font-medium"> To</div>
+							<span>{{ organization?.primaryDetails?.name}}</span>
+							<span>{{ organization?.facilities[0]?.address}}</span>
+							<span>{{ organization?.facilities[0]?.country}} , {{
+								organization?.facilities[0]?.zipCode}}</span>
+							<!-- <span>{{ organization?.addresses[0]?.address}}</span>
+						<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span> -->
 						</div>
+						<div class="mb-2">Hello {{ deal?.customerContact }},</div>
 					</div>
 				</div>
 			</div>
@@ -81,31 +82,25 @@
 									currency:'EUR':true}}
 								</td>
 							</tr>
+							<tr>
+								<td class="text-right py-3 font-semibold" colspan="5">SUBTOTAL</td>
+								<td class="text-right py-3 font-semibold">{{ quote.subTotal | currency:'EUR':true}}</td>
+							</tr>
+							<tr>
+								<td class="text-right py-3 font-semibold" colspan="5">DISCOUNT</td>
+								<td class="text-right py-3 font-semibold">{{ quote.discount | currency:'EUR':true}}</td>
+							</tr>
+							<tr>
+								<td class="text-right py-3 font-semibold" colspan="5">VAT</td>
+								<td class="text-right py-3 font-semibold">{{ ((quote.subTotal - quote.discount) * (quote.vat / 100) ) | currency:'EUR':true
+								}}</td>
+							</tr>
+							<tr>
+								<td class="text-right py-3 font-semibold" colspan="5">TOTAL</td>
+								<td class="text-right py-3 font-semibold">{{ quote.total | currency:'EUR':true}}</td>
+							</tr>
 						</tbody>
 					</table>
-				</div>
-
-				<div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
-					<div class="font-semibold mb-3 md:mb-0"> </div>
-					<div class="flex flex-column">
-						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-semibold mr-6">SUBTOTAL</span>
-							<span>{{ quote.subTotal | currency:'EUR':true}}</span>
-						</div>
-						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-semibold mr-6">DISCOUNT</span>
-							<span>{{ quote.discount | currency:'EUR':true}}</span>
-						</div>
-						<div class="flex justify-content-between align-items-center mb-2">
-							<span class="font-semibold mr-6">VAT</span>
-							<span>{{ ((quote.subTotal - quote.discount) * (quote.vat / 100) ) | currency:'EUR':true
-								}}</span>
-						</div>
-						<div class="flex justify-content-between align-items-center">
-							<span class="font-semibold mr-6">TOTAL</span>
-							<span>{{ quote.total | currency:'EUR':true}}</span>
-						</div>
-					</div>
 				</div>
 				<div class="overflow-x-auto" *ngIf="quote.payments && quote.payments.length > 0">
 					<h4>Payment MileStones</h4>
