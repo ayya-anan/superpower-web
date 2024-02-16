@@ -11,6 +11,7 @@ export class IndividualService {
     deleteIndividual: EventEmitter<any> = new EventEmitter();
 
     saveAllocationData: any = [];
+    allocatedHours: any = {};
 
     constructor(
         private individualsAPI: IndividualsAPI

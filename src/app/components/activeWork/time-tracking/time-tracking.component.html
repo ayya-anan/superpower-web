@@ -41,43 +41,50 @@
             <div class="mt-1"><i class="pi pi-step-forward" style="font-size: 1rem"></i></div>
         </div>
     </div>
-    <div class="col-12 p-0 inline-flex">
-        <ng-container *ngFor="let day of ['Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-            <div class="col p-2 headerClass">{{day}}</div>
-        </ng-container>
-    </div>
-    <div class="col-12 p-0 inline-flex" *ngFor="let data of timeSheet">
-        <ng-container *ngFor="let day of ['Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-            <ng-container *ngIf="day === 'Task'; else OtherContent">
-                <div class="col p-2 contentClass">
-                    <span style="line-height: 34px;">{{data[day]}}</span>
-                </div>
+    <ng-container *ngIf="timeSheet.length > 0">
+        <div class="col-12 p-0 inline-flex">
+            <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+                <div class="col p-2 headerClass">{{day}}</div>
             </ng-container>
-            <ng-template #OtherContent>
-                <div class="col p-2 contentClass">
-                    <p-inputNumber [min]="0" [max]="12" inputId=a{{day}} [(ngModel)]="data[day]" [minFractionDigits]="2" (onBlur)="updateValue($event)"></p-inputNumber>
-                </div>
-            </ng-template>
-        </ng-container>
-    </div>
-    <div class="col-12 p-0 inline-flex mt-5">
-        <ng-container *ngFor="let total of totalHoursView">
-            <ng-container *ngFor="let day of ['Total', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-                <ng-container *ngIf="day === 'Total'; else otherContent">
-                    <div class="col p-2 totalView" style="line-height: 34px;">Total Hours</div>
+        </div>
+        <div class="col-12 p-0 inline-flex" *ngFor="let data of timeSheet">
+            <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+                <ng-container *ngIf="day === 'Task' || day === 'Project'; else OtherContent">
+                    <div class="col p-2 contentClass">
+                        <span style="line-height: 34px;">{{data[day]}}</span>
+                    </div>
                 </ng-container>
-                <ng-template #otherContent>
-                    <div class="col p-2 totalView">
-                        <p-inputNumber [disabled]="true" inputId=a{{day}} [(ngModel)]="total[day]" [minFractionDigits]="2"></p-inputNumber>
+                <ng-template #OtherContent>
+                    <div class="col p-2 contentClass">
+                        <p-inputNumber [min]="0" [max]="12" inputId=a{{day}} [(ngModel)]="data[day]" [minFractionDigits]="2" (onBlur)="updateValue($event)"></p-inputNumber>
                     </div>
                 </ng-template>
             </ng-container>
-        </ng-container>
-    </div>
-    <div class="col-12 p-0 mt-5 text-right">
-        <p-button label="Submit Timesheet" (onClick)="timesheetReport()"></p-button>
-        <p-button class="ml-3" label="Cancel" (onClick)="clearTimesheet()"></p-button>
-    </div>
+        </div>
+        <div class="col-12 p-0 inline-flex mt-5">
+            <ng-container *ngFor="let total of totalHoursView">
+                <ng-container *ngFor="let day of ['', 'Total', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+                    <ng-container *ngIf="day === 'Total'; else otherContent">
+                        <div class="col p-2 totalView" style="line-height: 34px;">Total Hours</div>
+                    </ng-container>
+                    <ng-template #otherContent>
+                        <ng-container *ngIf="day === ''; else viewContent">
+                            <div class="col p-2"></div>
+                        </ng-container>
+                        <ng-template #viewContent>
+                            <div class="col p-2 totalView">
+                                <p-inputNumber [disabled]="true" inputId=a{{day}} [(ngModel)]="total[day]" [minFractionDigits]="2"></p-inputNumber>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="col-12 p-0 mt-5 text-right">
+            <p-button label="Submit Timesheet" (onClick)="timesheetReport()"></p-button>
+            <p-button class="ml-3" label="Cancel" (onClick)="clearTimesheet()"></p-button>
+        </div>
+    </ng-container>
 <!-- </ng-template> -->
 
  <!-- Information View -->

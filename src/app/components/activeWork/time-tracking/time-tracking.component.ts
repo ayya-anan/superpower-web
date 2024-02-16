@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
+import { IndividualService } from 'src/app/api/contacts/individuals.service';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
   selector: 'app-time-tracking',
@@ -11,12 +14,7 @@ import { MessageService } from 'primeng/api';
 })
 export class TimeTrackingComponent {
 
-  timeSheet: any = [
-    { Task: 'Basic Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
-    { Task: 'Special Care', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
-    { Task: 'Internal Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
-    { Task: 'External Audit', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
-  ];
+  timeSheet: any = [];
 
   totalHoursView: any = [
     { Task: 'Total', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
@@ -72,16 +70,41 @@ export class TimeTrackingComponent {
   startDate: any;
   endDate: any;
   originalTimesheet: any = [];
+  allocatedUsers: any;
+  selectedPerson: any;
 
   constructor(
     private messageService: MessageService,
+    private individualService: IndividualService,
+    private xService: XService,
+    private keycloakService: KeycloakService
   ) { }
 
   ngOnInit() {
+    this.subscribeToAssigneeData();
     this.startDate = moment().startOf('week').add('days', 1).format('Do MMM YY')
     this.endDate = moment().endOf('week').subtract('days', 1).format('Do MMM YY');
     this.currentWeek();
     this.originalTimesheet = _.cloneDeep(this.timeSheet);
+  }
+
+  subscribeToAssigneeData() {
+    this.xService.getAllX('taskAllocation').subscribe(
+      (res: any) => {
+        this.allocatedUsers = res.results;
+        this.createDetailList();
+      }
+    );
+  }
+
+  createDetailList() {
+    let username = this.keycloakService.getUsername();
+    const result = _.filter(this.allocatedUsers, (item) => item.name.toLowerCase() === username.toLowerCase());
+    this.selectedPerson = result;
+    _.forEach(result, (item) => {
+      const obj = { Project: item.project, Task: item.taskName, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 }
+      this.timeSheet.push(obj);
+    });
   }
 
   updateValue(event: any) {
@@ -110,6 +133,11 @@ export class TimeTrackingComponent {
       console.log(this.weeklyView);
       this.weeklyView = [...this.weeklyView];
       this.weeklyTotal = _.sumBy(this.weeklyView, 'value');
+      // this.individualService.saveAllocationData[0].submittedHours = this.weeklyTotal;
+      if(this.selectedPerson.length > 0) {
+        this.selectedPerson[0].submittedHours.quaterly[0] = this.weeklyTotal;
+        this.xService.updateX('taskAllocation', this.selectedPerson[0], this.selectedPerson[0].id);
+      }
     } else {
       this.messageService.clear();
       this.messageService.add({ severity: 'error', summary: 'Invalid Hours', detail: `Total Hours for a day cannot exceed 12` });
