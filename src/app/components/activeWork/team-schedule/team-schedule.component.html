@@ -52,7 +52,7 @@
                         [tableData]="taskTableData" (addAssigneeDetail)="showAssigneeDetails($event)"
                         (showAllocationDetails)="showAllocation($event)"></app-table>
                 </p-fieldset>
-                <div class="mt-3" *ngIf="resourcesData.length > 0">
+                <div class="mt-3" *ngIf="resourcesData && resourcesData.length > 0">
                     <p-fieldset legend="Manage User(s)" [toggleable]="true">
                         <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns"
                             [tableData]="resourcesData" (editContent)="editData($event)"
