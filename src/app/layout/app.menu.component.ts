@@ -71,7 +71,7 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-cog',
                 items: [
                     { label: 'MENU.GOVERNMENT_REGULATIONS', routerLink: ['/'] },
-                    { label: 'MENU.USER_MANAGEMENT', routerLink: ['/'] },
+                    { label: 'MENU.USER_MANAGEMENT', routerLink: ['/businessAdministration/userManagement'] },
                     { label: 'MENU.TEAM_MANAGEMENT', routerLink: ['/'] }
                 ]
             }
