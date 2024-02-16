@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { MenuItem } from 'primeng/api';
 import { Observable, Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { dealStatus } from '../../leadManagement/deals/deals.helper';
+import { XService } from 'src/app/api/x/x.service';
 
 interface MonthlyPayment {
     name?: string;
@@ -33,8 +35,12 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     items: MenuItem[] = [];
     userProfile: any;
     username!: string;
+    revenueChart: any;
+    revenueChartOptions: any;
 
-    constructor(private layoutService: LayoutService,private keycloakService: KeycloakService ) {
+    constructor(private layoutService: LayoutService,
+        private xService: XService,
+        private keycloakService: KeycloakService) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -146,7 +152,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
                 value: '8',
                 amount: '$295.72',
                 background:
-                'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)',
+                    'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)',
 
             }
         ];
@@ -236,6 +242,48 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
                     grid: {
                         color: surfaceBorder,
                         drawBorder: false,
+                    },
+                },
+            },
+        };
+        this.xService.getAllX('deal').subscribe(
+            (res: any) => {
+                const data = _.map(dealStatus, (deal) => deal.name);
+                const values: number[] = [];
+                this.revenueChart = {
+                    labels: data,
+                    datasets: [
+                        {
+                            data: values,
+                            backgroundColor: ['#FFF1C9', '#F7B7A3', '#EA5F89', '#9B3192', '#57167E', ' #2B0B3F', '#64B5F6', '#7986CB', '#4DB6AC'],
+                            borderColor: [surfaceBorder],
+                        },
+                    ],
+                };
+                _.each(data, (list, i) => {
+                    const deals = _.filter(res.results, (d) => d.status === list) || [];
+                    let total = 0;
+                    if (deals && deals.length > 0) {
+                        _.each(deals, (deal) => {
+                            if(deal && deal.quotes && deal.quotes.length > 0 && deal.quotes[deal.quotes.length -1].services){
+                                _.each(deal.quotes[deal.quotes.length -1].services ,(service) =>{
+                                    total += service.quantity;
+                                })
+                            }
+                        });
+                    }
+                    values[i] = total;
+                });
+            }
+        )
+
+
+        this.revenueChartOptions = {
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: textColor,
                     },
                 },
             },

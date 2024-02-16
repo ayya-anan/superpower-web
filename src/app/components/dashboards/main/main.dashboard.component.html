@@ -1,17 +1,17 @@
 <div class="layout-dashboard">
     <div class="grid">
         <div class="col-12 align-items-center justify-content-between">
-            <div class="mx-auto sm:mx-0">                
-                <h1 >
-                    <span>                        
-                      {{ username }}
+            <div class="mx-auto sm:mx-0">
+                <h1>
+                    <span>
+                        {{ username }}
                     </span>
                 </h1>
             </div>
             <div class="mx-auto sm:mx-0">
                 <h5>Here's What happening with your dashboard today</h5>
             </div>
-        </div>              
+        </div>
         <div class="col-12 md:col-3" *ngFor="let metric of metrics">
             <div class="card flex w-full relative h-14rem overflow-hidden" (mouseenter)="show(btn)"
                 (mouseleave)="hide(btn)">
@@ -37,22 +37,12 @@
 
         <div class="h-full col-12 xl:col-6">
             <div class="card h-full">
-                <h4 class="white-space-nowrap mb-2">Invoices</h4>
-                <div class="flex gap-3 w-full mt-4 align-items-center" *ngFor="let expense of expenses">
+                <h4 class="white-space-nowrap mb-2">Deal Hours</h4>
+                <div class="flex gap-3 w-full mt-4 align-items-center">
                     <div class="w-full">
-                        <div class="flex flex-wrap w-full justify-content-between align-items-center">
-                            <span class="font-semibold">{{expense.title}}</span>
-                            <div class="flex">
-                                <span
-                                    class="font-semibold text-color-secondary pr-2 border-right-2 surface-border text-sm">{{expense.value}}%</span>
-
-                                <span class="font-semibold ml-2 text-sm">{{expense.amount}}</span>
-                            </div>
-                        </div>
-                        <div class="border-round w-full overflow-hidden mt-2"
-                            style="height:7px; background-color: var(--surface-border)">
-                            <div class="border-left-round h-full" [style.background]="expense.background"
-                                [style.width]="expense.value + '%'"></div>
+                        <div class="flex justify-content-center align-items-center">
+                            <p-chart type="pie" [data]="revenueChart" [options]="revenueChartOptions"
+                                [style]="{'width': '100%'}"></p-chart>
                         </div>
                     </div>
                 </div>
