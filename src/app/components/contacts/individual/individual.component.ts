@@ -35,6 +35,8 @@ export class IndividualComponent implements OnInit {
     organizations: any = [];
     copyAddressBtn: boolean = false;
 
+    ownCompany = 'Expert People Management GmbH';
+
     //Form Groups
     contactForm: FormGroup = this.fb.group({});
     addresses: FormArray = this.fb.array([]);
@@ -77,7 +79,7 @@ export class IndividualComponent implements OnInit {
         this.subscribeToOrgData();
         if (this.organizationService.activeOrganizationView) {
             this.contactView = true;
-            this.contactForm.value.primaryDetails.companyName = this.organizationService.organizationDetails.primaryDetails.name;
+            this.contactForm.get('primaryDetails.companyName')?.patchValue({ name: this.organizationService.organizationDetails.primaryDetails.name });
             this.copyAddressBtn = true;
         }
         this.subscribeToGetAllIndividuals();
@@ -104,8 +106,8 @@ export class IndividualComponent implements OnInit {
             (res: any) => {
                 this.loading = false;
                 this.tableData = [];
-                this.allIndividuals = res.results;
-                _.forEach(res.results, (item: any) => {
+                this.allIndividuals = _.filter(res.results, (item) => item.primaryDetails && item.primaryDetails.companyName != this.ownCompany);
+                _.forEach(this.allIndividuals, (item: any) => {
                     const obj = {
                         id: item.id,
                         name: this.getName(item),
@@ -205,6 +207,10 @@ export class IndividualComponent implements OnInit {
     }
 
     onSubmit() {
+
+    }
+
+    saveIndividuals() {
         const result = this.contactForm.value;
         if (result.primaryDetails) {
             result.primaryDetails.companyName = (_.isObject(result.primaryDetails.companyName)) ? result.primaryDetails.companyName.name : result.primaryDetails.companyName;
@@ -216,6 +222,11 @@ export class IndividualComponent implements OnInit {
         } else {
             this.individualService.postIndividuals(result);
         }
+    }
+
+    closePanel() {
+        this.contactForm.reset();
+        this.contactView = false;
     }
 
     editData(event: any) {

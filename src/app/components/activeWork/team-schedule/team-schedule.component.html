@@ -41,11 +41,8 @@
             <div class="col-9">
                 <p-fieldset legend="Manage Service(s)" [toggleable]="true">
                     <div class="col-12 p-0 pb-2 inline-flex flex justify-content-end flex-wrap">
-                        <!-- <div>
-                            <app-time-range></app-time-range>
-                        </div> -->
                         <div class="ml-3">
-                            <button class="text-right" pButton pRipple label="Add Task" icon="pi pi-plus"></button>
+                            <button class="text-right" [disabled]="true" pButton pRipple label="Add Task" icon="pi pi-plus"></button>
                         </div>
                     </div>
                     <app-table [loading]="loading" [key]="'tasks'" [footerKey]="'Services'" [columns]="taskColumns"

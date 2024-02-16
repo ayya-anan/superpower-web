@@ -31,7 +31,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addDetails: boolean = false;
   companyAverge: number = 1500;
   tinoAverage: number = 500;
-  countries = COUNTRIES_LIST;
+  countries = _.cloneDeep(COUNTRIES_LIST);
   pocTableData: any = [];
   facilitiesTable: boolean = false;
   facilitiesTableData: any = [];
@@ -84,7 +84,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   tableData: any = [];
   status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
-  revenueRange: any = [{ name: '0 - 10 million' }, { name: '10 - 100 million' }, { name: '100 - 500 million' }, { name: '500 - 1 billion' }];
+  revenueRange: any = [{ name: '0 to 1 Million' }, { name: '1 to 2 Million' }, { name: '2 - 5 Million' }, { name: '>5 Million' }];
   facilityType: any = [{ name: 'Manufacturing Plant' }, { name: 'Office' }, { name: 'Warehouse' }];
   serviceList: any = [
     { name: 'Basic Care', unitRate: 52 },
@@ -169,6 +169,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       this.addPOCDetails(this.organizationService.organizationDetails.primaryDetails.name);
       this.organizationService.organizationDetails.primaryDetails['pointofContact'] = this.pocTableData;
       this.pocTableData = [...this.pocTableData];
+      this.updateIndustryDetails(this.organizationService.organizationDetails.primaryDetails);
       this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails.primaryDetails);
       this.organizationForm.get('facilities')?.patchValue(this.organizationService.organizationDetails.facilities);
       this.organizationForm.get('services')?.patchValue(this.organizationService.organizationDetails.services);
@@ -294,7 +295,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       type: ['', [Validators.required]],
       address: ['', [Validators.required]],
       employeeCount: ['', [Validators.required]],
-      country: ['Germany', [Validators.required]],
+      country: [{ value: 'Germany' }, [Validators.required]],
       zipCode: ['', [Validators.required]],
       phoneNumber: '',
       emailAddress: '',
@@ -306,7 +307,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     servicesArray.push(this.fb.group({
       type: '',
       amount: 0,
-      companyAverage: 0,
+      companyAverage: { value: 0, disabled: true },
       // tinoAverage: ['', [Validators.required]],
     }));
   }
@@ -325,6 +326,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   addContact() {
+    this.editId = '';
     this.organizationForm.reset();
     this.organizationView = true;
     this.organizationService.organizationDetails = {};
@@ -338,14 +340,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const result = _.filter(this.organizationData, (obj) => obj.primaryDetails.name.toLowerCase() === this.organizationForm.value.primaryDetails.name.toLowerCase());
-    // if (this.organizationForm.valid) {
-    console.log(this.organizationForm.value.primaryDetails);
-    this.organizationService.organizationDetails = {};
 
-    console.log(this.organizationForm.value.primaryDetails);
+  }
+
+  saveOrgData() {
+    const result = _.filter(this.organizationData, (obj) => obj.primaryDetails.name.toLowerCase() === this.organizationForm.value.primaryDetails.name.toLowerCase());
+    this.organizationService.organizationDetails = {};
     this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
     _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
+      if(facilityObj.country === null) { facilityObj.country = 'Germany'; }
       delete facilityObj['_id'];
     });
     _.forEach(this.organizationForm.value.services, (serviceObj) => {
@@ -362,7 +365,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         this.organizationService.postOrganization(this.organizationForm.value);
       }
     }
-    // }
+  }
+
+  closePanel() {
+    this.editId = '';
+    this.organizationView = false;
+    this.organizationForm.reset();
   }
 
   updateFacility() {
