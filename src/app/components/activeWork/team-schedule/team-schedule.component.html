@@ -64,13 +64,18 @@
     </form>
 </p-sidebar>
 
-<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '50vw', height: '350px' }">
+<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '50vw', height: 'auto', 'padding-bottom': '5px' }">
+    <div class="col-12 p-0 inline-flex">
+        <div class="col p-2 tags">Facility: {{this.facilityLocation}} </div>
+        <div *ngIf="assigneeLocation" class="col p-2 ml-2 tags">{{selectedAssignee}}: {{assigneeLocation}}</div>
+    </div>
+    <p-divider></p-divider>
     <div class="col-12 grid" *ngIf="assigneeView">
         <div class="col-3 p-0">
             <div class="mb-3">
                 <label>Assignee</label><br>
                 <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
-                    optionValue="label" placeholder="Select Assignee"></p-dropdown>
+                    optionValue="label" placeholder="Select Assignee" (onChange)="updateLocation()"></p-dropdown>
             </div>
             <div class="mb-3">
                 <label>Allocation</label><br>
@@ -84,25 +89,30 @@
             </div>
             <div class="mb-3">
                 <p-button label="Allocate" (onClick)="allocate()"></p-button>
-                <p-button class="ml-3" label="Cancel"></p-button>
+                <p-button class="ml-3" label="Cancel" (onClick)="closeView()"></p-button>
             </div>
         </div>
         <p-divider layout="vertical"></p-divider>
         <div class="col p-0">
             <div class="col-12 mb-3 p-0">
                 <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
-                <div style="text-align: right;"><app-time-range (updateRange)="updateRangeView($event)"></app-time-range></div>
+                <div style="text-align: right;"><app-time-range
+                        (updateRange)="updateRangeView($event)"></app-time-range></div>
             </div>
             <div class="col-12 p-0" style="overflow-y: auto;">
                 <div class="col-12 p-0 inline-flex">
                     <ng-container *ngFor="let item of timeRangeHeaders">
-                        <div class="p-0 tableClass" [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">{{item.name}}</div>
+                        <div class="p-0 tableClass"
+                            [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
+                            {{item.name}}</div>
                     </ng-container>
                 </div>
                 <div class="col-12 p-0 inline-flex">
                     <ng-container *ngFor="let time of timeData; let index = index; trackBy:trackByIndex;">
-                        <div class="p-2 tableClass" [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
-                            <p-inputNumber inputId=a{{index}} [(ngModel)]="timeData[index]"> </p-inputNumber>
+                        <div class="p-2 tableClass"
+                            [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
+                            <p-inputNumber inputId=a{{index}} [(ngModel)]="timeData[index]" (onBlur)="updateTotal()">
+                            </p-inputNumber>
                         </div>
                     </ng-container>
                 </div>
@@ -110,6 +120,28 @@
             <div class="col-12 p-1 mt-5 totalHours">
                 <span class="text-xl">Total Hours: {{totalHours}}</span>
             </div>
+            <ng-container *ngIf="selectedAssignee && remainingHours.length > 0">
+                <p-divider></p-divider>
+                <div class="col-12 p-0 text-xl">Remaining Hours</div>
+                <div class="col-12 p-0 mt-1" style="overflow-y: auto;">
+                    <div class="col-12 p-0 inline-flex">
+                        <ng-container *ngFor="let item of timeRangeHeaders">
+                            <div class="p-0 tableClass"
+                                [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
+                                {{item.name}}</div>
+                        </ng-container>
+                    </div>
+                    <div class="col-12 p-0 inline-flex">
+                        <ng-container *ngFor="let time of remainingHours; let index = index; trackBy:trackByIndex;">
+                            <div class="p-2 tableClass"
+                                [ngClass]="{ 'col': timeRangeValue === 'Quaterly', 'col-3': timeRangeValue === 'Monthly'}">
+                                <p-inputNumber [disabled]="true" inputId=a{{index}} [(ngModel)]="remainingHours[index]">
+                                </p-inputNumber>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 
@@ -117,58 +149,63 @@
         <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns" [tableData]="usersTableData"
         (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
     </ng-template> -->
+
+
 </p-dialog>
 
-<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="updateAssignee" [style]="{ width: '50vw', height: '450px' }">
-    <div class="col-12 grid" *ngIf="assigneeView">
-        <div class="col-3 p-0">
-            <div class="mb-3">
-                <label>Assignee</label><br>
-                <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
-                    optionValue="label" placeholder="Select Assignee"></p-dropdown>
-            </div>
-            <div class="mb-3">
-                <label>Allocation</label><br>
-                <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100"
-                    (onInput)="updateAllocationData()"> </p-inputNumber>
-            </div>
-            <div class="mb-3">
-                <label>Start Date</label><br>
-                <p-calendar [(ngModel)]="updatedStartDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
-            </div>
-            <div class="mb-3">
-                <label>End Date</label><br>
-                <p-calendar [(ngModel)]="updatedEndDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
-            </div>
-            <div class="mb-3 text-center">
-                <p-button label="Update" (onClick)="updateAssigneeDetails()"></p-button>
-                <p-button class="ml-3" label="Cancel"></p-button>
-            </div>
-        </div>
-        <p-divider layout="vertical"></p-divider>
-        <div class="col p-0">
-            <div class="col-12 mb-3 p-0">
-                <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
-                <div style="text-align: right;"><app-time-range (updateRange)="updateRangeView($event)"></app-time-range></div>
-            </div>
-            <div class="col-12 p-0" style="overflow-y: auto;">
-                <div class="col-12 p-0 inline-flex">
-                    <ng-container *ngFor="let item of timeRangeHeaders">
-                        <div class="col p-0 tableClass">{{item.name}}</div>
-                    </ng-container>
+<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="updateAssignee"
+    [style]="{ width: '50vw', height: '450px' }">
+    <ng-container *ngIf="assigneeView">
+        <div class="col-12 grid">
+            <div class="col-3 p-0">
+                <div class="mb-3">
+                    <label>Assignee</label><br>
+                    <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
+                        optionValue="label" placeholder="Select Assignee"></p-dropdown>
                 </div>
-                <div class="col-12 p-0 inline-flex">
-                    <ng-container *ngFor="let time of data; let index = index; trackBy:trackByIndex;">
-                        <div class="col p-2 tableClass">
-                            <p-inputNumber inputId=a{{index}} [(ngModel)]="data[index]"> </p-inputNumber>
-                        </div>
-                    </ng-container>
+                <div class="mb-3">
+                    <label>Allocation</label><br>
+                    <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100"
+                        (onInput)="updateAllocationData()"> </p-inputNumber>
+                </div>
+                <div class="mb-3">
+                    <label>Start Date</label><br>
+                    <p-calendar [(ngModel)]="updatedStartDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="mb-3">
+                    <label>End Date</label><br>
+                    <p-calendar [(ngModel)]="updatedEndDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="mb-3 text-center">
+                    <p-button label="Update" (onClick)="updateAssigneeDetails()"></p-button>
+                    <p-button class="ml-3" label="Cancel"></p-button>
                 </div>
             </div>
-            <div class="col-12 p-1 mt-5 totalHours">
-                <span class="text-xl">Total Hours: {{totalHours}}</span>
+            <p-divider layout="vertical"></p-divider>
+            <div class="col p-0">
+                <div class="col-12 mb-3 p-0">
+                    <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
+                    <div style="text-align: right;"><app-time-range
+                            (updateRange)="updateRangeView($event)"></app-time-range></div>
+                </div>
+                <div class="col-12 p-0" style="overflow-y: auto;">
+                    <div class="col-12 p-0 inline-flex">
+                        <ng-container *ngFor="let item of timeRangeHeaders">
+                            <div class="col p-0 tableClass">{{item.name}}</div>
+                        </ng-container>
+                    </div>
+                    <div class="col-12 p-0 inline-flex">
+                        <ng-container *ngFor="let time of data; let index = index; trackBy:trackByIndex;">
+                            <div class="col p-2 tableClass">
+                                <p-inputNumber inputId=a{{index}} [(ngModel)]="data[index]"> </p-inputNumber>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-12 p-1 mt-5 totalHours">
+                    <span class="text-xl">Total Hours: {{totalHours}}</span>
+                </div>
             </div>
         </div>
-    </div>
-
+    </ng-container>
 </p-dialog>
