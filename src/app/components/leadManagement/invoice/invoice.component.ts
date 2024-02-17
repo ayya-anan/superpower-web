@@ -9,7 +9,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
-  styleUrl: './invoice.component.scss',
+  styleUrls: ['./invoice.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
 export class InvoiceComponent implements OnInit, OnChanges {
@@ -75,7 +75,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
       popupWin.document.close();
     }
   }
-  emailComponentContent(event : Event) {
+  emailComponentContent(event: Event) {
     event.preventDefault()
     let content = this.getContent();
     const doc = new jsPDF();
