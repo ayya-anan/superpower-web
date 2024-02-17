@@ -121,6 +121,7 @@ export class TeamScheduleComponent implements OnInit {
   facilityLocation: any = '';
   organizationData: any;
   allocatedUsers: any;
+  deleteId: any;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -141,6 +142,7 @@ export class TeamScheduleComponent implements OnInit {
     this.initForm();
     this.subscribeToAssigneeData();
     this.subscribeToDeleteAssignee();
+    this.subscribeXChange();
   }
 
   trackByIndex(index: number, obj: any): any {
@@ -182,13 +184,20 @@ export class TeamScheduleComponent implements OnInit {
     );
   }
 
+  subscribeXChange() {
+    this.xService.addx.subscribe(
+      (res) => {
+        this.resourcesData = res.results;
+      }
+    )
+  }
+
   subscribeToDeleteAssignee() {
-   this.deleteAssignee = this.xService.deletexEmit.subscribe(
+    this.deleteAssignee = this.xService.deletexEmit.subscribe(
       (res: any) => {
-        this.allocatedUsers = res.results;
-        if(this.allocatedUsers.length > 0) {
-          this.updateUsersview(this.allocatedUsers);
-        }
+        _.remove(this.resourcesData, (item: any) => item.id = this.deleteId);
+        this.messageService.clear();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Resource DeAllocated Successfully' });
       }
     );
   }
@@ -209,25 +218,15 @@ export class TeamScheduleComponent implements OnInit {
     });
   }
 
-  getTotalValues() {
-    _.forEach
-  }
-
   getSubmittedHours(deal: any) {
     const result: any = _.filter(this.allocatedUsers, (item) => item.orgId === deal.id)
-    let hours: Number = 0;
     let percentage: any = 0;
-    if(result.length > 0) {
+    if (result.length > 0) {
       _.forEach(result, (assignee) => {
-        // hours = hours + assignee.submittedHours,
-        percentage = percentage + ((assignee.submittedHours.quaterly[0]/625)*100)
+        percentage = percentage + ((assignee.submittedHours.quaterly[0] / 625) * 100)
       });
     }
-    return {percentage}
-  }
-
-  getAllocatedPercentage(deal: any) {
-
+    return { percentage }
   }
 
   createTableData(dealsData: any, orgData: any) {
@@ -247,7 +246,7 @@ export class TeamScheduleComponent implements OnInit {
         completed: this.getSubmittedHours(deal).percentage,
         status: deal.status,
         services: (deal.quotes.length > 0) ? deal.quotes[0].services : [],
-        allServices : (orgName.length > 0) ? orgName[0].services : [],
+        allServices: (orgName.length > 0) ? orgName[0].services : [],
         facility: (orgName.length > 0) ? orgName[0].facilities : [],
         dealData: deal
       }
@@ -261,8 +260,8 @@ export class TeamScheduleComponent implements OnInit {
   }
 
   updateUsersview(event: any) {
-    const userView = _.filter(this.allocatedUsers, (item: any) => item.orgId === event.rowData.id &&  _.map(event.rowData.services, 'service').includes(item.taskId));
-    if(userView.length > 0) {
+    const userView = _.filter(this.allocatedUsers, (item: any) => item.orgId === event.rowData.id && _.map(event.rowData.services, 'service').includes(item.taskId));
+    if (userView.length > 0) {
       _.forEach(userView, (item) => {
         item.startDate = moment(item.startDate).format('MMM DD YYYY');
         item.endDate = moment(item.startDate).format('MMM DD YYYY');
@@ -295,8 +294,8 @@ export class TeamScheduleComponent implements OnInit {
       };
       this.taskTableData.push(obj);
     });
-    const userView = _.filter(this.allocatedUsers, (item: any) => item.orgId === event.rowData.id &&  _.map(event.rowData.services, 'service').includes(item.taskId));
-    if(userView.length > 0) {
+    const userView = _.filter(this.allocatedUsers, (item: any) => item.orgId === event.rowData.id && _.map(event.rowData.services, 'service').includes(item.taskId));
+    if (userView.length > 0) {
       _.forEach(userView, (item) => {
         item.startDate = moment(item.startDate).format('MMM DD YYYY');
         item.endDate = moment(item.startDate).format('MMM DD YYYY');
@@ -321,14 +320,14 @@ export class TeamScheduleComponent implements OnInit {
     this.allocationCount = '';
     this.selectedAssignee = '';
     this.toggleStatus = false;
-    this.timeRangeHeaders = (this.timeRangeValue  === 'Monthly') ? [...this.monthlyHeaders] : [...this.headers];
-    this.timeData = (this.timeRangeValue  === 'Monthly') ? [...this.monthlyData] : [...this.data];
+    this.timeRangeHeaders = (this.timeRangeValue === 'Monthly') ? [...this.monthlyHeaders] : [...this.headers];
+    this.timeData = (this.timeRangeValue === 'Monthly') ? [...this.monthlyData] : [...this.data];
     this.totalHours = '';
     this.facilityLocation = event.rowData.facility;
   }
 
   updateLocation() {
-    if(this.individualService.allocatedHours[this.selectedAssignee]) {
+    if (this.individualService.allocatedHours[this.selectedAssignee]) {
       this.remainingHours = this.individualService.allocatedHours[this.selectedAssignee];
     } else {
       this.individualService.allocatedHours[this.selectedAssignee] = [];
@@ -336,9 +335,9 @@ export class TeamScheduleComponent implements OnInit {
       this.remainingHours = this.individualService.allocatedHours[this.selectedAssignee];
     }
     const result = _.filter(this.accountManagers, (item: any) => item.label == this.selectedAssignee);
-    if(result.length > 0) {
+    if (result.length > 0) {
       const value = result[0].location;
-      this.assigneeLocation = `${value.address} ${(value.country)? `,${value.country}`: ''} ${(value.zipCode)? `,${value.zipCode}` : ''}`
+      this.assigneeLocation = `${value.address} ${(value.country) ? `,${value.country}` : ''} ${(value.zipCode) ? `,${value.zipCode}` : ''}`
     }
   }
 
@@ -359,7 +358,7 @@ export class TeamScheduleComponent implements OnInit {
   }
 
   allocationCheck() {
-    if(this.allocationCount > 100) {
+    if (this.allocationCount > 100) {
       this.messageService.clear();
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Allocated Hours cannot be greater than Service hours` });
     }
@@ -367,7 +366,7 @@ export class TeamScheduleComponent implements OnInit {
 
   updateTotal() {
     this.totalHours = _.sum(this.timeData);
-    this.allocationCount = (this.totalHours/this.serviceHours) * 100; 
+    this.allocationCount = (this.totalHours / this.serviceHours) * 100;
     this.allocationCheck();
   }
 
@@ -402,25 +401,25 @@ export class TeamScheduleComponent implements OnInit {
       allocationPercentage: this.allocationCount,
       startDate: this.taskDetails.startDate,
       endDate: this.taskDetails.endDate,
-      allocatedHours: { 
-        quaterly : this.timeData,
+      allocatedHours: {
+        quaterly: this.timeData,
         monthly: [],
         weekly: [],
-       },
-      remainingHours: { 
-        quaterly : diffHours,
+      },
+      remainingHours: {
+        quaterly: diffHours,
         monthly: [],
         weekly: [],
-       },
-      submittedHours: { 
-        quaterly : [0,0,0,0],
+      },
+      submittedHours: {
+        quaterly: [0, 0, 0, 0],
         monthly: [],
         weekly: [],
-       }
+      }
     }
     console.log(obj);
     this.individualService.saveAllocationData.push(obj);
-    this.resourcesData.push(obj);
+    // this.resourcesData.push(obj);
     this.taskTableData[this.taskIndex].allocation = this.taskTableData[this.taskIndex].allocation + obj.allocationPercentage;
     // this.taskTableData[this.taskIndex].assignee = obj.name;
     this.taskTableData = [...this.taskTableData];
@@ -429,6 +428,7 @@ export class TeamScheduleComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: `New User ${obj.name} Assigned for ${obj.taskName}` });
     this.visible = false;
     this.xService.postX('taskAllocation', obj);
+
     this.subscribeToAssigneeData();
   }
 
@@ -445,39 +445,14 @@ export class TeamScheduleComponent implements OnInit {
   }
 
   updateRangeView(value: any) {
-    console.log(value);
     this.timeRangeValue = value.data;
     this.timeRangeHeaders = (value.data === 'Monthly') ? [...this.monthlyHeaders] : [...this.headers];
     this.timeData = (value.data === 'Monthly') ? [...this.monthlyData] : [...this.data];
   }
 
   delete(event: any) {
-    // const result = _.filter(this.taskTableData, (obj)=> obj.task === event.rowData.taskName);
-    // if(result.length > 0) {
-    //   result[0].allocation = result[0].allocation - event.rowData.allocationPercentage;
-    // }
-    this.taskTableData = [...this.taskTableData];
-    this.resourcesData = [...this.resourcesData];
+    this.deleteId = event.rowData.id;
     this.xService.deleteX('taskAllocation', event.rowData.id);
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Resource DeAllocated Successfully' });
-    // this.xService.getAllX('taskAllocation').subscribe(
-    //     (res: any) => {
-    //       this.allocatedUsers = res.results;
-    //       this.updateUsersview(event);
-    //     }
-    // );
-    // this.confirmationService.confirm({
-    //   header: 'Confirmation',
-    //   message: `Are you sure you want to delete ${event.rowData.name}.`,
-    //   acceptIcon: 'pi pi-check mr-2',
-    //   rejectIcon: 'pi pi-times mr-2',
-    //   rejectButtonStyleClass: 'p-button-sm',
-    //   acceptButtonStyleClass: 'p-button-outlined p-button-sm',
-    //   accept: () => {
-    //     this.xService.deleteX('taskAllocation', '65cf4a5156a2e60027c0aea2');
-    //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Resource DeAllocated Successfully' });
-    //   },
-    // });
   }
 
 }

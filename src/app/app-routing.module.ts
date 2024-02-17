@@ -18,6 +18,7 @@ const routes: Routes = [
             { path: 'contacts', data: { breadcrumb: 'COMMON.CONTACTS' }, loadChildren: () => import('./components/contacts/contacts.module').then(m => m.ContactsModule) },
             { path: 'leadManagement', data: { breadcrumb: 'Lead Management' }, loadChildren: () => import('./components/leadManagement/leadManagement.module').then(m => m.LeadManagementModule) },
             { path: 'activeWork', data: { breadcrumb: 'Active Work' }, loadChildren: () => import('./components/activeWork/activeWork.module').then(m => m.ActiveWorkModule) },
+            { path: 'businessAdministration', data: { breadcrumb: 'Business Administration' }, loadChildren: () => import('./components/businessAdministration/businessAdministration.module').then(m => m.BusinessAdministrationModule) },
         ]
     },
     { path: 'callback', component: CallbackComponent },

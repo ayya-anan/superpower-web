@@ -18,28 +18,28 @@
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="section">Section</label><br>
+						<label for="section">WZ Section</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="section"
-							[options]="sections" optionLabel="name"
-							placeholder="Select Type" (onChange)="sectionChange($event)"></p-dropdown>
+							[options]="sections" optionLabel="name" placeholder="Select Type"
+							(onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label for="industryType">Industry Type</label><br>
+						<label for="industryType">WZ Industry Type</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryTypes" optionLabel="name"
-							placeholder="Select Type" (onChange)="industryTypeChange($event)"></p-dropdown>
+							[options]="industryTypes" optionLabel="name" placeholder="Select Type"
+							(onChange)="industryTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
-						<label for="subType1">Sub Type 1</label><br>
+						<label for="subType1">WZ Sub Type 1</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType1"
-							[options]="industrySubType1" optionLabel="name"
-							placeholder="Select Type" (onChange)="industrySubTypeChange($event)"></p-dropdown>
+							[options]="industrySubType1" optionLabel="name" placeholder="Select Type"
+							(onChange)="industrySubTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
-						<label for="subType2">Sub Type 2</label><br>
+						<label for="subType2">WZ Sub Type 2</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType2"
-							[options]="industrySubType2" optionLabel="name"
-							placeholder="Select Type" (onChange)="industrySubType2Change($event)"></p-dropdown>
+							[options]="industrySubType2" optionLabel="name" placeholder="Select Type"
+							(onChange)="industrySubType2Change($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="revenueRange">Revenue Range</label><br>
@@ -50,8 +50,8 @@
 					<div class="field col-12">
 						<label>Status</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
-							[options]="status" optionLabel="name" optionValue="name"
-							placeholder="Select Status" (onChange)="statusChange($event)"></p-dropdown>
+							[options]="status" optionLabel="name" optionValue="name" placeholder="Select Status"
+							(onChange)="statusChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="false">
 						<label for="pointofContact">Point Of Contact</label>
@@ -68,7 +68,7 @@
 						<div class="field col-12">
 							<label for="rolename">Invoice Frequency</label>
 							<p-dropdown appendTo="body" formControlName="invoiceFrequency" [options]="paymentMilestone"
-							optionLabel="label" optionValue="label" placeholder="Select Frequency"></p-dropdown>
+								optionLabel="label" optionValue="label" placeholder="Select Frequency"></p-dropdown>
 						</div>
 						<div class="field col-12">
 							<label for="rolename">Current Contract Start Date</label>
@@ -80,9 +80,16 @@
 						</div>
 						<div class="field col-12">
 							<label for="rolename">Customer Since</label>
-							<p-calendar formControlName="customerSince" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
+							<p-calendar formControlName="customerSince" dateFormat="dd-M-yy"
+								[showIcon]="true"></p-calendar>
 						</div>
 					</ng-container>
+					<div class="field col-12 mt-5">
+						<button pButton pRipple type="submit" icon="pi pi-check" label="Save" class="p-button-primary"
+							(click)="saveOrgData()"></button>
+						<button pButton pRipple icon="pi pi-times" label="Cancel" class="p-button-secondary ml-3"
+							(click)="closePanel()"></button>
+					</div>
 				</div>
 			</div>
 			<div class="col-9">
@@ -90,78 +97,78 @@
 					<p-fieldset legend="Facilities" [toggleable]="true">
 						<ng-container *ngIf="facilitiesTable; else addFacility">
 							<div class="col-12 p-0 pb-2 text-right">
-								<button pButton pRipple icon="pi pi-plus" label="Add Facility" class="p-button-primary text-center" (click)="updateFacility()"></button>
+								<button pButton pRipple icon="pi pi-plus" label="Add Facility"
+									class="p-button-primary text-center" (click)="updateFacility()"></button>
 							</div>
 							<ng-container *ngIf="facilitiesTableData.length > 0">
-								<app-table [loading]="loading" [key]="'facilities'" [footerKey]="'Facilities'" [columns]="facilityCols" [tableData]="facilitiesTableData"
-								(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+								<app-table [loading]="loading" [key]="'facilities'" [footerKey]="'Facilities'"
+									[columns]="facilityCols" [tableData]="facilitiesTableData"
+									(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 							</ng-container>
 						</ng-container>
 						<ng-template #addFacility>
 							<ng-container formArrayName="facilities">
 								<div class="formgrid grid" *ngFor="let facility of facilities.controls; let i = index"
 									[formGroupName]="i">
-									<!-- <p-card class="field col-12 p-0"> -->
-										<div class="field col-12">
-											<div class="formgrid grid">
-												<div class="field col-4">
-													<label for="type">Type</label><br>
-													<p-dropdown appendTo="body" formControlName="type" [filter]="true"
-														filterBy="name" [options]="facilityType" optionLabel="name"
-														optionValue="name" placeholder="Select Facility Type"></p-dropdown>
-												</div>
-												<div class="field col-3">
-													<label for="type">Employee Count</label><br>
-													<p-inputNumber formControlName="employeeCount"></p-inputNumber>
-												</div>
-			
-												<div class="col mt-4">
-													<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
-														<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
-															*ngIf="i === facilities.controls.length - 1"
-															class="p-button-rounded p-button-info"
-															(click)="initFacilitiesArray()"></button>
-														<button pButton pRipple type="button" *ngIf="facilities.controls.length > 1"
-															icon="pi pi-times" title="Remove"
-															class="p-button-rounded p-button-danger"
-															(click)="removeFacilitiesArray(i)"></button>
-													</div>
-												</div>
+									<div class="field col-12">
+										<div class="formgrid grid">
+											<div class="field col-4">
+												<label for="type">Type</label><br>
+												<p-dropdown appendTo="body" formControlName="type" [filter]="true"
+													filterBy="name" [options]="facilityType" optionLabel="name"
+													optionValue="name" placeholder="Select Facility Type"></p-dropdown>
 											</div>
-											<div class="formgrid grid">
-												<div class="field col">
-													<label for="emailAddress">Primary Email Address</label>
-													<input formControlName="emailAddress" type="text"
-														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-												</div>
-												<div class="field col">
-													<label for="phoneNumber">Primary Phone Number</label><br>
-													<p-inputMask formControlName="phoneNumber" mask="(99) 9999-999999"
-														placeholder="(99) 9999-999999"></p-inputMask>
-												</div>
+											<div class="field col-3">
+												<label for="type">Employee Count</label><br>
+												<p-inputNumber formControlName="employeeCount"></p-inputNumber>
 											</div>
-											<div class="formgrid grid">
-												<div class="field col">
-													<label for="address">Address</label>
-													<input formControlName="address" type="text"
-														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-												</div>
-											</div>
-											<div class="formgrid grid">
-												<div class="field col">
-													<label for="country">Country</label><br>
-													<p-dropdown [filter]="true" filterBy="name" appendTo="body"
-														formControlName="country" [options]="countries" optionLabel="name"
-														optionValue="name" placeholder="Germany"></p-dropdown>
-												</div>
-												<div class="field col">
-													<label for="zipCode">Post Code</label>
-													<input formControlName="zipCode" type="text"
-														class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+											<div class="col mt-4">
+												<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
+													<button pButton pRipple type="button" icon="pi pi-plus"
+														title="Add New" *ngIf="i === facilities.controls.length - 1"
+														class="p-button-rounded p-button-info"
+														(click)="initFacilitiesArray()"></button>
+													<button pButton pRipple type="button"
+														*ngIf="facilities.controls.length > 1" icon="pi pi-times"
+														title="Remove" class="p-button-rounded p-button-danger"
+														(click)="removeFacilitiesArray(i)"></button>
 												</div>
 											</div>
 										</div>
-									<!-- </p-card> -->
+										<div class="formgrid grid">
+											<div class="field col">
+												<label for="emailAddress">Primary Email Address</label>
+												<input formControlName="emailAddress" type="text"
+													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+											</div>
+											<div class="field col">
+												<label for="phoneNumber">Primary Phone Number</label><br>
+												<p-inputMask formControlName="phoneNumber" mask="(99) 9999-999999"
+													placeholder="(99) 9999-999999"></p-inputMask>
+											</div>
+										</div>
+										<div class="formgrid grid">
+											<div class="field col">
+												<label for="address">Address</label>
+												<input formControlName="address" type="text"
+													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+											</div>
+										</div>
+										<div class="formgrid grid">
+											<div class="field col">
+												<label for="country">Country</label><br>
+												<p-dropdown [filter]="true" filterBy="name" appendTo="body"
+													formControlName="country" [options]="countries" optionLabel="name"
+													optionValue="name" placeholder="Germany"></p-dropdown>
+											</div>
+											<div class="field col">
+												<label for="zipCode">Post Code</label>
+												<input formControlName="zipCode" type="text"
+													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+											</div>
+										</div>
+									</div>
 								</div>
 							</ng-container>
 						</ng-template>
@@ -195,7 +202,8 @@
 								<div class="col-2 mt-4">
 									<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
 										<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
-											*ngIf="i === services.controls.length - 1" class="p-button-rounded p-button-info"
+											*ngIf="i === services.controls.length - 1"
+											class="p-button-rounded p-button-info"
 											(click)="initServicesArray()"></button>
 										<button pButton pRipple type="button" *ngIf="services.controls.length > 1"
 											icon="pi pi-times" title="Remove" class="p-button-rounded p-button-danger"
@@ -209,19 +217,21 @@
 				<div class="p-0 mb-3">
 					<p-fieldset legend="Point Of Contacts" [toggleable]="true">
 						<div class="col-12 p-0">
-							<button pButton pRipple icon="pi pi-plus" label="Add Point Of Contact" class="p-button-primary text-center" (click)="addPOC()"></button>
+							<button pButton pRipple icon="pi pi-plus" label="Add Point Of Contact"
+								class="p-button-primary text-center" (click)="addPOC()"></button>
 						</div>
 						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
-							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'" [columns]="pocTableCols" [tableData]="pocTableData"
-							(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'"
+								[columns]="pocTableCols" [tableData]="pocTableData" (editContent)="editData($event)"
+								(deleteContent)="delete($event)"></app-table>
 						</div>
 					</p-fieldset>
 				</div>
 			</div>
 		</div>
-		<div class="col-12 m-auto" style="width: 100px;">
+		<!-- <div class="col-12 m-auto" style="width: 100px;">
 			<button pButton pRipple label="Save" class="p-button-success text-center"></button>
-		</div>
+		</div> -->
 	</form>
 </p-sidebar>
 
@@ -237,14 +247,17 @@
 <div class="col-12 py-0">
 	<p-toolbar>
 		<div class="p-toolbar-group-start" *ngIf="keycloakService.isUserInRole('add-organization')">
-			<p-button icon="pi pi-user" severity="info" label="{{ 'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION' | translate }}" (click)="addContact()"></p-button>
-			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true" label="{{ 'CONTACTS.ORGANIZATIONS.IMPORT' | translate }}"></p-button>
-			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true" severity="{{ 'CONTACTS.ORGANIZATIONS.DELETE' | translate }}" label="Delete"
+			<p-button icon="pi pi-user" severity="info"
+				label="{{ 'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION' | translate }}" (click)="addContact()"></p-button>
+			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true"
+				label="{{ 'CONTACTS.ORGANIZATIONS.IMPORT' | translate }}"></p-button>
+			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true"
+				severity="{{ 'CONTACTS.ORGANIZATIONS.DELETE' | translate }}" label="Delete"
 				(click)="addContact()"></p-button>
-			<button type="button" pButton pRipple icon="pi pi-file" class="ml-2" pTooltip="CSV"
-				tooltipPosition="bottom"></button>
-			<button type="button" pButton pRipple icon="pi pi-file-pdf" class="p-button-warning ml-2" pTooltip="PDF"
-				tooltipPosition="bottom"></button>
+			<button type="button" title="{{ 'CONTACTS.ORGANIZATIONS.EXPORTASCSV' | translate }}" pButton pRipple
+				icon="pi pi-file" class="ml-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+			<button type="button" title="{{ 'CONTACTS.ORGANIZATIONS.EXPORTASPDF' | translate }}" pButton pRipple
+				icon="pi pi-file-pdf" class="p-button-warning ml-2" pTooltip="PDF" tooltipPosition="bottom"></button>
 		</div>
 		<div class="p-toolbar-group-center">
 			<span class="p-input-icon-left" (keyup.enter)="searchResults($event)">
@@ -253,6 +266,6 @@
 			</span>
 		</div>
 	</p-toolbar>
-	<app-table [loading]="loading" [key]="'organizations'" [footerKey]="'Organizations'" [columns]="columns" [tableData]="tableData"
-		(editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
+	<app-table [loading]="loading" [key]="'organizations'" [footerKey]="'Organizations'" [columns]="columns"
+		[tableData]="tableData" (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
 </div>

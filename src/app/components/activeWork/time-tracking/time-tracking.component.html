@@ -1,117 +1,109 @@
-<!-- <div *ngIf="InitialView; else timesheetView"> -->
-    <p-toast></p-toast>
-    <div class="col-12 p-0 inline-flex mb-3">
-        <div class="col-7 p-0 text-xl">My Timesheet</div>
-        <div class="col-5 p-0 inline-flex justify-content-end">
-            <div class="mt-1" (click)="previousWeek()"><i class="pi pi-step-backward" style="font-size: 1rem"></i></div>
-            <!-- <div><p-button label="Previous Week" (onClick)="previousWeek()"></p-button></div> -->
-            <div (click)="currentWeek()" class="text-right text-xl ml-3 mr-3 currentWeek"> {{startDate}} - {{endDate}} </div>
-            <!-- <div><p-button label="Next week" (onClick)="nextWeek()"></p-button></div> -->
-            <div class="mt-1" (click)="nextWeek()"><i class="pi pi-step-forward" style="font-size: 1rem"></i></div>
+<p-toast></p-toast>
+
+<!-- Weekly View & Report -->
+<div class="col-12 p-0 inline-flex mb-3">
+    <div class="col-7 p-0 text-xl">My Timesheet</div>
+    <div class="col-5 p-0 inline-flex justify-content-end">
+        <div class="mt-1" (click)="previousWeek()"><i class="pi pi-step-backward" style="font-size: 1rem"></i></div>
+        <!-- <div><p-button label="Previous Week" (onClick)="previousWeek()"></p-button></div> -->
+        <div (click)="currentWeek()" class="text-right text-xl ml-3 mr-3 currentWeek"> {{startDate}} - {{endDate}}
         </div>
+        <!-- <div><p-button label="Next week" (onClick)="nextWeek()"></p-button></div> -->
+        <div class="mt-1" (click)="nextWeek()"><i class="pi pi-step-forward" style="font-size: 1rem"></i></div>
     </div>
-    <div class="col-12 p-0 inline-flex mt-1">
-        <div class="col p-0 inline-flex">
-            <ng-container *ngFor="let item of weeklyView">
-                <div class="col p-0 text-center weekClass mr-5 mt-3">
-                    <div class="headerstyleClass"></div>
-                    <div class="p-1 text-xl text-bolder">{{item.header}}</div>
-                    <div class="p-1" style="color: grey">{{item.date}}</div>
-                    <div class="weekTotal">{{item.value}}.00</div>
+</div>
+<div class="col-12 p-0 inline-flex mt-1">
+    <div class="col p-0 inline-flex">
+        <ng-container *ngFor="let item of weeklyView">
+            <div class="col p-0 text-center weekClass mr-5 mt-3">
+                <div class="headerstyleClass"></div>
+                <div class="p-1 text-xl text-bolder">{{item.header}}</div>
+                <div class="p-1" style="color: grey">{{item.date}}</div>
+                <div class="weekTotal">{{item.value}}.00</div>
+            </div>
+        </ng-container>
+    </div>
+    <p-divider layout="vertical"></p-divider>
+    <div class="p-0 text-center" style="width: 150px;">
+        <p-knob [(ngModel)]="weeklyTotal" [min]="0" [max]="60"></p-knob>
+        <div class="text-900">Weekly Report in Hours</div>
+    </div>
+</div>
+
+<!-- TimeSheet Enrty -->
+<ng-container *ngIf="timeSheet.length > 0">
+    <p-divider></p-divider>
+    <div class="col-12 p-0 inline-flex">
+        <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+            <div class="col p-2 headerClass">{{day}}</div>
+        </ng-container>
+    </div>
+    <div class="col-12 p-0 inline-flex" *ngFor="let data of timeSheet">
+        <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+            <ng-container *ngIf="day === 'Task' || day === 'Project'; else OtherContent">
+                <div class="col p-2 contentClass">
+                    <span style="line-height: 34px;">{{data[day]}}</span>
                 </div>
             </ng-container>
-        </div>
-        <p-divider layout="vertical"></p-divider>
-        <div class="p-0 text-center" style="width: 150px;">
-            <p-knob [(ngModel)]="weeklyTotal" [min]="0" [max]="60"></p-knob>
-            <div class="text-900">Weekly Report in Hours</div>
-        </div>
+            <ng-template #OtherContent>
+                <div class="col p-2 contentClass">
+                    <p-inputNumber [min]="0" [max]="12" inputId=a{{day}} [(ngModel)]="data[day]" [minFractionDigits]="2"
+                        (onBlur)="updateValue($event)"></p-inputNumber>
+                </div>
+            </ng-template>
+        </ng-container>
     </div>
-    <div class="col-12 p-0 mt-5" *ngIf="false">
-        <p-button label="Fill Timesheet" (onClick)="submitTimesheet()"></p-button>
-    </div>
-    <p-divider></p-divider>
-<!-- </div> -->
-<!-- <ng-template #timesheetView> -->
-    <div class="col-12 p-0 inline-flex mb-3" *ngIf="false">
-        <div class="col-9 p-0 text-xl">My Timesheet</div>
-        <div class="col-3 p-0 inline-flex justify-content-end">
-            <div class="mt-1"><i class="pi pi-step-backward" style="font-size: 1rem"></i></div>
-            <div class="text-right text-xl ml-3 mr-3 currentWeek"> Feb 5, 2024 - Feb 9, 2024 </div>
-            <div class="mt-1"><i class="pi pi-step-forward" style="font-size: 1rem"></i></div>
-        </div>
-    </div>
-    <ng-container *ngIf="timeSheet.length > 0">
-        <div class="col-12 p-0 inline-flex">
-            <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-                <div class="col p-2 headerClass">{{day}}</div>
-            </ng-container>
-        </div>
-        <div class="col-12 p-0 inline-flex" *ngFor="let data of timeSheet">
-            <ng-container *ngFor="let day of ['Project', 'Task', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-                <ng-container *ngIf="day === 'Task' || day === 'Project'; else OtherContent">
-                    <div class="col p-2 contentClass">
-                        <span style="line-height: 34px;">{{data[day]}}</span>
-                    </div>
+    <div class="col-12 p-0 inline-flex mt-5">
+        <ng-container *ngFor="let total of totalHoursView">
+            <ng-container *ngFor="let day of ['', 'Total', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
+                <ng-container *ngIf="day === 'Total'; else otherContent">
+                    <div class="col p-2 totalView" style="line-height: 34px;">Total Hours</div>
                 </ng-container>
-                <ng-template #OtherContent>
-                    <div class="col p-2 contentClass">
-                        <p-inputNumber [min]="0" [max]="12" inputId=a{{day}} [(ngModel)]="data[day]" [minFractionDigits]="2" (onBlur)="updateValue($event)"></p-inputNumber>
-                    </div>
+                <ng-template #otherContent>
+                    <ng-container *ngIf="day === ''; else viewContent">
+                        <div class="col p-2"></div>
+                    </ng-container>
+                    <ng-template #viewContent>
+                        <div class="col p-2 totalView">
+                            <p-inputNumber [disabled]="true" inputId=a{{day}} [(ngModel)]="total[day]"
+                                [minFractionDigits]="2"></p-inputNumber>
+                        </div>
+                    </ng-template>
                 </ng-template>
             </ng-container>
-        </div>
-        <div class="col-12 p-0 inline-flex mt-5">
-            <ng-container *ngFor="let total of totalHoursView">
-                <ng-container *ngFor="let day of ['', 'Total', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
-                    <ng-container *ngIf="day === 'Total'; else otherContent">
-                        <div class="col p-2 totalView" style="line-height: 34px;">Total Hours</div>
-                    </ng-container>
-                    <ng-template #otherContent>
-                        <ng-container *ngIf="day === ''; else viewContent">
-                            <div class="col p-2"></div>
-                        </ng-container>
-                        <ng-template #viewContent>
-                            <div class="col p-2 totalView">
-                                <p-inputNumber [disabled]="true" inputId=a{{day}} [(ngModel)]="total[day]" [minFractionDigits]="2"></p-inputNumber>
-                            </div>
-                        </ng-template>
-                    </ng-template>
-                </ng-container>
-            </ng-container>
-        </div>
-        <div class="col-12 p-0 mt-5 text-right">
-            <p-button label="Submit Timesheet" (onClick)="timesheetReport()"></p-button>
-            <p-button class="ml-3" label="Cancel" (onClick)="clearTimesheet()"></p-button>
-        </div>
-    </ng-container>
-<!-- </ng-template> -->
+        </ng-container>
+    </div>
+    <div class="col-12 p-0 mt-5 text-right">
+        <p-button label="Submit Timesheet" (onClick)="timesheetReport()"></p-button>
+        <p-button class="ml-3" label="Cancel" (onClick)="clearTimesheet()"></p-button>
+    </div>
+</ng-container>
 
- <!-- Information View -->
- <p-divider></p-divider>
- <div class="col-12 p-0 inline-flex">
-     <div class="col-9 p-0 inline-flex">
-         <ng-container *ngFor="let item of leaveView">
-             <div class="col-6">
-                 <p-card header="{{item.title}}">
-                     <div class="text-center">
-                         <p-knob [(ngModel)]="item.value" [min]="0" [max]="item.totalValue"></p-knob>
-                         <div class="text-900 text-xl">{{item.summary}}</div>
-                         <!-- <div class="text-900 mt-3">Overall : {{item.Overall}}</div> -->
-                     </div>
-                 </p-card>
-             </div>
-         </ng-container>
-     </div>
-     <p-divider layout="vertical"></p-divider>
-     <div class="col p-0">
-         <div class="col-12 quickLinks inline-flex mt-2">
-             <div class="col-11 p-0">Holiday List</div>
-             <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
-         </div>
-         <div class="col-12 quickLinks inline-flex">
-             <div class="col-11 p-0">Leave Plans</div>
-             <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
-         </div>
-     </div>
- </div>
+<!-- Information View -->
+<p-divider></p-divider>
+<div class="col-12 p-0 inline-flex">
+    <div class="col-9 p-0 inline-flex">
+        <ng-container *ngFor="let item of leaveView">
+            <div class="col-6">
+                <p-card header="{{item.title}}">
+                    <div class="text-center">
+                        <p-knob [(ngModel)]="item.value" [min]="0" [max]="item.totalValue"></p-knob>
+                        <div class="text-900 text-xl">{{item.summary}}</div>
+                        <!-- <div class="text-900 mt-3">Overall : {{item.Overall}}</div> -->
+                    </div>
+                </p-card>
+            </div>
+        </ng-container>
+    </div>
+    <p-divider layout="vertical"></p-divider>
+    <div class="col p-0">
+        <div class="col-12 quickLinks inline-flex mt-2">
+            <div class="col-11 p-0">Holiday List</div>
+            <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
+        </div>
+        <div class="col-12 quickLinks inline-flex">
+            <div class="col-11 p-0">Leave Plans</div>
+            <div class="col-1 p-0"><i class="pi pi-angle-down" style="font-size: 1.5rem"></i></div>
+        </div>
+    </div>
+</div>
