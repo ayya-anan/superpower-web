@@ -27,7 +27,9 @@
         "MANAGE": "Manage",
         "CANCEL": "Cancel",
         "USERS": "Users",
-        "SHOWING": "Showing"
+        "SHOWING": "Showing",
+        "COLUMNS": "Columns",
+        "SELECTED": "Selected"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -183,7 +185,8 @@
             "ANNUAL": "Annual",
             "SEMI_ANNUAL": "Semi-Annual",
             "QUARTERLY": "Quarterly",
-            "MONTHLY": "Monthly"
+            "MONTHLY": "Monthly",
+            "WEEKLY": "Weekly"
         }
     },
     "ACTIVEWORK": {
@@ -193,7 +196,11 @@
             "ADD_TASK": "Add Task",
             "SERVICES": "Services",
             "ASSIGNEE": "Assignee",
-            "ALLOCATION_PERCENTAGE": "Allocation (%)"
+            "ALLOCATION_PERCENTAGE": "Allocation (%)",
+            "ALLOCATION": "Allocation",
+            "AUTO_ALLOCATE": "Auto Allocate",
+            "ALLOCATE": "Allocate",
+            "SERVICE_HOURS": "Service Hours"
         },
         "TIMETRACKING": {
             "MY_TIMESHEET": "My Timesheet",
@@ -210,7 +217,8 @@
             "BALANCE_DAYS_ANNUAL": "Balance: 16 days",
             "BALANCE_DAYS_SICK": "Balance: 5 days",
             "SUBMIT_TIMESHEET": "Submit Timesheet",
-            "TOTAL_HOURS": "Total Hours"
+            "TOTAL_HOURS": "Total Hours",
+            "REMAINING_HOURS": "Remaining Hours"
         }
     },
     "BUSINESS_ADMINISTRATION": {

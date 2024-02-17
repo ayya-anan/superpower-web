@@ -65,11 +65,11 @@
                                     [showIcon]="true"></p-calendar>
                             </div>
                             <div class="col-12 justify-content-end flex justify-content gap-3" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple type="submit" icon="pi pi-check"
+                                <button pButton pRipple type="submit" icon="pi pi-check" label="{{ 'COMMON.SAVE' | translate }}"
                                     class="p-button-primary" [disabled]="dealForm.invalid"
-                                    (click)="saveQuote($event)">{{ 'COMMON.SAVE' | translate }}</button>
-                                <button pButton pRipple icon="pi pi-times" class="p-button-secondary"
-                                    (click)="close($event)">{{ 'COMMON.CANCEL' | translate }}</button>
+                                    (click)="saveQuote($event)"></button>
+                                <button pButton pRipple icon="pi pi-times" class="p-button-secondary" label="{{ 'COMMON.CANCEL' | translate }}"
+                                    (click)="close($event)"></button>
                             </div>
                         </div>
                     </div>
@@ -77,8 +77,8 @@
                         <div class="grid">
                             <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' | translate}}</div>
                             <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple icon="pi pi-plus"
-                                    (click)="initQuotesArray()">{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}</button>
+                                <button pButton pRipple icon="pi pi-plus" label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
+                                    (click)="initQuotesArray()"></button>
                             </div>
                         </div>
                         <ng-container>
@@ -119,8 +119,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex mb-3 flex-wrap gap-2" *ngIf="canUpdateDeal()">
-                                                        <button pButton pRipple
-                                                            icon="pi pi-plus" (click)="initServicesArray(i)">{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_SERVICE' | translate}}</button>
+                                                        <button pButton pRipple label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_SERVICE' | translate}}"
+                                                            icon="pi pi-plus" (click)="initServicesArray(i)"></button>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -308,23 +308,23 @@
                                                             optionValue="value"
                                                             placeholder="{{ 'DROPDOWNS.PAYMENT_MILESTONE' | translate}}"></p-dropdown>
                                                         <button pButton pRipple type="submit"
-                                                            class="p-button-primary p-1"
+                                                            class="p-button-primary p-1" label="{{'LEAD_MANAGEMENT.DEALS.GENERATE' | translate}}"
                                                             [disabled]="quote.get('paymentMilestone')?.value == 0"
-                                                            (click)="createPaymentMilestone(i)">{{'LEAD_MANAGEMENT.DEALS.GENERATE' | translate}}</button>
+                                                            (click)="createPaymentMilestone(i)"></button>
                                                     </div>
                                                     <div class="col-7 p-0 justify-content-end flex justify-content gap-2">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
-                                                            class="p-button-primary"
+                                                            class="p-button-primary" label="{{ 'COMMON.SAVE' | translate }}"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
-                                                            (click)="saveQuote($event)">{{ 'COMMON.SAVE' | translate }}</button>
-                                                        <button pButton pRipple type="submit" icon="pi pi-check"
+                                                            (click)="saveQuote($event)"></button>
+                                                        <button pButton pRipple type="submit" icon="pi pi-check" label="{{'LEAD_MANAGEMENT.DEALS.QUOTE_REVIEW' | translate}}"
                                                             *ngIf="dealForm.get('status')?.value ==='Quote-In-Progress'"
                                                             class="p-button-primary"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
-                                                            (click)="reviewQuote($event)">{{'LEAD_MANAGEMENT.DEALS.QUOTE_REVIEW' | translate}}</button>
-                                                        <button pButton pRipple icon="pi pi-file-pdf"
+                                                            (click)="reviewQuote($event)"></button>
+                                                        <button pButton pRipple icon="pi pi-file-pdf" label="{{'LEAD_MANAGEMENT.DEALS.PRINT_EMAIL' | translate}}"
                                                             class="p-button-primary" (click)="documentPreview($event, i)" 
-                                                            [disabled]="dealForm.invalid || !validatePayment(i)">{{'LEAD_MANAGEMENT.DEALS.PRINT_EMAIL' | translate}}</button>
+                                                            [disabled]="dealForm.invalid || !validatePayment(i)"></button>
                                                     </div>
                                                 </div>
                                             </div>

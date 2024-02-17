@@ -1,5 +1,5 @@
 <div class="rangeSelection inline-flex">
     <ng-container *ngFor="let item of results">
-        <div class="pl-2 pr-2 rangeItem" [ngClass]="{'active' : item.label === activeState, 'inactive': item.label != activeState}" (click)="updateView(item)">{{item.label}}</div>
+        <div class="pl-2 pr-2 rangeItem" [ngClass]="{'active' : item.label === activeState, 'inactive': item.label != activeState}" (click)="updateView(item)">{{item.header | translate}}</div>
     </ng-container>
 </div>

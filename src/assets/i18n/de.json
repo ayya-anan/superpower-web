@@ -27,7 +27,9 @@
         "MANAGE": "Verwalten",
         "CANCEL": "Stornieren",
         "USERS": "Benutzer",
-        "SHOWING": "Zeigt"
+        "SHOWING": "Zeigt",
+        "COLUMNS": "Säulen",
+        "SELECTED": "Ausgewählt"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -179,7 +181,8 @@
             "ANNUAL": "jährlich",
             "SEMI_ANNUAL": "Halbjährlich",
             "QUARTERLY": "vierteljährlich",
-            "MONTHLY": "Monatlich"
+            "MONTHLY": "Monatlich",
+            "WEEKLY": "Wöchentlich"
         }
     },
     "ACTIVEWORK": {
@@ -189,7 +192,11 @@
             "ADD_TASK": "Aufgabe hinzufügen",
             "SERVICES": "Dienstleistungen",
             "ASSIGNEE": "Abtretungsempfänger",
-            "ALLOCATION_PERCENTAGE": "Zuweisung (%)"
+            "ALLOCATION_PERCENTAGE": "Zuweisung (%)",
+            "ALLOCATION": "Zuweisung",
+            "AUTO_ALLOCATE": "Automatisch zuweisen",
+            "ALLOCATE": "Zuordnen",
+            "SERVICE_HOURS": "Öffnungszeiten"
         },
         "TIMETRACKING": {
             "MY_TIMESHEET": "Mein Stundenzettel",
@@ -206,7 +213,8 @@
             "BALANCE_DAYS_ANNUAL": "Gleichgewicht: 16 Tage",
             "BALANCE_DAYS_SICK": "Gleichgewicht: 5 Tage",
             "SUBMIT_TIMESHEET": "Stundenzettel einreichen",
-            "TOTAL_HOURS": "Gesamtstunden"
+            "TOTAL_HOURS": "Gesamtstunden",
+            "REMAINING_HOURS": "Verbleibende Stunden"
         }
     },
     "BUSINESS_ADMINISTRATION": {

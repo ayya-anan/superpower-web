@@ -5,7 +5,13 @@
     [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)" dataKey="id">
     <ng-template pTemplate="caption" *ngIf="showColumnSelection">
         <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
-            placeholder="Please select columns"> 
+            placeholder="Please select columns" [style]="{'min-width': '250px'}" > 
+            <ng-template let-value pTemplate="selectedItems">
+                <div *ngIf="!value || value.length === 0; else otherTemplate">Please select columns</div>
+                <ng-template #otherTemplate>
+                    <div>{{selectedColumns.length}} {{'COMMON.COLUMNS' | translate}} {{'COMMON.SELECTED' | translate}}</div>
+                </ng-template>
+            </ng-template>
             <ng-template let-item pTemplate="item">
                 <div class="flex align-items-center gap-2">
                     <div>{{ item.header | translate }}</div>

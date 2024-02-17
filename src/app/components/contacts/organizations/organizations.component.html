@@ -91,10 +91,10 @@
 						</div>
 					</ng-container>
 					<div class="field col-12 mt-5">
-						<button pButton pRipple type="submit" icon="pi pi-check" class="p-button-primary"
-							(click)="saveOrgData()">{{ 'COMMON.SAVE' | translate }}</button>
-						<button pButton pRipple icon="pi pi-times" class="p-button-secondary ml-3"
-							(click)="closePanel()">{{ 'COMMON.CANCEL' | translate }}</button>
+						<button pButton label="{{ 'COMMON.SAVE' | translate }}" pRipple type="submit" icon="pi pi-check" class="p-button-primary"
+							(click)="saveOrgData()"></button>
+						<button pButton label="{{ 'COMMON.CANCEL' | translate }}" pRipple icon="pi pi-times" class="p-button-secondary ml-3"
+							(click)="closePanel()"></button>
 					</div>
 				</div>
 			</div>
@@ -251,7 +251,7 @@
 						</ng-template>
 						<div class="col-12 p-0">
 							<button pButton pRipple icon="pi pi-plus"
-								class="p-button-primary text-center" (click)="addPOC()">{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}</button>
+								class="p-button-primary text-center" label="{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}" (click)="addPOC()"></button>
 						</div>
 						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
 							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'"

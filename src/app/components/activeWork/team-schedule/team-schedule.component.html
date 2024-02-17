@@ -71,38 +71,38 @@
     </form>
 </p-sidebar>
 
-<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '50vw', height: 'auto', 'padding-bottom': '5px' }">
+<p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="visible" [style]="{ width: '55vw', height: 'auto', 'padding-bottom': '5px' }">
     <div class="col-12 p-0 inline-flex">
-        <div class="col p-2 tags">Facility: {{this.facilityLocation}} </div>
+        <div class="col p-2 tags">{{ 'LEAD_MANAGEMENT.DEALS.FACILITY' | translate}}: {{this.facilityLocation}} </div>
         <div *ngIf="assigneeLocation" class="col p-2 ml-2 tags">{{selectedAssignee}}: {{assigneeLocation}}</div>
     </div>
     <p-divider></p-divider>
     <div class="col-12 grid" *ngIf="assigneeView">
         <div class="col-3 p-0">
             <div class="mb-3">
-                <label>Assignee</label><br>
+                <label>{{ 'ACTIVEWORK.TASKALLOCATION.ASSIGNEE' | translate }}</label><br>
                 <p-dropdown [options]="accountManagers" [(ngModel)]="selectedAssignee" optionLabel="label"
                     optionValue="label" placeholder="Select Assignee" (onChange)="updateLocation()"></p-dropdown>
             </div>
             <div class="mb-3">
-                <label>Allocation</label><br>
+                <label>{{ 'ACTIVEWORK.TASKALLOCATION.ALLOCATION' | translate }}</label><br>
                 <p-inputNumber [(ngModel)]="allocationCount" inputId="percent" suffix=" %" [max]="100"
                     (onInput)="updateAllocationData()"> </p-inputNumber>
             </div>
             <div class="mb-3">
-                <label class="mb-2">Auto Allocate</label><br>
+                <label class="mb-2">{{ 'ACTIVEWORK.TASKALLOCATION.AUTO_ALLOCATE' | translate }}</label><br>
                 <div><p-inputSwitch [(ngModel)]="toggleStatus" (onChange)="updateAllocationData()"></p-inputSwitch>
                 </div>
             </div>
-            <div class="mb-3">
-                <p-button label="Allocate" (onClick)="allocate()"></p-button>
-                <p-button class="ml-3" label="Cancel" (onClick)="closeView()"></p-button>
+            <div class="mb-3 inline-flex">
+                <p-button label="{{ 'ACTIVEWORK.TASKALLOCATION.ALLOCATE' | translate }}" (onClick)="allocate()"></p-button>
+                <p-button class="ml-2" label="{{ 'COMMON.CANCEL' | translate }}"  (onClick)="closeView()"></p-button>
             </div>
         </div>
         <p-divider layout="vertical"></p-divider>
         <div class="col p-0">
             <div class="col-12 mb-3 p-0">
-                <div class="text-xl" style="float: left;margin-top: 7px;">Service Hours: {{serviceHours}}</div>
+                <div class="text-xl" style="float: left;margin-top: 7px;">{{ 'ACTIVEWORK.TASKALLOCATION.SERVICE_HOURS' | translate }}: {{serviceHours}}</div>
                 <div style="text-align: right;"><app-time-range
                         (updateRange)="updateRangeView($event)"></app-time-range></div>
             </div>
@@ -125,11 +125,11 @@
                 </div>
             </div>
             <div class="col-12 p-1 mt-5 totalHours">
-                <span class="text-xl">Total Hours: {{totalHours}}</span>
+                <span class="text-xl">{{ 'ACTIVEWORK.TIMETRACKING.TOTAL_HOURS' | translate }}: {{totalHours}}</span>
             </div>
             <ng-container *ngIf="selectedAssignee && remainingHours.length > 0">
                 <p-divider></p-divider>
-                <div class="col-12 p-0 text-xl">Remaining Hours</div>
+                <div class="col-12 p-0 text-xl">{{ 'ACTIVEWORK.TIMETRACKING.REMAINING_HOURS' | translate }}</div>
                 <div class="col-12 p-0 mt-1" style="overflow-y: auto;">
                     <div class="col-12 p-0 inline-flex">
                         <ng-container *ngFor="let item of timeRangeHeaders">

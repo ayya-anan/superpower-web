@@ -63,8 +63,8 @@
 					</p-dropdown>
 					</div>
 					<div class="field col-12 mt-5">
-						<button pButton pRipple type="submit" icon="pi pi-check" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()">{{ 'COMMON.SAVE' | translate }}</button>
-						<button pButton pRipple icon="pi pi-times" class="p-button-secondary ml-3" (click)="closePanel()">{{ 'COMMON.CANCEL' | translate }}</button>
+						<button pButton pRipple type="submit" label="{{ 'COMMON.SAVE' | translate }}" icon="pi pi-check" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()"></button>
+						<button pButton pRipple icon="pi pi-times" label="{{ 'COMMON.CANCEL' | translate }}" class="p-button-secondary ml-3" (click)="closePanel()"></button>
 					</div>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 						</div>
 					</ng-container>	
 					<div class="col-12 p-0 text-right">
-						<button [disabled]="true" class="text-right" pButton pRipple icon="pi pi-plus">{{ 'CONTACTS.INDIVIDUAL.ADD_ANOTHER_ADDRESS' | translate }}</button>
+						<button [disabled]="true" label="{{ 'CONTACTS.INDIVIDUAL.ADD_ANOTHER_ADDRESS' | translate }}" class="text-right" pButton pRipple icon="pi pi-plus"></button>
 					</div>
 				</p-fieldset>
 			</div>

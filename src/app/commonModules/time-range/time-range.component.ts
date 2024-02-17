@@ -14,9 +14,9 @@ export class TimeRangeComponent implements OnInit {
   activeState: any;
 
   yearlyRange = [
-    { label: 'Quaterly', field: 'quaterly', value: 'Q', state: true},
-    { label: 'Monthly', field: 'monthly', value: 'M', state: false},
-    { label: 'Weekly', field: 'weekly', value: 'W', state: false},
+    { header: 'LEAD_MANAGEMENT.DEALS.QUARTERLY', label: 'Quaterly', field: 'quaterly', value: 'Q', state: true},
+    { header: 'LEAD_MANAGEMENT.DEALS.MONTHLY', label: 'Monthly', field: 'monthly', value: 'M', state: false},
+    { header: 'LEAD_MANAGEMENT.DEALS.WEEKLY', label: 'Weekly', field: 'weekly', value: 'W', state: false},
   ];
   monthRange = [
     { label: 'Past Month', field: 'previousMonth', value: 'Q', state: false},
