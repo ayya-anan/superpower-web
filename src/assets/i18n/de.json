@@ -175,7 +175,11 @@
             "QUOTE": "Angebot",
             "QUOTEAMOUNT": "Angebotsbetrag",
             "CREATED_DATE": "Erstellungsdatum",
-            "NEW_DEALS": "Neue Angebote"
+            "NEW_DEALS": "Neue Angebote",
+            "ANNUAL": "jährlich",
+            "SEMI_ANNUAL": "HALBJÄHRLICH",
+            "QUARTERLY": "vierteljährlich",
+            "MONTHLY": "Monatlich"
         }
     },
     "ACTIVEWORK": {

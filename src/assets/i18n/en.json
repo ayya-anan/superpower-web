@@ -179,7 +179,11 @@
             "QUOTE": "Quote",
             "QUOTEAMOUNT": "Quote Amount",
             "CREATED_DATE": "Created Date",
-            "NEW_DEALS": "New Deals"
+            "NEW_DEALS": "New Deals",
+            "ANNUAL": "Annual",
+            "SEMI_ANNUAL": "Semi-Annual",
+            "QUARTERLY": "Quarterly",
+            "MONTHLY": "Monthly"
         }
     },
     "ACTIVEWORK": {

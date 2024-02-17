@@ -64,21 +64,23 @@ $gutter: 1rem; //for primeflex grid system
     width: 350px !important;
 }
 
-   
-    .top-address {
-        text-align: right !important;
-        color: rgb(153, 0, 51);
-        clear: both;
-    }
 
-    .footer {
-        text-align: right !important;
+.top-address {
+    text-align: right !important;
+    color: rgb(153, 0, 51);
+    clear: both;
+}
+
+.footer {
+    text-align: right !important;
+}
+
+.logo {
+    float: right;
+    position: static;
+    clear: both;
+
+    img {
+        width: 10rem;
     }
-    .logo {
-        float: right;
-        position: static;
-        clear: both;
-        img {
-            width: 10rem;
-        }
-    }
+}
