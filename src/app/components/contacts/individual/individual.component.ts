@@ -51,15 +51,23 @@ export class IndividualComponent implements OnInit {
 
     ];
     Salutations: any = [
-        { name: 'Mr' },
-        { name: 'Ms' },
-        { name: 'Mrs' },
-        { name: 'Dr' }
+        { label: 'DROPDOWNS.MR', name: 'Mr' },
+        { label: 'DROPDOWNS.MS', name: 'Ms' },
+        { label: 'DROPDOWNS.MRS', name: 'Mrs' },
+        { label: 'DROPDOWNS.DR', name: 'Dr' }
     ];
-    status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
-    // company: any = [{ name: 'TeamLeader' }, { name: 'HubSpot' }, { name: 'Wipro' }];
+    status: any = [
+        { label: 'DROPDOWNS.ACTIVE', name: 'Active' },
+        { label: 'DROPDOWNS.INACTIVE', name: 'Inactive' },
+        { label: 'DROPDOWNS.PROSPECT', name: 'Prospect' },
+        { label: 'DROPDOWNS.SUSPENDED', name: 'Suspended' }
+    ];
     company: any = [];
-    roles: any = [{ name: 'Advisor' }, { name: 'Decision Maker' }, { name: 'Influencer' }];
+    roles: any = [
+        { label: 'DROPDOWNS.ADVISOR', name: 'Advisor' },
+        { label: 'DROPDOWNS.DECISIONMAKER', name: 'Decision Maker' },
+        { label: 'DROPDOWNS.INFLUENCER', name: 'Influencer' }
+    ];
 
 
     constructor(
@@ -174,11 +182,11 @@ export class IndividualComponent implements OnInit {
     initForm() {
         this.contactForm = this.fb.group({
             primaryDetails: this.fb.group({
-                salutation: ['Mr'],
+                salutation: [{ value:'PLACEHOLDERS.SALUTATION' }],
                 firstName: new FormControl("", [Validators.required]),
                 middleName: new FormControl(""),
                 lastName: new FormControl("", [Validators.required]),
-                status: ['Prospect'],
+                status: [{ value:'PLACEHOLDERS.PROSPECT' }],
                 jobTitle: [''],
                 companyName: [''],
                 roleName: ['Influencer']

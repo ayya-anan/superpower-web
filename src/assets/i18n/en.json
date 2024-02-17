@@ -233,7 +233,29 @@
         "SELECT_POINT_OF_CONTACT": "Select Point Of Contact",
         "SELECT_FREQUENCY": "Select Frequency",
         "PAYMENT_MILESTONE": "Payment Milestone",
-        "CUSTOMER_CONTACT": "Select Customer Contact"
+        "CUSTOMER_CONTACT": "Select Customer Contact",
+        "MR": "Mr",
+        "MS": "Ms",
+        "MRS": "Mrs",
+        "DR": "Dr",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive",
+        "SUSPENDED": "Suspended",
+        "ADVISOR": "Advisor",
+        "DECISIONMAKER": "Decision Maker",
+        "INFLUENCER": "Influencer",
+        "MANUFACTURING_PLANT": "Manufacturing Plant",
+        "OFFICE": "Office",
+        "WAREHOUSE": "Warehouse",
+        "BASIC_CARE": "Basic Care",
+        "EXTERNAL_AUDIT": "External Audit",
+        "INTERNAL_AUDIT": "Internal Audit",
+        "SPECIAL_CARE": "Special Care"
+    },
+    "PLACEHOLDERS": {
+        "SALUTATION": "Mr",
+        "PROSPECT": " Prospect",
+        "ROLE": "Influencer"
     },
     "FOOTERS": {
         "SCHEDULE": "Schedule"

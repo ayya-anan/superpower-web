@@ -77,20 +77,28 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   paymentMilestone = [
     { label: 'Annual', value: 1 },
-    { label: ' Semi-Annual', value: 2 },
+    { label: 'Semi-Annual', value: 2 },
     { label: 'Quarterly', value: 4 },
     { label: 'Monthly', value: 12 }
   ];
 
   tableData: any = [];
-  status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
+  status: any = [
+    { label: 'DROPDOWNS.ACTIVE', name: 'Active' },
+    { label: 'DROPDOWNS.INACTIVE', name: 'Inactive' },
+    { label: 'DROPDOWNS.PROSPECT', name: 'Prospect' },
+    { label: 'DROPDOWNS.SUSPENDED', name: 'Suspended' }
+];
   revenueRange: any = [{ name: '0 to 1 Million' }, { name: '1 to 2 Million' }, { name: '2 - 5 Million' }, { name: '>5 Million' }];
-  facilityType: any = [{ name: 'Manufacturing Plant' }, { name: 'Office' }, { name: 'Warehouse' }];
+  facilityType: any = [
+    { label: 'DROPDOWNS.MANUFACTURING_PLANT', name: 'Manufacturing Plant' },
+    { label: 'DROPDOWNS.OFFICE', name: 'Office' },
+    { label: 'DROPDOWNS.WAREHOUSE', name: 'Warehouse' }];
   serviceList: any = [
-    { name: 'Basic Care', unitRate: 52 },
-    { name: 'External Audit', unitRate: 96 },
-    { name: 'Internal Audit', unitRate: 20 },
-    { name: 'Special Care', unitRate: 89 }
+    { label: 'DROPDOWNS.BASIC_CARE', name: 'Basic Care', unitRate: 52 },
+    { label: 'DROPDOWNS.EXTERNAL_AUDIT', name: 'External Audit', unitRate: 96 },
+    { label: 'DROPDOWNS.INTERNAL_AUDIT', name: 'Internal Audit', unitRate: 20 },
+    { label: 'DROPDOWNS.SPECIAL_CARE', name: 'Special Care', unitRate: 89 }
   ];
 
   industryValues: any = [

@@ -177,7 +177,7 @@
             "CREATED_DATE": "Erstellungsdatum",
             "NEW_DEALS": "Neue Angebote",
             "ANNUAL": "jährlich",
-            "SEMI_ANNUAL": "HALBJÄHRLICH",
+            "SEMI_ANNUAL": "Halbjährlich",
             "QUARTERLY": "vierteljährlich",
             "MONTHLY": "Monatlich"
         }
@@ -229,7 +229,29 @@
         "SELECT_SERVICE_TYPE": "Wählen Sie Servicetyp aus",
         "SELECT_FREQUENCY": "Wählen Sie Häufigkeit aus",
         "PAYMENT_MILESTONE": "Wählen Sie Zahlungsmeilenstein aus",
-        "CUSTOMER_CONTACT": "Wählen Sie Kundenkontakt"
+        "CUSTOMER_CONTACT": "Wählen Sie Kundenkontakt",
+        "MR": "Herr",
+        "MS": "Frau",
+        "MRS": "Frau",
+        "DR": "Dr.",
+        "ACTIVE": "Aktiv",
+        "INACTIVE": "Inaktiv",
+        "SUSPENDED": "Ausgesetzt",
+        "ADVISOR": "Berater",
+        "DECISIONMAKER": "Entscheidungsträger",
+        "INFLUENCER": "Beeinflusser",
+        "MANUFACTURING_PLANT": "Produktionsstätte",
+        "OFFICE": "Büro",
+        "WAREHOUSE": "Lager",
+        "BASIC_CARE": "Grundversorgung",
+        "EXTERNAL_AUDIT": "Externe Prüfung",
+        "INTERNAL_AUDIT": "Interne Anhörung",
+        "SPECIAL_CARE": "Spezialbehandlung"
+    },
+    "PLACEHOLDERS": {
+        "SALUTATION": "Herr",
+        "PROSPECT": "Potenzieller Kunde",
+        "ROLE": "Beeinflusser"
     },
     "FOOTERS": {
         "SCHEDULE": "Zeitplan"
