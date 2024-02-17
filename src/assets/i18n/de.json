@@ -7,6 +7,9 @@
         "CONTACTS": "KONTAKTE",
         "INDIVIDUAL": "INDIVIDUEN",
         "ORGANIZATIONS": "ORGANISATIONEN",
+        "LEAD_MANAGEMENT": "Lead Management",
+        "ACTIVEWORK": "Aktive Arbeit",
+        "BUSINESS_ADMINISTRATION": "Unternehmensverwaltung",
         "STATUS": "Status",
         "START_DATE": "Startdatum",
         "END_DATE": "Enddatum",
@@ -121,14 +124,18 @@
         "DEALS": {
             "CUSTOMER_CONATCT": "Kundenkontakt",
             "ACCOUNT_MANAGER": "Account Manager",
-            "DEAL_DETAILS": "Details des Geschäfts",
-            "QUOTE_DETAILS": "Details des Angebots",
+            "DEAL_DETAILS": "Deal-Details",
+            "START_DATE": "Startdatum",
+            "CLOSE_DATE": "Abschlussdatum",
+            "WIN_PROBABILITY": "Gewinnwahrscheinlichkeit",
+            "QUOTE_DETAILS": "Angebotsdetails",
             "CLONE_QUOTE": "Angebot kopieren",
             "SERVICES": "Dienstleistungen",
             "FACILITY": "Einrichtung",
             "SERVICE_TYPE": "Dienstleistungsart",
             "Service_RATE": "Dienstleistungsrate",
             "EMPLOYEE_COUNT": "Mitarbeiteranzahl",
+            "HOURS": "Std",
             "QUANTITY": "Menge",
             "TOTAL": "Gesamt",
             "SUBTOTAL": "Teilsumme",
@@ -146,7 +153,12 @@
             "QUOTE_REVIEW": "Angebotsüberprüfung",
             "QUOTE_SENT": "Angebot gesendet",
             "QUOTE_ACCEPTED": "Angebot angenommen",
-            "DEAL_LOST": "Deal verloren"
+            "DEAL_LOST": "Deal verloren",
+            "ADD_NEW_QUOTE": "Neues Angebot hinzufügen",
+            "ADD_NEW_SERVICE": "Neuen Dienst hinzufügen",
+            "GENERATE": "Generieren",
+            "PRINT_EMAIL": "Drucken / Email",
+            "MULTIPLIER": "Multiplikator"
         }
     }
 }
