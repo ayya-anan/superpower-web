@@ -17,8 +17,8 @@ const routes: Routes = [
             { path: 'dashboard', data: { breadcrumb: 'Dashboard' }, loadChildren: () => import('./components/dashboards/dashboards.module').then(m => m.DashboardsModule) },
             { path: 'contacts', data: { breadcrumb: 'COMMON.CONTACTS' }, loadChildren: () => import('./components/contacts/contacts.module').then(m => m.ContactsModule) },
             { path: 'leadManagement', data: { breadcrumb: 'COMMON.LEAD_MANAGEMENT' }, loadChildren: () => import('./components/leadManagement/leadManagement.module').then(m => m.LeadManagementModule) },
-            { path: 'activeWork', data: { breadcrumb: 'COMMON.LEAD_MANAGEMENT' }, loadChildren: () => import('./components/activeWork/activeWork.module').then(m => m.ActiveWorkModule) },
-            { path: 'businessAdministration', data: { breadcrumb: 'COMMON.LEAD_MANAGEMENT' }, loadChildren: () => import('./components/businessAdministration/businessAdministration.module').then(m => m.BusinessAdministrationModule) },
+            { path: 'activeWork', data: { breadcrumb: 'COMMON.ACTIVEWORK' }, loadChildren: () => import('./components/activeWork/activeWork.module').then(m => m.ActiveWorkModule) },
+            { path: 'businessAdministration', data: { breadcrumb: 'COMMON.BUSINESS_ADMINISTRATION' }, loadChildren: () => import('./components/businessAdministration/businessAdministration.module').then(m => m.BusinessAdministrationModule) },
         ]
     },
     { path: 'callback', component: CallbackComponent },

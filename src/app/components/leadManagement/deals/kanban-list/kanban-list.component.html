@@ -25,7 +25,7 @@
             [cdkDragDisabled]="isMobileDevice"></app-kanban-card>
     </div>
     <div class="px-4 mb-3 w-full mt-4 flex" *ngIf="keycloakService.isUserInRole('add-deal')">
-        <button pButton pRipple label="New Deals" icon="pi pi-plus font-semibold"
-            class="py-3 justify-content-center font-semibold w-full border-round" (click)="insertCard()"></button>
+        <button pButton pRipple icon="pi pi-plus font-semibold"
+            class="py-3 justify-content-center font-semibold w-full border-round" (click)="insertCard()">{{ 'LEAD_MANAGEMENT.DEALS.NEW_DEALS' | translate }}</button>
     </div>
 </div>

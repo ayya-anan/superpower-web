@@ -3,6 +3,8 @@
         "SAVE": "Save",
         "ADD": "Add",
         "NAME": "Name",
+        "PROJECT": "Project",
+        "TASK": "Task",
         "VALUE": "Value",
         "CONTACTS": "CONTACTS",
         "INDIVIDUAL": "INDIVIDUALS",
@@ -13,6 +15,8 @@
         "STATUS": "Status",
         "START_DATE": "Start Date",
         "END_DATE": "End Date",
+        "ALLOCATEDHOURS": "Allocated Hours",
+        "ALLOCATED_PERCENTAGE": "Allocated (%)",
         "ACTIONS": "Actions",
         "SEARCHBYNAME": "Search By Name",
         "SEARCHBYNAMEANDCOMPANY": "Search By Name, Company",
@@ -166,7 +170,28 @@
             "ADD_NEW_SERVICE": "Add New Service",
             "GENERATE": "Generate",
             "PRINT_EMAIL": "Print / Email",
-            "MULTIPLIER": "Multiplier"
+            "MULTIPLIER": "Multiplier",
+            "QUOTE": "Quote",
+            "QUOTEAMOUNT": "Quote Amount",
+            "CREATED_DATE": "Created Date",
+            "NEW_DEALS": "New Deals"
         }
-    }   
+    },
+    "DROPDOWNS": {
+        "SALUTATION": "Mr",
+        "ORGANIZATION": "Organization",
+        "PROSPECT": " Prospect",
+        "JOB_TITLE": "Job Title",
+        "ROLE": "Role",
+        "SELECT_TYPE": "Select Type",
+        "SELECT_REVENUE": "Select Revenue",
+        "SELECT_STATUS": "Select Status",
+        "SELECT_ACCOUNT_MANAGER": "Select Account Manager",
+        "SELECT_FACILITY_TYPE": "Select Facility Type",
+        "SELECT_SERVICE_TYPE": "Select Service Type",
+        "SELECT_POINT_OF_CONTACT": "Select Point Of Contact",
+        "SELECT_FREQUENCY": "Select Frequency",
+        "PAYMENT_MILESTONE": "Payment Milestone",
+        "CUSTOMER_CONTACT": "Select Customer Contact"
+    }
 }

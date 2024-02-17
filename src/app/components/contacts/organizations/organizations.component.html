@@ -20,55 +20,55 @@
 					<div class="field col-12">
 						<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="section"
-							[options]="sections" optionLabel="name" placeholder="Select Type"
+							[options]="sections" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryTypes" optionLabel="name" placeholder="Select Type"
+							[options]="industryTypes" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industryTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
 						<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType1"
-							[options]="industrySubType1" optionLabel="name" placeholder="Select Type"
+							[options]="industrySubType1" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
 						<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType2"
-							[options]="industrySubType2" optionLabel="name" placeholder="Select Type"
+							[options]="industrySubType2" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubType2Change($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="revenueRange">{{'CONTACTS.ORGANIZATIONS.REVENUE_RANGE' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="revenueRange"
 							[options]="revenueRange" optionLabel="name" optionValue="name"
-							placeholder="Select Revenue"></p-dropdown>
+							placeholder="{{ 'DROPDOWNS.SELECT_REVENUE' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label>{{'CONTACTS.ORGANIZATIONS.STATUS' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
-							[options]="status" optionLabel="name" optionValue="name" placeholder="Select Status"
+							[options]="status" optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"
 							(onChange)="statusChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="false">
 						<label for="pointofContact">{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}</label>
 						<p-dropdown appendTo="body" formControlName="pointofContact" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="Select Point Of Contact"></p-dropdown>
+							optionLabel="name" optionValue="id" placeholder="{{ 'DROPDOWNS.SELECT_POINT_OF_CONTACT' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="accountManager">{{'CONTACTS.ORGANIZATIONS.ACCOUNT_MANAGER' | translate}}</label>
 						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="name" placeholder="Select Account Manager"></p-dropdown>
+							optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
 					</div>
 					<ng-container *ngIf="activeContract">
 						<!-- <div class="field col-12 verticalLineClass">Active Contract</div> -->
 						<div class="field col-12">
 							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.INVOICE_FREQUENCY' | translate}}</label>
 							<p-dropdown appendTo="body" formControlName="invoiceFrequency" [options]="paymentMilestone"
-								optionLabel="label" optionValue="label" placeholder="Select Frequency"></p-dropdown>
+								optionLabel="label" optionValue="label" placeholder="{{ 'DROPDOWNS.SELECT_FREQUENCY' | translate}}"></p-dropdown>
 						</div>
 						<div class="field col-12">
 							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.CURRENT_CONTRACT_START_DATE' | translate}}</label>
@@ -121,7 +121,7 @@
 												<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' | translate}}</label><br>
 												<p-dropdown appendTo="body" formControlName="type" [filter]="true"
 													filterBy="name" [options]="facilityType" optionLabel="name"
-													optionValue="name" placeholder="Select Facility Type"></p-dropdown>
+													optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_FACILITY_TYPE' | translate}}"></p-dropdown>
 											</div>
 											<div class="field col-3">
 												<label for="type">{{'CONTACTS.ORGANIZATIONS.EMPLOYEE_COUNT' | translate}}</label><br>
@@ -192,14 +192,14 @@
 								<div class="field col-3">
 									<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' | translate}}</label><br>
 									<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
-										optionLabel="name" optionValue="name" placeholder="Service Type"></p-dropdown>
+										optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_SERVICE_TYPE' | translate}}"></p-dropdown>
 								</div>
 								<div class="field col">
 									<label for="amount">{{'CONTACTS.ORGANIZATIONS.RATE' | translate}}</label><br>
 									<p-inputNumber formControlName="amount" mode="currency" inputId="currency-germany"
 										currency="EUR" locale="de-DE"> </p-inputNumber>
 								</div>
-								<div class="field col">
+								<div class="field col-4 px-0">
 									<label for="companyAverage">{{'CONTACTS.ORGANIZATIONS.COMPANY_AVERAGE' | translate}}</label><br>
 									<p-inputNumber formControlName="companyAverage" mode="currency"
 										inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
@@ -232,8 +232,8 @@
 							</div>
 						</ng-template>
 						<div class="col-12 p-0">
-							<button pButton pRipple icon="pi pi-plus" label="Add Point Of Contact"
-								class="p-button-primary text-center" (click)="addPOC()"></button>
+							<button pButton pRipple icon="pi pi-plus"
+								class="p-button-primary text-center" (click)="addPOC()">{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}</button>
 						</div>
 						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
 							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'"

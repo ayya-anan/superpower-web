@@ -9,7 +9,7 @@
 				<div class="formgrid grid">
 					<div class="field col-12">
 						<label>{{ 'CONTACTS.INDIVIDUAL.SALUTATION' | translate }}</label>
-						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="name" optionValue="name" placeholder="Mr"></p-dropdown>
+						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SALUTATION' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="firstname">{{ 'CONTACTS.INDIVIDUAL.FIRSTNAME' | translate }}</label>
@@ -28,19 +28,23 @@
 					</div>
 					<div class="field col-12">
 						<label for="companyname">{{ 'CONTACTS.INDIVIDUAL.ORGANIZATION_NAME' | translate }}</label>
-						<p-dropdown appendTo="body" formControlName="companyName" [editable]="true" [options]="organizations" optionLabel="name" placeholder="Organization"></p-dropdown>
+						<p-dropdown appendTo="body" formControlName="companyName" [editable]="true" [options]="organizations" optionLabel="name" 
+						placeholder="{{ 'DROPDOWNS.ORGANIZATION' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="jobtitle">{{ 'CONTACTS.INDIVIDUAL.JOBTITLE' | translate }}</label>
-						<p-dropdown appendTo="body" formControlName="jobTitle" [editable]="true" [options]="company" optionLabel="name" placeholder="Job Title"></p-dropdown>
+						<p-dropdown appendTo="body" formControlName="jobTitle" [editable]="true" [options]="company" optionLabel="name" 
+						placeholder="{{ 'DROPDOWNS.JOB_TITLE' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label>{{ 'CONTACTS.INDIVIDUAL.STATUS' | translate }}</label><br>
-						<p-dropdown formControlName="status" [options]="status" optionLabel="name"  optionValue="name" placeholder="Prospect"></p-dropdown>
+						<p-dropdown formControlName="status" [options]="status" optionLabel="name"  optionValue="name" 
+						placeholder="{{ 'DROPDOWNS.PROSPECT' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="rolename">{{ 'CONTACTS.INDIVIDUAL.ROLE' | translate }}</label>
-						<p-dropdown [editable]="true" formControlName="roleName" [options]="roles" optionLabel="name" placeholder="Role"></p-dropdown>
+						<p-dropdown [editable]="true" formControlName="roleName" [options]="roles" optionLabel="name" 
+						placeholder="{{ 'DROPDOWNS.ROLE' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12 mt-5">
 						<button pButton pRipple type="submit" icon="pi pi-check" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()">{{ 'COMMON.SAVE' | translate }}</button>

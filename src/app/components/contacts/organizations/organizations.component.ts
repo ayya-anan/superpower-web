@@ -504,8 +504,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.addOrganizationSubscription) { this.addOrganizationSubscription.unsubscribe() }
-    if (this.individualSubscription) { this.individualSubscription.unsubscribe() }
-    if (this.individualSubscription) { this.individualSubscription.unsubscribe() }
+    if (this.organizationSubscription) { this.organizationSubscription.unsubscribe(); }
+    if (this.addOrganizationSubscription) { this.addOrganizationSubscription.unsubscribe(); }
+    if (this.deleteOrganizations) { this.deleteOrganizations.unsubscribe(); }
+    if (this.updateOrganizations) { this.updateOrganizations.unsubscribe(); }
+    if (this.individualSubscription) { this.updateOrganizations.unsubscribe(); }
   }
 }

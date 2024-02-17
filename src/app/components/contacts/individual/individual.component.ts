@@ -50,7 +50,12 @@ export class IndividualComponent implements OnInit {
         { header: 'CONTACTS.INDIVIDUAL.STATUS', field: 'status' },
 
     ];
-    Salutations: any = [{ name: 'Mr' }, { name: 'Ms' }, { name: 'Mrs' }, { name: 'Dr' }];
+    Salutations: any = [
+        { name: 'Mr' },
+        { name: 'Ms' },
+        { name: 'Mrs' },
+        { name: 'Dr' }
+    ];
     status: any = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Prospect' }, { name: 'Suspended' }];
     // company: any = [{ name: 'TeamLeader' }, { name: 'HubSpot' }, { name: 'Wipro' }];
     company: any = [];

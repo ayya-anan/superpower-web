@@ -53,14 +53,14 @@ export class TeamScheduleComponent implements OnInit {
   ]
 
   usersColumns = [
-    { header: 'Name', field: 'name' },
-    { header: 'Project', field: 'project' },
-    { header: 'Task', field: 'taskName' },
-    { header: 'Start Date', field: 'startDate' },
-    { header: 'End Date', field: 'endDate' },
-    { header: 'Allocated Hours', field: 'totalAllocatedHours' },
-    { header: 'Allocated (%)', field: 'allocationPercentage' },
-    { header: 'Actions', field: 'action' }
+    { header: 'COMMON.NAME', field: 'name' },
+    { header: 'COMMON.PROJECT', field: 'project' },
+    { header: 'COMMON.TASK', field: 'taskName' },
+    { header: 'COMMON.START_DATE', field: 'startDate' },
+    { header: 'COMMON.END_DATE', field: 'endDate' },
+    { header: 'COMMON.ALLOCATEDHOURS', field: 'totalAllocatedHours' },
+    { header: 'COMMON.ALLOCATED_PERCENTAGE', field: 'allocationPercentage' },
+    { header: 'COMMON.ACTIONS', field: 'action' }
   ];
 
   tableData: any = [];

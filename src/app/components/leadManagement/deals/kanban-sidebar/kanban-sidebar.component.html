@@ -24,30 +24,30 @@
                                 <label>{{'COMMON.ORGANIZATIONS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="org" [options]="organizationFilterData"
                                     optionLabel="name" [filter]="true" optionValue="id"
-                                    placeholder="Select Organization"
+                                    placeholder="{{ 'DROPDOWNS.ORGANIZATION' | translate}}"
                                     (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>{{'COMMON.STATUS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="name" optionValue="name" placeholder="Select Status"></p-dropdown>
+                                    optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.CUSTOMER_CONATCT' | translate}}</label><br>
                                 <p-dropdown appendTo="body" formControlName="customerContact"
                                     [options]="individualsData" optionLabel="name" optionValue="name"
-                                    placeholder="Select Customer Contact"></p-dropdown>
+                                    placeholder="{{ 'DROPDOWNS.CUSTOMER_CONTACT' | translate}}"></p-dropdown>
                             </div>
                             <div class="field col-12" *ngIf="false">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.WIN_PROBABILITY' | translate}}</label><br>
                                 <p-dropdown appendTo="body" formControlName="winProbablity" [options]="winProbablity"
-                                    optionLabel="name" placeholder="Prospect"></p-dropdown>
+                                    optionLabel="name"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.ACCOUNT_MANAGER' | translate}}</label><br>
                                 <p-dropdown appendTo="body" formControlName="accountManager"
                                     [options]="accountManagerList" optionLabel="name" optionValue="name"
-                                    placeholder="Select Account Manager"></p-dropdown>
+                                    placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.START_DATE' | translate}}</label><br>
@@ -91,10 +91,10 @@
                                             <ng-template pTemplate="header">
                                                 <span class="flex align-items-center gap-2 w-full">
                                                     <p-chip
-                                                        label="Quote # : {{ QuotesArray.controls.length - i }}"></p-chip>
+                                                        label="{{'LEAD_MANAGEMENT.DEALS.QUOTE' | translate}} # : {{ QuotesArray.controls.length - i }}"></p-chip>
                                                     <p-chip
-                                                        label="Quote Amount : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
-                                                    <p-chip label="Created Date : {{ quote.get('date')?.value | date }}"
+                                                        label="{{'LEAD_MANAGEMENT.DEALS.QUOTEAMOUNT' | translate}} : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
+                                                    <p-chip label="{{'LEAD_MANAGEMENT.DEALS.CREATED_DATE' | translate}} : {{ quote.get('date')?.value | date }}"
                                                         icon="pi pi-calendar"></p-chip>
                                                     <p-button icon="pi pi-copy" class="ml-auto" *ngIf="canUpdateDeal()"
                                                         (click)="cloneQuote($event,i)" size="small"
@@ -306,9 +306,9 @@
                                                         <p-dropdown appendTo="body" formControlName="paymentMilestone"
                                                             [options]="paymentMilestone" optionLabel="label"
                                                             optionValue="value"
-                                                            placeholder="Select Payment Milestone"></p-dropdown>
+                                                            placeholder="{{ 'DROPDOWNS.PAYMENT_MILESTONE' | translate}}"></p-dropdown>
                                                         <button pButton pRipple type="submit"
-                                                            class="p-button-primary"
+                                                            class="p-button-primary p-1"
                                                             [disabled]="quote.get('paymentMilestone')?.value == 0"
                                                             (click)="createPaymentMilestone(i)">{{'LEAD_MANAGEMENT.DEALS.GENERATE' | translate}}</button>
                                                     </div>
