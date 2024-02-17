@@ -19,6 +19,7 @@ export interface KanbanCard {
 export interface KanbanList {
     listId: string;
     name?: string;
+    label?: string;
     cards: KanbanCard[];
 }
 
