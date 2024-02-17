@@ -1,6 +1,6 @@
 <div class="card md:w-25rem overflow-hidden bg-gray-300 p-3">
     <div class="flex justify-content-between align-items-center w-full h-2rem">
-        <div class="font-bold text-xl text-800 pr-2" pBadge [value]="list.cards.length.toString()">{{list.name! | translate}}</div>
+        <div class="font-bold text-xl text-800 pr-2" pBadge [value]="list.cards.length.toString()">{{list.label! | translate}}</div>
         <!-- <p-inplace #inplace [closable]="true" closeIcon="pi pi-check" styleClass="h-auto" (onActivate)="focus()">
             <ng-template pTemplate="display">
                 <span class="block text-900 font-semibold mt-4 pl-2 text-lg"  pTooltip="Click to edit" style="word-break: break-word;" tooltipPosition="top">{{list.title}}</span>
