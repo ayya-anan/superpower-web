@@ -16,6 +16,7 @@ import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -89,21 +90,14 @@ export class KanbanSidebarComponent implements OnDestroy {
     showQuote: boolean = false;
     showTableView: boolean = false;
     paymentMilestone = [
-        { label: 'Annual', value: 1 },
-        { label: ' Semi-Annual', value: 2 },
-        { label: 'Quarterly', value: 4 },
-        { label: 'Monthly', value: 12 }
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1 },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2 },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4 },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12 }
     ];
     showPaymentsTable: boolean = false;
     accountManagerList: { name: string; id: any; }[] = [];
     allIndividualsList: any;
-
-    columns: any = [
-        { header: 'Quote Created Date', field: 'createdDate' },
-        { header: 'Quote Value', field: 'value' },
-        { header: 'Status', field: 'status' },
-        { header: 'Actions', field: 'action' },
-    ];
 
     paymentData: any = [];
     loading: boolean = false;
@@ -122,8 +116,12 @@ export class KanbanSidebarComponent implements OnDestroy {
         private keycloakService: KeycloakService,
         private xService: XService,
         private changeDetectorRef: ChangeDetectorRef,
+        private translate: TranslateService,
         private dealService: DealService
     ) {
+        _.each(this.status, (status) => {
+            status.label = this.translate.instant(status.label)
+        })
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = _.cloneDeep(data);
@@ -450,7 +448,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.dealForm.get('status')?.setValue('Quote Review');
         this.saveQuote(event);
     }
-    updateEmailSent(){
+    updateEmailSent() {
         this.dealForm.get('status')?.setValue('Quote Sent');
         this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
     }
