@@ -7,6 +7,9 @@
         "CONTACTS": "CONTACTS",
         "INDIVIDUAL": "INDIVIDUALS",
         "ORGANIZATIONS": "ORGANIZATIONS",
+        "LEAD_MANAGEMENT":"Lead Management",
+        "ACTIVEWORK": "Active Work",
+        "BUSINESS_ADMINISTRATION": "Business Administration",
         "STATUS": "Status",
         "START_DATE": "Start Date",
         "END_DATE": "End Date",
@@ -123,8 +126,12 @@
     "LEAD_MANAGEMENT": {
         "DEALS": {
             "DEAL_DETAILS": "Deal Details",
+            "NAME": "Name",
             "CUSTOMER_CONATCT": "Customer Contact",
             "ACCOUNT_MANAGER": "Account Manager",
+            "START_DATE": "Start Date",
+            "CLOSE_DATE": "Close Date",
+            "WIN_PROBABILITY": "Win Probability",
             "QUOTE_DETAILS": "Qoute Details",
             "CLONE_QUOTE": "Clone Quote",
             "SERVICES": "Services",
@@ -132,6 +139,7 @@
             "SERVICE_TYPE": "Service Type",
             "Service_RATE": "Service Rate",
             "EMPLOYEE_COUNT": "Employee Count",
+            "HOURS": "Hours",
             "QUANTITY": "Quantity",
             "TOTAL": "Total",
             "SUBTOTAL": "Sub Total",
@@ -149,7 +157,12 @@
             "QUOTE_REVIEW": "Quote Review",
             "QUOTE_SENT": "Quote Sent",
             "QUOTE_ACCEPTED": "Quote Accepted",
-            "DEAL_LOST": "Deal Lost"
+            "DEAL_LOST": "Deal Lost",
+            "ADD_NEW_QUOTE": "Add New Quote",
+            "ADD_NEW_SERVICE": "Add New Service",
+            "GENERATE": "Generate",
+            "PRINT_EMAIL": "Print / Email",
+            "MULTIPLIER": "Multiplier"
         }
     }   
 }
