@@ -4,11 +4,13 @@ import { notesContent, templateContent } from './invoice.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
 import { NgxPrintService, PrintOptions } from 'ngx-print';
 import jsPDF from 'jspdf';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
-  styleUrl: './invoice.component.scss'
+  styleUrl: './invoice.component.scss',
+  providers: [MessageService, ConfirmationService]
 })
 export class InvoiceComponent implements OnInit, OnChanges {
   @Input() deal: any;
@@ -27,6 +29,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
   showPrintContent: boolean = false;
 
   constructor(private dealService: DealService,
+    private messageService: MessageService,
     private printService: NgxPrintService) { }
   ngOnInit() {
   }
@@ -72,7 +75,8 @@ export class InvoiceComponent implements OnInit, OnChanges {
       popupWin.document.close();
     }
   }
-  emailComponentContent() {
+  emailComponentContent(event : Event) {
+    event.preventDefault()
     let content = this.getContent();
     const doc = new jsPDF();
     const body = `<!DOCTYPE html>
@@ -125,6 +129,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
     // });
     if (content) {
       this.dealService.sentEmail({ content: body });
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Quote Emailed Successfully' });
       this.emailSent.emit();
     }
   }
