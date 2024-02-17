@@ -17,12 +17,15 @@
         "END_DATE": "End Date",
         "ALLOCATEDHOURS": "Allocated Hours",
         "ALLOCATED_PERCENTAGE": "Allocated (%)",
+        "COMPLETED_PERCENTAGE": "% Completed",
         "ACTIONS": "Actions",
         "SEARCHBYNAME": "Search By Name",
         "SEARCHBYNAMEANDCOMPANY": "Search By Name, Company",
+        "SEARCHBYUSER": "Search By User",
         "ADD_ASSIGNEE": "Add Assignee",
         "MANAGE": "Manage",
-        "CANCEL": "Cancel"
+        "CANCEL": "Cancel",
+        "USERS": "Users"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -177,6 +180,11 @@
             "NEW_DEALS": "New Deals"
         }
     },
+    "BUSINESS_ADMINISTRATION": {
+        "USER_MANAGEMENT": {
+            "ADD_NEW_USER": "Add New User"
+        }
+    },
     "DROPDOWNS": {
         "SALUTATION": "Mr",
         "ORGANIZATION": "Organization",
@@ -193,5 +201,8 @@
         "SELECT_FREQUENCY": "Select Frequency",
         "PAYMENT_MILESTONE": "Payment Milestone",
         "CUSTOMER_CONTACT": "Select Customer Contact"
+    },
+    "FOOTERS": {
+        "SCHEDULE": "Schedule"
     }
 }

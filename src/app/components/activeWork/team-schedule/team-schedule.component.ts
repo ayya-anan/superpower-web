@@ -29,13 +29,13 @@ export class TeamScheduleComponent implements OnInit {
   deleteAssignee: any = Subscription;
 
   tableColumns = [
-    { header: 'Project', field: 'project' },
-    { header: 'Start Date', field: 'startDateFormatted' },
-    { header: 'End Date', field: 'endDateFormatted' },
-    { header: 'Hours', field: 'hours' },
-    { header: '% Completed', field: 'completed' },
-    { header: 'Status', field: 'status' },
-    { header: 'Actions', field: 'action' }
+    { header: 'COMMON.PROJECT', field: 'project' },
+    { header: 'COMMON.START_DATE', field: 'startDateFormatted' },
+    { header: 'COMMON.END_DATE', field: 'endDateFormatted' },
+    { header: 'COMMON.ALLOCATEDHOURS', field: 'hours' },
+    { header: 'COMMON.COMPLETED_PERCENTAGE', field: 'completed' },
+    { header: 'COMMON.STATUS', field: 'status' },
+    { header: 'COMMON.ACTIONS', field: 'action' }
   ];
 
   taskColumns = [

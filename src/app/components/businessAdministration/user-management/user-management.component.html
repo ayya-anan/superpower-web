@@ -1,7 +1,7 @@
 <div class="col-12 py-0">
 	<p-toolbar>
 		<div class="p-toolbar-group-start">
-			<p-button [disabled]="true" icon="pi pi-user" severity="info" label="Add New User" (click)="addNewUser()"></p-button>
+			<p-button [disabled]="true" icon="pi pi-user" severity="info" label="{{ 'BUSINESS_ADMINISTRATION.USER_MANAGEMENT.ADD_NEW_USER' | translate }}" (click)="addNewUser()"></p-button>
 			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true" label="{{ 'CONTACTS.INDIVIDUAL.IMPORT' | translate }}"></p-button>
 			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true" severity="danger" label="{{ 'CONTACTS.INDIVIDUAL.DELETE' | translate }}"></p-button>
 			<button type="button" title="{{ 'CONTACTS.INDIVIDUAL.EXPORTASCSV' | translate }}" pButton pRipple icon="pi pi-file" class="ml-2" pTooltip="CSV"
@@ -12,11 +12,11 @@
 		<div class="p-toolbar-group-center">
 			<span style="width: 210px;" class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="Search By User" [(ngModel)]="searchValue" />
+				<input pInputText type="text" placeholder="{{ 'COMMON.SEARCHBYUSER' | translate }}" [(ngModel)]="searchValue" />
 			</span>
 		</div>
 	</p-toolbar>
 	<div id="table">
-		<app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="columns" [tableData]="tableData"></app-table>
+		<app-table [loading]="loading" [key]="'users'" [footerKey]="'COMMON.USERS'" [columns]="columns" [tableData]="tableData"></app-table>
 	</div>
 </div>
