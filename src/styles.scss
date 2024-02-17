@@ -53,7 +53,7 @@ $gutter: 1rem; //for primeflex grid system
     border-bottom: 2px solid var(--gray-300);
 }
 
-.assigneeView{
+.assigneeView {
     .p-dialog-content {
         padding-top: 0px;
         padding-bottom: 0px;
@@ -63,3 +63,22 @@ $gutter: 1rem; //for primeflex grid system
 .p-tooltip>.p-tooltip-text {
     width: 350px !important;
 }
+
+   
+    .top-address {
+        text-align: right !important;
+        color: rgb(153, 0, 51);
+        clear: both;
+    }
+
+    .footer {
+        text-align: right !important;
+    }
+    .logo {
+        float: right;
+        position: static;
+        clear: both;
+        img {
+            width: 10rem;
+        }
+    }
