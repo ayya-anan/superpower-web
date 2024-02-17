@@ -231,6 +231,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
     // Helper methods to initialize form arrays
     initQuotesArray(): void {
+        if (this.dealForm.get('status')?.value === 'New') { this.dealForm.get('status')?.setValue('Quote-In-Progress') }
         this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
@@ -405,9 +406,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.organizationSubscription = this.organizationService.allOrganization.subscribe(
             (res: any) => {
                 this.organizationData = res.results;
-                this.organizationFilterData = _.map(res.results, (i) => {
+                this.organizationFilterData = _.sortBy(_.map(res.results, (i) => {
                     return { name: i.primaryDetails.name, id: i.id }
-                });
+                }), item => item.name.toLowerCase());
             });
     }
     subscribeToGetAllIndividuals() {
@@ -444,7 +445,15 @@ export class KanbanSidebarComponent implements OnDestroy {
             this.individualsData = _.filter(this.allIndividualsList, (obj: any) => obj.company === result[0].name);
         }
     }
-
+    reviewQuote(event: Event) {
+        event.preventDefault();
+        this.dealForm.get('status')?.setValue('Quote Review');
+        this.saveQuote(event);
+    }
+    updateEmailSent(){
+        this.dealForm.get('status')?.setValue('Quote Sent');
+        this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
+    }
     saveQuote(event: Event) {
         event.preventDefault();
         this.showQuote = false;
