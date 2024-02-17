@@ -1,6 +1,6 @@
 <p-sidebar #sidebar [(visible)]="contactView" position="right" [baseZIndex]="10000" styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
 	<div class="col-12 p-0 pb-3 drawLine text-left">
-		<span class="text-xl ml-2 font-bold">Add Contact Details</span>
+		<span class="text-xl ml-2 font-bold">{{'CONTACTS.INDIVIDUAL.ADD_CONTACT_DETAILS' | translate}}</span>
 	</div>
 
 	<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
@@ -49,7 +49,12 @@
 				</div>
 			</div>
 			<div class="col-9">
-				<p-fieldset legend="Contact Details" [toggleable]="true">
+				<p-fieldset [toggleable]="true">
+					<ng-template pTemplate="header">
+						<div class="flex align-items-center gap-2 px-2">
+							<span class="font-bold">{{'CONTACTS.INDIVIDUAL.CONTACT_DETAILS' | translate}}</span>
+						</div>
+					</ng-template>
 					<ng-container formArrayName="addresses">
 						<div class="formgrid grid" *ngFor="let addr of addresses.controls; let i = index"
 							[formGroupName]="i">

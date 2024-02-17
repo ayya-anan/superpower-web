@@ -1,7 +1,7 @@
 <p-sidebar #sidebar [(visible)]="organizationView" position="right" [baseZIndex]="10000"
 	styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
 	<div class="col-12 p-0 pb-3 drawLine text-left">
-		<span class="text-xl ml-2 font-bold">Add Organizaton Details</span>
+		<span class="text-xl ml-2 font-bold">{{'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION_DETAILS' | translate}}</span>
 	</div>
 	<form [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
 		<div class="col-12 grid">
@@ -94,7 +94,12 @@
 			</div>
 			<div class="col-9">
 				<div class="p-0 mb-3">
-					<p-fieldset legend="Facilities" [toggleable]="true">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.FACILITIES' | translate}}</span>
+							</div>
+						</ng-template>
 						<ng-container *ngIf="facilitiesTable; else addFacility">
 							<div class="col-12 p-0 pb-2 text-right">
 								<button pButton pRipple icon="pi pi-plus" label="Add Facility"
@@ -175,7 +180,12 @@
 					</p-fieldset>
 				</div>
 				<div class="p-0 mb-3">
-					<p-fieldset legend="Service Rates" [toggleable]="true">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICES' | translate}}</span>
+							</div>
+						</ng-template>
 						<ng-container formArrayName="services">
 							<div class="formgrid grid" *ngFor="let service of services.controls;let i = index"
 								[formGroupName]="i">
@@ -215,7 +225,12 @@
 					</p-fieldset>
 				</div>
 				<div class="p-0 mb-3">
-					<p-fieldset legend="Point Of Contacts" [toggleable]="true">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}</span>
+							</div>
+						</ng-template>
 						<div class="col-12 p-0">
 							<button pButton pRipple icon="pi pi-plus" label="Add Point Of Contact"
 								class="p-button-primary text-center" (click)="addPOC()"></button>

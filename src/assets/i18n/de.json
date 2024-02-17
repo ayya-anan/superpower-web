@@ -49,7 +49,9 @@
     },
     "CONTACTS": {
         "INDIVIDUAL": {
+            "ADD_CONTACT_DETAILS": "Kontaktdaten hinzufügen",
             "ADD_CONTACT": "Kontakt hinzufügen",
+            "CONTACT_DETAILS": "Kontaktdetails",
             "IMPORT": "Importieren",
             "DELETE": "Löschen",
             "EXPORTASCSV": "Als CSV exportieren",
@@ -78,6 +80,7 @@
             "ADD_ANOTHER_ADDRESS": "Weitere Adresse hinzufügen"
         },
         "ORGANIZATIONS" : {
+            "ADD_ORGANIZATION_DETAILS": "Fügen Sie Organisationsdetails hinzu",
             "ADD_ORGANIZATION": "Organisation hinzufügen",
             "IMPORT": "Importieren",
             "DELETE": "Löschen",
@@ -97,6 +100,7 @@
             "REVENUE_RANGE": "Umsatzbereich",
             "ACCOUNT_MANAGER": "Account-Manager",
             "FACILITIES": "Einrichtungen",
+            "SERVICES": "Dienstleistungen",
             "TYPE": "Typ",
             "EMPLOYEE_COUNT": "Mitarbeiteranzahl",
             "PRIMARY_EMAILADDRESS": "Primäre E-Mail-Adresse",
