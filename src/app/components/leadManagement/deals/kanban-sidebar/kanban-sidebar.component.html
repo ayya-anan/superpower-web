@@ -23,7 +23,8 @@
                             <div class="field col-12">
                                 <label>Organization</label>
                                 <p-dropdown appendTo="body" formControlName="org" [options]="organizationFilterData"
-                                    optionLabel="name" optionValue="id" placeholder="Select Organization"
+                                    optionLabel="name" [filter]="true" optionValue="id"
+                                    placeholder="Select Organization"
                                     (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
@@ -197,7 +198,8 @@
                                                                     inputId="currency-germany" currency="EUR"
                                                                     locale="de-DE">
                                                                 </p-inputNumber>
-                                                                <i class="pi pi-times-circle remove-service"  (click)="removeService(i,j)"></i>
+                                                                <i class="pi pi-times-circle remove-service"
+                                                                    (click)="removeService(i,j)"></i>
                                                             </div>
                                                         </div>
                                                     </ng-container>
@@ -312,6 +314,11 @@
                                                     </div>
                                                     <div class="col-6 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
+                                                            *ngIf="dealForm.get('status')?.value ==='Quote-In-Progress'"
+                                                            label="Quote Review" class="p-button-primary"
+                                                            [disabled]="dealForm.invalid || !validatePayment(i)"
+                                                            (click)="reviewQuote($event)"></button>
+                                                        <button pButton pRipple type="submit" icon="pi pi-check"
                                                             label="Save" class="p-button-primary"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
                                                             (click)="saveQuote($event)"></button>
@@ -334,7 +341,7 @@
         </div>
     </ng-template>
 </p-sidebar>
-<app-invoice [deal]="dealForm.value" [visible]="quoteVisible" [organization]="selectedOrganization"
+<app-invoice  (emailSent)="updateEmailSent()" [deal]="dealForm.value" [visible]="quoteVisible" [organization]="selectedOrganization"
     [quote]="selectedQuote"></app-invoice>
 
 <p-toast></p-toast>

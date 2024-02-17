@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { notesContent, templateContent } from './invoice.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
@@ -14,6 +14,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
   @Input() organization: any;
   @Input() quote: any;
   @Input() visible: boolean = false;
+  @Output() emailSent = new EventEmitter<string>();
 
   templateContent = _.cloneDeep(templateContent)
   notesContent = _.cloneDeep(notesContent);
@@ -123,6 +124,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
     // });
     if (content) {
       this.dealService.sentEmail({ content: body });
+      this.emailSent.emit();
     }
   }
 
