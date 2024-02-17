@@ -93,7 +93,6 @@ export class IndividualComponent implements OnInit {
                 console.log(res.results);
                 this.organizations = [];
                 this.organizations = _.sortBy(_.map(res.results, (i) => { return { name: i.primaryDetails.name } }), 'name');
-                this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) => { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name');
             });
     }
 
@@ -107,6 +106,7 @@ export class IndividualComponent implements OnInit {
                 this.loading = false;
                 this.tableData = [];
                 this.allIndividuals = _.filter(res.results, (item) => item.primaryDetails && item.primaryDetails.companyName != this.ownCompany);
+                this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) => { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name');
                 _.forEach(this.allIndividuals, (item: any) => {
                     const obj = {
                         id: item.id,

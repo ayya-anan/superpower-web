@@ -86,7 +86,6 @@ export class TableComponent implements OnInit, OnDestroy {
     return this._selectedColumns;
   }
 
-
   set selectedColumns(val: any[]) {
     this._selectedColumns =
       this.columns.filter((col: any) => val.includes(col));

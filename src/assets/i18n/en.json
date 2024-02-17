@@ -10,7 +10,12 @@
         "STATUS": "Status",
         "START_DATE": "Start Date",
         "END_DATE": "End Date",
-        "ACTIONS": "Actions"
+        "ACTIONS": "Actions",
+        "SEARCHBYNAME": "Search By Name",
+        "SEARCHBYNAMEANDCOMPANY": "Search By Name, Company",
+        "ADD_ASSIGNEE": "Add Assignee",
+        "MANAGE": "Manage",
+        "CANCEL": "Cancel"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -75,7 +80,7 @@
         "ORGANIZATIONS" : {
             "ADD_ORGANIZATION": "Add Organization",
             "IMPORT": "Import",
-            "Delete": "Delete",
+            "DELETE": "Delete",
             "EXPORTASCSV": "Export as CSV",
             "EXPORTASPDF": "Export as PDF",
             "NAME": "Name",
@@ -103,7 +108,16 @@
             "RATE": "Rate",
             "COMPANY_AVERAGE": "Company Average",
             "POINT_OF_CONTACTS": "Point Of Contacts",
-            "ADD_POINT_OF_CONTACT": "Add Point Of Contact"
+            "ADD_POINT_OF_CONTACT": "Add Point Of Contact",
+            "ORGANIZATION_ID": "Organization ID",
+            "WZ_SECTION": "WZ Section",
+            "WZ_INDUSTRY_TYPE": "WZ Industry Type",
+            "WZ_SUB_TYPE_1": "WZ Sub Type 1",
+            "WZ_SUB_TYPE_2": "WZ Sub Type 2",
+            "INVOICE_FREQUENCY": "Invoice Frequency",
+            "CURRENT_CONTRACT_START_DATE": "Current Contract Start Date",
+            "CURRENT_CONTRACT_END_DATE": "Current Contract End Date",
+            "CUSTOMER_SINCE": "Customer Since"
         }
     },
     "LEAD_MANAGEMENT": {
