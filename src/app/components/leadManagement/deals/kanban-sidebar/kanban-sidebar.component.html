@@ -171,7 +171,7 @@
                                                                     placeholder="Select Service"></p-dropdown>
                                                             </div>
                                                             <div
-                                                                class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
                                                                     (onInput)="onServiceCountChange(i,j)" currency="EUR"
@@ -314,14 +314,14 @@
                                                     </div>
                                                     <div class="col-6 justify-content-end flex justify-content gap-3">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
+                                                            label="Save" class="p-button-primary"
+                                                            [disabled]="dealForm.invalid || !validatePayment(i)"
+                                                            (click)="saveQuote($event)"></button>
+                                                        <button pButton pRipple type="submit" icon="pi pi-check"
                                                             *ngIf="dealForm.get('status')?.value ==='Quote-In-Progress'"
                                                             label="Quote Review" class="p-button-primary"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
                                                             (click)="reviewQuote($event)"></button>
-                                                        <button pButton pRipple type="submit" icon="pi pi-check"
-                                                            label="Save" class="p-button-primary"
-                                                            [disabled]="dealForm.invalid || !validatePayment(i)"
-                                                            (click)="saveQuote($event)"></button>
                                                         <button pButton pRipple icon="pi pi-file-pdf"
                                                             label="Print / Email" class="p-button-primary"
                                                             (click)="documentPreview($event, i)"
