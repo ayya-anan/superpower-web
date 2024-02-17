@@ -1,11 +1,16 @@
 <p-table [columns]="selectedColumns" [value]="tableData" [resizableColumns]="true" styleClass="p-datatable-striped"
     [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{footerKey}}" [stateKey]="'table_'+key"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} {{footerKey | translate}}" [stateKey]="'table_'+key"
     [reorderableColumns]="true" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="450px"
     [loading]="loading" (onRowSelect)="showDetails($event)" (onEditComplete)="onEditComplete($event)" dataKey="id">
     <ng-template pTemplate="caption" *ngIf="showColumnSelection">
         <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
             placeholder="Please select columns"> 
+            <ng-template let-item pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ item.header | translate }}</div>
+                </div>
+            </ng-template>
         </p-multiSelect>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
