@@ -12,39 +12,39 @@
 						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="name" optionValue="name" placeholder="Mr"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label for="firstname">First Name</label>
+						<label for="firstname">{{ 'CONTACTS.INDIVIDUAL.FIRSTNAME' | translate }}</label>
 						<input formControlName="firstName" type="text"
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="middlename">Middle Name</label>
+						<label for="middlename">{{ 'CONTACTS.INDIVIDUAL.MIDDLENAME' | translate }}</label>
 						<input formControlName="middleName" type="text"
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="lastname">Last Name</label>
+						<label for="lastname">{{ 'CONTACTS.INDIVIDUAL.LASTNAME' | translate }}</label>
 						<input formControlName="lastName" type="text"
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="companyname">Organization Name</label>
+						<label for="companyname">{{ 'CONTACTS.INDIVIDUAL.ORGANIZATION_NAME' | translate }}</label>
 						<p-dropdown appendTo="body" formControlName="companyName" [editable]="true" [options]="organizations" optionLabel="name" placeholder="Organization"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label for="jobtitle">Job Title</label>
+						<label for="jobtitle">{{ 'CONTACTS.INDIVIDUAL.JOBTITLE' | translate }}</label>
 						<p-dropdown appendTo="body" formControlName="jobTitle" [editable]="true" [options]="company" optionLabel="name" placeholder="Job Title"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label>Status</label><br>
+						<label>{{ 'CONTACTS.INDIVIDUAL.STATUS' | translate }}</label><br>
 						<p-dropdown formControlName="status" [options]="status" optionLabel="name"  optionValue="name" placeholder="Prospect"></p-dropdown>
 					</div>
 					<div class="field col-12">
-						<label for="rolename">Role</label>
+						<label for="rolename">{{ 'CONTACTS.INDIVIDUAL.ROLE' | translate }}</label>
 						<p-dropdown [editable]="true" formControlName="roleName" [options]="roles" optionLabel="name" placeholder="Role"></p-dropdown>
 					</div>
 					<div class="field col-12 mt-5">
-						<button pButton pRipple type="submit" icon="pi pi-check" label="Save" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()"></button>
-						<button pButton pRipple icon="pi pi-times" label="Cancel" class="p-button-secondary ml-3" (click)="closePanel()"></button>
+						<button pButton pRipple type="submit" icon="pi pi-check" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()">{{ 'COMMON.SAVE' | translate }}</button>
+						<button pButton pRipple icon="pi pi-times" class="p-button-secondary ml-3" (click)="closePanel()">{{ 'COMMON.CANCEL' | translate }}</button>
 					</div>
 				</div>
 			</div>
@@ -56,31 +56,31 @@
 							<div class="col-12 p-0">
 								<div class="formgrid grid">
 									<div class="field col">
-										<label for="emailAddress">Primary Email Address</label>
+										<label for="emailAddress">{{ 'CONTACTS.INDIVIDUAL.PRIMARY_EMAILADDRESS' | translate }}</label>
 										<input formControlName="primaryEmail" type="text"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 									</div>
 									<div class="field col">
-										<label for="alternateEmail">Alternate Email Address</label>
+										<label for="alternateEmail">{{ 'CONTACTS.INDIVIDUAL.ALTERNATE_EMAILADDRESS' | translate }}</label>
 										<input formControlName="alternateEmail" type="text"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 									</div>
 								</div>
 								<div class="formgrid grid">
 									<div class="field col">
-										<label for="lastname">Primary Phone Number</label><br>
+										<label for="lastname">{{ 'CONTACTS.INDIVIDUAL.PRIMARY_PHONE_NUMBER' | translate }}</label><br>
 										<p-inputMask formControlName="primaryPhone" mask="(99) 9999-999999"
 											placeholder="(99) 9999-999999"></p-inputMask>
 									</div>
 									<div class="field col">
-										<label for="lastname">Alternate Phone Number</label><br>
+										<label for="lastname">{{ 'CONTACTS.INDIVIDUAL.ALTERNATE_PHONE_NUMBER' | translate }}</label><br>
 										<p-inputMask formControlName="alternatePhone" mask="(99) 9999-999999"
 											placeholder="(99) 9999-999999"></p-inputMask>
 									</div>
 								</div>
 								<div class="formgrid grid">
 									<div class="field col">
-										<label for="emailAddress">Address</label>
+										<label for="emailAddress">{{ 'CONTACTS.INDIVIDUAL.ADDRESS' | translate }}</label>
 										<input formControlName="address" type="text"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 									</div>
@@ -90,13 +90,13 @@
 								</div>
 								<div class="formgrid grid">
 									<div class="field col">
-										<label for="emailAddress">PostCode</label>
-										<input formControlName="zipCode" type="text"
+										<label for="emailAddress">{{ 'CONTACTS.INDIVIDUAL.COUNTRY' | translate }}</label><br>
+										<input type="text" formControlName="country"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 									</div>
 									<div class="field col">
-										<label for="emailAddress">Country</label><br>
-										<input type="text" formControlName="country"
+										<label for="emailAddress">{{ 'CONTACTS.INDIVIDUAL.POSTCODE' | translate }}</label>
+										<input formControlName="zipCode" type="text"
 											class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 									</div>
 								</div>
@@ -104,7 +104,7 @@
 						</div>
 					</ng-container>	
 					<div class="col-12 p-0 text-right">
-						<button class="text-right" pButton pRipple label="Add Another Address" icon="pi pi-plus"></button>
+						<button [disabled]="true" class="text-right" pButton pRipple icon="pi pi-plus">{{ 'CONTACTS.INDIVIDUAL.ADD_ANOTHER_ADDRESS' | translate }}</button>
 					</div>
 				</p-fieldset>
 			</div>
@@ -138,7 +138,7 @@
 		<div class="p-toolbar-group-center">
 			<span style="width: 210px;" class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="Search By Name, Company" [(ngModel)]="searchValue" />
+				<input pInputText type="text" placeholder="{{ 'COMMON.SEARCHBYNAMEANDCOMPANY'| translate }}" [(ngModel)]="searchValue" />
 			</span>
 		</div>
 	</p-toolbar>

@@ -10,7 +10,12 @@
         "STATUS": "Status",
         "START_DATE": "Startdatum",
         "END_DATE": "Enddatum",
-        "ACTIONS": "Aktionen"
+        "ACTIONS": "Aktionen",
+        "SEARCHBYNAME": "Suche mit Name",
+        "SEARCHBYNAMEANDCOMPANY": "Suche nach Name, Firma",
+        "ADD_ASSIGNEE": "Beauftragten hinzufügen",
+        "MANAGE": "Verwalten",
+        "CANCEL": "Stornieren"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -44,6 +49,8 @@
             "ADD_CONTACT": "Kontakt hinzufügen",
             "IMPORT": "Importieren",
             "DELETE": "Löschen",
+            "EXPORTASCSV": "Als CSV exportieren",
+            "EXPORTASPDF": "Als PDF exportieren",
             "NAME": "Name",
             "COMPANY": "Firma",
             "JOB_TITLE": "Berufsbezeichnung",
@@ -71,6 +78,8 @@
             "ADD_ORGANIZATION": "Organisation hinzufügen",
             "IMPORT": "Importieren",
             "DELETE": "Löschen",
+            "EXPORTASCSV": "Als CSV exportieren",
+            "EXPORTASPDF": "Als PDF exportieren",
             "NAME": "Name",
             "INDUSTRY_TYPE": "Branchentyp",
             "SUB_TYPE": "Untertyp",
@@ -83,7 +92,7 @@
             "SUB_TYPE_1": "Untertyp 1",
             "SUB_TYPE_2": "Untertyp 2",
             "REVENUE_RANGE": "Umsatzbereich",
-            "ACCOUNT_MANAGER": "Account Manager",
+            "ACCOUNT_MANAGER": "Account-Manager",
             "FACILITIES": "Einrichtungen",
             "TYPE": "Typ",
             "EMPLOYEE_COUNT": "Mitarbeiteranzahl",
@@ -94,9 +103,18 @@
             "COUNTRY": "Land",
             "SERVICE_RATES": "Servicegebühren",
             "RATE": "Rate",
-            "COMPANY_AVERAGE": "Durchschnitt des Unternehmens",
+            "COMPANY_AVERAGE": "Unternehmensdurchschnitt",
             "POINT_OF_CONTACTS": "Kontaktpersonen",
-            "ADD_POINT_OF_CONTACT": "Kontaktperson hinzufügen"
+            "ADD_POINT_OF_CONTACT": "Kontaktperson hinzufügen",
+            "ORGANIZATION_ID": "Organisations-ID",
+            "WZ_SECTION": "WZ-Sektion",
+            "WZ_INDUSTRY_TYPE": "WZ-Branchentyp",
+            "WZ_SUB_TYPE_1": "WZ-Untertyp 1",
+            "WZ_SUB_TYPE_2": "WZ-Untertyp 2",
+            "INVOICE_FREQUENCY": "Rechnungshäufigkeit",
+            "CURRENT_CONTRACT_START_DATE": "Aktuelles Vertragsstartdatum",
+            "CURRENT_CONTRACT_END_DATE": "Aktuelles Vertragsendedatum",
+            "CUSTOMER_SINCE": "Kunde seit"
         }
     },
     "LEAD_MANAGEMENT": {
