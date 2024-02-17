@@ -9,49 +9,59 @@
             <div class="col-3 formClass" formGroupName="projectDetails">
                 <div class="formgrid grid">
                     <div class="field col-12">
-                        <label>Project</label>
+                        <label>{{ 'COMMON.PROJECT' | translate }}</label>
                         <input formControlName="project" type="text"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     </div>
                     <div class="field col-12">
-                        <label>Start Date</label><br>
+                        <label>{{ 'COMMON.START_DATE' | translate }}</label><br>
                         <p-calendar formControlName="startDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
                     </div>
                     <div class="field col-12">
-                        <label>End Date</label><br>
+                        <label>{{ 'COMMON.END_DATE' | translate }}</label><br>
                         <p-calendar formControlName="endDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
                     </div>
                     <div class="field col-12">
-                        <label for="hours" class="w-full">Hours</label>
+                        <label for="hours" class="w-full">{{ 'COMMON.HOURS' | translate }}</label>
                         <p-inputNumber class="w-full" [style.display]="'inline-grid'" inputId="integeronly"
                             formControlName="hours"></p-inputNumber>
                     </div>
                     <div class="field col-12">
-                        <label>% Completed</label>
+                        <label>{{ 'COMMON.COMPLETED_PERCENTAGE' | translate }}</label>
                         <p-inputNumber class="w-full" [style.display]="'inline-grid'" inputId="integeronly"
                             formControlName="completed"></p-inputNumber>
                     </div>
                     <div class="field col-12">
-                        <label>Status</label><br>
+                        <label>{{ 'COMMON.STATUS' | translate }}</label><br>
                         <input formControlName="status" type="text"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     </div>
                 </div>
             </div>
             <div class="col-9">
-                <p-fieldset legend="Manage Service(s)" [toggleable]="true">
+                <p-fieldset [toggleable]="true">
+                    <ng-template pTemplate="header">
+                        <div class="flex align-items-center gap-2 px-2">
+                            <span class="font-bold">{{ 'ACTIVEWORK.TASKALLOCATION.MANAGE_SERVICES' | translate }}</span>
+                        </div>
+                    </ng-template>
                     <div class="col-12 p-0 pb-2 inline-flex flex justify-content-end flex-wrap">
                         <div class="ml-3">
-                            <button class="text-right" [disabled]="true" pButton pRipple label="Add Task" icon="pi pi-plus"></button>
+                            <button class="text-right" [disabled]="true" pButton pRipple label="{{ 'ACTIVEWORK.TASKALLOCATION.ADD_TASK' | translate }}" icon="pi pi-plus"></button>
                         </div>
                     </div>
-                    <app-table [loading]="loading" [key]="'tasks'" [footerKey]="'Services'" [columns]="taskColumns"
+                    <app-table [loading]="loading" [key]="'tasks'" [footerKey]="'ACTIVEWORK.TASKALLOCATION.SERVICES'" [columns]="taskColumns"
                         [tableData]="taskTableData" (addAssigneeDetail)="showAssigneeDetails($event)"
                         (showAllocationDetails)="showAllocation($event)"></app-table>
                 </p-fieldset>
                 <div class="mt-3" *ngIf="resourcesData && resourcesData.length > 0">
-                    <p-fieldset legend="Manage User(s)" [toggleable]="true">
-                        <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns"
+                    <p-fieldset [toggleable]="true">
+                        <ng-template pTemplate="header">
+                            <div class="flex align-items-center gap-2 px-2">
+                                <span class="font-bold">{{ 'ACTIVEWORK.TASKALLOCATION.MANAGE_USERS' | translate }}</span>
+                            </div>
+                        </ng-template>
+                        <app-table [loading]="loading" [key]="'Allocatedusers'" [footerKey]="'COMMON.USERS'" [columns]="usersColumns"
                             [tableData]="resourcesData" (editContent)="editData($event)"
                             (deleteContent)="delete($event)"></app-table>
                     </p-fieldset>
@@ -141,13 +151,6 @@
             </ng-container>
         </div>
     </div>
-
-    <!-- <ng-template #allocationView>
-        <app-table [loading]="loading" [key]="'users'" [footerKey]="'Users'" [columns]="usersColumns" [tableData]="usersTableData"
-        (editContent)="editData($event)" (deleteContent)="delete($event)"></app-table>
-    </ng-template> -->
-
-
 </p-dialog>
 
 <p-dialog header="" [styleClass]="'assigneeView'" [(visible)]="updateAssignee"

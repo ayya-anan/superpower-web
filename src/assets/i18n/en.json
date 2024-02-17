@@ -4,6 +4,7 @@
         "ADD": "Add",
         "NAME": "Name",
         "PROJECT": "Project",
+        "HOURS": "Hours",
         "TASK": "Task",
         "VALUE": "Value",
         "CONTACTS": "Contacts",
@@ -25,7 +26,8 @@
         "ADD_ASSIGNEE": "Add Assignee",
         "MANAGE": "Manage",
         "CANCEL": "Cancel",
-        "USERS": "Users"
+        "USERS": "Users",
+        "SHOWING": "Showing"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -178,6 +180,33 @@
             "QUOTEAMOUNT": "Quote Amount",
             "CREATED_DATE": "Created Date",
             "NEW_DEALS": "New Deals"
+        }
+    },
+    "ACTIVEWORK": {
+        "TASKALLOCATION": {
+            "MANAGE_SERVICES": "Manage Services",
+            "MANAGE_USERS": "Manage Users",
+            "ADD_TASK": "Add Task",
+            "SERVICES": "Services",
+            "ASSIGNEE": "Assignee",
+            "ALLOCATION_PERCENTAGE": "Allocation (%)"
+        },
+        "TIMETRACKING": {
+            "MY_TIMESHEET": "My Timesheet",
+            "MONDAY": "Monday",
+            "TUESDAY": "Tuesday",
+            "WEDNESDAY": "Wednesday",
+            "THURSDAY": "Thursday",
+            "Friday": "Friday",
+            "ANNUAL_LEAVE": "Annual Leave",
+            "SICK_LEAVE": "Sick Leave",
+            "WEEKLY_REPORT": "Weekly Report in Hours",
+            "HOLIDAY_LIST": "Holiday List",
+            "LEAVE_PLANS": "Leave Plans",
+            "BALANCE_DAYS_ANNUAL": "Balance: 16 days",
+            "BALANCE_DAYS_SICK": "Balance: 5 days",
+            "SUBMIT_TIMESHEET": "Submit Timesheet",
+            "TOTAL_HOURS": "Total Hours"
         }
     },
     "BUSINESS_ADMINISTRATION": {

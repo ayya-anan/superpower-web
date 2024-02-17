@@ -36,7 +36,8 @@ import { ToastModule } from 'primeng/toast';
 		DividerModule,
 		TableModule,
 		TimeRangeModule,
-		ToastModule
+		ToastModule,
+		AppTranslateChildModule
 	],
 	declarations: [TeamScheduleComponent]
 })

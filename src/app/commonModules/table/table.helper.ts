@@ -9,8 +9,8 @@ export const showCheckBox: any = {
 export const showColumnSelection: any = {
     individuals: true,
     organizations: true,
-    users: true,
-    tasks: true,
+    users: false,
+    tasks: false,
     schedule: false,
     efforts: false,
     assignments: false,

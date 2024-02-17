@@ -6,6 +6,7 @@
         "VALUE": "Wert",
         "PROJECT": "Projekt",
         "HOURS": "Std",
+        "TASK": "Aufgabe",
         "CONTACTS": "KONTAKTE",
         "INDIVIDUAL": "Individuen",
         "ORGANIZATIONS": "Organisationen",
@@ -25,7 +26,8 @@
         "ADD_ASSIGNEE": "Beauftragten hinzufügen",
         "MANAGE": "Verwalten",
         "CANCEL": "Stornieren",
-        "USERS": "Benutzer"
+        "USERS": "Benutzer",
+        "SHOWING": "Zeigt"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -174,6 +176,33 @@
             "QUOTEAMOUNT": "Angebotsbetrag",
             "CREATED_DATE": "Erstellungsdatum",
             "NEW_DEALS": "Neue Angebote"
+        }
+    },
+    "ACTIVEWORK": {
+        "TASKALLOCATION": {
+            "MANAGE_SERVICES": "Dienste verwalten",
+            "MANAGE_USERS": "Benutzer verwalten",
+            "ADD_TASK": "Aufgabe hinzufügen",
+            "SERVICES": "Dienstleistungen",
+            "ASSIGNEE": "Abtretungsempfänger",
+            "ALLOCATION_PERCENTAGE": "Zuweisung (%)"
+        },
+        "TIMETRACKING": {
+            "MY_TIMESHEET": "Mein Stundenzettel",
+            "MONDAY": "Montag",
+            "TUESDAY": "Dienstag",
+            "WEDNESDAY": "Mittwoch",
+            "THURSDAY": "Donnerstag",
+            "Friday": "Freitag",
+            "ANNUAL_LEAVE": "Jahresurlaub",
+            "SICK_LEAVE": "Krankenstand",
+            "WEEKLY_REPORT": "Wochenbericht in Stunden",
+            "HOLIDAY_LIST": "Feiertagsliste",
+            "LEAVE_PLANS": "Pläne verlassen",
+            "BALANCE_DAYS_ANNUAL": "Gleichgewicht: 16 Tage",
+            "BALANCE_DAYS_SICK": "Gleichgewicht: 5 Tage",
+            "SUBMIT_TIMESHEET": "Stundenzettel einreichen",
+            "TOTAL_HOURS": "Gesamtstunden"
         }
     },
     "BUSINESS_ADMINISTRATION": {

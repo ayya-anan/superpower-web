@@ -16,52 +16,42 @@ export class TimeTrackingComponent {
 
   timeSheet: any = [];
 
+  timesheetColumns = [
+    { header: 'COMMON.PROJECT', label: 'Project'},
+    { header: 'COMMON.TASK', label: 'Task'},
+    { header: 'ACTIVEWORK.TIMETRACKING.MONDAY',label: 'Monday' },
+    { header: 'ACTIVEWORK.TIMETRACKING.TUESDAY', label: 'Tuesday' },
+    { header: 'ACTIVEWORK.TIMETRACKING.WEDNESDAY', label: 'Wednesday' },
+    { header: 'ACTIVEWORK.TIMETRACKING.THURSDAY', label: 'Thursday' },
+    { header: 'ACTIVEWORK.TIMETRACKING.Friday', label: 'Friday' },
+  ]
+
   totalHoursView: any = [
     { Task: 'Total', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 },
   ];
 
   weeklyTotal: any = 0.00;
   weeklyView = [
-    {
-      header: 'Monday',
-      date: '',
-      value: 0
-    },
-    {
-      header: 'Tuesday',
-      date: '',
-      value: 0
-    },
-    {
-      header: 'Wednesday',
-      date: '',
-      value: 0
-    },
-    {
-      header: 'Thursday',
-      date: '',
-      value: 0
-    },
-    {
-      header: 'Friday',
-      date: '',
-      value: 0
-    },
+    { header: 'ACTIVEWORK.TIMETRACKING.MONDAY', date: '', value: 0 },
+    { header: 'ACTIVEWORK.TIMETRACKING.TUESDAY', date: '', value: 0 },
+    { header: 'ACTIVEWORK.TIMETRACKING.WEDNESDAY', date: '', value: 0 },
+    { header: 'ACTIVEWORK.TIMETRACKING.THURSDAY', date: '', value: 0 },
+    { header: 'ACTIVEWORK.TIMETRACKING.Friday', date: '', value: 0 },
   ];
 
   leaveView = [
     {
-      title: 'Annual Leave',
+      title: 'ACTIVEWORK.TIMETRACKING.ANNUAL_LEAVE',
       value: 2,
       totalValue: 16,
-      summary: 'Balance : 16 day(s)',
+      summary: 'ACTIVEWORK.TIMETRACKING.BALANCE_DAYS_ANNUAL',
       Overall: '18 Days'
     },
     {
-      title: 'Sick Leave',
+      title: 'ACTIVEWORK.TIMETRACKING.SICK_LEAVE',
       value: 0,
       totalValue: 5,
-      summary: 'Balance : 5 day(s)',
+      summary: 'ACTIVEWORK.TIMETRACKING.BALANCE_DAYS_SICK',
       Overall: '5 Days'
     }
   ]
@@ -85,6 +75,9 @@ export class TimeTrackingComponent {
     this.startDate = moment().startOf('week').add('days', 1).format('Do MMM YY')
     this.endDate = moment().endOf('week').subtract('days', 1).format('Do MMM YY');
     this.currentWeek();
+    this.timeSheet = [
+      { Project: 'A', Task: 'BB', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0}
+    ]
     this.originalTimesheet = _.cloneDeep(this.timeSheet);
   }
 

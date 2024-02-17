@@ -39,17 +39,12 @@ export class TeamScheduleComponent implements OnInit {
   ];
 
   taskColumns = [
-    { header: 'Services', field: 'task' },
-    { header: 'Start Date', field: 'startDate' },
-    { header: 'End Date', field: 'endDate' },
-    { header: 'Hours', field: 'hours', align: 'right' },
-    { header: 'Assignee', field: 'assignee', align: 'right' },
-    { header: 'Allocation (%)', field: 'allocation', align: 'right' },
-    // { header: 'Action', field: 'action', align: 'right' },
-    // { header: 'Q1', field: 'q1', align: 'right' },
-    // { header: 'Q2', field: 'q2', align: 'right' },
-    // { header: 'Q3', field: 'q3', align: 'right' },
-    // { header: 'Q4', field: 'q4', align: 'right' },
+    { header: 'ACTIVEWORK.TASKALLOCATION.SERVICES', field: 'task' },
+    { header: 'COMMON.START_DATE', field: 'startDate' },
+    { header: 'COMMON.END_DATE', field: 'endDate' },
+    { header: 'COMMON.HOURS', field: 'hours', align: 'right' },
+    { header: 'ACTIVEWORK.TASKALLOCATION.ASSIGNEE', field: 'assignee', align: 'right' },
+    { header: 'ACTIVEWORK.TASKALLOCATION.ALLOCATION_PERCENTAGE', field: 'allocation', align: 'right' },
   ]
 
   usersColumns = [
