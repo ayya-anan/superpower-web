@@ -1,32 +1,32 @@
 export const dealStatus: any = [
   {
     listId: "1",
-    name: "New",
+    name: "LEAD_MANAGEMENT.DEALS.NEW",
     cards: []
   },
   {
     listId: "2",
-    name: "Quote-In-Progress",
+    name: "LEAD_MANAGEMENT.DEALS.QUOTE_IN_PROGRESS",
     cards: []
   },
   {
     listId: "3",
-    name: "Quote Review",
+    name: "LEAD_MANAGEMENT.DEALS.QUOTE_REVIEW",
     cards: []
   },
   {
     listId: "4",
-    name: "Quote Sent",
+    name: "LEAD_MANAGEMENT.DEALS.QUOTE_SENT",
     cards: []
   },
   {
     listId: "5",
-    name: "Quote Accepted",
+    name: "LEAD_MANAGEMENT.DEALS.QUOTE_ACCEPTED",
     cards: []
   },
   {
     listId: "6",
-    name: "Deal Lost",
+    name: "LEAD_MANAGEMENT.DEALS.DEAL_LOST",
     cards: []
   }
 ];

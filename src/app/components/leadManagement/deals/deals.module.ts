@@ -43,6 +43,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { NgxPrintModule } from 'ngx-print';
+import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child.module';
 
 @NgModule({
 	imports: [
@@ -92,7 +93,8 @@ import { NgxPrintModule } from 'ngx-print';
         ToastModule,
         ConfirmDialogModule,
         AllTableModule,
-        NgxPrintModule
+        NgxPrintModule,
+        AppTranslateChildModule
 	],
 	declarations: [
         DealsComponent,
