@@ -25,17 +25,19 @@
 					<!-- <span>{{ organization?.addresses[0]?.address}}</span>
 				<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span> -->
 				</div>
+				<h4 class="mb-2 font-bold">Angebot zur arbeitssicherheitstechnischen Betreuung Ihrer Beschäftigten gem. ASiG</h4>
+				<h4 class="mb-2 font-bold">{{ organization?.primaryDetails?.name}}</h4>
 				<div class="mb-2 font-semibold">Hello {{ deal?.customerContact }},</div>
 			</div>
 			<p-editor [style]="{'height':'250px','margin':'1rem 0'}" [(ngModel)]="templateContent"></p-editor>
 			<div #printComponent id="printComponent">
 				<div class="overflow-x-auto">
-					<h4>Services</h4>
+					<!-- <h4>Services</h4> -->
 					<table class="w-full" style="border-collapse: collapse; table-layout: auto">
 						<thead>
 							<tr>
 								<th class="text-left font-semibold py-2 border-bottom-1 surface-border">
-									Facility
+									Einrichtung
 								</th>
 								<th class="text-left font-semibold py-2 border-bottom-1 surface-border clip">
 									Service
@@ -43,13 +45,12 @@
 								<th class="text-right font-semibold py-2 border-bottom-1 surface-border clip">
 									Rate</th>
 								<th class="text-right font-semibold py-2 border-bottom-1 surface-border clip">
-									Employee
-									Count</th>
+									Mitarbeiterzahl</th>
 								<th class="text-right font-semibold py-2 border-bottom-1 surface-border clip">
-									Hours
+									Std
 								</th>
 								<th class="text-right font-semibold py-2 border-bottom-1 surface-border clip">
-									Total
+									Gesamt
 								</th>
 							</tr>
 						</thead>
@@ -84,7 +85,7 @@
 								}}</td>
 							</tr> -->
 							<tr>
-								<td class="text-right py-2 font-semibold" colspan="5">TOTAL</td>
+								<td class="text-right py-2 font-semibold" colspan="5">Gesamtpreis inkl. MwSt								</td>
 								<td class="text-right py-2 font-semibold">{{ quote.total | currency:'EUR':true}}</td>
 							</tr>
 						</tbody>
@@ -129,7 +130,7 @@
 			</div>
 			<p-editor [style]="{'height':'150px','margin':'1rem 0'}" [(ngModel)]="notesContent"></p-editor>
 			<div id="printFooter" class="footer" #printFooter>
-				<span class="font-bold mr-2"> DATE : {{ quote.date | date:'mediumDate' }}</span>
+				<span class="font-bold mr-2"> Dresden , {{ quote.date | date:'mediumDate' }}</span>
 			</div>
 		</div>
 	</div>
