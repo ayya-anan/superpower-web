@@ -7,7 +7,8 @@ import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-invoice',
-  templateUrl: './invoice.component.html'
+  templateUrl: './invoice.component.html',
+  styleUrl: './invoice.component.scss'
 })
 export class InvoiceComponent implements OnInit, OnChanges {
   @Input() deal: any;
