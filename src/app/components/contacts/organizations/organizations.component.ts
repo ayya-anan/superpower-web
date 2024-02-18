@@ -9,6 +9,7 @@ import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-organization',
@@ -17,6 +18,17 @@ import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
   providers: [ConfirmationService, MessageService]
 })
 export class OrganizationsComponent implements OnInit, OnDestroy {
+  
+  constructor(private fb: FormBuilder,
+    private router: Router,
+    private messageService: MessageService,
+    private organizationService: OrganizationService,
+    private individualService: IndividualService,
+    public keycloakService: KeycloakService,
+    private confirmationService: ConfirmationService,
+    private individualsAPI: IndividualsAPI,
+    private translate: TranslateService,
+  ) { }
 
   organizationSubscription: Subscription = new Subscription;
   addOrganizationSubscription: Subscription = new Subscription;
@@ -77,29 +89,29 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ];
 
   paymentMilestone = [
-    { label: 'Annual', value: 1 },
-    { label: 'Semi-Annual', value: 2 },
-    { label: 'Quarterly', value: 4 },
-    { label: 'Monthly', value: 12 }
-  ];
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1, actualValue: 'Annual' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2, actualValue: 'Semi' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4, actualValue: 'Quaterly' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, actualValue: 'Monthly' }
+];
 
   tableData: any = [];
   status: any = [
-    { label: 'DROPDOWNS.ACTIVE', name: 'Active' },
-    { label: 'DROPDOWNS.INACTIVE', name: 'Inactive' },
-    { label: 'DROPDOWNS.PROSPECT', name: 'Prospect' },
-    { label: 'DROPDOWNS.SUSPENDED', name: 'Suspended' }
+    { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
+    { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
+    { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
+    { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
 ];
   revenueRange: any = [{ name: '0 to 1 Million' }, { name: '1 to 2 Million' }, { name: '2 - 5 Million' }, { name: '>5 Million' }];
   facilityType: any = [
-    { label: 'DROPDOWNS.MANUFACTURING_PLANT', name: 'Manufacturing Plant' },
-    { label: 'DROPDOWNS.OFFICE', name: 'Office' },
-    { label: 'DROPDOWNS.WAREHOUSE', name: 'Warehouse' }];
+    { label: this.translate.instant('DROPDOWNS.MANUFACTURING_PLANT'), name: 'Manufacturing Plant' },
+    { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office' },
+    { label: this.translate.instant('DROPDOWNS.WAREHOUSE'), name: 'Warehouse' }];
   serviceList: any = [
-    { label: 'DROPDOWNS.BASIC_CARE', name: 'Basic Care', unitRate: 52 },
-    { label: 'DROPDOWNS.EXTERNAL_AUDIT', name: 'External Audit', unitRate: 96 },
-    { label: 'DROPDOWNS.INTERNAL_AUDIT', name: 'Internal Audit', unitRate: 20 },
-    { label: 'DROPDOWNS.SPECIAL_CARE', name: 'Special Care', unitRate: 89 }
+    { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52 },
+    { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96 },
+    { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20 },
+    { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89 }
   ];
 
   industryValues: any = [
@@ -149,15 +161,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addresses: FormArray = this.fb.array([]);
   services: FormArray = this.fb.array([]);
 
-  constructor(private fb: FormBuilder,
-    private router: Router,
-    private messageService: MessageService,
-    private organizationService: OrganizationService,
-    private individualService: IndividualService,
-    public keycloakService: KeycloakService,
-    private confirmationService: ConfirmationService,
-    private individualsAPI: IndividualsAPI
-  ) { }
 
   ngOnInit(): void {
     this.sections = this.industryValues[0].section;
