@@ -1,5 +1,5 @@
 import { ViewEncapsulation } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
@@ -8,17 +8,20 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
+import { TranslateService } from '@ngx-translate/core';
+import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 
 @Component({
     templateUrl: './individual.component.html',
     styleUrls: ['./individual.component.scss'],
     providers: [MessageService, ConfirmationService]
 })
-export class IndividualComponent implements OnInit {
+export class IndividualComponent implements OnInit, OnDestroy {
 
     // Subscription
     individualsList: any = Subscription;
     addIndividuals: any = Subscription;
+    updateIndividuals: any = Subscription;
     organizationSubscription: any = Subscription;
 
     // Variables
@@ -77,7 +80,9 @@ export class IndividualComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private individualService: IndividualService,
         public keycloakService: KeycloakService,
-        private organizationService: OrganizationService
+        private organizationService: OrganizationService,
+        private translate: TranslateService,
+        private individualsAPI: IndividualsAPI
     ) { }
 
     ngOnInit() {
@@ -120,7 +125,7 @@ export class IndividualComponent implements OnInit {
                 this.tableData = [];
                 this.allIndividuals = _.filter(res.results, (item) => item.primaryDetails && item.primaryDetails.companyName != this.ownCompany);
                 this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) => { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name');
-                _.forEach(this.allIndividuals, (item: any) => {
+                _.forEach(res.results, (item: any) => {
                     const obj = {
                         id: item.id,
                         name: this.getName(item),
@@ -147,18 +152,13 @@ export class IndividualComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Added Successfully' });
                     this.contactView = false;
                     this.individualService.getAllIndividuals();
-                    setTimeout(() => {
-                        if (this.organizationService.activeOrganizationView) {
-                            this.router.navigateByUrl('/contacts/organizations');
-                        }
-                    }, 500);
                 }
             }
         );
     }
 
     subscribeToUpdateIndividuals() {
-        this.addIndividuals = this.individualService.updateIndividual.subscribe(
+        this.updateIndividuals = this.individualService.updateIndividual.subscribe(
             (res: any) => {
                 if (res.error) {
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
@@ -226,6 +226,8 @@ export class IndividualComponent implements OnInit {
     saveIndividuals() {
         const result = this.contactForm.value;
         if (result.primaryDetails) {
+            result.primaryDetails.salutation = (_.isObject(result.primaryDetails.salutation)) ? result.primaryDetails.salutation.name : result.primaryDetails.salutation;
+            result.primaryDetails.status = (_.isObject(result.primaryDetails.status)) ? result.primaryDetails.status.name : result.primaryDetails.status;
             result.primaryDetails.companyName = (_.isObject(result.primaryDetails.companyName)) ? result.primaryDetails.companyName.name : result.primaryDetails.companyName;
             result.primaryDetails.jobTitle = (_.isObject(result.primaryDetails.jobTitle)) ? result.primaryDetails.jobTitle.name : result.primaryDetails.jobTitle;
             result.primaryDetails.roleName = (_.isObject(result.primaryDetails.roleName)) ? result.primaryDetails.roleName.name : result.primaryDetails.roleName;
@@ -233,7 +235,14 @@ export class IndividualComponent implements OnInit {
         if (this.editId) {
             this.individualService.updateIndividuals(result, this.editId);
         } else {
-            this.individualService.postIndividuals(result);
+            if(this.organizationService.activeOrganizationView) {
+                this.individualsAPI.postIndividual(result).subscribe(
+                    (res: any) => {
+                        this.router.navigateByUrl('/contacts/organizations');
+                    });
+            } else{
+                this.individualService.postIndividuals(result);
+            }
         }
     }
 
@@ -280,6 +289,12 @@ export class IndividualComponent implements OnInit {
                 );
             },
         });
+    }
+
+    ngOnDestroy() {
+        if(this.addIndividuals) { this.addIndividuals.unsubscribe(); }
+        if(this.updateIndividuals) { this.updateIndividuals.unsubscribe(); }
+        if(this.individualsList) { this.individualsList.unsubscribe(); }
     }
 
 }

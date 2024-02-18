@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription, generate } from 'rxjs';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
+import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
 
@@ -154,17 +155,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private organizationService: OrganizationService,
     private individualService: IndividualService,
     public keycloakService: KeycloakService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+    private individualsAPI: IndividualsAPI
+  ) { }
 
   ngOnInit(): void {
     this.sections = this.industryValues[0].section;
-    this.individualService.getAllIndividuals();
+    this.subscribeToGetAllIndividuals();
+
+    // this.individualService.getAllIndividuals();
     this.initForm();
     this.loading = true;
     this.subscribeToGetAllOrganization();
     this.subscribeToAddOrganization();
     this.subscribeToUpdateOrganizations();
-    this.subscribeToGetAllIndividuals();
     this.subscribeToDeleteOrg();
     // if (this.keycloakService.isUserInRole('edit-organization')) {
     this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
@@ -215,7 +219,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   subscribeToGetAllIndividuals() {
-    this.individualSubscription = this.individualService.allIndividuals.subscribe(
+    this.individualsAPI.getIndividuals().subscribe(
       (res: any) => {
         this.allIndividuals = res.results;
         const accountManagers: any = _.filter(res.results, (obj) => obj.primaryDetails.jobTitle === 'Account Manager' && obj.primaryDetails.companyName === 'Expert People Management GmbH');
@@ -303,7 +307,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       type: ['', [Validators.required]],
       address: ['', [Validators.required]],
       employeeCount: ['', [Validators.required]],
-      country: [{ value: 'Germany' }, [Validators.required]],
+      country: [ 'Germany', [Validators.required]],
       zipCode: ['', [Validators.required]],
       phoneNumber: '',
       emailAddress: '',
@@ -485,6 +489,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     const servicesFormArray = this.organizationForm.get('services') as FormArray;
     servicesFormArray.clear(); // Clear existing controls if any
     updateData.services.forEach((service: any) => {
+      service.companyAverage = { value: 0, disabled: true }
       servicesFormArray.push(this.fb.group(service));
     });
 
