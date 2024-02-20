@@ -63,7 +63,7 @@ export class KanbanCardComponent implements OnDestroy {
         this.menuItems = [
             // { label: 'Copy card', command: () => this.onCopy() },
             // { label: 'Move card', items: subMenu },
-            { label: 'Delete card', command: () => this.onDelete() }
+            { label: 'LEAD_MANAGEMENT.DEALS.DELETE_CARD', command: () => this.onDelete() }
         ];
     }
 

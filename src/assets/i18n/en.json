@@ -182,6 +182,7 @@
             "QUOTEAMOUNT": "Quote Amount",
             "CREATED_DATE": "Created Date",
             "NEW_DEALS": "New Deals",
+            "DELETE_CARD": "Delete card",
             "ANNUAL": "Annual",
             "SEMI_ANNUAL": "Semi-Annual",
             "QUARTERLY": "Quarterly",
