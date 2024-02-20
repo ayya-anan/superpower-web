@@ -16,7 +16,7 @@ import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -103,6 +103,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     loading: boolean = false;
     quoteVisible: boolean = false;
     selectedQuote: any;
+    langChangeSubscription!: Subscription;
 
     constructor(
         private messageService: MessageService,
@@ -138,6 +139,22 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.subscribeToGetAllOrganization();
         this.subscribeToGetAllIndividuals();
         this.subscribeToSavedTemplate();
+        this.subscribeToLangulaeChange();
+    }
+    subscribeToLangulaeChange() {
+        this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+            this.paymentMilestone = [
+                { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1 },
+                { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2 },
+                { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4 },
+                { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12 }
+            ];
+            this.status = _.cloneDeep(dealStatus);
+            _.each(this.status, (status) => {
+                status.label = this.translate.instant(status.label)
+            })
+        });
+
     }
     canUpdateDeal() {
         return this.keycloakService.isUserInRole('edit-deal');
