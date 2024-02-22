@@ -5,6 +5,7 @@ import { DealService } from 'src/app/api/leads/deal.service';
 import { NgxPrintService, PrintOptions } from 'ngx-print';
 import jsPDF from 'jspdf';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-invoice',
@@ -30,7 +31,8 @@ export class InvoiceComponent implements OnInit, OnChanges {
 
   constructor(private dealService: DealService,
     private messageService: MessageService,
-    private printService: NgxPrintService) { }
+    private printService: NgxPrintService,
+    private translate: TranslateService,) { }
   ngOnInit() {
   }
   ngOnChanges() {
@@ -129,7 +131,7 @@ export class InvoiceComponent implements OnInit, OnChanges {
     // });
     if (content) {
       this.dealService.sentEmail({ content: body });
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Quote Emailed Successfully' });
+      this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.QUOTE_EMAILED') });
       this.emailSent.emit();
     }
   }

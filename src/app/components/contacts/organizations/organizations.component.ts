@@ -241,9 +241,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.messageService.clear();
         if (res.error) {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
+          this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: res.error.message });
         } else {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Added Successfully' });
+          this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ORGADDMESSAGE') });
           this.organizationService.getAllOrganization();
           this.organizationView = false;
         }
@@ -256,9 +256,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.messageService.clear();
         if (res.error) {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
+          this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: res.error.message });
         } else {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Updated Successfully' });
+          this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ORGUPDATEMSG')  });
           this.organizationView = false;
           this.organizationService.getAllOrganization();
         }
@@ -269,7 +269,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   subscribeToDeleteOrg() {
     this.deleteOrganizations = this.organizationService.deleteOrganizationEmit.subscribe(
       (res: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Organization Deleted Successfully' });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ORGDELETEMSG') });
         this.organizationService.getAllOrganization();
       }
     );
@@ -376,7 +376,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     } else {
       if (result.length > 0) {
         this.messageService.clear();
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Organization Name Already Exists' });
+        this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: this.translate.instant('ORGNAMEEXISTS') });
       } else {
         this.organizationService.postOrganization(this.organizationForm.value);
       }
@@ -510,8 +510,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   delete(event: any) {
     this.confirmationService.confirm({
-      header: 'Confirmation',
-      message: `Are you sure you want to delete ${event.rowData.name}.`,
+      header: `${this.translate.instant('MESSAGES.CONFIRMATIONHEADER')}`,
+      message: `${this.translate.instant('MESSAGES.CONFIRMDELETE')} ${event.rowData.name}.`,
       acceptIcon: 'pi pi-check mr-2',
       rejectIcon: 'pi pi-times mr-2',
       rejectButtonStyleClass: 'p-button-sm',

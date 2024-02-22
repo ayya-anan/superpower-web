@@ -268,5 +268,20 @@
     },
     "FOOTERS": {
         "SCHEDULE": "Schedule"
+    },
+    "MESSAGES": {
+        "SUCCESS": "Success",
+        "ERROR": "Error",
+        "ADDMESSAGE": "Contact Added Successfully",
+        "UPDATEMESSAGE": "Contact Updated Successfully",
+        "DELETEMESSAGE": "Contact Deleted Successfully",
+        "DEALS_SAVED": "Deals Saved Successfully",
+        "QUOTE_EMAILED": "Quote Emailed Successfully",
+        "ORGADDMESSAGE": "Organization Added Successfully",
+        "ORGUPDATEMSG": "Organization Updated Successfully",
+        "ORGDELETEMSG": "Organization Deleted Successfully",
+        "ORGNAMEEXISTS": "Organization Name Already Exists",
+        "CONFIRMDELETE": "Are you sure you want to delete",
+        "CONFIRMATIONHEADER": "Confirmation"
     }
 }

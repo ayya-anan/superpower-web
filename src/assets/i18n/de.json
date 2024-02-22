@@ -264,5 +264,20 @@
     },
     "FOOTERS": {
         "SCHEDULE": "Zeitplan"
+    },
+    "MESSAGES": {
+        "SUCCESS": "Erfolg",
+        "ERROR": "Fehler",
+        "ADDMESSAGE": "Kontakt erfolgreich hinzugefügt",
+        "UPDATEMESSAGE": "Kontakt erfolgreich aktualisiert",
+        "DELETEMESSAGE": "Kontakt erfolgreich gelöscht",
+        "DEALS_SAVED": "Angebote erfolgreich gespeichert",
+        "QUOTE_EMAILED": "Angebot erfolgreich per E-Mail gesendet",
+        "ORGADDMESSAGE": "Organisation erfolgreich hinzugefügt",
+        "ORGUPDATEMSG": "Organisation erfolgreich aktualisiert",
+        "ORGDELETEMSG": "Organisation erfolgreich gelöscht",
+        "ORGNAMEEXISTS": "Der Name der Organisation existiert bereits",
+        "CONFIRMDELETE": "Sind Sie sicher, dass Sie löschen möchten",
+        "CONFIRMATIONHEADER": "Bestätigung"
     }
 }

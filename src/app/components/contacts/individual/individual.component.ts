@@ -143,13 +143,14 @@ export class IndividualComponent implements OnInit, OnDestroy {
         );
     }
 
+
     subscribeToAddIndividuals() {
         this.addIndividuals = this.individualService.addIndividuals.subscribe(
             (res: any) => {
                 if (res.error) {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
+                    this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: res.error.message });
                 } else {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Added Successfully' });
+                    this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ADDMESSAGE')  });
                     this.contactView = false;
                     this.individualService.getAllIndividuals();
                 }
@@ -161,9 +162,9 @@ export class IndividualComponent implements OnInit, OnDestroy {
         this.updateIndividuals = this.individualService.updateIndividual.subscribe(
             (res: any) => {
                 if (res.error) {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: res.error.message });
+                    this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: res.error.message });
                 } else {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Updated Successfully' });
+                    this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.UPDATEMESSAGE') });
                     this.contactView = false;
                     this.individualService.getAllIndividuals();
                 }
@@ -273,8 +274,8 @@ export class IndividualComponent implements OnInit, OnDestroy {
 
     delete(event: any) {
         this.confirmationService.confirm({
-            header: 'Confirmation',
-            message: `Are you sure you want to delete ${event.rowData.name}.`,
+            header: `${this.translate.instant('MESSAGES.CONFIRMATIONHEADER')}`,
+            message: `${this.translate.instant('MESSAGES.CONFIRMDELETE')} ${event.rowData.name}.`,
             acceptIcon: 'pi pi-check mr-2',
             rejectIcon: 'pi pi-times mr-2',
             rejectButtonStyleClass: 'p-button-sm',
@@ -283,7 +284,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
                 this.individualService.deleteIndividuals(event.rowData.id);
                 this.individualService.deleteIndividual.subscribe(
                     (res: any) => {
-                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact Deleted Successfully' });
+                        this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.DELETEMESSAGE') });
                         this.individualService.getAllIndividuals();
                     }
                 );
