@@ -181,6 +181,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   organizationDetails() {
     if (this.organizationService.activeOrganizationView) {
       this.organizationView = true;
+      this.editId = this.organizationService.organizationDetails.orgIdValue;
       this.addPOCDetails(this.organizationService.organizationDetails.primaryDetails.name);
       this.organizationService.organizationDetails.primaryDetails['pointofContact'] = this.pocTableData;
       this.pocTableData = [...this.pocTableData];
@@ -396,16 +397,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addFacilityTable(data: any) {
     this.facilitiesTableData = [];
     _.forEach(data, (dataObj) => {
-      const obj = {
-        type: dataObj.type,
-        employeeCount: dataObj.employeeCount,
-        address: dataObj.address,
-        country: dataObj.country,
-        zipCode: dataObj.zipCode,
-        phoneNumber: dataObj.phoneNumber,
-        emailAddress: dataObj.emailAddress
+      if(dataObj.type) {
+        const obj = {
+          type: dataObj.type,
+          employeeCount: dataObj.employeeCount,
+          address: dataObj.address,
+          country: dataObj.country,
+          zipCode: dataObj.zipCode,
+          phoneNumber: dataObj.phoneNumber,
+          emailAddress: dataObj.emailAddress
+        }
+        this.facilitiesTableData.push(obj);
       }
-      this.facilitiesTableData.push(obj);
     });
   }
 
@@ -426,6 +429,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addPOC() {
     this.organizationService.activeOrganizationView = true;
     this.organizationService.organizationDetails = this.organizationForm.value;
+    this.organizationService.organizationDetails['orgIdValue'] = this.editId;
     this.router.navigateByUrl('/contacts/individual');
   }
 
@@ -500,8 +504,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationView = true;
     // this.pocTableData = updateData.primaryDetails.pointofContact;
     this.addPOCDetails(updateData.primaryDetails.name);
-    this.facilitiesTable = true;
     this.addFacilityTable(updateData.facilities);
+    this.facilitiesTable = (this.facilitiesTableData.length > 0) ? true : false;
   }
 
   delete(event: any) {
