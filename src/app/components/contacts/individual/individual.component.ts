@@ -183,7 +183,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
     initForm() {
         this.contactForm = this.fb.group({
             primaryDetails: this.fb.group({
-                salutation: [{ value:'PLACEHOLDERS.SALUTATION' }],
+                salutation: ['Mr'],
                 firstName: new FormControl("", [Validators.required]),
                 middleName: new FormControl(""),
                 lastName: new FormControl("", [Validators.required]),
@@ -215,6 +215,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
     }
 
     addContact() {
+        this.editId = '';
         this.contactView = true;
         this.contactForm.reset();
         this.initForm();
@@ -249,6 +250,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
 
     closePanel() {
         this.contactForm.reset();
+        this.editId = '';
         this.contactView = false;
     }
 
