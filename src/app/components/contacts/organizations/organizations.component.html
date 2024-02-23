@@ -19,26 +19,26 @@
 					</div>
 					<div class="field col-12">
 						<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="section"
-							[options]="sections" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="section"
+							[options]="sections" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="industryType"
-							[options]="industryTypes" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="industryType"
+							[options]="industryTypes" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industryTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
 						<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType1"
-							[options]="industrySubType1" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType1"
+							[options]="industrySubType1" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
 						<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="subType2"
-							[options]="industrySubType2" optionLabel="name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType2"
+							[options]="industrySubType2" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubType2Change($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">

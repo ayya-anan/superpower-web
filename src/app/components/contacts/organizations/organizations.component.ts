@@ -10,6 +10,7 @@ import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
 import { TranslateService } from '@ngx-translate/core';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
   selector: 'app-organization',
@@ -28,6 +29,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private individualsAPI: IndividualsAPI,
     private translate: TranslateService,
+    private xService: XService,
   ) { }
 
   organizationSubscription: Subscription = new Subscription;
@@ -55,6 +57,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   editId: any;
 
   // Industry Types
+  industryValues: any = [];
   sections: any = [];
   industryTypes = [];
   industrySubType1: any = [];
@@ -114,47 +117,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89 }
   ];
 
-  industryValues: any = [
-    {
-      "section": [
-        { name: "COUNTRY- AND FORESTRY, FISHING", code: 'sectionA' },
-        { name: "MINING AND WINNING OF STONES AND EARTH", code: 'sectionB' }
-      ]
-    },
-    {
-      "sectionA": [
-        { name: 'Mixed Agriculture', code: 'mixedAgriculture', value: 2.5 },
-        { name: 'Forestry and Logging', code: 'forestryAndLogging' }
-      ],
-      "sectionB": [
-        { name: 'Coal Mining', code: 'coalMining' },
-        { name: 'Extraction from oil and natural gas', code: 'oilAndGas' },
-        { name: 'Ore Mining', code: 'oreMining' },
-        { name: 'Extraction from stones and Earth, other Mining', code: 'stonesAndEarth' },
-        { name: 'Delivery from Services for the Mining and for the extraction of stones and earth', code: 'miningStonesearth' },
-      ]
-    },
-    {
-      "forestryAndLogging": [{ name: 'Forestry', code: 'forestry', value: 2.5 }, { name: 'Logging', code: 'Logging', value: 2.5 }],
-      "coalMining": [{ name: 'Hard Coal Mining', code: '', value: 2.5 }, { name: 'Brown Coal Mining', code: '', value: 2.5 }],
-      "oilAndGas": [{ name: 'Extraction from oil', code: '', value: 2.5 }, { name: 'Extraction from natural gas', code: '', value: 2.5 }],
-      "oreMining": [{ name: 'Iron ore mining', code: '', value: 2.5 }, { name: 'Non-ferrous metal ore mining', code: '', value: 2.5 }],
-      "stonesAndEarth": [
-        { name: 'Extraction from natural stones, Gravel, Sand, volume and Kaolin _', code: 'naturalStones' },
-        { name: 'Other Mining; extraction from stones and Earth a. n. G.\"', code: 'ANG' },
-      ]
-    },
-    {
-      "naturalStones": [
-        { name: 'Extraction from Natural stones and Natural stone, limestone and gypsum stone, chalk and slate', value: 2.5 },
-        { name: 'Extraction from volume and kaolin', value: 1.5 },
-      ],
-      "ANG": [
-        { name: 'Peat extraction', value: 1.5 }
-      ]
-    }
-  ]
-
   // FORM GROUPS
   organizationForm: FormGroup = this.fb.group({});
   facilities: FormArray = this.fb.array([]);
@@ -163,10 +125,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.sections = this.industryValues[0].section;
+    this.xService.getAllX('WZCode').subscribe(
+      (res: any) => {
+        this.industryValues = res.results[0].data;
+        this.sections = this.industryValues;
+      }
+    );
     this.subscribeToGetAllIndividuals();
-
-    // this.individualService.getAllIndividuals();
     this.initForm();
     this.loading = true;
     this.subscribeToGetAllOrganization();
@@ -205,8 +170,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
           const obj: any = {
             id: item.id,
             name: item.primaryDetails.name,
-            type: item.primaryDetails.industryType.name,
-            subType: item.primaryDetails.subType1.name,
+            type: item.primaryDetails.industryType.Name,
+            subType: item.primaryDetails.subType1.Name,
             status: item.primaryDetails.status,
             email: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryEmail : '',
             contact: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryPhone : '',
@@ -440,20 +405,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   sectionChange(event: any) {
-    this.industryTypes = (this.industryValues[1][event.value.code]);
+    this.industryTypes = event.value.Children;
     this.clearIndustryDetails();
     this.industrySubType1 = [];
     this.industrySubType2 = [];
   }
 
   industryTypeChange(event: any) {
-    this.industrySubType1 = (this.industryValues[2][event.value.code]);
+    this.industrySubType1 = event.value.Children;
     this.industrySubType2 = [];
     this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
   }
 
   industrySubTypeChange(event: any) {
-    this.industrySubType2 = (this.industryValues[3][event.value.code]);
+    this.industrySubType2 = event.value.Children;
     this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
   }
 
@@ -466,9 +431,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   updateIndustryDetails(resultData: any) {
-    this.industryTypes = this.industryValues[1][resultData.section.code];
-    this.industrySubType1 = (this.industryValues[2][resultData.industryType.code]) ? this.industryValues[2][resultData.industryType.code] : [];
-    this.industrySubType2 = (this.industryValues[3][resultData.subType1.code]) ? this.industryValues[3][resultData.subType1.code] : [];
+    this.sections = this.industryValues;
+    this.industryTypes = (resultData.section.Children) ? resultData.section.Children : [];
+    this.industrySubType1 = (resultData.industryType.Children) ? resultData.industryType.Children : [];
+    this.industrySubType2 = (resultData.subType1.Children) ? resultData.subType1.Children : [];
   }
 
   updateDateValues(data: any) {
