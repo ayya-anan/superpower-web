@@ -52,11 +52,6 @@
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
 							[options]="status" optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"
 							(onChange)="statusChange($event)">
-							<!-- <ng-template let-item pTemplate="item">
-								<div class="flex align-items-center gap-2">
-									<div>{{ item.label | translate }}</div>
-								</div>
-							</ng-template> -->
 						</p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="false">
@@ -70,16 +65,10 @@
 							optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
 					</div>
 					<ng-container *ngIf="activeContract">
-						<!-- <div class="field col-12 verticalLineClass">Active Contract</div> -->
 						<div class="field col-12">
 							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.INVOICE_FREQUENCY' | translate}}</label>
 							<p-dropdown appendTo="body" formControlName="invoiceFrequency" [options]="paymentMilestone"
-								optionLabel="label" optionValue="actualValue" placeholder="{{ 'DROPDOWNS.SELECT_FREQUENCY' | translate}}">
-								<!-- <ng-template let-item pTemplate="item">
-									<div class="flex align-items-center gap-2">
-										<div>{{ item.label | translate }}</div>
-									</div>
-								</ng-template> -->
+								optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_FREQUENCY' | translate}}">
 							</p-dropdown>
 						</div>
 						<div class="field col-12">
@@ -134,11 +123,6 @@
 												<p-dropdown appendTo="body" formControlName="type" [filter]="true"
 													filterBy="name" [options]="facilityType" optionLabel="label"
 													optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_FACILITY_TYPE' | translate}}">
-													<!-- <ng-template let-item pTemplate="item">
-														<div class="flex align-items-center gap-2">
-															<div>{{ item.label | translate }}</div>
-														</div>
-													</ng-template> -->
 												</p-dropdown>
 											</div>
 											<div class="field col-3">
@@ -211,11 +195,6 @@
 									<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' | translate}}</label><br>
 									<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
 										optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_SERVICE_TYPE' | translate}}">
-										<!-- <ng-template let-item pTemplate="item">
-											<div class="flex align-items-center gap-2">
-												<div>{{ item.label | translate }}</div>
-											</div>
-										</ng-template> -->
 									</p-dropdown>
 								</div>
 								<div class="field col">

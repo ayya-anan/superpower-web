@@ -9,7 +9,7 @@ import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { XService } from 'src/app/api/x/x.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { XService } from 'src/app/api/x/x.service';
   providers: [ConfirmationService, MessageService]
 })
 export class OrganizationsComponent implements OnInit, OnDestroy {
-  
+
   constructor(private fb: FormBuilder,
     private router: Router,
     private messageService: MessageService,
@@ -37,6 +37,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   individualSubscription: Subscription = new Subscription;
   updateOrganizations: Subscription = new Subscription;
   deleteOrganizations: Subscription = new Subscription;
+  langChangeSubscription: Subscription = new Subscription;
 
   searchValue: any;
   originalData: any = [];
@@ -92,11 +93,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ];
 
   paymentMilestone = [
-    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1, actualValue: 'Annual' },
-    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2, actualValue: 'Semi' },
-    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4, actualValue: 'Quaterly' },
-    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, actualValue: 'Monthly' }
-];
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1, name: 'Annual' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2, name: 'Semi' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4, name: 'Quaterly' },
+    { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, name: 'Monthly' }
+  ];
 
   tableData: any = [];
   status: any = [
@@ -104,7 +105,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
     { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
     { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
-];
+  ];
   revenueRange: any = [{ name: '0 to 1 Million' }, { name: '1 to 2 Million' }, { name: '2 - 5 Million' }, { name: '>5 Million' }];
   facilityType: any = [
     { label: this.translate.instant('DROPDOWNS.MANUFACTURING_PLANT'), name: 'Manufacturing Plant' },
@@ -139,8 +140,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.subscribeToUpdateOrganizations();
     this.subscribeToDeleteOrg();
     if (this.keycloakService.isUserInRole('edit-organization')) {
-       this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
+      this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
     }
+    this.subscribeToLangulaeChange();
   }
 
   organizationDetails() {
@@ -158,13 +160,39 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     }
   }
 
+  subscribeToLangulaeChange() {
+    this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.paymentMilestone = [
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.ANNUAL'), value: 1, name: 'Annual' },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.SEMI_ANNUAL'), value: 2, name: 'Semi' },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.QUARTERLY'), value: 4, name: 'Quaterly' },
+        { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, name: 'Monthly' }
+      ];
+      this.status = [
+        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
+        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
+        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
+        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
+      ];
+      this.facilityType = [
+        { label: this.translate.instant('DROPDOWNS.MANUFACTURING_PLANT'), name: 'Manufacturing Plant' },
+        { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office' },
+        { label: this.translate.instant('DROPDOWNS.WAREHOUSE'), name: 'Warehouse' }];
+      this.serviceList = [
+        { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52 },
+        { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96 },
+        { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20 },
+        { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89 }
+      ];
+    });
+  }
+
   subscribeToGetAllOrganization() {
     this.organizationSubscription = this.organizationService.allOrganization.subscribe(
       (res: any) => {
         this.loading = false;
         this.tableData = [];
         this.organizationData = res.results;
-        // this.organizationView = false;
         _.forEach(res.results, (item: any) => {
           const pocDetails = _.filter(this.allIndividuals, (obj) => obj.primaryDetails.companyName.toLowerCase() === item.primaryDetails.name.toLowerCase());
           const obj: any = {
@@ -223,7 +251,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         if (res.error) {
           this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: res.error.message });
         } else {
-          this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ORGUPDATEMSG')  });
+          this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.ORGUPDATEMSG') });
           this.organizationView = false;
           this.organizationService.getAllOrganization();
         }
@@ -276,7 +304,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       type: ['', [Validators.required]],
       address: ['', [Validators.required]],
       employeeCount: ['', [Validators.required]],
-      country: [ 'Germany', [Validators.required]],
+      country: ['Germany', [Validators.required]],
       zipCode: ['', [Validators.required]],
       phoneNumber: '',
       emailAddress: '',
@@ -329,7 +357,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationService.organizationDetails = {};
     this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
     _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
-      if(facilityObj.country === null) { facilityObj.country = 'Germany'; }
+      if (facilityObj.country === null) { facilityObj.country = 'Germany'; }
       delete facilityObj['_id'];
     });
     _.forEach(this.organizationForm.value.services, (serviceObj) => {
@@ -362,7 +390,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addFacilityTable(data: any) {
     this.facilitiesTableData = [];
     _.forEach(data, (dataObj) => {
-      if(dataObj.type) {
+      if (dataObj.type) {
         const obj = {
           type: dataObj.type,
           employeeCount: dataObj.employeeCount,
