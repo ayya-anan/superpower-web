@@ -214,14 +214,15 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSubmittedHours(deal: any) {
+  getSubmittedHours(deal: any, totalHours: any) {
     const result: any = _.filter(this.allocatedUsers, (item) => item.orgId === deal.id)
     let percentage: any = 0;
     if (result.length > 0) {
       _.forEach(result, (assignee) => {
-        percentage = percentage + ((assignee.submittedHours.quaterly[0] / 625) * 100)
+        percentage = percentage + ((assignee.submittedHours.quaterly[0] / totalHours) * 100)
       });
     }
+    percentage = Math.round(percentage);
     return { percentage }
   }
 
@@ -239,7 +240,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         startDate: new Date(Date.parse(deal.startDate.toString())),
         endDate: new Date(Date.parse(deal.closeDate.toString())),
         hours: totalHours,
-        completed: this.getSubmittedHours(deal).percentage,
+        completed: this.getSubmittedHours(deal, totalHours).percentage,
         status: deal.status,
         services: (deal.quotes.length > 0) ? deal.quotes[0].services : [],
         allServices: (orgName.length > 0) ? orgName[0].services : [],

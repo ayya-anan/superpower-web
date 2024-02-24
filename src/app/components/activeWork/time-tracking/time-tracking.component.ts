@@ -75,10 +75,6 @@ export class TimeTrackingComponent {
     this.startDate = moment().startOf('week').add('days', 1).format('Do MMM YY')
     this.endDate = moment().endOf('week').subtract('days', 1).format('Do MMM YY');
     this.currentWeek();
-    this.timeSheet = [
-      { Project: 'A', Task: 'BB', Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0}
-    ]
-    this.originalTimesheet = _.cloneDeep(this.timeSheet);
   }
 
   subscribeToAssigneeData() {
@@ -95,9 +91,10 @@ export class TimeTrackingComponent {
     const result = _.filter(this.allocatedUsers, (item) => item.name.toLowerCase() === username.toLowerCase());
     this.selectedPerson = result;
     _.forEach(result, (item) => {
-      const obj = { Project: item.project, Task: item.taskName, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0 }
+      const obj = { Project: item.project, Task: item.taskName, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0, data: item }
       this.timeSheet.push(obj);
     });
+    this.originalTimesheet = _.cloneDeep(this.timeSheet);
   }
 
   updateValue(event: any) {
@@ -125,12 +122,23 @@ export class TimeTrackingComponent {
       });
       console.log(this.weeklyView);
       this.weeklyView = [...this.weeklyView];
-      this.weeklyTotal = _.sumBy(this.weeklyView, 'value');
-      // this.individualService.saveAllocationData[0].submittedHours = this.weeklyTotal;
-      if(this.selectedPerson.length > 0) {
-        this.selectedPerson[0].submittedHours.quaterly[0] = this.weeklyTotal;
-        this.xService.updateX('taskAllocation', this.selectedPerson[0], this.selectedPerson[0].id);
-      }
+      _.forEach(this.timeSheet, (timeView) => {
+        	const totalHours = timeView.Monday + timeView.Tuesday + timeView.Wednesday + timeView.Thursday + timeView.Friday;
+          timeView.data.submittedHours.quaterly[0] = totalHours;
+      });
+      _.forEach(this.selectedPerson, (item) => {
+        this.xService.updateX('taskAllocation', item, item.id);
+      });
+
+      // const obj = {
+      //   name: this.selectedPerson[0].name,
+      //   timesheet: this.timeSheet,
+      //   totalHours :_.sumBy(this.weeklyView, 'value')
+      // }
+      // if(this.selectedPerson.length > 0) {
+      //   this.selectedPerson[0].submittedHours.quaterly[0] = this.weeklyTotal;
+      // }
+      // this.xService.postX('timeTracking', obj);
     } else {
       this.messageService.clear();
       this.messageService.add({ severity: 'error', summary: 'Invalid Hours', detail: `Total Hours for a day cannot exceed 12` });
