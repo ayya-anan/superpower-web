@@ -33,7 +33,9 @@ export class TimeRangeComponent implements OnInit {
   }
 
   updateView(value: any) {
-    this.activeState = value.label;
-    this.updateRange.emit({data: value.label }); 
+    if(value.label === 'Quaterly') {
+      this.activeState = value.label;
+      this.updateRange.emit({data: value.label }); 
+    }
   }
 }
