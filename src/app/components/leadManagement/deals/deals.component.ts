@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { KanbanService } from './service/kanban.service';
 import { XService } from 'src/app/api/x/x.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
     selector: 'app-deals',
@@ -23,8 +24,13 @@ export class DealsComponent {
     style!: HTMLStyleElement;
 
     isMobileDevice: boolean = false;
+    showDealsPage: boolean = true;
 
-    constructor(private kanbanService: KanbanService, private xService: XService) {
+    constructor(
+        private kanbanService: KanbanService,
+        private xService: XService,
+        private keycloakService: KeycloakService,
+    ) {
         this.subscription = this.kanbanService.lists$.subscribe(data => {
             this.lists = data;
             this.listIds = this.lists.map(l => l.listId || '');
@@ -32,6 +38,8 @@ export class DealsComponent {
     }
 
     ngOnInit() {
+        const roleValue = this.keycloakService.getUserRoles();
+        if(roleValue && roleValue.includes('Team Members')) { this.showDealsPage = false;}
         this.removeLayoutResponsive();
         this.subscribeXChange();
         this.isMobileDevice = this.kanbanService.isMobileDevice();
