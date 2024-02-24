@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -67,7 +68,8 @@ export class TimeTrackingComponent {
     private messageService: MessageService,
     private individualService: IndividualService,
     private xService: XService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -129,7 +131,8 @@ export class TimeTrackingComponent {
       _.forEach(this.selectedPerson, (item) => {
         this.xService.updateX('taskAllocation', item, item.id);
       });
-
+      this.messageService.clear();
+      this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.TIMESHEET_SUBMITTED') });
       // const obj = {
       //   name: this.selectedPerson[0].name,
       //   timesheet: this.timeSheet,
@@ -141,7 +144,7 @@ export class TimeTrackingComponent {
       // this.xService.postX('timeTracking', obj);
     } else {
       this.messageService.clear();
-      this.messageService.add({ severity: 'error', summary: 'Invalid Hours', detail: `Total Hours for a day cannot exceed 12` });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: this.translate.instant('MESSAGES.INVALID_HOURS') });
     }
 
   }

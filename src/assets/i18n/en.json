@@ -285,6 +285,9 @@
         "CONFIRMATIONHEADER": "Confirmation",
         "ACCESSRESTRICTED": "Access Restricted !!!",
         "NEWUSERASSIGNED": "New User Assigned !!",
-        "DEALLOCATE": "Resource DeAllocated Successfully"
+        "DEALLOCATE": "Resource DeAllocated Successfully",
+        "TIMESHEET_SUBMITTED": "Timesheet Submitted Successfully",
+        "INVALID_HOURS": "Total Hours for a day cannot exceed 12",
+        "INVALID_ALLOCATION": "Allocated Hours cannot be greater than Service hours"
     }
 }

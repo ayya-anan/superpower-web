@@ -364,7 +364,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   allocationCheck() {
     if (this.allocationCount > 100) {
       this.messageService.clear();
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Allocated Hours cannot be greater than Service hours` });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: this.translate.instant('MESSAGES.INVALID_ALLOCATION') });
     }
   }
 

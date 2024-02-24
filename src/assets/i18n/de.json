@@ -281,6 +281,9 @@
         "CONFIRMATIONHEADER": "Bestätigung",
         "ACCESSRESTRICTED": "Zugang eingeschränkt !!!",
         "NEWUSERASSIGNED": "Neuer Benutzer zugewiesen !!",
-        "DEALLOCATE": "Die Ressourcenzuweisung wurde erfolgreich aufgehoben"
+        "DEALLOCATE": "Die Ressourcenzuweisung wurde erfolgreich aufgehoben",
+        "TIMESHEET_SUBMITTED": "Stundenzettel erfolgreich übermittelt",
+        "INVALID_HOURS": "Die Gesamtstundenanzahl pro Tag darf 12 nicht überschreiten",
+        "INVALID_ALLOCATION": "Die zugewiesenen Stunden dürfen nicht größer sein als die Servicestunden"
     }
 }
