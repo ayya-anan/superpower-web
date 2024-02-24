@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UrlSegment } from '@angular/router';
 import * as _ from 'lodash';
@@ -15,7 +15,7 @@ import { XService } from 'src/app/api/x/x.service';
   styleUrl: './team-schedule.component.scss',
   providers: [MessageService, ConfirmationService]
 })
-export class TeamScheduleComponent implements OnInit {
+export class TeamScheduleComponent implements OnInit, OnDestroy {
 
   activeWork: FormGroup = new FormGroup({});
   loading: boolean = false;
@@ -51,8 +51,8 @@ export class TeamScheduleComponent implements OnInit {
     { header: 'COMMON.NAME', field: 'name' },
     { header: 'COMMON.PROJECT', field: 'project' },
     { header: 'COMMON.TASK', field: 'taskName' },
-    { header: 'COMMON.START_DATE', field: 'startDate' },
-    { header: 'COMMON.END_DATE', field: 'endDate' },
+    // { header: 'COMMON.START_DATE', field: 'startDate' },
+    // { header: 'COMMON.END_DATE', field: 'endDate' },
     { header: 'COMMON.ALLOCATEDHOURS', field: 'totalAllocatedHours' },
     { header: 'COMMON.ALLOCATED_PERCENTAGE', field: 'allocationPercentage' },
     { header: 'COMMON.ACTIONS', field: 'action' }
@@ -182,7 +182,7 @@ export class TeamScheduleComponent implements OnInit {
   subscribeXChange() {
     this.xService.addx.subscribe(
       (res) => {
-        this.resourcesData = res.results;
+        this.resourcesData.push(res);
       }
     )
   }
@@ -190,9 +190,10 @@ export class TeamScheduleComponent implements OnInit {
   subscribeToDeleteAssignee() {
     this.deleteAssignee = this.xService.deletexEmit.subscribe(
       (res: any) => {
-        _.remove(this.resourcesData, (item: any) => item.id = this.deleteId);
+        _.remove(this.resourcesData, (item: any) => item.id == this.deleteId);
         this.messageService.clear();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Resource DeAllocated Successfully' });
+        this.subscribeToAssigneeData();
       }
     );
   }
@@ -417,8 +418,8 @@ export class TeamScheduleComponent implements OnInit {
     // this.resourcesData.push(obj);
     this.taskTableData[this.taskIndex].allocation = this.taskTableData[this.taskIndex].allocation + obj.allocationPercentage;
     // this.taskTableData[this.taskIndex].assignee = obj.name;
-    this.taskTableData = [...this.taskTableData];
-    this.resourcesData = [...this.resourcesData];
+    // this.taskTableData = [...this.taskTableData];
+    // this.resourcesData = [...this.resourcesData];
     this.messageService.clear();
     this.messageService.add({ severity: 'success', summary: 'Success', detail: `New User ${obj.name} Assigned for ${obj.taskName}` });
     this.visible = false;
@@ -448,6 +449,10 @@ export class TeamScheduleComponent implements OnInit {
   delete(event: any) {
     this.deleteId = event.rowData.id;
     this.xService.deleteX('taskAllocation', event.rowData.id);
+  }
+
+  ngOnDestroy() {
+    if(this.deleteAssignee) { this.deleteAssignee.unsubscribe(); }
   }
 
 }
