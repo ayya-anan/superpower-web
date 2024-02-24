@@ -269,6 +269,11 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     }
   }
 
+  getAllocationCount(rowData: any, taskName: any) {
+    const usersResults = _.filter(this.allocatedUsers, (item: any) => item.orgId === rowData.id && item.taskName === taskName);
+    return (usersResults.length > 0) ? _.sumBy(usersResults, 'allocationPercentage') : 0
+  }
+
   manageActivity(event: any) {
     this.teamSchedule = true;
     this.activeWork.get('projectDetails')?.patchValue(event.rowData);
@@ -287,7 +292,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         endDate: event.rowData.endDateFormatted,
         hours: item.quantity,
         assignee: '',
-        allocation: 0
+        allocation: this.getAllocationCount(event.rowData, (taskName.length > 0) ? taskName[0].type : '')
       };
       this.taskTableData.push(obj);
     });
