@@ -337,15 +337,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     calculateHours(data: any) {
-        return (data.subType2.name) ? data.subType2.value : (data.subType1.name) ? data.subType1.value : (data.industryType.name) ? data.industryType.value : 0
+        return (data.subType2.Name) ? data.subType2.Hours : (data.subType1.Name) ? data.subType1.Hours : (data.industryType.Name) ? data.industryType.Hours : 0
     }
+
     removeService(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
         servicesArray.removeAt(index);
         this.getFinalTotal(quoteIndex);
-
     }
+
     onServiceChange(quoteIndex: number, index: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;

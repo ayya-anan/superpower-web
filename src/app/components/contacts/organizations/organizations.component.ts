@@ -139,7 +139,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.subscribeToUpdateOrganizations();
     this.subscribeToDeleteOrg();
     if (this.keycloakService.isUserInRole('edit-organization')) {
-    this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
+       this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
     }
   }
 

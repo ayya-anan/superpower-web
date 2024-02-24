@@ -347,13 +347,13 @@
 <ng-template #industryType>
     <div *ngIf="selectedOrganization && selectedOrganization.primaryDetails">
         <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.industryType">
-            <b>Industry Type : </b> &nbsp;<span>{{ selectedOrganization.primaryDetails.industryType.name }}</span>
+            <b>Industry Type : </b> &nbsp;<span>{{ selectedOrganization.primaryDetails.industryType.Name }}</span>
         </div>
         <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.subType1">
-            <b>Industry Subtype : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType1.name }}</span>
+            <b>Industry Subtype 1 : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType1.Name }}</span>
         </div>
         <div class="flex align-items-center" *ngIf="selectedOrganization.primaryDetails.subType2">
-            <b>Industry Subtype : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType2.name }}</span>
+            <b>Industry Subtype 2 : </b>&nbsp;<span>{{ selectedOrganization.primaryDetails.subType2.Name }}</span>
         </div>
     </div>
 </ng-template>
