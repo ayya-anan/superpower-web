@@ -278,6 +278,7 @@
         "ORGDELETEMSG": "Organisation erfolgreich gelöscht",
         "ORGNAMEEXISTS": "Der Name der Organisation existiert bereits",
         "CONFIRMDELETE": "Sind Sie sicher, dass Sie löschen möchten",
-        "CONFIRMATIONHEADER": "Bestätigung"
+        "CONFIRMATIONHEADER": "Bestätigung",
+        "ACCESSRESTRICTED": "Zugang eingeschränkt !!!"
     }
 }

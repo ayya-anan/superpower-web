@@ -282,6 +282,7 @@
         "ORGDELETEMSG": "Organization Deleted Successfully",
         "ORGNAMEEXISTS": "Organization Name Already Exists",
         "CONFIRMDELETE": "Are you sure you want to delete",
-        "CONFIRMATIONHEADER": "Confirmation"
+        "CONFIRMATIONHEADER": "Confirmation",
+        "ACCESSRESTRICTED": "Access Restricted !!!"
     }
 }
