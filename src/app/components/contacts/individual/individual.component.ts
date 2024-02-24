@@ -152,7 +152,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
                 this.tableData = [];
                 this.allIndividuals = _.filter(res.results, (item) => item.primaryDetails && item.primaryDetails.companyName != this.ownCompany);
                 this.company = _.sortBy(_.uniqBy(_.map(this.allIndividuals, (i) => { return { name: i.primaryDetails.jobTitle } }), 'name'), 'name');
-                _.forEach(res.results, (item: any) => {
+                _.forEach(this.allIndividuals, (item: any) => {
                     const obj = {
                         id: item.id,
                         name: this.getName(item),

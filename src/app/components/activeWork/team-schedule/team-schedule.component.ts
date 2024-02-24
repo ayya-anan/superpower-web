@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UrlSegment } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -124,7 +125,8 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private xService: XService,
     private organizationService: OrganizationService,
-    private individualService: IndividualService
+    private individualService: IndividualService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -192,7 +194,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
       (res: any) => {
         _.remove(this.resourcesData, (item: any) => item.id == this.deleteId);
         this.messageService.clear();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Resource DeAllocated Successfully' });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.DEALLOCATE') });
         this.subscribeToAssigneeData();
       }
     );
@@ -427,7 +429,8 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     // this.taskTableData = [...this.taskTableData];
     // this.resourcesData = [...this.resourcesData];
     this.messageService.clear();
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: `New User ${obj.name} Assigned for ${obj.taskName}` });
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.NEWUSERASSIGNED') });
+    // detail: `New User ${obj.name} Assigned for ${obj.taskName}`
     this.visible = false;
     this.xService.postX('taskAllocation', obj);
 
@@ -455,6 +458,10 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   delete(event: any) {
     this.deleteId = event.rowData.id;
     this.xService.deleteX('taskAllocation', event.rowData.id);
+    const updateAllocationCount = _.filter(this.taskTableData, (item: any) => item.id === event.rowData.orgId && item.taskId == event.rowData.taskId);
+    if(updateAllocationCount.length > 0) {
+      updateAllocationCount[0].allocation = updateAllocationCount[0].allocation - event.rowData.allocationPercentage;
+    }
   }
 
   ngOnDestroy() {

@@ -279,6 +279,8 @@
         "ORGNAMEEXISTS": "Der Name der Organisation existiert bereits",
         "CONFIRMDELETE": "Sind Sie sicher, dass Sie löschen möchten",
         "CONFIRMATIONHEADER": "Bestätigung",
-        "ACCESSRESTRICTED": "Zugang eingeschränkt !!!"
+        "ACCESSRESTRICTED": "Zugang eingeschränkt !!!",
+        "NEWUSERASSIGNED": "Neuer Benutzer zugewiesen !!",
+        "DEALLOCATE": "Die Ressourcenzuweisung wurde erfolgreich aufgehoben"
     }
 }

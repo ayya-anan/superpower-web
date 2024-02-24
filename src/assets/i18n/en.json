@@ -283,6 +283,8 @@
         "ORGNAMEEXISTS": "Organization Name Already Exists",
         "CONFIRMDELETE": "Are you sure you want to delete",
         "CONFIRMATIONHEADER": "Confirmation",
-        "ACCESSRESTRICTED": "Access Restricted !!!"
+        "ACCESSRESTRICTED": "Access Restricted !!!",
+        "NEWUSERASSIGNED": "New User Assigned !!",
+        "DEALLOCATE": "Resource DeAllocated Successfully"
     }
 }
