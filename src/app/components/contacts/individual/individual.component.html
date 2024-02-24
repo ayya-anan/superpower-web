@@ -9,13 +9,8 @@
 				<div class="formgrid grid">
 					<div class="field col-12">
 						<label>{{ 'CONTACTS.INDIVIDUAL.SALUTATION' | translate }}</label>
-						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="name" optionValue="name" 
+						<p-dropdown appendTo="body" formControlName="salutation" [options]="Salutations" optionLabel="label" optionValue="name" 
 						 placeholder="{{ 'PLACEHOLDERS.SALUTATION' | translate}}">
-							<ng-template let-item pTemplate="item">
-								<div class="flex align-items-center gap-2">
-									<div>{{ item.label | translate }}</div>
-								</div>
-							</ng-template>
 						</p-dropdown>
 					</div>
 					<div class="field col-12">
@@ -45,23 +40,12 @@
 					</div>
 					<div class="field col-12">
 						<label>{{ 'CONTACTS.INDIVIDUAL.STATUS' | translate }}</label><br>
-						<p-dropdown formControlName="status" [options]="status" optionLabel="name" optionValue="name" placeholder="{{ 'PLACEHOLDERS.PROSPECT' | translate}}">
-						<ng-template let-item pTemplate="item">
-							<div class="flex align-items-center gap-2">
-								<div>{{ item.label | translate }}</div>
-							</div>
-						</ng-template>
+						<p-dropdown formControlName="status" [options]="status" optionLabel="label" optionValue="name" placeholder="{{ 'PLACEHOLDERS.PROSPECT' | translate}}">
 					</p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="rolename">{{ 'CONTACTS.INDIVIDUAL.ROLE' | translate }}</label>
-						<p-dropdown [editable]="true" formControlName="roleName" optionLabel="name" [options]="roles" placeholder="{{ 'PLACEHOLDERS.ROLE' | translate}}">
-						<ng-template let-item pTemplate="item">
-							<div class="flex align-items-center gap-2">
-								<div>{{ item.label | translate }}</div>
-							</div>
-						</ng-template>
-					</p-dropdown>
+						<p-dropdown formControlName="roleName" optionLabel="label" optionValue="name" [options]="roles" placeholder="{{ 'PLACEHOLDERS.ROLE' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12 mt-5">
 						<button pButton pRipple type="submit" label="{{ 'COMMON.SAVE' | translate }}" icon="pi pi-check" class="p-button-primary" [disabled]="!contactForm.valid" (click)="saveIndividuals()"></button>

@@ -8,7 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { IndividualsAPI } from 'src/app/api/contacts/individualsApi.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
     addIndividuals: any = Subscription;
     updateIndividuals: any = Subscription;
     organizationSubscription: any = Subscription;
+    langChangeSubscription: any = Subscription;
 
     // Variables
     allIndividuals: any = [];
@@ -53,23 +54,25 @@ export class IndividualComponent implements OnInit, OnDestroy {
         { header: 'CONTACTS.INDIVIDUAL.STATUS', field: 'status' },
 
     ];
-    Salutations: any = [
-        { label: 'DROPDOWNS.MR', name: 'Mr' },
-        { label: 'DROPDOWNS.MS', name: 'Ms' },
-        { label: 'DROPDOWNS.MRS', name: 'Mrs' },
-        { label: 'DROPDOWNS.DR', name: 'Dr' }
+
+    Salutations = [
+        { label: this.translate.instant('DROPDOWNS.MR'), name: 'Mr' },
+        { label: this.translate.instant('DROPDOWNS.MS'), name: 'Ms' },
+        { label: this.translate.instant('DROPDOWNS.MRS'), name: 'Mrs' },
+        { label: this.translate.instant('DROPDOWNS.DR'), name: 'Dr' }
     ];
+
     status: any = [
-        { label: 'DROPDOWNS.ACTIVE', name: 'Active' },
-        { label: 'DROPDOWNS.INACTIVE', name: 'Inactive' },
-        { label: 'DROPDOWNS.PROSPECT', name: 'Prospect' },
-        { label: 'DROPDOWNS.SUSPENDED', name: 'Suspended' }
+        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
+        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
+        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
+        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
     ];
     company: any = [];
     roles: any = [
-        { label: 'DROPDOWNS.ADVISOR', name: 'Advisor' },
-        { label: 'DROPDOWNS.DECISIONMAKER', name: 'Decision Maker' },
-        { label: 'DROPDOWNS.INFLUENCER', name: 'Influencer' }
+        { label: this.translate.instant('DROPDOWNS.ADVISOR'), name: 'Advisor' },
+        { label: this.translate.instant('DROPDOWNS.DECISIONMAKER'), name: 'Decision Maker' },
+        { label: this.translate.instant('DROPDOWNS.INFLUENCER'), name: 'Influencer' }
     ];
 
 
@@ -103,6 +106,30 @@ export class IndividualComponent implements OnInit, OnDestroy {
         this.subscribeToGetAllIndividuals();
         this.subscribeToAddIndividuals();
         this.subscribeToUpdateIndividuals();
+        this.subscribeToLangulaeChange();
+    }
+
+    subscribeToLangulaeChange() {
+        this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+            this.Salutations = [
+                { label: this.translate.instant('DROPDOWNS.MR'), name: 'Mr' },
+                { label: this.translate.instant('DROPDOWNS.MS'), name: 'Ms' },
+                { label: this.translate.instant('DROPDOWNS.MRS'), name: 'Mrs' },
+                { label: this.translate.instant('DROPDOWNS.DR'), name: 'Dr' }
+            ];
+            this.status = [
+                { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
+                { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
+                { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
+                { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
+            ];
+            this.roles = [
+                { label: this.translate.instant('DROPDOWNS.ADVISOR'), name: 'Advisor' },
+                { label: this.translate.instant('DROPDOWNS.DECISIONMAKER'), name: 'Decision Maker' },
+                { label: this.translate.instant('DROPDOWNS.INFLUENCER'), name: 'Influencer' }
+            ];
+        });
+
     }
 
     subscribeToOrgData() {
@@ -183,14 +210,14 @@ export class IndividualComponent implements OnInit, OnDestroy {
     initForm() {
         this.contactForm = this.fb.group({
             primaryDetails: this.fb.group({
-                salutation: ['Mr'],
+                salutation: [{ value:'PLACEHOLDERS.SALUTATION' }],
                 firstName: new FormControl("", [Validators.required]),
                 middleName: new FormControl(""),
                 lastName: new FormControl("", [Validators.required]),
                 status: [{ value:'PLACEHOLDERS.PROSPECT' }],
                 jobTitle: [''],
                 companyName: [''],
-                roleName: ['Influencer']
+                roleName: [{ value:'PLACEHOLDERS.ROLE' }]
             }),
             addresses: this.addresses,
         });
@@ -264,7 +291,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
         this.contactForm.get('primaryDetails')?.patchValue(result.primaryDetails);
         this.contactForm.get('primaryDetails.companyName')?.patchValue({ name: result.primaryDetails.companyName });
         this.contactForm.get('primaryDetails.jobTitle')?.patchValue({ name: result.primaryDetails.jobTitle });
-        this.contactForm.get('primaryDetails.roleName')?.patchValue({ name: result.primaryDetails.roleName });
+        // this.contactForm.get('primaryDetails.roleName')?.patchValue({ name: result.primaryDetails.roleName });
         // Patching the Addresses form array
         const addressesFormArray = this.contactForm.get('addresses') as FormArray;
         addressesFormArray.clear();
