@@ -30,6 +30,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   deleteAssignee: any = Subscription;
 
   tableColumns = [
+    { header: 'COMMON.DEAL_NAME', field: 'dealName' },
     { header: 'COMMON.PROJECT', field: 'project' },
     { header: 'COMMON.START_DATE', field: 'startDateFormatted' },
     { header: 'COMMON.END_DATE', field: 'endDateFormatted' },
@@ -41,6 +42,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
 
   taskColumns = [
     { header: 'ACTIVEWORK.TASKALLOCATION.SERVICES', field: 'task' },
+    { header: 'LEAD_MANAGEMENT.DEALS.FACILITY', field: 'address' },
     { header: 'COMMON.START_DATE', field: 'startDate' },
     { header: 'COMMON.END_DATE', field: 'endDate' },
     { header: 'COMMON.HOURS', field: 'hours', align: 'right' },
@@ -50,7 +52,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
 
   usersColumns = [
     { header: 'COMMON.NAME', field: 'name' },
-    { header: 'COMMON.PROJECT', field: 'project' },
+    // { header: 'COMMON.PROJECT', field: 'project' },
     { header: 'COMMON.TASK', field: 'taskName' },
     // { header: 'COMMON.START_DATE', field: 'startDate' },
     // { header: 'COMMON.END_DATE', field: 'endDate' },
@@ -236,6 +238,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
       const orgName = _.filter(orgData, (org: any) => org.id === deal.org);
       const obj = {
         id: deal.id,
+        dealName: deal.dealName,
         project: (orgName.length > 0) ? orgName[0].primaryDetails.name : '',
         startDateFormatted: moment(deal.startDate).format('MMM DD YYYY'),
         endDateFormatted: moment(deal.closeDate).format('MMM DD YYYY'),
@@ -290,6 +293,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         task: (taskName.length > 0) ? taskName[0].type : '',
         taskId: item.service,
         facility: (facilityName.length > 0) ? this.getAddress(facilityName) : '',
+        address: (facilityName.length > 0) ? facilityName[0].address : '',
         startDate: event.rowData.startDateFormatted,
         endDate: event.rowData.endDateFormatted,
         hours: item.quantity,
@@ -387,6 +391,8 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   closeView() {
     this.visible = false;
     this.selectedAssignee = '';
+    this.assigneeLocation = '';
+    this.facilityLocation = '';
     this.toggleStatus = false;
     this.remainingHours = [];
   }

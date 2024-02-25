@@ -29,7 +29,8 @@
         "USERS": "Benutzer",
         "SHOWING": "Zeigt",
         "COLUMNS": "Säulen",
-        "SELECTED": "Ausgewählt"
+        "SELECTED": "Ausgewählt",
+        "DEAL_NAME": "Deal-Name"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
