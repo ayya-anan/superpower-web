@@ -54,6 +54,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     { header: 'COMMON.NAME', field: 'name' },
     // { header: 'COMMON.PROJECT', field: 'project' },
     { header: 'COMMON.TASK', field: 'taskName' },
+    { header: 'LEAD_MANAGEMENT.DEALS.FACILITY', field: 'address' },
     // { header: 'COMMON.START_DATE', field: 'startDate' },
     // { header: 'COMMON.END_DATE', field: 'endDate' },
     { header: 'COMMON.ALLOCATEDHOURS', field: 'totalAllocatedHours' },
@@ -406,6 +407,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
       project: this.activeWork.value.projectDetails.project,
       taskId: this.taskDetails.taskId,
       taskName: this.taskDetails.task,
+      address: this.taskDetails.address,
       name: this.selectedAssignee,
       totalAllocatedHours: this.totalHours,
       allocationPercentage: this.allocationCount,
@@ -427,13 +429,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         weekly: [],
       }
     }
-    console.log(obj);
-    this.individualService.saveAllocationData.push(obj);
-    // this.resourcesData.push(obj);
     this.taskTableData[this.taskIndex].allocation = this.taskTableData[this.taskIndex].allocation + obj.allocationPercentage;
-    // this.taskTableData[this.taskIndex].assignee = obj.name;
-    // this.taskTableData = [...this.taskTableData];
-    // this.resourcesData = [...this.resourcesData];
     this.messageService.clear();
     this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.NEWUSERASSIGNED') });
     // detail: `New User ${obj.name} Assigned for ${obj.taskName}`
