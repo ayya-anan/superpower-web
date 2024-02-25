@@ -275,8 +275,8 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     }
   }
 
-  getAllocationCount(rowData: any, taskName: any) {
-    const usersResults = _.filter(this.allocatedUsers, (item: any) => item.orgId === rowData.id && item.taskName === taskName);
+  getAllocationCount(rowData: any, taskName: any, address: any) {
+    const usersResults = _.filter(this.allocatedUsers, (item: any) => item.orgId === rowData.id && item.taskName === taskName && item.address === address);
     return (usersResults.length > 0) ? _.sumBy(usersResults, 'allocationPercentage') : 0
   }
 
@@ -293,13 +293,14 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         id: event.rowData.id,
         task: (taskName.length > 0) ? taskName[0].type : '',
         taskId: item.service,
+        facilityId: item.facility,
         facility: (facilityName.length > 0) ? this.getAddress(facilityName) : '',
         address: (facilityName.length > 0) ? facilityName[0].address : '',
         startDate: event.rowData.startDateFormatted,
         endDate: event.rowData.endDateFormatted,
         hours: item.quantity,
         assignee: '',
-        allocation: this.getAllocationCount(event.rowData, (taskName.length > 0) ? taskName[0].type : '')
+        allocation: this.getAllocationCount(event.rowData, (taskName.length > 0) ? taskName[0].type : '', (facilityName.length > 0) ? facilityName[0].address : '')
       };
       this.taskTableData.push(obj);
     });
@@ -320,19 +321,25 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   }
 
   showAssigneeDetails(event: any) {
-    this.visible = true;
-    this.assigneeView = true;
-    this.remainingHours = [];
-    this.taskDetails = event.rowData;
-    this.taskIndex = event.index;
-    this.serviceHours = parseInt(this.taskDetails.hours);
-    this.allocationCount = '';
-    this.selectedAssignee = '';
-    this.toggleStatus = false;
-    this.timeRangeHeaders = (this.timeRangeValue === 'Monthly') ? [...this.monthlyHeaders] : [...this.headers];
-    this.timeData = (this.timeRangeValue === 'Monthly') ? [...this.monthlyData] : [...this.data];
-    this.totalHours = '';
-    this.facilityLocation = event.rowData.facility;
+    if(event.rowData.allocation >= 100) {
+      this.messageService.clear();
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('MESSAGES.ERROR'), detail: this.translate.instant('MESSAGES.ALLOCATION_EXCEEDED') });
+    } else {
+      this.visible = true;
+      this.assigneeView = true;
+      this.remainingHours = [];
+      this.taskDetails = event.rowData;
+      this.taskIndex = event.index;
+      this.serviceHours = parseInt(this.taskDetails.hours);
+      this.allocationCount = '';
+      this.selectedAssignee = '';
+      this.assigneeLocation = ''
+      this.toggleStatus = false;
+      this.timeRangeHeaders = (this.timeRangeValue === 'Monthly') ? [...this.monthlyHeaders] : [...this.headers];
+      this.timeData = (this.timeRangeValue === 'Monthly') ? [...this.monthlyData] : [...this.data];
+      this.totalHours = '';
+      this.facilityLocation = event.rowData.facility;
+    }
   }
 
   updateLocation() {

@@ -285,6 +285,7 @@
         "DEALLOCATE": "Die Ressourcenzuweisung wurde erfolgreich aufgehoben",
         "TIMESHEET_SUBMITTED": "Stundenzettel erfolgreich übermittelt",
         "INVALID_HOURS": "Die Gesamtstundenanzahl pro Tag darf 12 nicht überschreiten",
-        "INVALID_ALLOCATION": "Die zugewiesenen Stunden dürfen nicht größer sein als die Servicestunden"
+        "INVALID_ALLOCATION": "Die zugewiesenen Stunden dürfen nicht größer sein als die Servicestunden",
+        "ALLOCATION_EXCEEDED": "(Zuteilung überschritten): Die Zuteilungsanzahl darf nicht größer als 100 % sein."
     }
 }
