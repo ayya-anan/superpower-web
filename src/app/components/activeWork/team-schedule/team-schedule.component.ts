@@ -467,7 +467,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   delete(event: any) {
     this.deleteId = event.rowData.id;
     this.xService.deleteX('taskAllocation', event.rowData.id);
-    const updateAllocationCount = _.filter(this.taskTableData, (item: any) => item.id === event.rowData.orgId && item.taskId == event.rowData.taskId);
+    const updateAllocationCount = _.filter(this.taskTableData, (item: any) => item.id === event.rowData.orgId && item.taskId == event.rowData.taskId && item.address === event.rowData.address);
     if(updateAllocationCount.length > 0) {
       updateAllocationCount[0].allocation = updateAllocationCount[0].allocation - event.rowData.allocationPercentage;
     }
