@@ -75,6 +75,13 @@ export class IndividualComponent implements OnInit, OnDestroy {
         { label: this.translate.instant('DROPDOWNS.INFLUENCER'), name: 'Influencer' }
     ];
 
+    languageMapper: any = {
+        "Active" : "Aktiv",
+        "Inactive": "Inaktiv",
+        "Prospect": "Prospect",
+        "Suspended": "Suspended"
+    }
+
 
     constructor(
         private fb: FormBuilder,
@@ -160,7 +167,7 @@ export class IndividualComponent implements OnInit, OnDestroy {
                         jobTitle: item.primaryDetails.jobTitle,
                         email: (item.addresses.length > 0) ? item.addresses[0].primaryEmail : '',
                         contact: (item.addresses.length > 0) ? item.addresses[0].primaryPhone : '',
-                        status: (item.primaryDetails.status) ? item.primaryDetails.status : this.status[0].name,
+                        status: (item.primaryDetails.status) ? this.languageMapper[item.primaryDetails.status] : this.languageMapper["Active"],
                         statusBadge: (item.primaryDetails.status) ? item.primaryDetails.status : this.status[0].name,
                         actualData: item
                     }

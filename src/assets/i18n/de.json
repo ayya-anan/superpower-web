@@ -111,7 +111,7 @@
             "SUB_TYPE_1": "Untertyp 1",
             "SUB_TYPE_2": "Untertyp 2",
             "REVENUE_RANGE": "Umsatzbereich",
-            "ACCOUNT_MANAGER": "Account-Manager",
+            "ACCOUNT_MANAGER": "Verkaufsleiter",
             "FACILITIES": "Einrichtungen",
             "SERVICES": "Dienstleistungen",
             "TYPE": "Typ",
@@ -140,7 +140,7 @@
     "LEAD_MANAGEMENT": {
         "DEALS": {
             "CUSTOMER_CONATCT": "Kundenkontakt",
-            "ACCOUNT_MANAGER": "Account Manager",
+            "ACCOUNT_MANAGER": "Verkaufsleiter",
             "DEAL_DETAILS": "Details zum Deal",
             "START_DATE": "Startdatum",
             "CLOSE_DATE": "Abschlussdatum",
@@ -232,7 +232,7 @@
     "DROPDOWNS": {
         "SALUTATION": "Herr",
         "ORGANIZATION": "Organisation",
-        "PROSPECT": " Potenzieller Kunde",
+        "PROSPECT": "Potenzieller Kunde",
         "JOB_TITLE": "Berufsbezeichnung",
         "ROLE": "Funktionsbezeichnung",
         "SELECT_TYPE": "wählen",
