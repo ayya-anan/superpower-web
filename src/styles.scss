@@ -23,6 +23,16 @@ $gutter: 1rem; //for primeflex grid system
     width: 100%;
 }
 
+.green-chip {
+    background-color: var(--green-500);
+    color: var(--surface-ground) !important;
+}
+
+.blue-chip {
+    background-color: var(--blue-500);
+    color: var(--surface-ground) !important;
+}
+
 .layout-root-menuitem>ul {
     width: 16rem;
 }

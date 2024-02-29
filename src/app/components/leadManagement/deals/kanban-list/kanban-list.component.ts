@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { dealStatus, dealStatusHierarchy } from '../deals.helper';
 import { XService } from 'src/app/api/x/x.service';
 import { KeycloakService } from 'keycloak-angular';
+import { WIN_PROBABILITY } from './kanban-list.helper';
 
 @Component({
     selector: 'app-kanban-list',
@@ -32,6 +33,7 @@ export class KanbanListComponent implements OnInit {
 
     @ViewChild('listEl') listEl!: ElementRef;
     total = 0;
+    winProbablity = 0;
     constructor(
         public parent: DealsComponent,
         private kanbanService: KanbanService,
@@ -40,7 +42,8 @@ export class KanbanListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.total = _.reduce(this.list.cards, (sum, c: any) => +c.value + sum, 0)
+        this.total = _.reduce(this.list.cards, (sum, c: any) => +c.value + sum, 0);
+        this.winProbablity = this.calculateWinProbablity();
         this.isMobileDevice = this.kanbanService.isMobileDevice();
         this.menuItems = [
             {
@@ -58,7 +61,12 @@ export class KanbanListComponent implements OnInit {
             }
         ];
     }
-
+    calculateWinProbablity() {
+        if (this.total > 0 && WIN_PROBABILITY[this.list.listId]) {
+            return Math.round(this.total * WIN_PROBABILITY[this.list.listId]);
+        }
+        return 0;
+    }
     toggleSidebar() {
         this.parent.sidebarVisible = true;
     }

@@ -1,6 +1,7 @@
 <div class="card md:w-25rem overflow-hidden bg-gray-300 p-3">
     <div class="flex justify-content-between align-items-center w-full h-2rem">
-        <div class="font-bold text-xl text-800 pr-2" pBadge [value]="list.cards.length.toString()">{{list.label! | translate}}</div>
+        <div class="font-bold text-xl text-800 pr-2" pBadge [value]="list.cards.length.toString()">{{list.label! |
+            translate}}</div>
         <!-- <p-inplace #inplace [closable]="true" closeIcon="pi pi-check" styleClass="h-auto" (onActivate)="focus()">
             <ng-template pTemplate="display">
                 <span class="block text-900 font-semibold mt-4 pl-2 text-lg"  pTooltip="Click to edit" style="word-break: break-word;" tooltipPosition="top">{{list.title}}</span>
@@ -10,7 +11,12 @@
             </ng-template>
         </p-inplace> -->
         <div>
-            <p-chip label="{{ total | currency:'EUR' }}"></p-chip>
+            <button *ngIf="keycloakService.isUserInRole('add-deal') && list.listId==='1'" pButton pRipple
+                icon="pi pi-plus font-semibold" label="{{ 'LEAD_MANAGEMENT.DEALS.NEW_DEALS' | translate }}"
+                class="justify-content-center font-semibold border-round" (click)="insertCard()"></button>
+            <div *ngIf="list.listId !=='1'">
+                <p-chip pTooltip="{{ 'COMMON.TOTAL' | translate }}" label="{{ total | currency:'EUR' }}"></p-chip>
+            </div>
             <button *ngIf="false" pButton pRipple type="button" icon="pi pi-ellipsis-h"
                 class="p-button-rounded p-button-text p-button-secondary" (click)="menu.toggle($event)"></button>
             <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
@@ -20,12 +26,14 @@
         (cdkDropListDropped)="dropCard($event)" (cdkDropListEntered)="insertHeight($event)"
         (cdkDropListExited)="removeHeight($event)" [cdkDropListData]="list.cards" [cdkDropListConnectedTo]="listIds"
         #listEl style="min-height:2rem">
+        <p-chip *ngIf="winProbablity" pTooltip="{{ 'LEAD_MANAGEMENT.DEALS.WIN_PROBABILITY' | translate }}" label="{{ winProbablity | currency:'EUR' }}" styleClass="green-chip"></p-chip>
+
         <app-kanban-card *ngFor="let card of list.cards" [card]="card" [listId]="list.listId"
             (click)="onCardClick($event, card)" cdkDrag cdkDragHandle
             [cdkDragDisabled]="isMobileDevice"></app-kanban-card>
     </div>
-    <div class="px-4 mb-3 w-full mt-4 flex" *ngIf="keycloakService.isUserInRole('add-deal')">
+    <!-- <div class="px-4 mb-3 w-full mt-4 flex" >
         <button pButton pRipple icon="pi pi-plus font-semibold" label="{{ 'LEAD_MANAGEMENT.DEALS.NEW_DEALS' | translate }}"
             class="py-3 justify-content-center font-semibold w-full border-round" (click)="insertCard()"></button>
-    </div>
+    </div> -->
 </div>

@@ -30,6 +30,7 @@
         "SHOWING": "Showing",
         "COLUMNS": "Columns",
         "SELECTED": "Selected",
+        "TOTAL": "Total",
         "DEAL_NAME": "Deal Name"
     },
     "MENU": {
@@ -191,7 +192,8 @@
             "SEMI_ANNUAL": "Semi-Annual",
             "QUARTERLY": "Quarterly",
             "MONTHLY": "Monthly",
-            "WEEKLY": "Weekly"
+            "WEEKLY": "Weekly",
+            "WIN_RATIO ": "Win Ratio"
         }
     },
     "ACTIVEWORK": {

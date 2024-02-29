@@ -30,6 +30,7 @@
         "SHOWING": "Zeigt",
         "COLUMNS": "Säulen",
         "SELECTED": "Ausgewählt",
+        "TOTAL": "Gesamt",
         "DEAL_NAME": "Deal-Name"
     },
     "MENU": {
@@ -187,7 +188,8 @@
             "SEMI_ANNUAL": "Halbjährlich",
             "QUARTERLY": "vierteljährlich",
             "MONTHLY": "Monatlich",
-            "WEEKLY": "Wöchentlich"
+            "WEEKLY": "Wöchentlich",
+            "WIN_RATIO": "Gewinnverhältnis"
         }
     },
     "ACTIVEWORK": {
