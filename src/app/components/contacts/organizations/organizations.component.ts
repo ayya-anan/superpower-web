@@ -358,10 +358,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
     _.forEach(this.organizationForm.value.facilities, (facilityObj) => {
       if (facilityObj.country === null) { facilityObj.country = 'Germany'; }
-      delete facilityObj['_id'];
-    });
-    _.forEach(this.organizationForm.value.services, (serviceObj) => {
-      delete serviceObj['_id'];
     });
     this.organizationForm.value.primaryDetails.pointofContact = this.pocTableData;
     if (this.editId) {
@@ -392,6 +388,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     _.forEach(data, (dataObj) => {
       if (dataObj.type) {
         const obj = {
+          _id: dataObj._id,
           type: dataObj.type,
           employeeCount: dataObj.employeeCount,
           address: dataObj.address,
