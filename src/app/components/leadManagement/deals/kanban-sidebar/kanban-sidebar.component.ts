@@ -263,7 +263,7 @@ export class KanbanSidebarComponent implements OnDestroy {
     cloneQuote(event: Event, quoteFormIndex: number) {
         event.stopPropagation();
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
-        this.QuotesArray.insert(0, this.patchQuoteGroup(quotesFormGroup.value))
+        this.QuotesArray.insert(0, this.patchQuoteGroup(quotesFormGroup.getRawValue()))
     }
     deleteQuote(event: Event, quoteFormIndex: number) {
         // this.QuotesArray.controls.splice(quoteFormIndex,1);
@@ -337,7 +337,11 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     calculateHours(data: any) {
-        return (data.subType2.Name) ? data.subType2.Hours : (data.subType1.Name) ? data.subType1.Hours : (data.industryType.Name) ? data.industryType.Hours : 0
+        if(data){
+            return (data.subType2.Name) ? data.subType2.Hours : (data.subType1.Name) ? data.subType1.Hours : (data.industryType.Name) ? data.industryType.Hours : 0
+        }else{
+            return 0;
+        }
     }
 
     removeService(quoteIndex: number, index: number) {
