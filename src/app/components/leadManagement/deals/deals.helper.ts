@@ -25,12 +25,30 @@ export const dealStatus: any = [
   },
   {
     listId: "5",
+    name: "Offer Sent",
+    label: "LEAD_MANAGEMENT.DEALS.OFFER_SENT",
+    cards: []
+  },
+  {
+    listId: "6",
+    name: "Proposal In Discussion",
+    label: "LEAD_MANAGEMENT.DEALS.PROPOSAL_IN_DISCUSSION",
+    cards: []
+  },
+  {
+    listId: "7",
+    name: "Contract Negotiation",
+    label: "LEAD_MANAGEMENT.DEALS.CONTRACT_NEGOTIATION",
+    cards: []
+  },
+  {
+    listId: "8",
     name: "Quote Accepted",
     label: "LEAD_MANAGEMENT.DEALS.QUOTE_ACCEPTED",
     cards: []
   },
   {
-    listId: "6",
+    listId: "9",
     name: "Deal Lost",
     label: "LEAD_MANAGEMENT.DEALS.DEAL_LOST",
     cards: []
@@ -39,10 +57,13 @@ export const dealStatus: any = [
 
 export const dealStatusHierarchy: any = {
   0: ["1"],
-  1: ["2", "6"],
-  2: ["3", "6"],
-  3: ["2", "4", "6"],
-  4: ["5", "6"]
+  1: ["2", "9"],
+  2: ["3", "9"],
+  3: ["2", "4", "9"],
+  4: ["5", "8", "9"],
+  5: ["6", "8", "9"],
+  6: ["7", "8", "9"],
+  7: ["8", "9"],
 };
 
 
