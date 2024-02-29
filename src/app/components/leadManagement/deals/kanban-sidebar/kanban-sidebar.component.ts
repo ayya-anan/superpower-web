@@ -359,13 +359,14 @@ export class KanbanSidebarComponent implements OnDestroy {
             const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
             // const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
-            const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails);
-            const employeeCount = +facility.employeeCount || 95
+            const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
+            const employeeCount = +facility.employeeCount || 95;
+            const actualHours = Math.round(hours * employeeCount * .8);
             servicesFormGroup.patchValue({
                 employeeCount: employeeCount,
                 unitRate: service.amount,
-                quantity: Math.round(hours * employeeCount),
-                total: Math.round(employeeCount * service.amount * hours)
+                quantity: actualHours,
+                total: Math.round(actualHours * service.amount)
             });
             this.getFinalTotal(quoteIndex);
         }

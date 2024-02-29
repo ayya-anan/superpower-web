@@ -7,7 +7,8 @@
             <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
                 <div class="grid">
                     <div class="col-3 formClass">
-                        <div class="mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS' | translate}}</div>
+                        <div class="mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS' | translate}}
+                        </div>
                         <div class="formgrid grid">
                             <div class="field col-12">
                                 <label for="firstname">{{'COMMON.NAME' | translate}}</label>
@@ -30,7 +31,8 @@
                             <div class="field col-12">
                                 <label>{{'COMMON.STATUS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
-                                    optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"></p-dropdown>
+                                    optionLabel="label" optionValue="name"
+                                    placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"></p-dropdown>
                             </div>
                             <div class="field col-12">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.CUSTOMER_CONATCT' | translate}}</label><br>
@@ -65,19 +67,21 @@
                                     [showIcon]="true"></p-calendar>
                             </div>
                             <div class="col-12 justify-content-end flex justify-content gap-3" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple type="submit" icon="pi pi-check" label="{{ 'COMMON.SAVE' | translate }}"
-                                    class="p-button-primary" [disabled]="dealForm.invalid"
-                                    (click)="saveQuote($event)"></button>
-                                <button pButton pRipple icon="pi pi-times" class="p-button-secondary" label="{{ 'COMMON.CANCEL' | translate }}"
-                                    (click)="close($event)"></button>
+                                <button pButton pRipple type="submit" icon="pi pi-check"
+                                    label="{{ 'COMMON.SAVE' | translate }}" class="p-button-primary"
+                                    [disabled]="dealForm.invalid" (click)="saveQuote($event)"></button>
+                                <button pButton pRipple icon="pi pi-times" class="p-button-secondary"
+                                    label="{{ 'COMMON.CANCEL' | translate }}" (click)="close($event)"></button>
                             </div>
                         </div>
                     </div>
                     <div class="col-9">
                         <div class="grid">
-                            <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' | translate}}</div>
+                            <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' |
+                                translate}}</div>
                             <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple icon="pi pi-plus" label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
+                                <button pButton pRipple icon="pi pi-plus"
+                                    label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
                                     (click)="initQuotesArray()"></button>
                             </div>
                         </div>
@@ -94,7 +98,8 @@
                                                         label="{{'LEAD_MANAGEMENT.DEALS.QUOTE' | translate}} # : {{ QuotesArray.controls.length - i }}"></p-chip>
                                                     <p-chip
                                                         label="{{'LEAD_MANAGEMENT.DEALS.QUOTEAMOUNT' | translate}} : {{ quote.get('total')?.value | currency:'EUR' }}"></p-chip>
-                                                    <p-chip label="{{'LEAD_MANAGEMENT.DEALS.CREATED_DATE' | translate}} : {{ quote.get('date')?.value | date }}"
+                                                    <p-chip
+                                                        label="{{'LEAD_MANAGEMENT.DEALS.CREATED_DATE' | translate}} : {{ quote.get('date')?.value | date }}"
                                                         icon="pi pi-calendar"></p-chip>
                                                     <p-button icon="pi pi-copy" class="ml-auto" *ngIf="canUpdateDeal()"
                                                         (click)="cloneQuote($event,i)" size="small"
@@ -109,17 +114,20 @@
                                                 <div
                                                     class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
                                                     <div class="flex flex-column">
-                                                        <div class="mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.SERVICES' | translate}}</div>
+                                                        <div class="mb-3 text-2xl font-medium">
+                                                            {{'LEAD_MANAGEMENT.DEALS.SERVICES' | translate}}</div>
                                                     </div>
                                                     <div class="flex flex-column">
-                                                        <div class="mb-3 font-medium">{{'LEAD_MANAGEMENT.DEALS.MULTIPLIER' | translate}} : {{
+                                                        <div class="mb-3 font-medium">
+                                                            {{'LEAD_MANAGEMENT.DEALS.MULTIPLIER' | translate}} : {{
                                                             calculateHours(selectedOrganization?.primaryDetails) }} <i
                                                                 [pTooltip]="industryType" tooltipPosition="left"
                                                                 class="pi pi-info-circle"></i>
                                                         </div>
                                                     </div>
                                                     <div class="flex mb-3 flex-wrap gap-2" *ngIf="canUpdateDeal()">
-                                                        <button pButton pRipple label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_SERVICE' | translate}}"
+                                                        <button pButton pRipple
+                                                            label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_SERVICE' | translate}}"
                                                             icon="pi pi-plus" (click)="initServicesArray(i)"></button>
                                                     </div>
                                                 </div>
@@ -127,27 +135,33 @@
                                                     <div class="grid mt-2">
                                                         <div
                                                             class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.FACILITY' | translate}} </label>
+                                                            <label> {{'LEAD_MANAGEMENT.DEALS.FACILITY' | translate}}
+                                                            </label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.SERVICE_TYPE' | translate}}</label>
+                                                            <label> {{'LEAD_MANAGEMENT.DEALS.SERVICE_TYPE' |
+                                                                translate}}</label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.Service_RATE' | translate}}</label>
+                                                            <label> {{'LEAD_MANAGEMENT.DEALS.Service_RATE' |
+                                                                translate}}</label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label>{{'LEAD_MANAGEMENT.DEALS.EMPLOYEE_COUNT' | translate}}</label>
+                                                            <label>{{'LEAD_MANAGEMENT.DEALS.EMPLOYEE_COUNT' |
+                                                                translate}}</label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.HOURS' | translate}} </label>
+                                                            <label> {{'LEAD_MANAGEMENT.DEALS.HOURS' | translate}} <b>
+                                                                    80% </b></label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}} </label>
+                                                            <label> {{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}}
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <ng-container formArrayName="services">
@@ -211,7 +225,8 @@
                                                     <div class="flex flex-column">
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.SUBTOTAL' | translate}}</label>
+                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.SUBTOTAL' |
+                                                                translate}}</label>
                                                             <p-inputNumber formControlName="subTotal" mode="currency"
                                                                 inputId="currency-germany" currency="EUR"
                                                                 locale="de-DE">
@@ -219,7 +234,8 @@
                                                         </div>
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.DISCOUNT' | translate}}</label>
+                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.DISCOUNT' |
+                                                                translate}}</label>
                                                             <p-inputNumber formControlName="discount" mode="currency"
                                                                 inputId="currency-germany" currency="EUR" locale="de-DE"
                                                                 (onInput)="getFinalTotal(i)">
@@ -227,7 +243,8 @@
                                                         </div>
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.VAT' | translate}} % </label>
+                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.VAT' |
+                                                                translate}} % </label>
                                                             <p-dropdown appendTo="body" formControlName="vat"
                                                                 [options]="[0,5,7,19]"
                                                                 (onChange)="getFinalTotal(i)"></p-dropdown>
@@ -238,7 +255,8 @@
                                                         </div>
                                                         <div
                                                             class="flex justify-content-between align-items-center mb-2">
-                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}}</label>
+                                                            <label class="mr-2">{{'LEAD_MANAGEMENT.DEALS.TOTAL' |
+                                                                translate}}</label>
                                                             <p-inputNumber formControlName="total" mode="currency"
                                                                 inputId="currency-germany" currency="EUR"
                                                                 locale="de-DE">
@@ -254,19 +272,23 @@
                                                         <div class="grid mt-2">
                                                             <div
                                                                 class="col-3 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <label> {{'LEAD_MANAGEMENT.DEALS.MIILESTONE_DATE' | translate}} </label>
+                                                                <label> {{'LEAD_MANAGEMENT.DEALS.MIILESTONE_DATE' |
+                                                                    translate}} </label>
                                                             </div>
                                                             <div
                                                                 class="col-5 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <label> {{'LEAD_MANAGEMENT.DEALS.MILESTONE_CRITERIA' | translate}} </label>
+                                                                <label> {{'LEAD_MANAGEMENT.DEALS.MILESTONE_CRITERIA' |
+                                                                    translate}} </label>
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <label> {{'LEAD_MANAGEMENT.DEALS.PERCENTAGE' | translate}} </label>
+                                                                <label> {{'LEAD_MANAGEMENT.DEALS.PERCENTAGE' |
+                                                                    translate}} </label>
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <label> {{'LEAD_MANAGEMENT.DEALS.AMOUNT' | translate}} </label>
+                                                                <label> {{'LEAD_MANAGEMENT.DEALS.AMOUNT' | translate}}
+                                                                </label>
                                                             </div>
                                                         </div>
                                                         <ng-container formArrayName="payments">
@@ -302,28 +324,35 @@
                                                 </ng-container>
                                                 <div class="flex w-full border-top-1 surface-border py-4 gap-3"
                                                     *ngIf="canUpdateDeal()">
-                                                    <div class="col-5 p-0 justify-content-start flex justify-content gap-2">
+                                                    <div
+                                                        class="col-5 p-0 justify-content-start flex justify-content gap-2">
                                                         <p-dropdown appendTo="body" formControlName="paymentMilestone"
                                                             [options]="paymentMilestone" optionLabel="label"
                                                             optionValue="value"
                                                             placeholder="{{ 'DROPDOWNS.PAYMENT_MILESTONE' | translate}}"></p-dropdown>
                                                         <button pButton pRipple type="submit"
-                                                            class="p-button-primary p-1" label="{{'LEAD_MANAGEMENT.DEALS.GENERATE' | translate}}"
+                                                            class="p-button-primary p-1"
+                                                            label="{{'LEAD_MANAGEMENT.DEALS.GENERATE' | translate}}"
                                                             [disabled]="quote.get('paymentMilestone')?.value == 0"
                                                             (click)="createPaymentMilestone(i)"></button>
                                                     </div>
-                                                    <div class="col-7 p-0 justify-content-end flex justify-content gap-2">
+                                                    <div
+                                                        class="col-7 p-0 justify-content-end flex justify-content gap-2">
                                                         <button pButton pRipple type="submit" icon="pi pi-check"
-                                                            class="p-button-primary" label="{{ 'COMMON.SAVE' | translate }}"
+                                                            class="p-button-primary"
+                                                            label="{{ 'COMMON.SAVE' | translate }}"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
                                                             (click)="saveQuote($event)"></button>
-                                                        <button pButton pRipple type="submit" icon="pi pi-check" label="{{'LEAD_MANAGEMENT.DEALS.QUOTE_REVIEW' | translate}}"
+                                                        <button pButton pRipple type="submit" icon="pi pi-check"
+                                                            label="{{'LEAD_MANAGEMENT.DEALS.QUOTE_REVIEW' | translate}}"
                                                             *ngIf="dealForm.get('status')?.value ==='Quote-In-Progress'"
                                                             class="p-button-primary"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"
                                                             (click)="reviewQuote($event)"></button>
-                                                        <button pButton pRipple icon="pi pi-file-pdf" label="{{'LEAD_MANAGEMENT.DEALS.PRINT_EMAIL' | translate}}"
-                                                            class="p-button-primary" (click)="documentPreview($event, i)" 
+                                                        <button pButton pRipple icon="pi pi-file-pdf"
+                                                            label="{{'LEAD_MANAGEMENT.DEALS.PRINT_EMAIL' | translate}}"
+                                                            class="p-button-primary"
+                                                            (click)="documentPreview($event, i)"
                                                             [disabled]="dealForm.invalid || !validatePayment(i)"></button>
                                                     </div>
                                                 </div>
@@ -340,8 +369,8 @@
         </div>
     </ng-template>
 </p-sidebar>
-<app-invoice  (emailSent)="updateEmailSent()" [deal]="dealForm.value" [visible]="quoteVisible" [organization]="selectedOrganization"
-    [quote]="selectedQuote"></app-invoice>
+<app-invoice (emailSent)="updateEmailSent()" [deal]="dealForm.value" [visible]="quoteVisible"
+    [organization]="selectedOrganization" [quote]="selectedQuote"></app-invoice>
 
 <p-toast></p-toast>
 <ng-template #industryType>
