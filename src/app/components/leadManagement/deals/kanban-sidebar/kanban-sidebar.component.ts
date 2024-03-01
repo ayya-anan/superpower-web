@@ -105,6 +105,17 @@ export class KanbanSidebarComponent implements OnDestroy {
     selectedQuote: any;
     langChangeSubscription!: Subscription;
 
+    // LanguageMapper 
+    languageMapper: any = {
+        "Manufacturing Plant": "Produktionsstätte",
+        "Office": "Büro",
+        "Warehouse": "Lager",
+        "Basic Care": "Grundversorgung",
+        "External Audit": "Externe Prüfung",
+        "Internal Audit": "Interne Anhörung",
+        "Special Care": "Spezialbehandlung"
+    }
+
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -240,7 +251,10 @@ export class KanbanSidebarComponent implements OnDestroy {
                 this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
             }
             _.each(this.selectedOrganization.facilities, (facility) => {
-                facility.name = `${facility.type} - ${(facility.address) ? facility.address : ''}`;
+                facility.name = `${this.languageMapper[facility.type]} - ${(facility.address) ? facility.address : ''}`;
+            });
+            _.each(this.selectedOrganization.services, (service) => {
+                service.type = (this.languageMapper[service.type]) ? this.languageMapper[service.type] : service.type;
             });
         }
     }
@@ -337,9 +351,9 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     calculateHours(data: any) {
-        if(data){
+        if (data) {
             return (data.subType2.Name) ? data.subType2.Hours : (data.subType1.Name) ? data.subType1.Hours : (data.industryType.Name) ? data.industryType.Hours : 0
-        }else{
+        } else {
             return 0;
         }
     }

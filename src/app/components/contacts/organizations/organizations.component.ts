@@ -167,8 +167,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       this.pocTableData = [...this.pocTableData];
       this.updateIndustryDetails(this.organizationService.organizationDetails.primaryDetails);
       this.organizationForm.get('primaryDetails')?.patchValue(this.organizationService.organizationDetails.primaryDetails);
-      this.organizationForm.get('facilities')?.patchValue(this.organizationService.organizationDetails.facilities);
-      this.organizationForm.get('services')?.patchValue(this.organizationService.organizationDetails.services);
+      // Patching the facilities form array
+      const facilitiesFormArray = this.organizationForm.get('facilities') as FormArray;
+      facilitiesFormArray.clear(); // Clear existing controls if any
+      this.organizationService.organizationDetails.facilities.forEach((facility: any) => {
+        facilitiesFormArray.push(this.fb.group(facility));
+      });
+      // Patching the services form array
+      const servicesFormArray = this.organizationForm.get('services') as FormArray;
+      servicesFormArray.clear(); // Clear existing controls if any
+      this.organizationService.organizationDetails.services.forEach((service: any) => {
+        service.companyAverage = { value: 0, disabled: true }
+        servicesFormArray.push(this.fb.group(service));
+      });
       this.organizationService.activeOrganizationView = false;
     }
   }
@@ -484,7 +495,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   editData(event: any) {
     this.editId = event.rowData.id;
-    // const updateData = this.organizationData[event.index];
     const updateData = event.rowData.actualData;
     this.activeContract = (updateData.primaryDetails.status != 'Prospect') ? true : false;
     this.updateIndustryDetails(updateData.primaryDetails);
@@ -504,10 +514,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       service.companyAverage = { value: 0, disabled: true }
       servicesFormArray.push(this.fb.group(service));
     });
-
-    // this.organizationForm.get('services')?.patchValue(updateData.services);
     this.organizationView = true;
-    // this.pocTableData = updateData.primaryDetails.pointofContact;
     this.addPOCDetails(updateData.primaryDetails.name);
     this.addFacilityTable(updateData.facilities);
     this.facilitiesTable = (this.facilitiesTableData.length > 0) ? true : false;
