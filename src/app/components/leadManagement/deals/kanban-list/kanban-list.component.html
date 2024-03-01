@@ -26,7 +26,7 @@
         (cdkDropListDropped)="dropCard($event)" (cdkDropListEntered)="insertHeight($event)"
         (cdkDropListExited)="removeHeight($event)" [cdkDropListData]="list.cards" [cdkDropListConnectedTo]="listIds"
         #listEl style="min-height:2rem">
-        <p-chip *ngIf="winProbablity" pTooltip="{{ 'LEAD_MANAGEMENT.DEALS.WIN_PROBABILITY' | translate }}" label="{{ winProbablity | currency:'EUR' }}" styleClass="green-chip"></p-chip>
+        <p-chip *ngIf="winProbablity" pTooltip="{{ 'LEAD_MANAGEMENT.DEALS.WIN_PROBABILITY' | translate }}" label="{{ winProbablity | currency:'EUR' }}" styleClass="green-chip p-float-right"></p-chip>
 
         <app-kanban-card *ngFor="let card of list.cards" [card]="card" [listId]="list.listId"
             (click)="onCardClick($event, card)" cdkDrag cdkDragHandle
