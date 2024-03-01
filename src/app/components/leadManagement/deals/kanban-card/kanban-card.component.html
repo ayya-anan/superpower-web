@@ -17,14 +17,17 @@
             </p-tieredMenu>
         </div>
     </div>
-    <div *ngIf="card.org" style="word-break: break-word" class="text-700">{{ getOrgName(card.org) }}</div>
+    <div *ngIf="card.org" style="word-break: break-word" class="text-700"><p-avatar shape="circle" icon="pi pi-building"
+            styleClass="border-2 surface-border"></p-avatar> {{ getOrgName(card.org) }}</div>
     <!-- <p-progressBar *ngIf="card.taskList.tasks.length" [value]="card.progress" [showValue]="false" [style]="{'height':'.5rem'}"></p-progressBar> -->
-
+    <!-- <p-avatarGroup> -->
+    <div *ngIf="card.accountManager" style="word-break: break-word" class="text-700"> <p-avatar shape="circle"
+            icon="pi pi-user" styleClass="border-2 surface-border"></p-avatar> {{ card.accountManager}}
+    </div>
+    <!-- <p-avatar shape="circle" icon="pi pi-user" styleClass="border-2 surface-border mb-1 surface-ground"></p-avatar> -->
+    <!-- </p-avatarGroup> -->
     <div class="flex align-items-center justify-content-end flex-column md:flex-row gap-4 md:gap-0">
-        <!-- <p-avatarGroup>
-            <p-avatar *ngFor="let assignee of card.assignees | slice:0:3" image="assets/demo/images/avatar/{{assignee.image}}" shape="circle" styleClass="border-2 surface-border"></p-avatar>
-            <p-avatar *ngIf="card.assignees && card.assignees.length > 3" label="+ {{card.assignees.length - 3}}" shape="circle" styleClass="border-2 surface-border mb-1 surface-ground"></p-avatar>
-        </p-avatarGroup> -->
+
         <div *ngIf="card.value || card.startDate" class="flex align-items-center gap-3">
             <span class="text-900 font-semibold" *ngIf="card.value"><i class="text-700 mr-2"></i>{{card.value |
                 currency:'EUR':true }}</span>
