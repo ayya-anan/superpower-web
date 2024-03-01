@@ -472,7 +472,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.saveQuote(event);
     }
     updateEmailSent() {
-        this.dealForm.get('status')?.setValue('Quote Sent');
+        this.dealForm.get('status')?.setValue('Offer Sent');
         this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
     }
     saveQuote(event: Event) {
