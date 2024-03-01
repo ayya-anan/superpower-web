@@ -60,8 +60,3 @@
 .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-
-.accessError {
-    border: 1px solid var(--bluegray-500);
-    border-radius: 7px;
-}

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UrlSegment } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { KeycloakService } from 'keycloak-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -121,6 +122,16 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   organizationData: any;
   allocatedUsers: any;
   deleteId: any;
+  showTaskAllocation: boolean = true;
+
+  //LanguageMapper
+  languageMapper: any = {
+    "Quote Accepted": "Angebot angenommen",
+    "Basic Care": "Grundversorgung",
+    "External Audit": "Externe Prüfung",
+    "Internal Audit": "Interne Anhörung",
+    "Special Care": "Spezialbehandlung"
+  }
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -130,9 +141,12 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
     private organizationService: OrganizationService,
     private individualService: IndividualService,
     private translate: TranslateService,
+    private keycloakService: KeycloakService,
   ) { }
 
   ngOnInit() {
+    const roleValue = this.keycloakService.getUserRoles();
+    if(roleValue && roleValue.includes('Team Members')) { this.showTaskAllocation = false;}
     this.timeRangeHeaders = this.headers;
     this.timeData = this.data;
     this.individualService.getAllIndividuals();
@@ -247,7 +261,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
         endDate: new Date(Date.parse(deal.closeDate.toString())),
         hours: totalHours,
         completed: this.getSubmittedHours(deal, totalHours).percentage,
-        status: deal.status,
+        status: (deal.status) ? this.languageMapper[deal.status] : '',
         services: (deal.quotes.length > 0) ? deal.quotes[0].services : [],
         allServices: (orgName.length > 0) ? orgName[0].services : [],
         facility: (orgName.length > 0) ? orgName[0].facilities : [],
@@ -276,7 +290,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   }
 
   getAllocationCount(rowData: any, taskName: any, address: any) {
-    const usersResults = _.filter(this.allocatedUsers, (item: any) => item.orgId === rowData.id && item.taskName === taskName && item.address === address);
+    const usersResults = _.filter(this.allocatedUsers, (item: any) => item.orgId === rowData.id && item.taskName === this.languageMapper[taskName] && item.address === address);
     return (usersResults.length > 0) ? _.sumBy(usersResults, 'allocationPercentage') : 0
   }
 
@@ -291,7 +305,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
       const facilityName = _.filter(event.rowData.facility, (obj) => obj._id === item.facility);
       const obj = {
         id: event.rowData.id,
-        task: (taskName.length > 0) ? taskName[0].type : '',
+        task: (taskName.length > 0) ? this.languageMapper[taskName[0].type] : '',
         taskId: item.service,
         facilityId: item.facility,
         facility: (facilityName.length > 0) ? this.getAddress(facilityName) : '',
@@ -449,7 +463,7 @@ export class TeamScheduleComponent implements OnInit, OnDestroy {
   editData(event: any) {
     console.log(event);
     // this.visible = true;
-    this.updateAssignee = true;
+    // this.updateAssignee = true;
   }
 
   updateAssigneeDetails() {

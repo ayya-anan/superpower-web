@@ -83,7 +83,7 @@
                         <i class="pi pi-plus mr-2" style="font-size: 1rem"></i>{{ 'COMMON.ADD_ASSIGNEE' | translate }}</span>
                 </td>
                 <td *ngIf="col.field =='status'">
-                    <span class="customer-badge {{rowData[col.field]}}">{{ rowData[col.field] | translate }}</span>
+                    <span class="customer-badge {{ (rowData.statusBadge) ? rowData.statusBadge : rowData[col.field] }}">{{ rowData[col.field] }}</span>
                 </td>
                 <td *ngIf="col.field =='action'">
                     <ng-container *ngIf="key === 'schedule'; else otherViews">

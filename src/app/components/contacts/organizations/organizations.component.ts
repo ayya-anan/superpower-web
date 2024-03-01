@@ -124,6 +124,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addresses: FormArray = this.fb.array([]);
   services: FormArray = this.fb.array([]);
 
+  // LanguageMapper 
+  languageMapper: any = {
+    "Active" : "Aktiv",
+    "Inactive": "Inaktiv",
+    "Prospect": "Potenzieller Kunde",
+    "Suspended": "Ausgesetzt",
+    "Manufacturing Plant": "Produktionsstätte",
+    "Office": "Büro",
+    "Warehouse": "Lager",
+    "Basic Care": "Grundversorgung",
+    "External Audit": "Externe Prüfung",
+    "Internal Audit": "Interne Anhörung",
+    "Special Care": "Spezialbehandlung"
+  }
 
   ngOnInit(): void {
     this.xService.getAllX('WZCode').subscribe(
@@ -169,20 +183,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, name: 'Monthly' }
       ];
       this.status = [
-        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
-        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
-        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
-        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
+        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active'},
+        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive'},
+        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect'},
+        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended'}
       ];
       this.facilityType = [
         { label: this.translate.instant('DROPDOWNS.MANUFACTURING_PLANT'), name: 'Manufacturing Plant' },
-        { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office' },
+        { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office'},
         { label: this.translate.instant('DROPDOWNS.WAREHOUSE'), name: 'Warehouse' }];
       this.serviceList = [
-        { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52 },
-        { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96 },
-        { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20 },
-        { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89 }
+        { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52, germanVersion: 'Grundversorgung' },
+        { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96, germanVersion: 'Externe Prüfung' },
+        { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20, germanVersion: 'Interne Anhörung' },
+        { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89, germanVersion: 'Spezialbehandlung' }
       ];
     });
   }
@@ -200,7 +214,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             name: item.primaryDetails.name,
             type: item.primaryDetails.industryType.Name,
             subType: item.primaryDetails.subType1.Name,
-            status: item.primaryDetails.status,
+            statusBadge : item.primaryDetails.status,
+            status: (item.primaryDetails.status) ? this.languageMapper[item.primaryDetails.status] : this.languageMapper["Active"],
             email: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryEmail : '',
             contact: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryPhone : '',
             poc: (pocDetails.length > 0) ? `${pocDetails[0].primaryDetails.firstName} ${pocDetails[0].primaryDetails.lastName}` : '',
@@ -389,7 +404,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       if (dataObj.type) {
         const obj = {
           _id: dataObj._id,
-          type: dataObj.type,
+          type: (dataObj.type) ? this.languageMapper[dataObj.type] : '',
           employeeCount: dataObj.employeeCount,
           address: dataObj.address,
           country: dataObj.country,
