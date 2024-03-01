@@ -25,7 +25,8 @@
 					<!-- <span>{{ organization?.addresses[0]?.address}}</span>
 				<span>{{ organization?.addresses[0]?.country}} , {{ organization?.addresses[0]?.zipCode}}</span> -->
 				</div>
-				<h4 class="mb-2 font-bold">Angebot zur arbeitssicherheitstechnischen Betreuung Ihrer Beschäftigten gem. ASiG</h4>
+				<h4 class="mb-2 font-bold">Angebot zur arbeitssicherheitstechnischen Betreuung Ihrer Beschäftigten gem.
+					ASiG</h4>
 				<h4 class="mb-2 font-bold">{{ organization?.primaryDetails?.name}}</h4>
 				<div class="mb-2 font-semibold">Hello {{ deal?.customerContact }},</div>
 			</div>
@@ -65,8 +66,8 @@
 								<td class="text-right py-2 border-bottom-1 surface-border clip">{{
 									service.employeeCount }}
 								</td>
-								<td class="text-right py-2 border-bottom-1 surface-border clip">{{ service.quantity |
-									currency:'EUR':true}}</td>
+								<td class="text-right py-2 border-bottom-1 surface-border clip">{{ service.quantity }}
+								</td>
 								<td class="text-right py-2 border-bottom-1 surface-border clip">{{ service.total |
 									currency:'EUR':true}}
 								</td>
@@ -85,7 +86,7 @@
 								}}</td>
 							</tr> -->
 							<tr>
-								<td class="text-right py-2 font-semibold" colspan="5">Gesamtpreis inkl. MwSt								</td>
+								<td class="text-right py-2 font-semibold" colspan="5">Gesamtpreis inkl. MwSt </td>
 								<td class="text-right py-2 font-semibold">{{ quote.total | currency:'EUR':true}}</td>
 							</tr>
 						</tbody>
