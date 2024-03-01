@@ -126,7 +126,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
 
   // LanguageMapper 
   languageMapper: any = {
-    "Active" : "Aktiv",
+    "Active": "Aktiv",
     "Inactive": "Inaktiv",
     "Prospect": "Potenzieller Kunde",
     "Suspended": "Ausgesetzt",
@@ -142,10 +142,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.xService.getAllX('WZCode').subscribe(
       (res: any) => {
-        this.industryValues = res.results[0].data;
+        this.industryValues = res.results[1].data;
         this.sections = this.industryValues;
-      }
-    );
+      });
     this.subscribeToGetAllIndividuals();
     this.initForm();
     this.loading = true;
@@ -183,14 +182,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         { label: this.translate.instant('LEAD_MANAGEMENT.DEALS.MONTHLY'), value: 12, name: 'Monthly' }
       ];
       this.status = [
-        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active'},
-        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive'},
-        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect'},
-        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended'}
+        { label: this.translate.instant('DROPDOWNS.ACTIVE'), name: 'Active' },
+        { label: this.translate.instant('DROPDOWNS.INACTIVE'), name: 'Inactive' },
+        { label: this.translate.instant('DROPDOWNS.PROSPECT'), name: 'Prospect' },
+        { label: this.translate.instant('DROPDOWNS.SUSPENDED'), name: 'Suspended' }
       ];
       this.facilityType = [
         { label: this.translate.instant('DROPDOWNS.MANUFACTURING_PLANT'), name: 'Manufacturing Plant' },
-        { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office'},
+        { label: this.translate.instant('DROPDOWNS.OFFICE'), name: 'Office' },
         { label: this.translate.instant('DROPDOWNS.WAREHOUSE'), name: 'Warehouse' }];
       this.serviceList = [
         { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52, germanVersion: 'Grundversorgung' },
@@ -214,7 +213,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
             name: item.primaryDetails.name,
             type: item.primaryDetails.industryType.Name,
             subType: item.primaryDetails.subType1.Name,
-            statusBadge : item.primaryDetails.status,
+            statusBadge: item.primaryDetails.status,
             status: (item.primaryDetails.status) ? this.languageMapper[item.primaryDetails.status] : this.languageMapper["Active"],
             email: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryEmail : '',
             contact: (pocDetails.length > 0 && pocDetails[0].addresses.length > 0) ? pocDetails[0].addresses[0].primaryPhone : '',
