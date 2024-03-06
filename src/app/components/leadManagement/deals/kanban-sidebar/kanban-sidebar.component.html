@@ -1,5 +1,5 @@
 <p-sidebar *ngIf="dealForm" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000"
-    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false"  [closeOnEscape]="false">
+    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false" [closeOnEscape]="false">
     <ng-template pTemplate="content">
 
         <!-- New Design -->
@@ -80,9 +80,9 @@
                             <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' |
                                 translate}}</div>
                             <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple icon="pi pi-plus"
-                                    label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
-                                    (click)="initQuotesArray()"></button>
+
+                                <p-splitButton label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
+                                    icon="pi pi-plus" [model]="quoteItems"></p-splitButton>
                             </div>
                         </div>
                         <ng-container>
@@ -178,11 +178,15 @@
                                                             </div>
                                                             <div
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <p-dropdown appendTo="body" formControlName="service"
+                                                                <p-dropdown *ngIf="quote.get('type')?.value ==='SIFA'"
+                                                                    appendTo="body" formControlName="service"
                                                                     [options]="selectedOrganization && selectedOrganization.services"
                                                                     optionLabel="type" optionValue="_id"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Service"></p-dropdown>
+                                                                <input (input)="onServiceChange(i,j)" *ngIf="quote.get('type')?.value !=='SIFA'" type="text"
+                                                                    pInputText formControlName="service" />
+
                                                             </div>
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">

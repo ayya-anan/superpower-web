@@ -115,6 +115,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Internal Audit": "Interne Anhörung",
         "Special Care": "Spezialbehandlung"
     }
+    quoteItems: ({ label: string; command: () => void; icon?: undefined; } | { label: string; icon: string; command: () => void; })[];
 
     constructor(
         private messageService: MessageService,
@@ -131,6 +132,26 @@ export class KanbanSidebarComponent implements OnDestroy {
         private translate: TranslateService,
         private dealService: DealService
     ) {
+        this.quoteItems = [
+            {
+                label: 'SIFA',
+                command: () => {
+                    this.initQuotesArray('SIFA');
+                }
+            },
+            {
+                label: 'SiGeKo',
+                command: () => {
+                    this.initQuotesArray('SiGeKo');
+                }
+            },
+            {
+                label: 'QM',
+                command: () => {
+                    this.initQuotesArray('QM');
+                }
+            }
+        ];
         _.each(this.status, (status) => {
             status.label = this.translate.instant(status.label)
         })
@@ -259,13 +280,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         }
     }
     // Helper methods to initialize form arrays
-    initQuotesArray(): void {
+    initQuotesArray(type = 'SIFA'): void {
         if (this.dealForm.get('status')?.value === 'New') { this.dealForm.get('status')?.setValue('Quote-In-Progress') }
         this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
             subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
+            type: [type],
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
@@ -378,9 +400,9 @@ export class KanbanSidebarComponent implements OnDestroy {
             const actualHours = Math.round(hours * employeeCount * .8);
             servicesFormGroup.patchValue({
                 employeeCount: employeeCount,
-                unitRate: service.amount,
+                unitRate: service?.amount || 0,
                 quantity: actualHours,
-                total: Math.round(actualHours * service.amount)
+                total: Math.round(actualHours * service?.amount || 0)
             });
             this.getFinalTotal(quoteIndex);
         }
@@ -522,34 +544,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
-    }
-
-    generatePdf() {
-        // this.dealService.saveDealAsPdf(this.dealForm.value);
-        this.dealService.saveDealAsPdf({
-            "logo": "https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png",
-            "name": "Reif Baugeseilschaft mbH & Co. KG",
-            "address1": "Schmale Straße 14",
-            "address2": "04435 Schkeuditz rechnung",
-            "ourSign": "JW/MS",
-            "project": "179/23/9089",
-            "invoiceNumber": "23/0997",
-            "customerNumber": "11800",
-            "date": "01.14.2024",
-            "subject": "Rechnung",
-            "email": "rechnungenreif-leipzig.de",
-            "salutation": "Sehr geehrte Damen und Herren",
-            "servicePeriod": "Oktober bis Dezember 2023",
-            "tee": '',
-            "vatText": '',
-            "vatAmount": "752,40",
-            "totalAmount": this.getDealFinalAmount().toString(),
-            "creditInstitution": "Commerzbank Dresden",
-            "iban": "DE48 850800000103331100",
-            "bic": "DRESDEFF 850",
-            "signedBy": "Janette Wolf",
-            "signedByNote": "Leite.rjn, hnungswesen"
-        });
     }
 
     ngOnDestroy() {
