@@ -142,7 +142,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.xService.getAllX('WZCode').subscribe(
       (res: any) => {
-        this.industryValues = res.results[1].data;
+        this.industryValues = res.results[2].data;
         this.sections = this.industryValues;
       });
     this.subscribeToGetAllIndividuals();
