@@ -29,6 +29,12 @@
                                     (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
+                                <label>{{'COMMON.TYPE' | translate}}</label>
+                                <p-dropdown appendTo="body" formControlName="type" [options]="quoteItems"
+                                    optionLabel="name" [filter]="true" optionValue="id"
+                                    placeholder="{{ 'DROPDOWNS.TYPE' | translate}}"></p-dropdown>
+                            </div>
+                            <div class="field col-12">
                                 <label>{{'COMMON.STATUS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="label" optionValue="name"
@@ -80,9 +86,9 @@
                             <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' |
                                 translate}}</div>
                             <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-
-                                <p-splitButton label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
-                                    icon="pi pi-plus" [model]="quoteItems"></p-splitButton>
+                                <button (click)="initQuotesArray()" pButton
+                                    label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
+                                    icon="pi pi-plus"></button>
                             </div>
                         </div>
                         <ng-container>
@@ -145,19 +151,22 @@
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                            <label> Payment Typ </label>
+                                                        </div>
+                                                        <div
+                                                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.Service_RATE' |
                                                                 translate}}</label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label>{{'LEAD_MANAGEMENT.DEALS.EMPLOYEE_COUNT' |
-                                                                translate}}</label>
+                                                            <label>Quantity</label>
                                                         </div>
-                                                        <div
+                                                        <!-- <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.HOURS' | translate}} <b>
                                                                     80% </b></label>
-                                                        </div>
+                                                        </div> -->
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}}
@@ -178,14 +187,30 @@
                                                             </div>
                                                             <div
                                                                 class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <!-- <p-autoComplete formControlName="service" placeholder="Enter Service"
+                                                                    [suggestions]="[]"
+                                                                    (completeMethod)="onServiceChange(i,j)"
+                                                                    field="type"></p-autoComplete> -->
+
                                                                 <p-dropdown *ngIf="quote.get('type')?.value ==='SIFA'"
                                                                     appendTo="body" formControlName="service"
                                                                     [options]="selectedOrganization && selectedOrganization.services"
                                                                     optionLabel="type" optionValue="_id"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Service"></p-dropdown>
-                                                                <input (input)="onServiceChange(i,j)" *ngIf="quote.get('type')?.value !=='SIFA'" type="text"
-                                                                    pInputText formControlName="service" />
+                                                                <input (input)="onServiceChange(i,j)"
+                                                                    *ngIf="dealForm.get('type')?.value !=='SIFA'"
+                                                                    type="text" pInputText formControlName="service" />
+
+                                                            </div>
+                                                            <div
+                                                                class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+
+                                                                <p-dropdown 
+                                                                    appendTo="body" formControlName="paymentType"
+                                                                    [options]="paymentTypes"
+                                                                    optionLabel="name" optionValue="id"
+                                                                    placeholder="Select Payment Type"></p-dropdown>
 
                                                             </div>
                                                             <div
@@ -197,13 +222,13 @@
                                                                 </p-inputNumber>
 
                                                             </div>
-                                                            <div
+                                                            <!-- <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="employeeCount"
                                                                     (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
 
-                                                            </div>
+                                                            </div> -->
                                                             <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="quantity"

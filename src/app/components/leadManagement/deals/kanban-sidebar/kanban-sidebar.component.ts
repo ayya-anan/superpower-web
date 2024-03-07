@@ -115,8 +115,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Internal Audit": "Interne Anhörung",
         "Special Care": "Spezialbehandlung"
     }
-    quoteItems: ({ label: string; command: () => void; icon?: undefined; } | { label: string; icon: string; command: () => void; })[];
-
+    quoteItems: any;
+    paymentTypes: any;
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -134,27 +134,39 @@ export class KanbanSidebarComponent implements OnDestroy {
     ) {
         this.quoteItems = [
             {
-                label: 'SIFA',
-                command: () => {
-                    this.initQuotesArray('SIFA');
-                }
+                name: 'SIFA',
+                id: 'SIFA',
             },
             {
-                label: 'SiGeKo',
-                command: () => {
-                    this.initQuotesArray('SiGeKo');
-                }
+                name: 'SiGeKo',
+                id: 'SiGeKo',
             },
             {
-                label: 'QM',
-                command: () => {
-                    this.initQuotesArray('QM');
-                }
+                name: 'QM',
+                id: 'SiGeKo',
+            }
+        ];
+        this.paymentTypes = [
+            {
+                id: 'hourly',
+                name: 'Hourly'
+            },
+            {
+                id: 'daily',
+                name: 'Daily'
+            },
+            {
+                id: 'project_flat',
+                name: 'Project Flat'
+            },
+            {
+                id: 'per_capita_flat',
+                name: 'Per Capita Flat'
             }
         ];
         _.each(this.status, (status) => {
-            status.label = this.translate.instant(status.label)
-        })
+            status.label = this.translate.instant(status.label);
+        });
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = _.cloneDeep(data);
@@ -200,6 +212,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 customerContact: ['', []],
                 winProbablity: ['High', []],
                 accountManager: ['', []],
+                type: ['', [Validators.required]],
                 startDate: [new Date(), [Validators.required]],
                 source: ['', []],
                 value: ['0', []],
@@ -280,7 +293,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         }
     }
     // Helper methods to initialize form arrays
-    initQuotesArray(type = 'SIFA'): void {
+    initQuotesArray(type = ''): void {
         if (this.dealForm.get('status')?.value === 'New') { this.dealForm.get('status')?.setValue('Quote-In-Progress') }
         this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
@@ -288,6 +301,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
             type: [type],
+            paymentType: ['', [Validators.required]],
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
@@ -324,7 +338,8 @@ export class KanbanSidebarComponent implements OnDestroy {
             service: ['', [Validators.required]],
             unitRate: ['0', [Validators.required]],
             quantity: ['0', [Validators.required]],
-            employeeCount: [{ value: '0', disabled: true }, [Validators.required]],
+            paymentType: ['0', [Validators.required]],
+            employeeCount: [{ value: '0', disabled: true }, []],
             total: [{ value: '0', disabled: true }, [Validators.required]],
         }));
     }
