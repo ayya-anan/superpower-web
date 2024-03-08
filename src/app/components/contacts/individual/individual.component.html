@@ -1,4 +1,5 @@
-<p-sidebar #sidebar [(visible)]="contactView" position="right" [baseZIndex]="10000" styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+<p-sidebar #sidebar [(visible)]="contactView" position="right" [baseZIndex]="10000"  [dismissible]="false" [closeOnEscape]="false"
+ styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
 	<div class="col-12 p-0 pb-3 drawLine text-left">
 		<span class="text-xl ml-2 font-bold">{{'CONTACTS.INDIVIDUAL.ADD_CONTACT_DETAILS' | translate}}</span>
 	</div>

@@ -42,5 +42,5 @@
 <!-- Table Component -->
 <div class="col-12 mt-3" *ngIf="tableData.length > 0">
     <app-table [loading]="loading" [key]="'serviceSettings'" [footerKey]="'COMMON.SERVICE_SETTINGS'" [columns]="columns"
-        [tableData]="tableData" (deleteContent)="deleteService($event)"></app-table>
+        [tableData]="tableData" (deleteContent)="deleteServices($event)"></app-table>
 </div>

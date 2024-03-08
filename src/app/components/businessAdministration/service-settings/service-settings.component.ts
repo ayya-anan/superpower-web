@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
   selector: 'app-service-settings',
@@ -14,12 +16,13 @@ export class ServiceSettingsComponent implements OnInit {
 
   //Subscriptions
   langChangeSubscription: Subscription = new Subscription;
+  deleteService: Subscription = new Subscription;
 
   //DropDowns
   ServiceTypes: any = [
-    { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'SIFA' },
-    { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'QM' },
-    { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'SiGeKo' },
+    { label: this.translate.instant('DROPDOWNS.SIFA'), name: 'SIFA' },
+    { label: this.translate.instant('DROPDOWNS.QM'), name: 'QM' },
+    { label: this.translate.instant('DROPDOWNS.SiGeKo'), name: 'SiGeKo' },
   ];
   subTypeList: any = [];
   serviceList_SIFA: any = [
@@ -54,11 +57,16 @@ export class ServiceSettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private translate: TranslateService,
+    private xService: XService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
     this.initForm();
     this.subscribeToLangulaeChange();
+    this.subscribeToServiceList();
+    this.subscribeToAddedChange();
+    this.subscribeToDeleteService();
   }
 
   subscribeToLangulaeChange() {
@@ -81,6 +89,35 @@ export class ServiceSettingsComponent implements OnInit {
         { label: this.translate.instant('DROPDOWNS.HOURLY'), name: 'Hourly' },
       ]
     });
+  }
+
+  subscribeToServiceList() {
+    this.xService.getAllX('serviceList').subscribe(
+      (res: any) => {
+        _.forEach(res.results, (item) => {
+          item.validTill = moment(item.validTill).format('MMM DD YYYY');
+        });
+        this.tableData = res.results;
+      }
+    );
+  }
+
+  subscribeToAddedChange() {
+    this.xService.addx.subscribe(
+      (res) => {
+        this.subscribeToServiceList();
+      }
+    )
+  }
+
+  subscribeToDeleteService() {
+    this.deleteService = this.xService.deletexEmit.subscribe(
+      (res: any) => {
+        this.messageService.clear();
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.DELETE_SERVICE') });
+        this.subscribeToServiceList();
+      }
+    );
   }
 
   initForm() {
@@ -108,15 +145,15 @@ export class ServiceSettingsComponent implements OnInit {
       subtype: (resultSet.subtype && resultSet.subtype.name) ? resultSet.subtype.name : resultSet.subtype,
       measure: (resultSet.measure && resultSet.measure.name) ? resultSet.measure.name : resultSet.measure,
       rate: resultSet.rate,
-      validTill: (resultSet.validTill) ? moment(resultSet.validTill).format('MMM DD YYYY') : '',
+      validTill: resultSet.validTill,
       template: '-'
     }
-    this.tableData.push(obj);
     this.serviceListForm.reset();
+    this.xService.postX('serviceList', obj);
   }
 
-  deleteService(event: any) {
-    this.tableData.splice(event.index, 1);
+  deleteServices(event: any) {
+    this.xService.deleteX('serviceList', event.rowData.id);
   }
 
 }

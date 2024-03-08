@@ -31,7 +31,8 @@
         "COLUMNS": "Säulen",
         "SELECTED": "Ausgewählt",
         "TOTAL": "Gesamt",
-        "DEAL_NAME": "Deal-Name"
+        "DEAL_NAME": "Deal-Name",
+        "ADDSERVICES": "Dienst hinzufügen"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -55,7 +56,9 @@
         "BUSINESS_ADMINISTRATION": "Adminsitrator - Fachbereich",
         "GOVERNMENT_REGULATIONS": "Regierungsbestimmungen",
         "USER_MANAGEMENT": "Benutzerverwaltung",
-        "TEAM_MANAGEMENT": "Teamverwaltung"
+        "TEAM_MANAGEMENT": "Teamverwaltung",
+        "SERVICES": "Dienstleistungen",
+        "SERVICE_SETTINGS": "Diensteinstellungen"
     },
     "DASHBOARD": {
         "MAIN": {}
@@ -123,7 +126,7 @@
             "COUNTRY": "Land",
             "SERVICE_RATES": "Servicepreise",
             "RATE": "Stundensatz",
-            "COMPANY_AVERAGE": "Duchschnittsstundensatz Unternehmen",
+            "COMPANY_AVERAGE": "Unternehmensdurchschnitt",
             "POINT_OF_CONTACTS": "Ansprechpartner",
             "ADD_POINT_OF_CONTACT": "Kontaktpunkte hinzufügen",
             "ORGANIZATION_ID": "Organisations-ID",
@@ -227,7 +230,16 @@
     "BUSINESS_ADMINISTRATION": {
         "USER_MANAGEMENT": {
             "ADD_NEW_USER": "Neuen Benutzer hinzufügen"
-        }
+        },
+        "SERVICE_SETTINGS": {
+            "SERVICE_TYPE": "Typ",
+            "SERVICE_SUBTYPE": "Untertyp",
+            "UNIT_MEASURE": "Maßeinheit",
+            "UNIT_RATE": "Gebührensatz",
+            "TEMPLATE": "Vorlage",
+            "STATUS": "Status",
+            "VALID_TILL": "Gültig bis"
+        }  
     },
     "DROPDOWNS": {
         "SALUTATION": "Herr",
@@ -261,7 +273,13 @@
         "BASIC_CARE": "Grundversorgung",
         "EXTERNAL_AUDIT": "Externe Prüfung",
         "INTERNAL_AUDIT": "Interne Anhörung",
-        "SPECIAL_CARE": "Spezialbehandlung"
+        "SPECIAL_CARE": "Spezialbehandlung",
+        "HOURLY": "Stündlich",
+        "DAILY": "Täglich",
+        "SELECT_MEASURE": "Wählen Sie Messen",
+        "SIFA": "SIFA",
+        "QM": "QM",
+        "SiGeKo": "SiGeKo"
     },
     "PLACEHOLDERS": {
         "SALUTATION": "Herr",
@@ -291,6 +309,7 @@
         "TIMESHEET_SUBMITTED": "Stundenzettel erfolgreich übermittelt",
         "INVALID_HOURS": "Die Gesamtstundenanzahl pro Tag darf 12 nicht überschreiten",
         "INVALID_ALLOCATION": "Die zugewiesenen Stunden dürfen nicht größer sein als die Servicestunden",
-        "ALLOCATION_EXCEEDED": "(Zuteilung überschritten): Die Zuteilungsanzahl darf nicht größer als 100 % sein."
+        "ALLOCATION_EXCEEDED": "(Zuteilung überschritten): Die Zuteilungsanzahl darf nicht größer als 100 % sein.",
+        "DELETE_SERVICE": "Dienst erfolgreich gelöscht"
     }
 }
