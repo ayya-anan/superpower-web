@@ -6,7 +6,6 @@
         "PROJECT": "Project",
         "HOURS": "Hours",
         "TASK": "Task",
-        "TYPE": "Type",
         "VALUE": "Value",
         "CONTACTS": "Contacts",
         "INDIVIDUAL": "Individuals",
@@ -33,6 +32,7 @@
         "SELECTED": "Selected",
         "TOTAL": "Total",
         "DEAL_NAME": "Deal Name",
+        "ADD_SERVICES_TITLE": "Add Service(s)",
         "SERVICE_SETTINGS": "Service Settings",
         "ADDSERVICES": "Add Service"
     },
@@ -59,7 +59,7 @@
         "GOVERNMENT_REGULATIONS": "Government Regulations",
         "USER_MANAGEMENT": "User Management",
         "TEAM_MANAGEMENT": "Team Management",
-        "SERVICES": "Services"
+        "SERVICES": "Services & Rates"
     },
     "DASHBOARD": {
         "MAIN": {
@@ -266,7 +266,6 @@
         "MS": "Ms",
         "MRS": "Mrs",
         "DR": "Dr",
-        "TYPE": "Select Type",
         "ACTIVE": "Active",
         "INACTIVE": "Inactive",
         "SUSPENDED": "Suspended",

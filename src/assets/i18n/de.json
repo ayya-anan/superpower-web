@@ -7,7 +7,6 @@
         "PROJECT": "Projekt",
         "HOURS": "Std",
         "TASK": "Aufgabe",
-        "TYPE": "Typ",
         "CONTACTS": "KONTAKTE",
         "INDIVIDUAL": "Individuen",
         "ORGANIZATIONS": "Organisationen",
@@ -33,7 +32,9 @@
         "SELECTED": "Ausgewählt",
         "TOTAL": "Gesamt",
         "DEAL_NAME": "Deal-Name",
-        "ADDSERVICES": "Dienst hinzufügen"
+        "ADD_SERVICES_TITLE": "Dienst(e) hinzufügen",
+        "ADDSERVICES": "Dienst hinzufügen",
+        "SERVICE_SETTINGS": "Diensteinstellungen"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -58,8 +59,7 @@
         "GOVERNMENT_REGULATIONS": "Regierungsbestimmungen",
         "USER_MANAGEMENT": "Benutzerverwaltung",
         "TEAM_MANAGEMENT": "Teamverwaltung",
-        "SERVICES": "Dienstleistungen",
-        "SERVICE_SETTINGS": "Diensteinstellungen"
+        "SERVICES": "Dienstleistungen und Preise"
     },
     "DASHBOARD": {
         "MAIN": {}
@@ -262,7 +262,6 @@
         "MS": "Frau",
         "MRS": "Frau",
         "DR": "Dr.",
-        "TYPE": "Wählen Sie Typ",
         "ACTIVE": "Aktiv",
         "INACTIVE": "Inaktiv",
         "SUSPENDED": "Ausgesetzt",

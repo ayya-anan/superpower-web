@@ -1,28 +1,28 @@
 <!-- Rule View -->
-<p-card header="Add Service(s)">
+<p-card header="{{'COMMON.ADD_SERVICES_TITLE' | translate}}">
     <form [formGroup]="serviceListForm" (ngSubmit)="onSubmit()">
         <div class="col-12 p-0 inline-flex">
             <div class="col p-0">
-                <label for="type">Service Type</label><br>
+                <label for="type">{{'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.SERVICE_TYPE' | translate}}</label><br>
                 <p-dropdown appendTo="body" [editable]="true" formControlName="type" [options]="ServiceTypes"
                     optionLabel="label" placeholder="{{ 'DROPDOWNS.SELECT_SERVICE_TYPE' | translate}}"
                     (onChange)="changeSubType($event)">
                 </p-dropdown>
             </div>
             <div class="col py-0">
-                <label for="type">Service SubType</label><br>
+                <label for="type">{{'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.SERVICE_SUBTYPE' | translate}}</label><br>
                 <p-dropdown appendTo="body" [editable]="true" formControlName="subtype" [options]="subTypeList"
                     optionLabel="label" placeholder="{{ 'DROPDOWNS.SELECT_SERVICE_TYPE' | translate}}">
                 </p-dropdown>
             </div>
             <div class="col py-0">
-                <label for="amount">Unit Measure</label><br>
+                <label for="amount">{{'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.UNIT_MEASURE' | translate}}</label><br>
                 <p-dropdown appendTo="body" [editable]="true" formControlName="measure" [options]="unitMeasure"
                     optionLabel="label" placeholder="{{ 'DROPDOWNS.SELECT_MEASURE' | translate}}">
                 </p-dropdown>
             </div>
             <div class="col py-0">
-                <label for="amount">Unit Rate</label><br>
+                <label for="amount">{{'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.UNIT_RATE' | translate}}</label><br>
                 <p-inputNumber formControlName="rate" mode="currency" inputId="currency-germany" currency="EUR"
                     locale="de-DE">
                 </p-inputNumber>
