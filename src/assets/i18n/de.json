@@ -139,7 +139,9 @@
             "INVOICE_FREQUENCY": "Rechnungshäufigkeit",
             "CURRENT_CONTRACT_START_DATE": "Aktuelles Vertragsstartdatum",
             "CURRENT_CONTRACT_END_DATE": "Aktuelles Vertragsendedatum",
-            "CUSTOMER_SINCE": "Kunde seit"
+            "CUSTOMER_SINCE": "Kunde seit",
+            "SERVICESLIST": "Dienstleistungen (für die oben genannten Angebote bereitgestellt)",
+            "DEALS_HEADER": "Deal-Details (bestehendes Geschäft)"
         }
     },
     "LEAD_MANAGEMENT": {

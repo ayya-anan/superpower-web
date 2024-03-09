@@ -142,7 +142,9 @@
             "INVOICE_FREQUENCY": "Invoice Frequency",
             "CURRENT_CONTRACT_START_DATE": "Current Contract Start Date",
             "CURRENT_CONTRACT_END_DATE": "Current Contract End Date",
-            "CUSTOMER_SINCE": "Customer Since"
+            "CUSTOMER_SINCE": "Customer Since",
+            "SERVICESLIST": "Services (Provided For Above Deals)",
+            "DEALS_HEADER": "Deal Details (Existing Business)"
         }
     },
     "LEAD_MANAGEMENT": {

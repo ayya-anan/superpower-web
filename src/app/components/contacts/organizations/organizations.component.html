@@ -106,35 +106,6 @@
 				</div>
 			</div>
 			<div class="col-9">
-				<div class="p-0 mb-3" *ngIf="panelList && panelList.length > 0">
-					<p-fieldset [toggleable]="true">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICES' | translate}}</span>
-							</div>
-						</ng-template>
-						<p-tabView>
-							<ng-container *ngFor="let item of panelList">
-								<p-tabPanel [header]="item.type">
-									<app-table [loading]="loading" [key]="'serviceListView'" [footerKey]="'Services'"
-										[columns]="serviceColumns" [tableData]="item.dataVal"></app-table>
-								</p-tabPanel>
-							</ng-container>
-						</p-tabView>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3" *ngIf="dealsTable && dealsTable.length > 0">
-					<p-fieldset [toggleable]="true">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS' | translate}}</span>
-							</div>
-						</ng-template>
-						<app-table [loading]="loading" [key]="'dealsData'"
-							[footerKey]="'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS'" [columns]="dealsColumns"
-							[tableData]="dealsTable"></app-table>
-					</p-fieldset>
-				</div>
 				<div class="p-0 mb-3">
 					<p-fieldset [toggleable]="true" [collapsed]="false">
 						<ng-template pTemplate="header">
@@ -248,6 +219,35 @@
 								[columns]="pocTableCols" [tableData]="pocTableData" (editContent)="editData($event)"
 								(deleteContent)="delete($event)"></app-table>
 						</div>
+					</p-fieldset>
+				</div>
+				<div class="p-0 mb-3" *ngIf="dealsTable && dealsTable.length > 0">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.DEALS_HEADER' | translate}}</span>
+							</div>
+						</ng-template>
+						<app-table [loading]="loading" [key]="'dealsData'"
+							[footerKey]="'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS'" [columns]="dealsColumns"
+							[tableData]="dealsTable"></app-table>
+					</p-fieldset>
+				</div>
+				<div class="p-0 mb-3" *ngIf="panelList && panelList.length > 0">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICESLIST' | translate}}</span>
+							</div>
+						</ng-template>
+						<p-tabView>
+							<ng-container *ngFor="let item of panelList">
+								<p-tabPanel [header]="item.type">
+									<app-table [loading]="loading" [key]="'serviceListView'" [footerKey]="'Services'"
+										[columns]="serviceColumns" [tableData]="item.dataVal"></app-table>
+								</p-tabPanel>
+							</ng-container>
+						</p-tabView>
 					</p-fieldset>
 				</div>
 			</div>
