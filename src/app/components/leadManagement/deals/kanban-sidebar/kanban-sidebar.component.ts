@@ -115,6 +115,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Manufacturing Plant": "Produktionsstätte",
         "Office": "Büro",
         "Warehouse": "Lager",
+        "Remote": "Remote",
         "Basic Care": "Grundversorgung",
         "External Audit": "Externe Prüfung",
         "Internal Audit": "Interne Anhörung",
@@ -219,7 +220,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 customerContact: ['', []],
                 winProbablity: ['High', []],
                 accountManager: ['', [Validators.required]],
-                type: ['', [Validators.required]],
+                type: ['', []],
                 startDate: [new Date(), [Validators.required]],
                 source: ['', []],
                 value: ['0', []],
@@ -303,8 +304,10 @@ export class KanbanSidebarComponent implements OnDestroy {
             //     this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
             // }
             _.each(this.selectedOrganization.facilities, (facility) => {
-                facility.name = `${this.languageMapper[facility.type]} - ${(facility.address) ? facility.address : ''}`;
+                facility.name = `${this.languageMapper[facility.type]}${(facility.address) ? ` - ${facility.address}` : ''}`;
             });
+            this.selectedOrganization.facilities.push({ name: 'Remote', _id: 'Remote', type: 'Remote' });
+            this.selectedOrganization.facilities = _.uniqBy(this.selectedOrganization.facilities, 'name');
         }
     }
     changeType(value: any) {
@@ -438,7 +441,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             let actualHours = 1;
             if (this.dealForm.get('type')?.value === 'SIFA') {
                 const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
-                const employeeCount = +facility.employeeCount || 95;
+                const employeeCount = +facility?.employeeCount || 95;
                 actualHours = Math.round(hours * employeeCount * .8);
             }
             servicesFormGroup.patchValue({

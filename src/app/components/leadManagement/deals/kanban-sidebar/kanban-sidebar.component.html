@@ -29,12 +29,6 @@
                                     (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
-                                <label>{{'COMMON.TYPE' | translate}}</label>
-                                <p-dropdown appendTo="body" formControlName="type" [options]="quoteItems"
-                                    optionLabel="name" [filter]="true" optionValue="id"
-                                    placeholder="{{ 'DROPDOWNS.TYPE' | translate}}"></p-dropdown>
-                            </div>
-                            <div class="field col-12">
                                 <label>{{'COMMON.STATUS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="label" optionValue="name"
@@ -85,8 +79,12 @@
                         <div class="grid">
                             <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' |
                                 translate}}</div>
-                            <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-                                <button (click)="initQuotesArray()" pButton
+                            <div class="col-4 float-end text-right flex gap-3" *ngIf="canUpdateDeal()">
+                                <p-dropdown appendTo="body" styleClass="mt-2" formControlName="type" [options]="quoteItems"
+                                    optionLabel="name" [filter]="true" optionValue="id"
+                                    placeholder="Select Deal Type "></p-dropdown>
+
+                                <button (click)="initQuotesArray()" pButton [disabled]="!dealForm.get('type')?.value"
                                     label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
                                     icon="pi pi-plus"></button>
                             </div>
@@ -123,7 +121,8 @@
                                                 </div>
                                                 <div class="flex align-items-center"
                                                     *ngFor="let quoteType of quoteTypes">
-                                                    <p-radioButton formControlName="type" (onClick)="changeQuoteType(i)" [value]="quoteType.value"
+                                                    <p-radioButton formControlName="type" (onClick)="changeQuoteType(i)"
+                                                        [value]="quoteType.value"
                                                         [inputId]="quoteType.value"></p-radioButton>
                                                     <label [for]="quoteType" class="ml-2">{{ quoteType.label }}</label>
                                                 </div>
