@@ -1,5 +1,5 @@
-<p-sidebar #sidebar [(visible)]="organizationView" position="right" [baseZIndex]="10000"
-	styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
+<p-sidebar #sidebar [(visible)]="organizationView" position="right" [baseZIndex]="10000" [dismissible]="false"
+	[closeOnEscape]="false" styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
 	<div class="col-12 p-0 pb-3 drawLine text-left">
 		<span class="text-xl ml-2 font-bold">{{'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION_DETAILS' | translate}}</span>
 	</div>
@@ -18,30 +18,6 @@
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="section"
-							[options]="sections" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="sectionChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12">
-						<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="industryType"
-							[options]="industryTypes" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industryTypeChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
-						<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType1"
-							[options]="industrySubType1" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industrySubTypeChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
-						<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType2"
-							[options]="industrySubType2" optionLabel="Name" placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industrySubType2Change($event)"></p-dropdown>
-					</div>
-					<div class="field col-12">
 						<label for="revenueRange">{{'CONTACTS.ORGANIZATIONS.REVENUE_RANGE' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="revenueRange"
 							[options]="revenueRange" optionLabel="name" optionValue="name"
@@ -50,33 +26,38 @@
 					<div class="field col-12">
 						<label>{{'CONTACTS.ORGANIZATIONS.STATUS' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="status"
-							[options]="status" optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}"
-							(onChange)="statusChange($event)">
+							[options]="status" optionLabel="label" optionValue="name"
+							placeholder="{{ 'DROPDOWNS.SELECT_STATUS' | translate}}" (onChange)="statusChange($event)">
 						</p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="false">
 						<label for="pointofContact">{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}</label>
 						<p-dropdown appendTo="body" formControlName="pointofContact" [options]="individualsData"
-							optionLabel="name" optionValue="id" placeholder="{{ 'DROPDOWNS.SELECT_POINT_OF_CONTACT' | translate}}"></p-dropdown>
+							optionLabel="name" optionValue="id"
+							placeholder="{{ 'DROPDOWNS.SELECT_POINT_OF_CONTACT' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="accountManager">{{'CONTACTS.ORGANIZATIONS.ACCOUNT_MANAGER' | translate}}</label>
 						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
+							optionLabel="name" optionValue="name"
+							placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
 					</div>
 					<ng-container *ngIf="activeContract">
 						<div class="field col-12">
 							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.INVOICE_FREQUENCY' | translate}}</label>
 							<p-dropdown appendTo="body" formControlName="invoiceFrequency" [options]="paymentMilestone"
-								optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_FREQUENCY' | translate}}">
+								optionLabel="label" optionValue="name"
+								placeholder="{{ 'DROPDOWNS.SELECT_FREQUENCY' | translate}}">
 							</p-dropdown>
 						</div>
 						<div class="field col-12">
-							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.CURRENT_CONTRACT_START_DATE' | translate}}</label>
+							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.CURRENT_CONTRACT_START_DATE' |
+								translate}}</label>
 							<p-calendar formControlName="startDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
 						</div>
 						<div class="field col-12">
-							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.CURRENT_CONTRACT_END_DATE' | translate}}</label>
+							<label for="rolename">{{'CONTACTS.ORGANIZATIONS.CURRENT_CONTRACT_END_DATE' |
+								translate}}</label>
 							<p-calendar formControlName="endDate" dateFormat="dd-M-yy" [showIcon]="true"></p-calendar>
 						</div>
 						<div class="field col-12">
@@ -86,16 +67,45 @@
 						</div>
 					</ng-container>
 					<div class="field col-12 mt-5">
-						<button pButton label="{{ 'COMMON.SAVE' | translate }}" pRipple type="submit" icon="pi pi-check" class="p-button-primary"
-							(click)="saveOrgData()"></button>
-						<button pButton label="{{ 'COMMON.CANCEL' | translate }}" pRipple icon="pi pi-times" class="p-button-secondary ml-3"
-							(click)="closePanel()"></button>
+						<button pButton label="{{ 'COMMON.SAVE' | translate }}" pRipple type="submit" icon="pi pi-check"
+							class="p-button-primary" (click)="saveOrgData()"></button>
+						<button pButton label="{{ 'COMMON.CANCEL' | translate }}" pRipple icon="pi pi-times"
+							class="p-button-secondary ml-3" (click)="closePanel()"></button>
 					</div>
 				</div>
 			</div>
 			<div class="col-9">
-				<div class="p-0 mb-3">
+				<div class="p-0 mb-3" *ngIf="panelList && panelList.length > 0">
 					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICES' | translate}}</span>
+							</div>
+						</ng-template>
+						<p-tabView>
+							<ng-container *ngFor="let item of panelList">
+								<p-tabPanel [header]="item.type">
+									<app-table [loading]="loading" [key]="'serviceListView'" [footerKey]="'Services'"
+										[columns]="serviceColumns" [tableData]="item.dataVal"></app-table>
+								</p-tabPanel>
+							</ng-container>
+						</p-tabView>
+					</p-fieldset>
+				</div>
+				<div class="p-0 mb-3" *ngIf="dealsTable && dealsTable.length > 0">
+					<p-fieldset [toggleable]="true">
+						<ng-template pTemplate="header">
+							<div class="flex align-items-center gap-2 px-2">
+								<span class="font-bold">{{'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS' | translate}}</span>
+							</div>
+						</ng-template>
+						<app-table [loading]="loading" [key]="'dealsData'"
+							[footerKey]="'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS'" [columns]="dealsColumns"
+							[tableData]="dealsTable"></app-table>
+					</p-fieldset>
+				</div>
+				<div class="p-0 mb-3">
+					<p-fieldset [toggleable]="true" [collapsed]="false">
 						<ng-template pTemplate="header">
 							<div class="flex align-items-center gap-2 px-2">
 								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.FACILITIES' | translate}}</span>
@@ -119,14 +129,17 @@
 									<div class="field col-12">
 										<div class="formgrid grid">
 											<div class="field col-4">
-												<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' | translate}}</label><br>
+												<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' |
+													translate}}</label><br>
 												<p-dropdown appendTo="body" formControlName="type" [filter]="true"
 													filterBy="name" [options]="facilityType" optionLabel="label"
-													optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_FACILITY_TYPE' | translate}}">
+													optionValue="name"
+													placeholder="{{ 'DROPDOWNS.SELECT_FACILITY_TYPE' | translate}}">
 												</p-dropdown>
 											</div>
 											<div class="field col-3">
-												<label for="type">{{'CONTACTS.ORGANIZATIONS.EMPLOYEE_COUNT' | translate}}</label><br>
+												<label for="type">{{'CONTACTS.ORGANIZATIONS.EMPLOYEE_COUNT' |
+													translate}}</label><br>
 												<p-inputNumber formControlName="employeeCount"></p-inputNumber>
 											</div>
 
@@ -145,32 +158,38 @@
 										</div>
 										<div class="formgrid grid">
 											<div class="field col">
-												<label for="emailAddress">{{'CONTACTS.ORGANIZATIONS.PRIMARY_EMAILADDRESS' | translate}}</label>
+												<label
+													for="emailAddress">{{'CONTACTS.ORGANIZATIONS.PRIMARY_EMAILADDRESS' |
+													translate}}</label>
 												<input formControlName="emailAddress" type="text"
 													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 											</div>
 											<div class="field col">
-												<label for="phoneNumber">{{'CONTACTS.ORGANIZATIONS.PRIMARY_PHONE_NUMBER' | translate}}</label><br>
+												<label for="phoneNumber">{{'CONTACTS.ORGANIZATIONS.PRIMARY_PHONE_NUMBER'
+													| translate}}</label><br>
 												<p-inputMask formControlName="phoneNumber" mask="(99) 9999-999999"
 													placeholder="(99) 9999-999999"></p-inputMask>
 											</div>
 										</div>
 										<div class="formgrid grid">
 											<div class="field col">
-												<label for="address">{{'CONTACTS.ORGANIZATIONS.ADDRESS' | translate}}</label>
+												<label for="address">{{'CONTACTS.ORGANIZATIONS.ADDRESS' |
+													translate}}</label>
 												<input formControlName="address" type="text"
 													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 											</div>
 										</div>
 										<div class="formgrid grid">
 											<div class="field col">
-												<label for="country">{{'CONTACTS.ORGANIZATIONS.COUNTRY' | translate}}</label><br>
+												<label for="country">{{'CONTACTS.ORGANIZATIONS.COUNTRY' |
+													translate}}</label><br>
 												<p-dropdown [filter]="true" filterBy="name" appendTo="body"
 													formControlName="country" [options]="countries" optionLabel="name"
 													optionValue="name" placeholder="Germany"></p-dropdown>
 											</div>
 											<div class="field col">
-												<label for="zipCode">{{'CONTACTS.ORGANIZATIONS.POSTCODE' | translate}}</label>
+												<label for="zipCode">{{'CONTACTS.ORGANIZATIONS.POSTCODE' |
+													translate}}</label>
 												<input formControlName="zipCode" type="text"
 													class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 											</div>
@@ -182,61 +201,16 @@
 					</p-fieldset>
 				</div>
 				<div class="p-0 mb-3">
-					<p-fieldset [toggleable]="true">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICES' | translate}}</span>
-							</div>
-						</ng-template>
-						<ng-container formArrayName="services">
-							<div class="formgrid grid" *ngFor="let service of services.controls;let i = index"
-								[formGroupName]="i">
-								<div class="field col-3">
-									<label for="type">{{'CONTACTS.ORGANIZATIONS.TYPE' | translate}}</label><br>
-									<p-dropdown appendTo="body" formControlName="type" [options]="serviceList"
-										optionLabel="label" optionValue="name" placeholder="{{ 'DROPDOWNS.SELECT_SERVICE_TYPE' | translate}}">
-									</p-dropdown>
-								</div>
-								<div class="field col">
-									<label for="amount">{{'CONTACTS.ORGANIZATIONS.RATE' | translate}}</label><br>
-									<p-inputNumber formControlName="amount" mode="currency" inputId="currency-germany"
-										currency="EUR" locale="de-DE"> </p-inputNumber>
-								</div>
-								<div class="field col-4 px-0">
-									<label for="companyAverage">{{'CONTACTS.ORGANIZATIONS.COMPANY_AVERAGE' | translate}}</label><br>
-									<p-inputNumber formControlName="companyAverage" mode="currency"
-										inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
-								</div>
-								<div class="field col" *ngIf="false">
-									<label for="tinoAverage">Tino's Average</label><br>
-									<p-inputNumber [disabled]="true" formControlName="tinoAverage" mode="currency"
-										inputId="currency-germany" currency="EUR" locale="de-DE"> </p-inputNumber>
-								</div>
-								<div class="col-2 mt-4">
-									<div class="flex gap-2 float-end flex-row-reverse flex-wrap">
-										<button pButton pRipple type="button" icon="pi pi-plus" title="Add New"
-											*ngIf="i === services.controls.length - 1"
-											class="p-button-rounded p-button-info"
-											(click)="initServicesArray()"></button>
-										<button pButton pRipple type="button" *ngIf="services.controls.length > 1"
-											icon="pi pi-times" title="Remove" class="p-button-rounded p-button-danger"
-											(click)="removeServicesArray(i)"></button>
-									</div>
-								</div>
-							</div>
-						</ng-container>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3">
-					<p-fieldset [toggleable]="true">
+					<p-fieldset [toggleable]="true" [collapsed]="false">
 						<ng-template pTemplate="header">
 							<div class="flex align-items-center gap-2 px-2">
 								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}</span>
 							</div>
 						</ng-template>
 						<div class="col-12 p-0">
-							<button pButton pRipple icon="pi pi-plus"
-								class="p-button-primary text-center" label="{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}" (click)="addPOC()"></button>
+							<button pButton pRipple icon="pi pi-plus" class="p-button-primary text-center"
+								label="{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}"
+								(click)="addPOC()"></button>
 						</div>
 						<div class="col-12 p-0 pt-2" *ngIf="pocTableData.length > 0">
 							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'"
@@ -270,7 +244,7 @@
 			<p-button class="ml-2" icon="pi pi-file-import" [disabled]="true"
 				label="{{ 'CONTACTS.ORGANIZATIONS.IMPORT' | translate }}"></p-button>
 			<p-button class="ml-2" icon="pi pi-trash" [disabled]="true"
-				 label="{{ 'CONTACTS.ORGANIZATIONS.DELETE' | translate }}"></p-button>
+				label="{{ 'CONTACTS.ORGANIZATIONS.DELETE' | translate }}"></p-button>
 			<button type="button" title="{{ 'CONTACTS.ORGANIZATIONS.EXPORTASCSV' | translate }}" pButton pRipple
 				icon="pi pi-file" class="ml-2" pTooltip="CSV" tooltipPosition="bottom"></button>
 			<button type="button" title="{{ 'CONTACTS.ORGANIZATIONS.EXPORTASPDF' | translate }}" pButton pRipple
@@ -279,7 +253,8 @@
 		<div class="p-toolbar-group-center">
 			<span class="p-input-icon-left" (keyup.enter)="searchResults($event)">
 				<i class="pi pi-search"></i>
-				<input pInputText type="text" placeholder="{{ 'COMMON.SEARCHBYNAME'| translate }}" [(ngModel)]="searchValue" />
+				<input pInputText type="text" placeholder="{{ 'COMMON.SEARCHBYNAME'| translate }}"
+					[(ngModel)]="searchValue" />
 			</span>
 		</div>
 	</p-toolbar>

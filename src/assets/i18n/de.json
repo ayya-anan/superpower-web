@@ -34,7 +34,8 @@
         "DEAL_NAME": "Deal-Name",
         "ADD_SERVICES_TITLE": "Dienst(e) hinzufügen",
         "ADDSERVICES": "Dienst hinzufügen",
-        "SERVICE_SETTINGS": "Diensteinstellungen"
+        "SERVICE_SETTINGS": "Diensteinstellungen",
+        "DEALTYPE": "Deal-Typ"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
