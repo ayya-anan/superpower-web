@@ -103,7 +103,7 @@
                             <span class="actionLink activeLinks" (click)="viewAllocation(rowData, rowIndex)">View Allocation</span>
                         </ng-container>
                         <ng-template #otherTemplate>
-                            <span *ngIf="key != 'Allocatedusers'" class="actionLink" (click)="edit(rowData, rowIndex)"><i
+                            <span *ngIf="key != 'Allocatedusers' && key != 'serviceSettings'" class="actionLink" (click)="edit(rowData, rowIndex)"><i
                                     class="pi pi-pencil text-xl text-blue-500"></i></span>
                             <span *ngIf="key === 'Quotes'" class="ml-3 actionLink" (click)="clone(rowData, rowIndex)"><i
                                     class="pi pi-clone text-xl text-blue-500"></i></span>

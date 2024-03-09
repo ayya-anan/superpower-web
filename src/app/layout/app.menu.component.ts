@@ -72,6 +72,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'MENU.GOVERNMENT_REGULATIONS', routerLink: ['/'] },
                     { label: 'MENU.USER_MANAGEMENT', routerLink: ['/businessAdministration/userManagement'] },
+                    { label: 'MENU.SERVICES', routerLink: ['/businessAdministration/serviceSettings'] },
                     { label: 'MENU.TEAM_MANAGEMENT', routerLink: ['/'] }
                 ]
             }

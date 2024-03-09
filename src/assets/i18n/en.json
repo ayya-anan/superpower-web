@@ -6,7 +6,6 @@
         "PROJECT": "Project",
         "HOURS": "Hours",
         "TASK": "Task",
-        "TYPE": "Type",
         "VALUE": "Value",
         "CONTACTS": "Contacts",
         "INDIVIDUAL": "Individuals",
@@ -32,7 +31,10 @@
         "COLUMNS": "Columns",
         "SELECTED": "Selected",
         "TOTAL": "Total",
-        "DEAL_NAME": "Deal Name"
+        "DEAL_NAME": "Deal Name",
+        "ADD_SERVICES_TITLE": "Add Service(s)",
+        "SERVICE_SETTINGS": "Service Settings",
+        "ADDSERVICES": "Add Service"
     },
     "MENU": {
         "DASHBOARD": "Dashboard",
@@ -56,7 +58,8 @@
         "BUSINESS_ADMINISTRATION": "Business Administration",
         "GOVERNMENT_REGULATIONS": "Government Regulations",
         "USER_MANAGEMENT": "User Management",
-        "TEAM_MANAGEMENT": "Team Management"
+        "TEAM_MANAGEMENT": "Team Management",
+        "SERVICES": "Services & Rates"
     },
     "DASHBOARD": {
         "MAIN": {
@@ -232,7 +235,16 @@
     "BUSINESS_ADMINISTRATION": {
         "USER_MANAGEMENT": {
             "ADD_NEW_USER": "Add New User"
-        }
+        },
+        "SERVICE_SETTINGS": {
+            "SERVICE_TYPE": "Type",
+            "SERVICE_SUBTYPE": "Subtype",
+            "UNIT_MEASURE": "Unit Measure",
+            "UNIT_RATE": "Unit Rate",
+            "TEMPLATE": "Template",
+            "STATUS": "Status",
+            "VALID_TILL": "Valid Till"
+        }   
     },
     "DROPDOWNS": {
         "SALUTATION": "Mr",
@@ -254,7 +266,6 @@
         "MS": "Ms",
         "MRS": "Mrs",
         "DR": "Dr",
-        "TYPE": "Select Type",
         "ACTIVE": "Active",
         "INACTIVE": "Inactive",
         "SUSPENDED": "Suspended",
@@ -267,7 +278,13 @@
         "BASIC_CARE": "Basic Care",
         "EXTERNAL_AUDIT": "External Audit",
         "INTERNAL_AUDIT": "Internal Audit",
-        "SPECIAL_CARE": "Special Care"
+        "SPECIAL_CARE": "Special Care",
+        "HOURLY": "Hourly",
+        "DAILY": "Daily",
+        "SELECT_MEASURE": "Select Measure",
+        "SIFA": "SIFA",
+        "QM": "QM",
+        "SiGeKo": "SiGeKo"
     },
     "PLACEHOLDERS": {
         "SALUTATION": "Mr",
@@ -297,6 +314,7 @@
         "TIMESHEET_SUBMITTED": "Timesheet Submitted Successfully",
         "INVALID_HOURS": "Total Hours for a day cannot exceed 12",
         "INVALID_ALLOCATION": "Allocated Hours cannot be greater than Service hours",
-        "ALLOCATION_EXCEEDED": "(Allocation Exceeded) : Allocation Count cannot be greater than 100 %"
+        "ALLOCATION_EXCEEDED": "(Allocation Exceeded) : Allocation Count cannot be greater than 100 %",
+        "DELETE_SERVICE": "Service Deleted Successfully"
     }
 }
