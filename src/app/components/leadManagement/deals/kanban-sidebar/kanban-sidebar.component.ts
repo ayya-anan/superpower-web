@@ -170,7 +170,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 this.allServices = res.results;
                 this.quoteItems = _.unionBy(_.map(res.results, (i) => {
                     return { id: i.type, name: i.type }
-                }),'id');
+                }), 'id');
             }
         )
     }
@@ -305,7 +305,9 @@ export class KanbanSidebarComponent implements OnDestroy {
     changeQuoteType(quoteFormIndex: number) {
         const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
         const servicesArray = quotesFormGroup.get('services') as FormArray;
+        const paymentsArray = quotesFormGroup.get('payments') as FormArray;
         servicesArray.clear();  // Clear existing controls
+        paymentsArray.clear();  // Clear existing controls
         this.getFinalTotal(quoteFormIndex);
     }
     // Helper methods to initialize form arrays
@@ -483,6 +485,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (total) {
             result = Math.round((total - discount) * (vat / 100));
             quotesFormGroup.patchValue({ vatValue: result });
+        } else {
+            quotesFormGroup.patchValue({ vatValue: 0 });
         }
         return result;
     }
