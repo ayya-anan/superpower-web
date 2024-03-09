@@ -4,6 +4,7 @@ export interface KanbanCard {
     accountManager?: any;
     status?: string;
     org?: any;
+    type?: any;
     progress?: number;
     value?: number;
     assignees?: Assignee[];

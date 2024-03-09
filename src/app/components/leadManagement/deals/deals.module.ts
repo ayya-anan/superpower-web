@@ -45,6 +45,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { NgxPrintModule } from 'ngx-print';
 import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child.module';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
 	imports: [
@@ -91,6 +92,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
         CardModule,
         BadgeModule,
         CheckboxModule,
+        RadioButtonModule,
         EditorModule,
         ToastModule,
         ConfirmDialogModule,

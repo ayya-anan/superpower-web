@@ -16,6 +16,7 @@ import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -114,8 +115,14 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Internal Audit": "Interne Anhörung",
         "Special Care": "Spezialbehandlung"
     }
+    quoteTypes = [
+        'Time and Material',
+        'Fixed Price',
+        'Ala Carte'
+    ]
     quoteItems: any;
-    paymentTypes: any;
+    allServices: any = [];
+    filteredServices : any = [];
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -128,6 +135,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         private keycloakService: KeycloakService,
         private changeDetectorRef: ChangeDetectorRef,
         private translate: TranslateService,
+        private xService: XService,
         private dealService: DealService
     ) {
         this.quoteItems = [
@@ -141,25 +149,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             },
             {
                 name: 'QM',
-                id: 'SiGeKo',
-            }
-        ];
-        this.paymentTypes = [
-            {
-                id: 'hourly',
-                name: 'Hourly'
-            },
-            {
-                id: 'daily',
-                name: 'Daily'
-            },
-            {
-                id: 'project_flat',
-                name: 'Project Flat'
-            },
-            {
-                id: 'per_capita_flat',
-                name: 'Per Capita Flat'
+                id: 'QM',
             }
         ];
         _.each(this.status, (status) => {
@@ -174,6 +164,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         });
         this.listSubscription = this.kanbanService.selectedListId$.subscribe(data => this.listId = data);
         this.listNameSubscription = this.kanbanService.listNames$.subscribe(data => this.listNames = data);
+        this.xService.getAllX('serviceList').subscribe(
+            (res: any) => {
+                this.allServices = res.results;
+            }
+        )
     }
     ngOnInit() {
         this.organizationService.getAllOrganization();
@@ -223,6 +218,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (this.card.org) {
             this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
             this.card.closeDate = new Date(Date.parse(this.card.closeDate.toString()));
+            this.card.org = this.card.org.id;
+            this.card.accountManager = this.card.accountManager.id;
             this.dealForm.patchValue(this.card);
             const quotesArray = this.dealForm.get('quotes') as FormArray;
             quotesArray.clear();  // Clear existing controls
@@ -231,6 +228,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 quotesArray.push(quoteGroup);
             });
             this.changeOrg(this.card.org);
+            this.changeType(this.card.type);
         }
     }
 
@@ -240,6 +238,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             status: [{ value: quote.status, disabled: true }],
             subTotal: [{ value: quote.subTotal, disabled: true }],
             vat: [quote.vat],
+            type: [quote.type],
             vatValue: [{ value: Math.round((quote.subTotal - quote.discount) * (quote.vat / 100)), disabled: true }],
             discount: [quote.discount],
             total: [{ value: quote.total, disabled: true }],
@@ -272,10 +271,13 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.dealForm.get('org')?.valueChanges.subscribe(newValue => {
             this.changeOrg(newValue);
         });
+        this.dealForm.get('type')?.valueChanges.subscribe(newValue => {
+            this.changeType(newValue);
+        });
     }
     changeOrg(value: any) {
         if (value) {
-            this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
+            this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value) || value;
             if (this.selectedOrganization.primaryDetails.pointofContact && this.selectedOrganization.primaryDetails.pointofContact.length > 0) {
                 this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact[0].name);
             }
@@ -285,10 +287,10 @@ export class KanbanSidebarComponent implements OnDestroy {
             _.each(this.selectedOrganization.facilities, (facility) => {
                 facility.name = `${this.languageMapper[facility.type]} - ${(facility.address) ? facility.address : ''}`;
             });
-            _.each(this.selectedOrganization.services, (service) => {
-                service.type = (this.languageMapper[service.type]) ? this.languageMapper[service.type] : service.type;
-            });
         }
+    }
+    changeType(value: any){
+        this.filteredServices = _.filter(this.allServices, (service) => service.type == value);
     }
     // Helper methods to initialize form arrays
     initQuotesArray(type = ''): void {
@@ -298,8 +300,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             status: ['New', [Validators.required]],
             subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
-            type: [type],
-            paymentType: ['', [Validators.required]],
+            type: [type, [Validators.required]],
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
@@ -332,11 +333,13 @@ export class KanbanSidebarComponent implements OnDestroy {
     // Helper methods to initialize form arrays
     initServicesArray(quoteFormIndex: any): void {
         this.getServiceArray(quoteFormIndex).push(this.fb.group({
+            startDate: [new Date()],
+            endDate: [new Date()],
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
+            description: [''],
             unitRate: ['0', [Validators.required]],
             quantity: ['0', [Validators.required]],
-            paymentType: ['0', [Validators.required]],
             employeeCount: [{ value: '0', disabled: true }, []],
             total: [{ value: '0', disabled: true }, [Validators.required]],
         }));
@@ -405,7 +408,7 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quotesFormGroup.get('services') as FormArray;
         const servicesFormGroup = servicesArray.at(index) as FormGroup;
         if (servicesFormGroup.get('facility')?.value && servicesFormGroup.get('service')?.value) {
-            const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
+            const service = servicesFormGroup.get('service')?.value;
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
             // const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
             const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
