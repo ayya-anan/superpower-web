@@ -6,9 +6,9 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { DealsComponent } from '../deals.component';
 import * as _ from 'lodash';
 import { dealStatus, dealStatusHierarchy } from '../deals.helper';
-import { XService } from 'src/app/api/x/x.service';
 import { KeycloakService } from 'keycloak-angular';
 import { WIN_PROBABILITY } from './kanban-list.helper';
+import { DealService } from 'src/app/api/leads/deal.service';
 
 @Component({
     selector: 'app-kanban-list',
@@ -38,7 +38,7 @@ export class KanbanListComponent implements OnInit {
         public parent: DealsComponent,
         private kanbanService: KanbanService,
         public keycloakService: KeycloakService,
-        private xService: XService
+        private dealService: DealService
     ) { }
 
     ngOnInit(): void {
@@ -105,7 +105,7 @@ export class KanbanListComponent implements OnInit {
                 if (!this.keycloakService.isUserInRole('manage-quote') && event.container.id === '4') { return }
                 const card = event.previousContainer.data[event.previousIndex];
                 card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
-                this.xService.updateX('deal', card, card.id);
+                this.dealService.updateDeal(card, card.id);
                 transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
             } else {
                 return;

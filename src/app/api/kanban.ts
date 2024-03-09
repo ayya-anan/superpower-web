@@ -1,9 +1,9 @@
 export interface KanbanCard {
     id: string;
     dealName?: string;
-    accountManager?: string;
+    accountManager?: any;
     status?: string;
-    org?: string;
+    org?: any;
     progress?: number;
     value?: number;
     assignees?: Assignee[];

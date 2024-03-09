@@ -3,8 +3,8 @@ import { KanbanList } from 'src/app/api/kanban';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { KanbanService } from './service/kanban.service';
-import { XService } from 'src/app/api/x/x.service';
 import { KeycloakService } from 'keycloak-angular';
+import { DealService } from 'src/app/api/leads/deal.service';
 
 @Component({
     selector: 'app-deals',
@@ -28,7 +28,7 @@ export class DealsComponent {
 
     constructor(
         private kanbanService: KanbanService,
-        private xService: XService,
+        private dealService: DealService,
         private keycloakService: KeycloakService,
     ) {
         this.subscription = this.kanbanService.lists$.subscribe(data => {
@@ -45,7 +45,7 @@ export class DealsComponent {
         this.isMobileDevice = this.kanbanService.isMobileDevice();
     }
     subscribeXChange() {
-        this.xService.addx.subscribe(
+        this.dealService.addDeal.subscribe(
             (res) => {
                 this.kanbanService.init();
             }

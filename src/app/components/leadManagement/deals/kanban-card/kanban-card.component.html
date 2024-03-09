@@ -18,11 +18,11 @@
         </div>
     </div>
     <div *ngIf="card.org" style="word-break: break-word" class="text-700"><p-avatar shape="circle" icon="pi pi-building"
-            styleClass="border-2 surface-border"></p-avatar> {{ getOrgName(card.org) }}</div>
+            styleClass="border-2 surface-border"></p-avatar> {{ card.org?.primaryDetails?.name }}</div>
     <!-- <p-progressBar *ngIf="card.taskList.tasks.length" [value]="card.progress" [showValue]="false" [style]="{'height':'.5rem'}"></p-progressBar> -->
     <!-- <p-avatarGroup> -->
     <div *ngIf="card.accountManager" style="word-break: break-word" class="text-700"> <p-avatar shape="circle"
-            icon="pi pi-user" styleClass="border-2 surface-border"></p-avatar> {{ card.accountManager}}
+            icon="pi pi-user" styleClass="border-2 surface-border"></p-avatar> {{ card.accountManager?.primaryDetails?.firstName + ' ' + card.accountManager?.primaryDetails?.lastName }}
     </div>
     <!-- <p-avatar shape="circle" icon="pi pi-user" styleClass="border-2 surface-border mb-1 surface-ground"></p-avatar> -->
     <!-- </p-avatarGroup> -->

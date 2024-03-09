@@ -12,7 +12,6 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
-import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
@@ -127,7 +126,6 @@ export class KanbanSidebarComponent implements OnDestroy {
         private individualService: IndividualService,
         private kanbanService: KanbanService,
         private keycloakService: KeycloakService,
-        private xService: XService,
         private changeDetectorRef: ChangeDetectorRef,
         private translate: TranslateService,
         private dealService: DealService
@@ -211,7 +209,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 status: [{ value: 'New', disabled: true }, [Validators.required]],
                 customerContact: ['', []],
                 winProbablity: ['High', []],
-                accountManager: ['', []],
+                accountManager: ['', [Validators.required]],
                 type: ['', [Validators.required]],
                 startDate: [new Date(), [Validators.required]],
                 source: ['', []],
@@ -281,9 +279,9 @@ export class KanbanSidebarComponent implements OnDestroy {
             if (this.selectedOrganization.primaryDetails.pointofContact && this.selectedOrganization.primaryDetails.pointofContact.length > 0) {
                 this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact[0].name);
             }
-            if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
-                this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
-            }
+            // if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
+            //     this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
+            // }
             _.each(this.selectedOrganization.facilities, (facility) => {
                 facility.name = `${this.languageMapper[facility.type]} - ${(facility.address) ? facility.address : ''}`;
             });
@@ -524,16 +522,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
     updateEmailSent() {
         this.dealForm.get('status')?.setValue('Offer Sent');
-        this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
+        this.dealService.updateDeal(this.dealForm.getRawValue(), this.card.id);
     }
     saveQuote(event: Event) {
         event.preventDefault();
         this.showQuote = false;
         this.showTableView = true;
         if (this.card.org) {
-            this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
+            this.dealService.updateDeal(this.dealForm.getRawValue(), this.card.id);
         } else {
-            this.xService.postX('deal', this.dealForm.getRawValue());
+            this.dealService.postDeal(this.dealForm.getRawValue());
         }
         this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.DEALS_SAVED') });
         this.card = { ...this.dealForm.getRawValue() };

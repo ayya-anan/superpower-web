@@ -17,14 +17,7 @@ export class DealService {
 
     //To get Service Drilldown Details
     getAllDeal() {
-        this.dealAPI.getDeal().subscribe(
-            (res: any) => {
-                this.allDeal.emit(res);
-            },
-            (err: any) => {
-                this.allDeal.emit(err);
-            }
-        );
+        return this.dealAPI.getDeal()
     }
 
     postDeal(value: any) {
