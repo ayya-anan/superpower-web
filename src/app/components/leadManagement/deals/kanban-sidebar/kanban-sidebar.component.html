@@ -1,5 +1,5 @@
 <p-sidebar *ngIf="dealForm" #sidebar [(visible)]="parent.sidebarVisible" position="right" [baseZIndex]="10000"
-    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false"  [closeOnEscape]="false">
+    styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false" [closeOnEscape]="false">
     <ng-template pTemplate="content">
 
         <!-- New Design -->
@@ -29,6 +29,12 @@
                                     (onChange)="updateCustomerContact($event)"></p-dropdown>
                             </div>
                             <div class="field col-12">
+                                <label>{{'COMMON.TYPE' | translate}}</label>
+                                <p-dropdown appendTo="body" formControlName="type" [options]="quoteItems"
+                                    optionLabel="name" [filter]="true" optionValue="id"
+                                    placeholder="{{ 'DROPDOWNS.TYPE' | translate}}"></p-dropdown>
+                            </div>
+                            <div class="field col-12">
                                 <label>{{'COMMON.STATUS' | translate}}</label>
                                 <p-dropdown appendTo="body" formControlName="status" [options]="status"
                                     optionLabel="label" optionValue="name"
@@ -48,7 +54,7 @@
                             <div class="field col-12">
                                 <label>{{'LEAD_MANAGEMENT.DEALS.ACCOUNT_MANAGER' | translate}}</label><br>
                                 <p-dropdown appendTo="body" formControlName="accountManager"
-                                    [options]="accountManagerList" optionLabel="name" optionValue="name"
+                                    [options]="accountManagerList" optionLabel="name" optionValue="id"
                                     placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
                             </div>
                             <div class="field col-12">
@@ -80,9 +86,9 @@
                             <div class="col-8 mb-3 text-2xl font-medium">{{'LEAD_MANAGEMENT.DEALS.QUOTE_DETAILS' |
                                 translate}}</div>
                             <div class="col-4 float-end text-right" *ngIf="canUpdateDeal()">
-                                <button pButton pRipple icon="pi pi-plus"
+                                <button (click)="initQuotesArray()" pButton
                                     label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
-                                    (click)="initQuotesArray()"></button>
+                                    icon="pi pi-plus"></button>
                             </div>
                         </div>
                         <ng-container>
@@ -110,6 +116,18 @@
 
                                                 </span>
                                             </ng-template>
+                                            <div class="flex flex-wrap gap-3">
+                                                <div class="flex align-items-center">
+                                                    <label for="ingredient1" class="text-xl font-bold">Choose Quote Type
+                                                        : </label>
+                                                </div>
+                                                <div class="flex align-items-center"
+                                                    *ngFor="let quoteType of quoteTypes">
+                                                    <p-radioButton formControlName="type" (onClick)="changeQuoteType(i)" [value]="quoteType.value"
+                                                        [inputId]="quoteType.value"></p-radioButton>
+                                                    <label [for]="quoteType" class="ml-2">{{ quoteType.label }}</label>
+                                                </div>
+                                            </div>
                                             <div [style.pointer-events]="(i === 0)?'':'none'">
                                                 <div
                                                     class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
@@ -117,16 +135,16 @@
                                                         <div class="mb-3 text-2xl font-medium">
                                                             {{'LEAD_MANAGEMENT.DEALS.SERVICES' | translate}}</div>
                                                     </div>
-                                                    <div class="flex flex-column">
+                                                    <div class="flex flex-column"
+                                                        *ngIf="dealForm.get('type')?.value === 'SIFA'">
                                                         <div class="mb-3 font-medium">
                                                             {{'LEAD_MANAGEMENT.DEALS.MULTIPLIER' | translate}} : {{
                                                             calculateHours(selectedOrganization?.primaryDetails) }} <i
                                                                 [pTooltip]="industryType" tooltipPosition="left"
-                                                                class="pi pi-info-circle"></i>
-                                                        </div>
+                                                                class="pi pi-info-circle"></i></div>
                                                     </div>
                                                     <div class="flex mb-3 flex-wrap gap-2" *ngIf="canUpdateDeal()">
-                                                        <button pButton pRipple
+                                                        <button pButton pRipple [disabled]="!quote.get('type')?.value"
                                                             label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_SERVICE' | translate}}"
                                                             icon="pi pi-plus" (click)="initServicesArray(i)"></button>
                                                     </div>
@@ -144,20 +162,27 @@
                                                                 translate}}</label>
                                                         </div>
                                                         <div
+                                                            class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                            <label> Start Date </label>
+                                                        </div>
+                                                        <div
+                                                            class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                            <label> End Date </label>
+                                                        </div>
+                                                        <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.Service_RATE' |
                                                                 translate}}</label>
                                                         </div>
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label>{{'LEAD_MANAGEMENT.DEALS.EMPLOYEE_COUNT' |
-                                                                translate}}</label>
+                                                            <label>Quantity</label>
                                                         </div>
-                                                        <div
+                                                        <!-- <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.HOURS' | translate}} <b>
                                                                     80% </b></label>
-                                                        </div>
+                                                        </div> -->
                                                         <div
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}}
@@ -169,7 +194,7 @@
                                                             *ngFor="let service of getServiceArray(i).controls; let j = index"
                                                             [formGroupName]="j">
                                                             <div
-                                                                class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-2 text-left font-semibold py-3  surface-border white-space-nowrap">
                                                                 <p-dropdown appendTo="body" formControlName="facility"
                                                                     [options]="selectedOrganization && selectedOrganization.facilities"
                                                                     optionLabel="name" optionValue="_id"
@@ -177,41 +202,60 @@
                                                                     placeholder="Select Facility"></p-dropdown>
                                                             </div>
                                                             <div
-                                                                class="col-2 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-2 text-left font-semibold py-3  surface-border white-space-nowrap">
                                                                 <p-dropdown appendTo="body" formControlName="service"
-                                                                    [options]="selectedOrganization && selectedOrganization.services"
-                                                                    optionLabel="type" optionValue="_id"
+                                                                    [options]="filteredServices" optionLabel="subtype"
                                                                     (onChange)="onServiceChange(i,j)"
                                                                     placeholder="Select Service"></p-dropdown>
+
+                                                            </div>
+
+                                                            <div
+                                                                class="col-1 text-left font-semibold py-3 surface-border white-space-nowrap">
+                                                                <p-calendar formControlName="startDate"
+                                                                    dateFormat="dd-M-yy"
+                                                                    [showIcon]="false"></p-calendar>
                                                             </div>
                                                             <div
-                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-1 text-left font-semibold py-3  surface-border white-space-nowrap">
+                                                                <p-calendar formControlName="endDate"
+                                                                    dateFormat="dd-M-yy"
+                                                                    [showIcon]="false"></p-calendar>
+                                                            </div>
+                                                            <div
+                                                                class="col-2 text-right font-semibold py-3 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
+                                                                    [suffix]="(service.get('service')?.value?.measure == 'Daily') ? ' / day':' / hr'"
                                                                     (onInput)="onServiceCountChange(i,j)" currency="EUR"
                                                                     locale="de-DE">
                                                                 </p-inputNumber>
 
                                                             </div>
-                                                            <div
+                                                            <!-- <div
                                                                 class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="employeeCount"
                                                                     (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
 
-                                                            </div>
+                                                            </div> -->
                                                             <div
-                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-2 text-right font-semibold py-3  surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="quantity"
                                                                     (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
                                                             </div>
                                                             <div
-                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                class="col-2 text-right font-semibold py-3 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="total" mode="currency"
                                                                     inputId="currency-germany" currency="EUR"
-                                                                    locale="de-DE">
+                                                                    locale="de-DE" (onInput)="getFinalTotal(i)">
                                                                 </p-inputNumber>
+                                                            </div>
+                                                            <div
+                                                                class="col-12 text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                                                                <input formControlName="description"
+                                                                    placeholder="Description" pInputText />
                                                                 <i class="pi pi-times-circle remove-service"
                                                                     (click)="removeService(i,j)"></i>
                                                             </div>

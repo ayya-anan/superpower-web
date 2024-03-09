@@ -5,9 +5,9 @@ import { KanbanService } from '../service/kanban.service';
 import { Subscription } from 'rxjs';
 import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import * as _ from 'lodash';
-import { XService } from 'src/app/api/x/x.service';
 import { dealStatus } from '../deals.helper';
 import { KeycloakService } from 'keycloak-angular';
+import { DealService } from 'src/app/api/leads/deal.service';
 
 @Component({
     selector: 'app-kanban-card',
@@ -23,11 +23,9 @@ export class KanbanCardComponent implements OnDestroy {
 
     constructor(
         private kanbanService: KanbanService,
-        private organizationService: OrganizationService,
         public keycloakService: KeycloakService,
-        private xService: XService,
+        private dealService: DealService,
     ) {
-        this.organizationService.getAllOrganization();
         this.subscription = this.kanbanService.lists$.subscribe(data => {
             let subMenu = data.map(d => ({ id: d.listId, label: d.name, command: () => this.onMove(d.listId) }));
             this.generateMenu(subMenu);
@@ -37,15 +35,9 @@ export class KanbanCardComponent implements OnDestroy {
     parseDate(dueDate: string) {
         return new Date(dueDate).toDateString().split(' ').slice(1, 3).join(' ');
     }
-    getOrgName(id: string) {
-        if (this.organizationService.allorg && this.organizationService.allorg.results && this.organizationService.allorg.results.length > 0) {
-            const org = _.find(this.organizationService.allorg.results, (org) => org.id === id);
-            if (org) { return org.primaryDetails.name; }
-        }
-        return id;
-    }
+    
     onDelete() {
-        this.xService.deleteX('deal', this.card.id);
+        this.dealService.deleteDeal(this.card.id);
         this.kanbanService.deleteCard(this.card.id, this.listId);
     }
 
@@ -55,7 +47,7 @@ export class KanbanCardComponent implements OnDestroy {
 
     onMove(listId: string) {
         this.card.status = _.find(dealStatus, (s) => s.listId === listId)?.name
-        this.xService.updateX('deal', this.card, this.card.id);
+        this.dealService.updateDeal(this.card, this.card.id);
         this.kanbanService.moveCard(this.card, listId, this.listId);
     }
 

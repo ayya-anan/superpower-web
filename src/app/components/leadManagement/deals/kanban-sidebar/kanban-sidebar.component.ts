@@ -12,11 +12,11 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
-import { XService } from 'src/app/api/x/x.service';
 import { dealStatus, industryDetails } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { XService } from 'src/app/api/x/x.service';
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -115,7 +115,23 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Internal Audit": "Interne Anhörung",
         "Special Care": "Spezialbehandlung"
     }
-
+    quoteTypes = [
+        {
+            label: 'Time and Material',
+            value: 'time'
+        },
+        {
+            label: 'Fixed Price',
+            value: 'fixed'
+        },
+        {
+            label: 'Ala Carte',
+            value: 'clacarte'
+        }
+    ]
+    quoteItems: any;
+    allServices: any = [];
+    filteredServices: any = [];
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -126,14 +142,28 @@ export class KanbanSidebarComponent implements OnDestroy {
         private individualService: IndividualService,
         private kanbanService: KanbanService,
         private keycloakService: KeycloakService,
-        private xService: XService,
         private changeDetectorRef: ChangeDetectorRef,
         private translate: TranslateService,
+        private xService: XService,
         private dealService: DealService
     ) {
+        this.quoteItems = [
+            {
+                name: 'SIFA',
+                id: 'SIFA',
+            },
+            {
+                name: 'SiGeKo',
+                id: 'SiGeKo',
+            },
+            {
+                name: 'QM',
+                id: 'QM',
+            }
+        ];
         _.each(this.status, (status) => {
-            status.label = this.translate.instant(status.label)
-        })
+            status.label = this.translate.instant(status.label);
+        });
 
         this.cardSubscription = this.kanbanService.selectedCard$.subscribe(data => {
             this.card = _.cloneDeep(data);
@@ -143,6 +173,11 @@ export class KanbanSidebarComponent implements OnDestroy {
         });
         this.listSubscription = this.kanbanService.selectedListId$.subscribe(data => this.listId = data);
         this.listNameSubscription = this.kanbanService.listNames$.subscribe(data => this.listNames = data);
+        this.xService.getAllX('serviceList').subscribe(
+            (res: any) => {
+                this.allServices = res.results;
+            }
+        )
     }
     ngOnInit() {
         this.organizationService.getAllOrganization();
@@ -178,7 +213,8 @@ export class KanbanSidebarComponent implements OnDestroy {
                 status: [{ value: 'New', disabled: true }, [Validators.required]],
                 customerContact: ['', []],
                 winProbablity: ['High', []],
-                accountManager: ['', []],
+                accountManager: ['', [Validators.required]],
+                type: ['', [Validators.required]],
                 startDate: [new Date(), [Validators.required]],
                 source: ['', []],
                 value: ['0', []],
@@ -191,6 +227,8 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (this.card.org) {
             this.card.startDate = new Date(Date.parse(this.card.startDate.toString()));
             this.card.closeDate = new Date(Date.parse(this.card.closeDate.toString()));
+            this.card.org = this.card.org.id;
+            this.card.accountManager = this.card.accountManager.id;
             this.dealForm.patchValue(this.card);
             const quotesArray = this.dealForm.get('quotes') as FormArray;
             quotesArray.clear();  // Clear existing controls
@@ -199,6 +237,7 @@ export class KanbanSidebarComponent implements OnDestroy {
                 quotesArray.push(quoteGroup);
             });
             this.changeOrg(this.card.org);
+            this.changeType(this.card.type);
         }
     }
 
@@ -208,6 +247,7 @@ export class KanbanSidebarComponent implements OnDestroy {
             status: [{ value: quote.status, disabled: true }],
             subTotal: [{ value: quote.subTotal, disabled: true }],
             vat: [quote.vat],
+            type: [quote.type],
             vatValue: [{ value: Math.round((quote.subTotal - quote.discount) * (quote.vat / 100)), disabled: true }],
             discount: [quote.discount],
             total: [{ value: quote.total, disabled: true }],
@@ -220,8 +260,12 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quoteGroup.get('services') as FormArray;
         servicesArray.clear();  // Clear existing controls
         quote.services.forEach((service: any) => {
+            service.startDate = new Date(Date.parse(service.startDate.toString()));
+            service.endDate = new Date(Date.parse(service.endDate.toString()));
             service.employeeCount = { value: service.employeeCount, disabled: true }
-            service.total = { value: service.total, disabled: true }
+            service.total = { value: service.total, disabled: (quote.type === 'time') ? true : false }
+            service.unitRate = { value: service.unitRate, disabled: (quote.type === 'fixed') ? true : false }
+            service.quantity = { value: service.quantity, disabled: (quote.type === 'fixed') ? true : false }
             servicesArray.push(this.fb.group(service));
         });
 
@@ -240,32 +284,42 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.dealForm.get('org')?.valueChanges.subscribe(newValue => {
             this.changeOrg(newValue);
         });
+        this.dealForm.get('type')?.valueChanges.subscribe(newValue => {
+            this.changeType(newValue);
+        });
     }
     changeOrg(value: any) {
         if (value) {
-            this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value);
+            this.selectedOrganization = _.find(this.organizationData, (org) => org.id == value) || value;
             if (this.selectedOrganization.primaryDetails.pointofContact && this.selectedOrganization.primaryDetails.pointofContact.length > 0) {
                 this.dealForm.get('customerContact')?.setValue(this.selectedOrganization.primaryDetails.pointofContact[0].name);
             }
-            if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
-                this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
-            }
+            // if (this.selectedOrganization.primaryDetails.accountManager && typeof this.selectedOrganization.primaryDetails.accountManager === 'string') {
+            //     this.dealForm.get('accountManager')?.setValue(this.selectedOrganization.primaryDetails.accountManager);
+            // }
             _.each(this.selectedOrganization.facilities, (facility) => {
                 facility.name = `${this.languageMapper[facility.type]} - ${(facility.address) ? facility.address : ''}`;
             });
-            _.each(this.selectedOrganization.services, (service) => {
-                service.type = (this.languageMapper[service.type]) ? this.languageMapper[service.type] : service.type;
-            });
         }
     }
+    changeType(value: any) {
+        this.filteredServices = _.filter(this.allServices, (service) => service.type == value);
+    }
+    changeQuoteType(quoteFormIndex: number) {
+        const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
+        const servicesArray = quotesFormGroup.get('services') as FormArray;
+        servicesArray.clear();  // Clear existing controls
+        this.getFinalTotal(quoteFormIndex);
+    }
     // Helper methods to initialize form arrays
-    initQuotesArray(): void {
+    initQuotesArray(type = ''): void {
         if (this.dealForm.get('status')?.value === 'New') { this.dealForm.get('status')?.setValue('Quote-In-Progress') }
         this.QuotesArray.insert(0, this.fb.group({
             date: [new Date(), [Validators.required]],
             status: ['New', [Validators.required]],
             subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
+            type: [type, [Validators.required]],
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
@@ -298,12 +352,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     // Helper methods to initialize form arrays
     initServicesArray(quoteFormIndex: any): void {
         this.getServiceArray(quoteFormIndex).push(this.fb.group({
+            startDate: [new Date()],
+            endDate: [new Date()],
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
-            unitRate: ['0', [Validators.required]],
-            quantity: ['0', [Validators.required]],
-            employeeCount: [{ value: '0', disabled: true }, [Validators.required]],
-            total: [{ value: '0', disabled: true }, [Validators.required]],
+            description: [''],
+            unitRate: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'fixed') ? true : false }, []],
+            quantity: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'fixed') ? true : false }, []],
+            employeeCount: [{ value: '0', disabled: true }, []],
+            total: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'time') ? true : false }, [Validators.required]],
+            disabled: []
         }));
     }
 
@@ -370,17 +428,18 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quotesFormGroup.get('services') as FormArray;
         const servicesFormGroup = servicesArray.at(index) as FormGroup;
         if (servicesFormGroup.get('facility')?.value && servicesFormGroup.get('service')?.value) {
-            const service = _.find(this.selectedOrganization.services, (service) => service._id === servicesFormGroup.get('service')?.value);
+            const service = servicesFormGroup.get('service')?.value;
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
-            // const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
-            const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
-            const employeeCount = +facility.employeeCount || 95;
-            const actualHours = Math.round(hours * employeeCount * .8);
+            let actualHours = 1;
+            if (this.dealForm.get('type')?.value === 'SIFA') {
+                const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
+                const employeeCount = +facility.employeeCount || 95;
+                actualHours = Math.round(hours * employeeCount * .8);
+            }
             servicesFormGroup.patchValue({
-                employeeCount: employeeCount,
-                unitRate: service.amount,
+                unitRate: +service?.rate || 0,
                 quantity: actualHours,
-                total: Math.round(actualHours * service.amount)
+                total: Math.round(actualHours * service?.rate || 0)
             });
             this.getFinalTotal(quoteIndex);
         }
@@ -487,16 +546,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
     updateEmailSent() {
         this.dealForm.get('status')?.setValue('Offer Sent');
-        this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
+        this.dealService.updateDeal(this.dealForm.getRawValue(), this.card.id);
     }
     saveQuote(event: Event) {
         event.preventDefault();
         this.showQuote = false;
         this.showTableView = true;
         if (this.card.org) {
-            this.xService.updateX('deal', this.dealForm.getRawValue(), this.card.id);
+            this.dealService.updateDeal(this.dealForm.getRawValue(), this.card.id);
         } else {
-            this.xService.postX('deal', this.dealForm.getRawValue());
+            this.dealService.postDeal(this.dealForm.getRawValue());
         }
         this.messageService.add({ severity: 'success', summary: this.translate.instant('MESSAGES.SUCCESS'), detail: this.translate.instant('MESSAGES.DEALS_SAVED') });
         this.card = { ...this.dealForm.getRawValue() };
@@ -522,34 +581,6 @@ export class KanbanSidebarComponent implements OnDestroy {
 
     onSubmit() {
 
-    }
-
-    generatePdf() {
-        // this.dealService.saveDealAsPdf(this.dealForm.value);
-        this.dealService.saveDealAsPdf({
-            "logo": "https://expert-pm.de/wp-content/uploads/2018/09/Logo_frei_rot-e1537278645189.png",
-            "name": "Reif Baugeseilschaft mbH & Co. KG",
-            "address1": "Schmale Straße 14",
-            "address2": "04435 Schkeuditz rechnung",
-            "ourSign": "JW/MS",
-            "project": "179/23/9089",
-            "invoiceNumber": "23/0997",
-            "customerNumber": "11800",
-            "date": "01.14.2024",
-            "subject": "Rechnung",
-            "email": "rechnungenreif-leipzig.de",
-            "salutation": "Sehr geehrte Damen und Herren",
-            "servicePeriod": "Oktober bis Dezember 2023",
-            "tee": '',
-            "vatText": '',
-            "vatAmount": "752,40",
-            "totalAmount": this.getDealFinalAmount().toString(),
-            "creditInstitution": "Commerzbank Dresden",
-            "iban": "DE48 850800000103331100",
-            "bic": "DRESDEFF 850",
-            "signedBy": "Janette Wolf",
-            "signedByNote": "Leite.rjn, hnungswesen"
-        });
     }
 
     ngOnDestroy() {
