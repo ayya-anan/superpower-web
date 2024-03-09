@@ -123,9 +123,9 @@
                                                 </div>
                                                 <div class="flex align-items-center"
                                                     *ngFor="let quoteType of quoteTypes">
-                                                    <p-radioButton formControlName="type" [value]="quoteType"
-                                                        [inputId]="quoteType"></p-radioButton>
-                                                    <label [for]="quoteType" class="ml-2">{{ quoteType }}</label>
+                                                    <p-radioButton formControlName="type" (onClick)="changeQuoteType(i)" [value]="quoteType.value"
+                                                        [inputId]="quoteType.value"></p-radioButton>
+                                                    <label [for]="quoteType" class="ml-2">{{ quoteType.label }}</label>
                                                 </div>
                                             </div>
                                             <div [style.pointer-events]="(i === 0)?'':'none'">
@@ -135,13 +135,13 @@
                                                         <div class="mb-3 text-2xl font-medium">
                                                             {{'LEAD_MANAGEMENT.DEALS.SERVICES' | translate}}</div>
                                                     </div>
-                                                    <div class="flex flex-column">
+                                                    <div class="flex flex-column"
+                                                        *ngIf="dealForm.get('type')?.value === 'SIFA'">
                                                         <div class="mb-3 font-medium">
                                                             {{'LEAD_MANAGEMENT.DEALS.MULTIPLIER' | translate}} : {{
                                                             calculateHours(selectedOrganization?.primaryDetails) }} <i
                                                                 [pTooltip]="industryType" tooltipPosition="left"
-                                                                class="pi pi-info-circle"></i>
-                                                        </div>
+                                                                class="pi pi-info-circle"></i></div>
                                                     </div>
                                                     <div class="flex mb-3 flex-wrap gap-2" *ngIf="canUpdateDeal()">
                                                         <button pButton pRipple [disabled]="!quote.get('type')?.value"
@@ -249,7 +249,7 @@
                                                                 class="col-2 text-right font-semibold py-3 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="total" mode="currency"
                                                                     inputId="currency-germany" currency="EUR"
-                                                                    locale="de-DE">
+                                                                    locale="de-DE" (onInput)="getFinalTotal(i)">
                                                                 </p-inputNumber>
                                                             </div>
                                                             <div

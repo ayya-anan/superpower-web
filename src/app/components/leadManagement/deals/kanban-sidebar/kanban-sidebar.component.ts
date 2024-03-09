@@ -116,13 +116,22 @@ export class KanbanSidebarComponent implements OnDestroy {
         "Special Care": "Spezialbehandlung"
     }
     quoteTypes = [
-        'Time and Material',
-        'Fixed Price',
-        'Ala Carte'
+        {
+            label: 'Time and Material',
+            value: 'time'
+        },
+        {
+            label: 'Fixed Price',
+            value: 'fixed'
+        },
+        {
+            label: 'Ala Carte',
+            value: 'clacarte'
+        }
     ]
     quoteItems: any;
     allServices: any = [];
-    filteredServices : any = [];
+    filteredServices: any = [];
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -251,8 +260,12 @@ export class KanbanSidebarComponent implements OnDestroy {
         const servicesArray = quoteGroup.get('services') as FormArray;
         servicesArray.clear();  // Clear existing controls
         quote.services.forEach((service: any) => {
+            service.startDate = new Date(Date.parse(service.startDate.toString()));
+            service.endDate = new Date(Date.parse(service.endDate.toString()));
             service.employeeCount = { value: service.employeeCount, disabled: true }
-            service.total = { value: service.total, disabled: true }
+            service.total = { value: service.total, disabled: (quote.type === 'time') ? true : false }
+            service.unitRate = { value: service.unitRate, disabled: (quote.type === 'fixed') ? true : false }
+            service.quantity = { value: service.quantity, disabled: (quote.type === 'fixed') ? true : false }
             servicesArray.push(this.fb.group(service));
         });
 
@@ -289,8 +302,14 @@ export class KanbanSidebarComponent implements OnDestroy {
             });
         }
     }
-    changeType(value: any){
+    changeType(value: any) {
         this.filteredServices = _.filter(this.allServices, (service) => service.type == value);
+    }
+    changeQuoteType(quoteFormIndex: number) {
+        const quotesFormGroup = this.QuotesArray.at(quoteFormIndex) as FormGroup;
+        const servicesArray = quotesFormGroup.get('services') as FormArray;
+        servicesArray.clear();  // Clear existing controls
+        this.getFinalTotal(quoteFormIndex);
     }
     // Helper methods to initialize form arrays
     initQuotesArray(type = ''): void {
@@ -338,10 +357,11 @@ export class KanbanSidebarComponent implements OnDestroy {
             facility: ['', [Validators.required]],
             service: ['', [Validators.required]],
             description: [''],
-            unitRate: ['0', [Validators.required]],
-            quantity: ['0', [Validators.required]],
+            unitRate: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'fixed') ? true : false }, []],
+            quantity: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'fixed') ? true : false }, []],
             employeeCount: [{ value: '0', disabled: true }, []],
-            total: [{ value: '0', disabled: true }, [Validators.required]],
+            total: [{ value: 0, disabled: (this.QuotesArray.at(quoteFormIndex).get('type')?.value === 'time') ? true : false }, [Validators.required]],
+            disabled: []
         }));
     }
 
@@ -410,15 +430,16 @@ export class KanbanSidebarComponent implements OnDestroy {
         if (servicesFormGroup.get('facility')?.value && servicesFormGroup.get('service')?.value) {
             const service = servicesFormGroup.get('service')?.value;
             const facility = _.find(this.selectedOrganization.facilities, (facility) => facility._id === servicesFormGroup.get('facility')?.value);
-            // const hours = _.find(this.quantity, (q: any) => q.type == this.selectedOrganization.primaryDetails.industryType && q.subType == this.selectedOrganization.primaryDetails.subType);
-            const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
-            const employeeCount = +facility.employeeCount || 95;
-            const actualHours = Math.round(hours * employeeCount * .8);
+            let actualHours = 1;
+            if (this.dealForm.get('type')?.value === 'SIFA') {
+                const hours: any = this.calculateHours(this.selectedOrganization.primaryDetails) || 1;
+                const employeeCount = +facility.employeeCount || 95;
+                actualHours = Math.round(hours * employeeCount * .8);
+            }
             servicesFormGroup.patchValue({
-                employeeCount: employeeCount,
-                unitRate: service?.amount || 0,
+                unitRate: +service?.rate || 0,
                 quantity: actualHours,
-                total: Math.round(actualHours * service?.amount || 0)
+                total: Math.round(actualHours * service?.rate || 0)
             });
             this.getFinalTotal(quoteIndex);
         }
