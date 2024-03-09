@@ -11,6 +11,8 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { COUNTRIES_LIST } from 'src/app/constants/countries.constants';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { XService } from 'src/app/api/x/x.service';
+import { DealService } from 'src/app/api/leads/deal.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-organization',
@@ -30,6 +32,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     private individualsAPI: IndividualsAPI,
     private translate: TranslateService,
     private xService: XService,
+    private dealService: DealService
   ) { }
 
   organizationSubscription: Subscription = new Subscription;
@@ -56,6 +59,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   activeContract: boolean = false;
   allIndividuals: any = [];
   editId: any;
+  panelList: any = [];
+  dealsTable: any = [];
 
   // Industry Types
   industryValues: any = [];
@@ -67,6 +72,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   value1: any;
   value2: any;
 
+  allDealsData: any = [];
+
   // TABLE COLUMNS
   columns = [
     { header: 'CONTACTS.ORGANIZATIONS.NAME', field: 'name' },
@@ -77,6 +84,27 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     { header: 'CONTACTS.ORGANIZATIONS.INDUSTRY_TYPE', field: 'type' },
     { header: 'CONTACTS.ORGANIZATIONS.SUB_TYPE', field: 'subType' },
     // { header: 'Account Manager', field: 'accountManager' },
+  ];
+
+  // Service Table Columns
+  serviceColumns = [
+    { header: 'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.SERVICE_TYPE', field: 'type' },
+    { header: 'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.SERVICE_SUBTYPE', field: 'subtype' },
+    { header: 'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.UNIT_MEASURE', field: 'measure' },
+    { header: 'BUSINESS_ADMINISTRATION.SERVICE_SETTINGS.UNIT_RATE', field: 'rate' },
+    { header: 'COMMON.START_DATE', field: 'startDate' },
+    { header: 'COMMON.END_DATE', field: 'endDate' },
+  ];
+
+  // Deals Table
+  dealsColumns = [
+    { header: 'CONTACTS.ORGANIZATIONS.NAME', field: 'dealName' },
+    { header: 'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT', field: 'customerContact' },
+    { header: 'COMMON.START_DATE', field: 'startDate' },
+    { header: 'COMMON.END_DATE', field: 'closeDate' },
+    { header: 'CONTACTS.ORGANIZATIONS.STATUS', field: 'status' },
+    { header: 'COMMON.DEALTYPE', field: 'dealType' },
+    { header: 'COMMON.VALUE', field: 'value' },
   ];
 
   pocTableCols = [
@@ -124,6 +152,26 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   addresses: FormArray = this.fb.array([]);
   services: FormArray = this.fb.array([]);
 
+  // Newly Added
+  services_SIFA: FormArray = this.fb.array([]);
+  services_QM: FormArray = this.fb.array([]);
+  services_SiGeKo: FormArray = this.fb.array([]);
+
+  serviceList_SIFA: any = [
+    { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52 },
+    { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89 }
+  ];
+
+  serviceList_QM: any = [
+    { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96 },
+    { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20 },
+  ];
+
+  unitMeasure: any = [
+    { label: this.translate.instant('DROPDOWNS.DAILY'), name: 'Daily' },
+    { label: this.translate.instant('DROPDOWNS.HOURLY'), name: 'Hourly' },
+  ]
+
   // LanguageMapper 
   languageMapper: any = {
     "Active": "Aktiv",
@@ -156,6 +204,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       this.columns.splice(5, 0, { header: 'CONTACTS.ORGANIZATIONS.ACTIONS', field: 'action' });
     }
     this.subscribeToLangulaeChange();
+    // To Get Deals Data
+    this.subscribeToDealsData();
   }
 
   organizationDetails() {
@@ -208,7 +258,29 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20, germanVersion: 'Interne Anhörung' },
         { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89, germanVersion: 'Spezialbehandlung' }
       ];
+
+      this.serviceList_SIFA = [
+        { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care', unitRate: 52, germanVersion: 'Grundversorgung' },
+        { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care', unitRate: 89, germanVersion: 'Spezialbehandlung' }
+      ];
+
+      this.serviceList_QM = [
+        { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit', unitRate: 96, germanVersion: 'Externe Prüfung' },
+        { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit', unitRate: 20, germanVersion: 'Interne Anhörung' },
+      ];
+
+      this.unitMeasure = [
+        { label: this.translate.instant('DROPDOWNS.DAILY'), name: 'Daily' },
+        { label: this.translate.instant('DROPDOWNS.HOURLY'), name: 'Hourly' },
+      ]
     });
+  }
+
+  subscribeToDealsData() {
+    this.dealService.getAllDeal().subscribe(
+      (res: any) => {
+        this.allDealsData = res.results;
+      });
   }
 
   subscribeToGetAllOrganization() {
@@ -305,21 +377,34 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
         pointofContact: [''],
         accountManager: [''],
         status: ['Prospect'],
-        section: '',
-        industryType: '',
-        subType1: '',
-        subType2: '',
         revenueRange: [''],
         invoiceFrequency: '',
         startDate: '',
         endDate: '',
         customerSince: ''
       }),
+      multiplierValue: this.fb.group({
+        section: '',
+        industryType: '',
+        subType1: '',
+        subType2: '',
+        multiplier: ''
+      }),
       facilities: this.facilities,
       services: this.services,
+
+      // NEW Array
+      services_SIFA: this.services_SIFA,
+      services_QM: this.services_QM,
+      services_SiGeKo: this.services_SiGeKo
     });
     this.initFacilitiesArray(); // Initialize facilities array
-    this.initServicesArray(); // Initialize Services array
+    // this.initServicesArray(); // Initialize Services array
+
+    //NEW DATA
+    this.initSIFAArray();
+    this.initQMArray();
+    this.initSIGEKOArray();
   }
 
   // Helper methods to initialize form arrays
@@ -345,6 +430,40 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
       // tinoAverage: ['', [Validators.required]],
     }));
   }
+
+  initSIFAArray() {
+    const servicesArray = this.organizationForm.get('services_SIFA') as FormArray;
+    servicesArray.push(this.fb.group({
+      type: '',
+      measure: '',
+      amount: 0,
+      companyAverage: { value: 0, disabled: true },
+      // tinoAverage: ['', [Validators.required]],
+    }));
+  }
+
+  initQMArray() {
+    const servicesArray = this.organizationForm.get('services_QM') as FormArray;
+    servicesArray.push(this.fb.group({
+      type: '',
+      measure: '',
+      amount: 0,
+      companyAverage: { value: 0, disabled: true },
+      // tinoAverage: ['', [Validators.required]],
+    }));
+  }
+
+  initSIGEKOArray() {
+    const servicesArray = this.organizationForm.get('services_SiGeKo') as FormArray;
+    servicesArray.push(this.fb.group({
+      type: '',
+      measure: '',
+      amount: 0,
+      companyAverage: { value: 0, disabled: true },
+      // tinoAverage: ['', [Validators.required]],
+    }));
+  }
+
   removeFacilitiesArray(index: number) {
     const facilitiesArray = this.organizationForm.get('facilities') as FormArray;
     facilitiesArray.removeAt(index)
@@ -378,6 +497,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   saveOrgData() {
+    // console.log(this.organizationForm.value);
     const result = _.filter(this.organizationData, (obj) => obj.primaryDetails.name.toLowerCase() === this.organizationForm.value.primaryDetails.name.toLowerCase());
     this.organizationService.organizationDetails = {};
     this.organizationForm.value.facilities = (this.facilitiesTable) ? this.facilitiesTableData : this.facilities.value;
@@ -452,6 +572,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.organizationForm.get('primaryDetails.industryType')?.patchValue({ name: '' });
     this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
     this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
+    this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
   }
 
   sectionChange(event: any) {
@@ -461,18 +582,29 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.industrySubType2 = [];
   }
 
+  updateMultiplierHours(event: any) {
+    if (event.value.Children.length === 0) {
+      this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: event.value.Hours });
+    }
+  }
+
   industryTypeChange(event: any) {
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
     this.industrySubType1 = event.value.Children;
     this.industrySubType2 = [];
+    // this.updateMultiplierHours(event);
     this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
   }
 
   industrySubTypeChange(event: any) {
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
     this.industrySubType2 = event.value.Children;
+    // this.updateMultiplierHours(event);
     this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
   }
 
   industrySubType2Change(event: any) {
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: event.value.Hours });
   }
 
   searchResults(event: any) {
@@ -518,6 +650,37 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
     this.addPOCDetails(updateData.primaryDetails.name);
     this.addFacilityTable(updateData.facilities);
     this.facilitiesTable = (this.facilitiesTableData.length > 0) ? true : false;
+    this.getServicesView(event.rowData);
+  }
+
+  getServicesView(rowData: any) {
+    this.panelList.length = 0;
+    this.dealsTable.length = 0;
+    const resultSet = _.filter(this.allDealsData, (obj) => obj.org && obj.org.id === rowData.id);
+    _.forEach(resultSet, (item) => {
+      let data: any = [];
+      if (item.quotes.length > 0) {
+        const serviceList = item.quotes[0].services;
+        _.forEach(serviceList, (serviceObj) => {
+          const obj = serviceObj.service;
+          obj['startDate'] = moment(serviceObj.startDate).format('MMM DD YYYY');
+          obj['endDate'] = moment(serviceObj.endDate).format('MMM DD YYYY');
+          data.push(serviceObj.service);
+        });
+        this.panelList.push({ type: item.type, dataVal: data });
+      }
+      const dealsObj = {
+        dealName: item.dealName,
+        customerContact: item.customerContact,
+        startDate: moment(item.startDate).format('MMM DD YYYY'),
+        closeDate: moment(item.closeDate).format('MMM DD YYYY'),
+        status: item.status,
+        dealType: item.type,
+        value: item.value
+      }
+      this.dealsTable.push(dealsObj);
+    });
+    console.log(this.panelList);
   }
 
   delete(event: any) {

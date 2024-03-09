@@ -36,6 +36,8 @@ import { CardModule } from 'primeng/card';
 import { SidebarModule } from 'primeng/sidebar';
 import { FieldsetModule } from 'primeng/fieldset';
 import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child.module';
+import { TabViewModule } from 'primeng/tabview';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
 	imports: [
@@ -75,7 +77,9 @@ import { AppTranslateChildModule } from 'src/app/coreModules/app.translate.child
 		ConfirmDialogModule,
 		SidebarModule,
 		FieldsetModule,
-		AppTranslateChildModule
+		AppTranslateChildModule,
+		TabViewModule,
+		DividerModule
 	],
 	declarations: [OrganizationsComponent]
 })
