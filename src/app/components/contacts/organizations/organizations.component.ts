@@ -589,22 +589,22 @@ export class OrganizationsComponent implements OnInit, OnDestroy {
   }
 
   industryTypeChange(event: any) {
-    this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
     this.industrySubType1 = event.value.Children;
     this.industrySubType2 = [];
-    this.updateMultiplierHours(event);
-    // this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
+    // this.updateMultiplierHours(event);
+    this.organizationForm.get('primaryDetails.subType1')?.patchValue({ name: '' });
   }
 
   industrySubTypeChange(event: any) {
-    this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: 0 });
     this.industrySubType2 = event.value.Children;
-    this.updateMultiplierHours(event);
-    // this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
+    // this.updateMultiplierHours(event);
+    this.organizationForm.get('primaryDetails.subType2')?.patchValue({ name: '' });
   }
 
   industrySubType2Change(event: any) {
-    this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: event.value.Hours });
+    // this.organizationForm.get('multiplierValue')?.patchValue({ multiplier: event.value.Hours });
   }
 
   searchResults(event: any) {
