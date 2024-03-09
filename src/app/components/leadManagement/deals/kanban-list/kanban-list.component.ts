@@ -103,8 +103,10 @@ export class KanbanListComponent implements OnInit {
         } else {
             if (dealStatusHierarchy[event.previousContainer.id] && dealStatusHierarchy[event.previousContainer.id].includes(event.container.id)) { // move only specific status
                 if (!this.keycloakService.isUserInRole('manage-quote') && event.container.id === '4') { return }
-                const card = event.previousContainer.data[event.previousIndex];
+                const card = _.cloneDeep(event.previousContainer.data[event.previousIndex]);
                 card.status = _.find(dealStatus, (s) => s.listId === event.container.id)?.name;
+                card.org = card.org.id;
+                card.accountManager = card.accountManager.id;
                 this.dealService.updateDeal(card, card.id);
                 transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
             } else {

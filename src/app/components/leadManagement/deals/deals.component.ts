@@ -41,16 +41,9 @@ export class DealsComponent {
         const roleValue = this.keycloakService.getUserRoles();
         if(roleValue && roleValue.includes('Team Members')) { this.showDealsPage = false;}
         this.removeLayoutResponsive();
-        this.subscribeXChange();
         this.isMobileDevice = this.kanbanService.isMobileDevice();
     }
-    subscribeXChange() {
-        this.dealService.addDeal.subscribe(
-            (res) => {
-                this.kanbanService.init();
-            }
-        )
-    }
+
     toggleSidebar() {
         this.sidebarVisible = true;
     }

@@ -6,7 +6,7 @@ import { DealAPI } from './dealApi.service';
 export class DealService {
 
     allDeal: EventEmitter<any> = new EventEmitter();
-    addDeal: EventEmitter<any> = new EventEmitter();
+    dealRefresh: EventEmitter<any> = new EventEmitter();
     updateDealEmit: EventEmitter<any> = new EventEmitter();
     deleteDealEmit: EventEmitter<any> = new EventEmitter();
     dealAsPdf: EventEmitter<any> = new EventEmitter();
@@ -23,10 +23,10 @@ export class DealService {
     postDeal(value: any) {
         this.dealAPI.postDeal(value).subscribe(
             (res: any) => {
-                this.addDeal.emit(res);
+                this.dealRefresh.emit(res);
             },
             (err: any) => {
-                this.addDeal.emit(err);
+                this.dealRefresh.emit(err);
             }
         );
     }
@@ -34,10 +34,10 @@ export class DealService {
     updateDeal(postData: any, id: any) {
         this.dealAPI.updateDeal(postData, id).subscribe(
             (res: any) => {
-                this.updateDealEmit.emit(res);
+                this.dealRefresh.emit(res);
             },
             (err: any) => {
-                this.updateDealEmit.emit(err);
+                this.dealRefresh.emit(err);
             }
         );
     }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { KanbanCard, KanbanList } from 'src/app/api/kanban';
 import { dealStatus } from '../deals.helper';
 import { DealService } from 'src/app/api/leads/deal.service';
@@ -29,8 +29,14 @@ export class KanbanService {
 
     constructor(private http: HttpClient, private dealService: DealService) {
         this.init();
+        this.subscribeDealRefresh();
     }
-
+    subscribeDealRefresh() {
+        this.dealService.dealRefresh.subscribe((res: any) => {
+            this.init();
+        });
+    }
+        
     init() {
         this.dealService.getAllDeal().subscribe(
             (res: any) => {
