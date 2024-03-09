@@ -12,11 +12,17 @@ import { OrganizationService } from 'src/app/api/contacts/organization.service';
 import { IndividualService } from 'src/app/api/contacts/individuals.service';
 import { DealService } from 'src/app/api/leads/deal.service';
 import * as moment from 'moment';
-import { dealStatus, industryDetails } from '../deals.helper';
+import { dealStatus } from '../deals.helper';
 import { REMOVEIDS } from 'src/app/coreModules/common.function';
 import { KeycloakService } from 'keycloak-angular';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { XService } from 'src/app/api/x/x.service';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { getpdfTemplate } from './kanban-sidebar.helper';
+
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 
 @Component({
     selector: 'app-kanban-sidebar',
@@ -64,7 +70,6 @@ export class KanbanSidebarComponent implements OnDestroy {
     @ViewChild('inputTaskListTitle') inputTaskListTitle!: ElementRef;
 
     status: any = _.cloneDeep(dealStatus);
-    industryDetails: any = _.cloneDeep(industryDetails);
 
     winProbablity: any = [
         { name: 'High' },
@@ -621,10 +626,12 @@ export class KanbanSidebarComponent implements OnDestroy {
     }
 
     documentPreview(event: Event, i: number) {
-        this.quoteVisible = false;
+        // this.quoteVisible = false;
         this.changeDetectorRef.detectChanges();
         this.selectedQuote = this.dealForm.getRawValue().quotes[i];
-        this.quoteVisible = true;
+        console.log(pdfMake)
+        pdfMake.createPdf(getpdfTemplate(this.dealForm.getRawValue().type)).open();
+        // this.quoteVisible = true;
     }
 
 
