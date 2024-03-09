@@ -153,20 +153,6 @@ export class KanbanSidebarComponent implements OnDestroy {
         private xService: XService,
         private dealService: DealService
     ) {
-        this.quoteItems = [
-            {
-                name: 'SIFA',
-                id: 'SIFA',
-            },
-            {
-                name: 'SiGeKo',
-                id: 'SiGeKo',
-            },
-            {
-                name: 'QM',
-                id: 'QM',
-            }
-        ];
         _.each(this.status, (status) => {
             status.label = this.translate.instant(status.label);
         });
@@ -182,6 +168,9 @@ export class KanbanSidebarComponent implements OnDestroy {
         this.xService.getAllX('serviceList').subscribe(
             (res: any) => {
                 this.allServices = res.results;
+                this.quoteItems = _.unionBy(_.map(res.results, (i) => {
+                    return { id: i.type, name: i.type }
+                }),'id');
             }
         )
     }
