@@ -19,24 +19,27 @@ export class ServiceSettingsComponent implements OnInit {
   deleteService: Subscription = new Subscription;
 
   //DropDowns
-  ServiceTypes: any = [
-    { label: this.translate.instant('DROPDOWNS.SIFA'), name: 'SIFA' },
-    { label: this.translate.instant('DROPDOWNS.QM'), name: 'QM' },
-    { label: this.translate.instant('DROPDOWNS.SiGeKo'), name: 'SiGeKo' },
-  ];
-  subTypeList: any = [];
-  serviceList_SIFA: any = [
-    { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care' },
-    { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care' }
-  ];
-  serviceList_QM: any = [
-    { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit' },
-    { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit' },
-  ];
+  // ServiceTypes: any = [
+  //   { label: this.translate.instant('DROPDOWNS.SIFA'), name: 'SIFA' },
+  //   { label: this.translate.instant('DROPDOWNS.QM'), name: 'QM' },
+  //   { label: this.translate.instant('DROPDOWNS.SiGeKo'), name: 'SiGeKo' },
+  // ];
+  // subTypeList: any = [];
+  // serviceList_SIFA: any = [
+  //   { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care' },
+  //   { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care' }
+  // ];
+  // serviceList_QM: any = [
+  //   { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit' },
+  //   { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit' },
+  // ];
   unitMeasure: any = [
     { label: this.translate.instant('DROPDOWNS.DAILY'), name: 'Daily' },
     { label: this.translate.instant('DROPDOWNS.HOURLY'), name: 'Hourly' },
   ]
+  
+  ServiceTypes: any = [];
+  subTypeList: any = [];
 
   //TableDatas
   loading: boolean = false;
@@ -71,19 +74,19 @@ export class ServiceSettingsComponent implements OnInit {
 
   subscribeToLangulaeChange() {
     this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.ServiceTypes = [
-        { label: this.translate.instant('DROPDOWNS.SIFA'), name: 'SIFA' },
-        { label: this.translate.instant('DROPDOWNS.QM'), name: 'QM' },
-        { label: this.translate.instant('DROPDOWNS.SiGeKo'), name: 'SiGeKo' },
-      ];
-      this.serviceList_SIFA = [
-        { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care' },
-        { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care' }
-      ];
-      this.serviceList_QM = [
-        { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit' },
-        { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit' },
-      ];
+      // this.ServiceTypes = [
+      //   { label: this.translate.instant('DROPDOWNS.SIFA'), name: 'SIFA' },
+      //   { label: this.translate.instant('DROPDOWNS.QM'), name: 'QM' },
+      //   { label: this.translate.instant('DROPDOWNS.SiGeKo'), name: 'SiGeKo' },
+      // ];
+      // this.serviceList_SIFA = [
+      //   { label: this.translate.instant('DROPDOWNS.BASIC_CARE'), name: 'Basic Care' },
+      //   { label: this.translate.instant('DROPDOWNS.SPECIAL_CARE'), name: 'Special Care' }
+      // ];
+      // this.serviceList_QM = [
+      //   { label: this.translate.instant('DROPDOWNS.EXTERNAL_AUDIT'), name: 'External Audit' },
+      //   { label: this.translate.instant('DROPDOWNS.INTERNAL_AUDIT'), name: 'Internal Audit' },
+      // ];
       this.unitMeasure = [
         { label: this.translate.instant('DROPDOWNS.DAILY'), name: 'Daily' },
         { label: this.translate.instant('DROPDOWNS.HOURLY'), name: 'Hourly' },
@@ -91,13 +94,26 @@ export class ServiceSettingsComponent implements OnInit {
     });
   }
 
+  createServiceList(serviceTypes: any) {
+    this.ServiceTypes.length = 0;
+    _.forEach(serviceTypes, (item) => {
+        const obj: any = {
+          label : item,
+          name: item,
+        }
+        this.ServiceTypes.push(obj);
+    }); 
+  }
+
   subscribeToServiceList() {
     this.xService.getAllX('serviceList').subscribe(
       (res: any) => {
+        this.ServiceTypes = [];
         _.forEach(res.results, (item) => {
           item.validTill = moment(item.validTill).format('MMM DD YYYY');
         });
         this.tableData = res.results;
+        this.createServiceList(_.uniq(_.map(res.results, 'type')));
       }
     );
   }
@@ -131,7 +147,12 @@ export class ServiceSettingsComponent implements OnInit {
   }
 
   changeSubType(event: any) {
-    this.subTypeList = (event.value.name === 'SIFA') ? this.serviceList_SIFA : (event.value.name === 'QM') ? this.serviceList_QM : []
+    this.serviceListForm.patchValue({subtype: ''});
+    this.subTypeList = [];
+    const result = _.uniqBy(_.filter(this.tableData, (obj) => obj.type === event.value.label), 'subtype');
+    _.forEach(result, (item) => {
+      this.subTypeList.push({ label: item.subtype, name: item.subtype });
+    });
   }
 
   onSubmit() {
