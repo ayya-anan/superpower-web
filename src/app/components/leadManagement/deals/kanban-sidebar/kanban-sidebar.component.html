@@ -84,9 +84,9 @@
                                     optionLabel="name" [filter]="true" optionValue="id"
                                     placeholder="Select Deal Type "></p-dropdown>
 
-                                <button (click)="initQuotesArray()" pButton [disabled]="!dealForm.get('type')?.value"
+                                <p-splitButton [disabled]="!dealForm.get('type')?.value"
                                     label="{{'LEAD_MANAGEMENT.DEALS.ADD_NEW_QUOTE' | translate}}"
-                                    icon="pi pi-plus"></button>
+                                    icon="pi pi-plus" [model]="quoteTypes"></p-splitButton>
                             </div>
                         </div>
                         <ng-container>
@@ -114,20 +114,8 @@
 
                                                 </span>
                                             </ng-template>
-                                            <div class="flex flex-wrap gap-3">
-                                                <div class="flex align-items-center">
-                                                    <label for="ingredient1" class="text-xl font-bold">Choose Quote Type
-                                                        : </label>
-                                                </div>
-                                                <div class="flex align-items-center"
-                                                    *ngFor="let quoteType of quoteTypes">
-                                                    <p-radioButton formControlName="type" (onClick)="changeQuoteType(i)"
-                                                        [value]="quoteType.value"
-                                                        [inputId]="quoteType.value"></p-radioButton>
-                                                    <label [for]="quoteType" class="ml-2">{{ quoteType.label }}</label>
-                                                </div>
-                                            </div>
-                                            <div [style.pointer-events]="(i === 0)?'':'none'">
+                                            <div [style.pointer-events]="(i === 0)?'':'none'" >
+                                                <p-editor [style]="{'height':'250px','margin':'1rem 0'}"  formControlName="header"></p-editor>
                                                 <div
                                                     class="mt-5 flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border min-w-max">
                                                     <div class="flex flex-column">
@@ -168,21 +156,16 @@
                                                             class="col-1 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> End Date </label>
                                                         </div>
-                                                        <div
+                                                        <div *ngIf="quote.get('type')?.value !== 'fixed'"
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.Service_RATE' |
                                                                 translate}}</label>
                                                         </div>
-                                                        <div
+                                                        <div *ngIf="quote.get('type')?.value === 'time'"
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label>Quantity</label>
                                                         </div>
-                                                        <!-- <div
-                                                            class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                            <label> {{'LEAD_MANAGEMENT.DEALS.HOURS' | translate}} <b>
-                                                                    80% </b></label>
-                                                        </div> -->
-                                                        <div
+                                                        <div *ngIf="quote.get('type')?.value !== 'alacarte'"
                                                             class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                                                             <label> {{'LEAD_MANAGEMENT.DEALS.TOTAL' | translate}}
                                                             </label>
@@ -221,7 +204,7 @@
                                                                     dateFormat="dd-M-yy"
                                                                     [showIcon]="false"></p-calendar>
                                                             </div>
-                                                            <div
+                                                            <div *ngIf="quote.get('type')?.value !== 'fixed'"
                                                                 class="col-2 text-right font-semibold py-3 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="unitRate"
                                                                     mode="currency" inputId="currency-germany"
@@ -231,20 +214,13 @@
                                                                 </p-inputNumber>
 
                                                             </div>
-                                                            <!-- <div
-                                                                class="col-2 text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                                                                <p-inputNumber formControlName="employeeCount"
-                                                                    (onInput)="onServiceCountChange(i,j)">
-                                                                </p-inputNumber>
-
-                                                            </div> -->
-                                                            <div
+                                                            <div *ngIf="quote.get('type')?.value === 'time'"
                                                                 class="col-2 text-right font-semibold py-3  surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="quantity"
                                                                     (onInput)="onServiceCountChange(i,j)">
                                                                 </p-inputNumber>
                                                             </div>
-                                                            <div
+                                                            <div *ngIf="quote.get('type')?.value !== 'alacarte'"
                                                                 class="col-2 text-right font-semibold py-3 surface-border white-space-nowrap">
                                                                 <p-inputNumber formControlName="total" mode="currency"
                                                                     inputId="currency-germany" currency="EUR"
@@ -308,6 +284,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <p-editor [style]="{'height':'250px','margin':'1rem 0'}"  formControlName="footer"></p-editor>
                                                 <ng-container
                                                     *ngIf="getPaymentArray(i).controls && getPaymentArray(i).controls.length > 0">
 

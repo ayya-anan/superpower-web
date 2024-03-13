@@ -19,7 +19,9 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { XService } from 'src/app/api/x/x.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { getpdfTemplate } from './kanban-sidebar.helper';
+import htmlToPdfmake from 'html-to-pdfmake';
+
+import { NOTES_CONTENT, TEMPLATE_CONTENT, addQuoteContent, getpdfTemplate } from './kanban-sidebar.helper';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -124,15 +126,21 @@ export class KanbanSidebarComponent implements OnDestroy {
     quoteTypes = [
         {
             label: 'Time and Material',
-            value: 'time'
+            command: () => {
+                this.initQuotesArray('time');
+            }
         },
         {
             label: 'Fixed Price',
-            value: 'fixed'
+            command: () => {
+                this.initQuotesArray('fixed');
+            }
         },
         {
             label: 'Ala Carte',
-            value: 'clacarte'
+            command: () => {
+                this.initQuotesArray('alacarte');
+            }
         }
     ]
     quoteItems: any;
@@ -328,6 +336,8 @@ export class KanbanSidebarComponent implements OnDestroy {
             subTotal: [{ value: '0', disabled: true }, [Validators.required]],
             vat: [19, [Validators.required]],
             type: [type, [Validators.required]],
+            header: [this.getHeaderContent(), []],
+            footer: [NOTES_CONTENT[this.dealForm.get('type')?.value], []],
             vatValue: [{ value: '0', disabled: true }, []],
             discount: ['0', [Validators.required]],
             total: [{ value: '0', disabled: true }, [Validators.required]],
@@ -335,6 +345,19 @@ export class KanbanSidebarComponent implements OnDestroy {
             services: this.fb.array([]),
             payments: this.fb.array([])
         }));
+    }
+    getHeaderContent() {
+        const dealFormDetails = this.dealForm.getRawValue();
+        let template = '' ;
+        template += `<p> <b>${this.selectedOrganization?.primaryDetails?.name} </b>`;
+        if (this.selectedOrganization.facilities && this.selectedOrganization.facilities.length > 0) {
+            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.address}`;
+            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.country}`;
+            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.zipCode}`;
+        }
+        template  += `</p><p></p><p> Dear ${dealFormDetails.customerContact}, </p>`;
+        template  += _.cloneDeep(TEMPLATE_CONTENT[dealFormDetails.type]);
+        return template;
     }
     cloneQuote(event: Event, quoteFormIndex: number) {
         event.stopPropagation();
@@ -632,8 +655,13 @@ export class KanbanSidebarComponent implements OnDestroy {
         // this.quoteVisible = false;
         this.changeDetectorRef.detectChanges();
         this.selectedQuote = this.dealForm.getRawValue().quotes[i];
-        console.log(pdfMake)
-        pdfMake.createPdf(getpdfTemplate(this.dealForm.getRawValue().type)).open();
+        const basePDFTEMPLATE = _.cloneDeep(getpdfTemplate(this.dealForm.getRawValue().type))
+        const header = htmlToPdfmake(this.selectedQuote.header)
+        basePDFTEMPLATE.content.push(header);
+        addQuoteContent(this.selectedQuote, basePDFTEMPLATE);
+        const footer = htmlToPdfmake(this.selectedQuote.footer)
+        basePDFTEMPLATE.content.push(footer);
+        pdfMake.createPdf(basePDFTEMPLATE).open();
         // this.quoteVisible = true;
     }
 
