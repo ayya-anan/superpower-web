@@ -151,6 +151,9 @@ export const SERVICE_TABLE: any = {
 }
 export const addQuoteContent = (quote: any, basePDFTEMPLATE: any) => {
     const serviceContent = SERVICE_TABLE[quote.type];
+    // Resetting the service table body 
+    if(serviceContent.table.body.length > 1) {  serviceContent.table.body.splice(1, serviceContent.table.body.length); }
+    
     _.each(quote.services, (service: any) => {
         switch (quote.type) {
             case 'time':
@@ -165,5 +168,5 @@ export const addQuoteContent = (quote: any, basePDFTEMPLATE: any) => {
         }
     });
     basePDFTEMPLATE.content.push(serviceContent);
-    basePDFTEMPLATE.content.push({ text: `Total : ${quote.subTotal}`, bold: true, margin: [10, 10, 0, 0], alignment: 'right' });
+    basePDFTEMPLATE.content.push({ text: `Total : ${quote.subTotal} €`, bold: true, margin: [10, 10, 0, 0], alignment: 'right' });
 }

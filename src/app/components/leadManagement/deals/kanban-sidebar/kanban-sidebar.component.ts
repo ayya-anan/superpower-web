@@ -349,11 +349,16 @@ export class KanbanSidebarComponent implements OnDestroy {
     getHeaderContent() {
         const dealFormDetails = this.dealForm.getRawValue();
         let template = '' ;
-        template += `<p> <b>${this.selectedOrganization?.primaryDetails?.name} </b>`;
+
+        // Expert Details
+        template+= `<p style="color:#990033;font-size: 12px;text-align:right;">Würzburger Str. 14<br>01187 Dresden<br>Telephone: (0351) 89699560<br>Fax: (0351) 89699570<br>info@expert-pm.de</p>`;
+        template+= `<p style="color:#990033;font-size: 12px;text-align:right;">Contact person: Lars Guido Schlegel<br>Project manager<br>Telephone: 0173/3911771<br>Fax: (0351) 89699570<br>l.schlegel@expert-pm.de</p>`;
+
+        template += `<p><b>${this.selectedOrganization?.primaryDetails?.name}, </b><br>`;
         if (this.selectedOrganization.facilities && this.selectedOrganization.facilities.length > 0) {
-            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.address}`;
-            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.country}`;
-            template  +=  ` \n ${this.selectedOrganization.facilities[0]?.zipCode}`;
+            template  +=  `${this.selectedOrganization.facilities[0]?.address},<br>`;
+            template  +=  `${this.selectedOrganization.facilities[0]?.country},`;
+            template  +=  `${this.selectedOrganization.facilities[0]?.zipCode}`;
         }
         template  += `</p><p></p><p> Dear ${dealFormDetails.customerContact}, </p>`;
         template  += _.cloneDeep(TEMPLATE_CONTENT[dealFormDetails.type]);
