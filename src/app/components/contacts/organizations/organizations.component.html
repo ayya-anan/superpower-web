@@ -1,10 +1,11 @@
+<!-- Sidebar View -->
 <p-sidebar #sidebar [(visible)]="organizationView" position="right" [baseZIndex]="10000" [dismissible]="false"
 	[closeOnEscape]="false" styleClass="w-full md:w-10 lg:w-10 xl:w-10" [showCloseIcon]="false">
 	<div class="col-12 p-0 pb-3 drawLine text-left">
 		<span class="text-xl ml-2 font-bold">{{'CONTACTS.ORGANIZATIONS.ADD_ORGANIZATION_DETAILS' | translate}}</span>
 	</div>
 	<form [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
-		<div class="col-12 grid">
+		<div class="col-12 grid pr-0">
 			<div class="col-3 formClass">
 				<div class="formgrid grid" formGroupName="primaryDetails">
 					<div class="field col-12">
@@ -19,32 +20,29 @@
 					</div>
 					<div class="field col-12">
 						<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name"
-							formControlName="section" [options]="sections" optionLabel="Name"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="section"
+							[options]="sections" optionLabel="Name"
 							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="sectionChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name"
-							formControlName="industryType" [options]="industryTypes"
-							optionLabel="Name"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="industryType"
+							[options]="industryTypes" optionLabel="Name"
 							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industryTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
 						<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name"
-							formControlName="subType1" [options]="industrySubType1"
-							optionLabel="Name"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType1"
+							[options]="industrySubType1" optionLabel="Name"
 							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubTypeChange($event)"></p-dropdown>
 					</div>
 					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
 						<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name"
-							formControlName="subType2" [options]="industrySubType2"
-							optionLabel="Name"
+						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType2"
+							[options]="industrySubType2" optionLabel="Name"
 							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
 							(onChange)="industrySubType2Change($event)"></p-dropdown>
 					</div>
@@ -105,14 +103,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-9">
-				<div class="p-0 mb-3">
-					<p-fieldset [toggleable]="true" [collapsed]="false">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.FACILITIES' | translate}}</span>
-							</div>
-						</ng-template>
+			<div class="col-9 pr-0">
+				<p-tabView>
+					<p-tabPanel header="{{'CONTACTS.ORGANIZATIONS.FACILITIES' | translate}}">
 						<ng-container *ngIf="facilitiesTable; else addFacility">
 							<div class="col-12 p-0 pb-2 text-right">
 								<button pButton pRipple icon="pi pi-plus" label="Add Facility"
@@ -200,15 +193,8 @@
 								</div>
 							</ng-container>
 						</ng-template>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3">
-					<p-fieldset [toggleable]="true" [collapsed]="false">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}</span>
-							</div>
-						</ng-template>
+					</p-tabPanel>
+					<p-tabPanel header="{{'CONTACTS.ORGANIZATIONS.POINT_OF_CONTACT' | translate}}">
 						<div class="col-12 p-0">
 							<button pButton pRipple icon="pi pi-plus" class="p-button-primary text-center"
 								label="{{ 'CONTACTS.ORGANIZATIONS.ADD_POINT_OF_CONTACT' | translate }}"
@@ -219,42 +205,30 @@
 								[columns]="pocTableCols" [tableData]="pocTableData" (editContent)="editData($event)"
 								(deleteContent)="delete($event)"></app-table>
 						</div>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3" *ngIf="dealsTable && dealsTable.length > 0">
-					<p-fieldset [toggleable]="true">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.DEALS_HEADER' | translate}}</span>
-							</div>
-						</ng-template>
-						<app-table [loading]="loading" [key]="'dealsData'"
-							[footerKey]="'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS'" [columns]="dealsColumns"
-							[tableData]="dealsTable"></app-table>
-					</p-fieldset>
-				</div>
-				<div class="p-0 mb-3" *ngIf="panelList && panelList.length > 0">
-					<p-fieldset [toggleable]="true">
-						<ng-template pTemplate="header">
-							<div class="flex align-items-center gap-2 px-2">
-								<span class="font-bold">{{'CONTACTS.ORGANIZATIONS.SERVICESLIST' | translate}}</span>
-							</div>
-						</ng-template>
-						<p-tabView>
-							<ng-container *ngFor="let item of panelList">
-								<p-tabPanel [header]="item.type">
-									<app-table [loading]="loading" [key]="'serviceListView'" [footerKey]="'Services'"
-										[columns]="serviceColumns" [tableData]="item.dataVal"></app-table>
-								</p-tabPanel>
-							</ng-container>
-						</p-tabView>
-					</p-fieldset>
-				</div>
+					</p-tabPanel>
+					<ng-container *ngIf="dealsTable && dealsTable.length > 0">
+						<p-tabPanel header="{{'CONTACTS.ORGANIZATIONS.DEALS_HEADER' | translate}}">
+							<app-table [loading]="loading" [key]="'dealsData'"
+								[footerKey]="'LEAD_MANAGEMENT.DEALS.DEAL_DETAILS'" [columns]="dealsColumns"
+								[tableData]="dealsTable"></app-table>
+						</p-tabPanel>
+					</ng-container>
+					<ng-container *ngIf="panelList && panelList.length > 0">
+						<p-tabPanel header="{{'CONTACTS.ORGANIZATIONS.SERVICESLIST' | translate}}">
+							<p-tabView>
+								<ng-container *ngFor="let item of panelList">
+									<p-tabPanel [header]="item.type">
+										<app-table [loading]="loading" [key]="'serviceListView'"
+											[footerKey]="'Services'" [columns]="serviceColumns"
+											[tableData]="item.dataVal"></app-table>
+									</p-tabPanel>
+								</ng-container>
+							</p-tabView>
+						</p-tabPanel>
+					</ng-container>
+				</p-tabView>
 			</div>
 		</div>
-		<!-- <div class="col-12 m-auto" style="width: 100px;">
-			<button pButton pRipple label="Save" class="p-button-success text-center"></button>
-		</div> -->
 	</form>
 </p-sidebar>
 
@@ -267,6 +241,8 @@
 		</div>
 	</ng-template>
 </p-confirmDialog>
+
+<!-- ToolBar -->
 <div class="col-12 py-0">
 	<p-toolbar>
 		<div class="p-toolbar-group-start" *ngIf="keycloakService.isUserInRole('add-organization')">
