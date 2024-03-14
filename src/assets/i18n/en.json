@@ -135,6 +135,7 @@
             "POINT_OF_CONTACTS": "Point Of Contacts",
             "ADD_POINT_OF_CONTACT": "Add Point Of Contact",
             "ORGANIZATION_ID": "Organization ID",
+            "WZ_CODE": "WZ-Codes",
             "WZ_SECTION": "WZ Section",
             "WZ_INDUSTRY_TYPE": "WZ Industry Type",
             "WZ_SUB_TYPE_1": "WZ Sub Type 1",

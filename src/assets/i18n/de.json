@@ -132,6 +132,7 @@
             "POINT_OF_CONTACTS": "Ansprechpartner",
             "ADD_POINT_OF_CONTACT": "Kontaktpunkte hinzufügen",
             "ORGANIZATION_ID": "Organisations-ID",
+            "WZ_CODE": "WZ-Codes",
             "WZ_SECTION": "WZ-Sektion",
             "WZ_INDUSTRY_TYPE": "WZ-Branchentyp",
             "WZ_SUB_TYPE_1": "WZ-Untertyp 1",

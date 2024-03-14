@@ -19,38 +19,16 @@
 							class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 					</div>
 					<div class="field col-12">
-						<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="section"
-							[options]="sections" optionLabel="Name"
-							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="sectionChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12">
-						<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="industryType"
-							[options]="industryTypes" optionLabel="Name"
-							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industryTypeChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12" *ngIf="industrySubType1 && industrySubType1.length > 0">
-						<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType1"
-							[options]="industrySubType1" optionLabel="Name"
-							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industrySubTypeChange($event)"></p-dropdown>
-					</div>
-					<div class="field col-12" *ngIf="industrySubType2 && industrySubType2.length > 0">
-						<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
-						<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType2"
-							[options]="industrySubType2" optionLabel="Name"
-							placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
-							(onChange)="industrySubType2Change($event)"></p-dropdown>
-					</div>
-					<div class="field col-12">
 						<label for="revenueRange">{{'CONTACTS.ORGANIZATIONS.REVENUE_RANGE' | translate}}</label><br>
 						<p-dropdown appendTo="body" [filter]="true" filterBy="name" formControlName="revenueRange"
 							[options]="revenueRange" optionLabel="name" optionValue="name"
 							placeholder="{{ 'DROPDOWNS.SELECT_REVENUE' | translate}}"></p-dropdown>
+					</div>
+					<div class="field col-12">
+						<label for="accountManager">{{'CONTACTS.ORGANIZATIONS.ACCOUNT_MANAGER' | translate}}</label>
+						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
+							optionLabel="name" optionValue="name"
+							placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
 					</div>
 					<div class="field col-12">
 						<label>{{'CONTACTS.ORGANIZATIONS.STATUS' | translate}}</label><br>
@@ -64,12 +42,6 @@
 						<p-dropdown appendTo="body" formControlName="pointofContact" [options]="individualsData"
 							optionLabel="name" optionValue="id"
 							placeholder="{{ 'DROPDOWNS.SELECT_POINT_OF_CONTACT' | translate}}"></p-dropdown>
-					</div>
-					<div class="field col-12">
-						<label for="accountManager">{{'CONTACTS.ORGANIZATIONS.ACCOUNT_MANAGER' | translate}}</label>
-						<p-dropdown appendTo="body" formControlName="accountManager" [options]="individualsData"
-							optionLabel="name" optionValue="name"
-							placeholder="{{ 'DROPDOWNS.SELECT_ACCOUNT_MANAGER' | translate}}"></p-dropdown>
 					</div>
 					<ng-container *ngIf="activeContract">
 						<div class="field col-12">
@@ -204,6 +176,38 @@
 							<app-table [loading]="loading" [key]="'poc'" [footerKey]="'Point Of Contacts'"
 								[columns]="pocTableCols" [tableData]="pocTableData" (editContent)="editData($event)"
 								(deleteContent)="delete($event)"></app-table>
+						</div>
+					</p-tabPanel>
+					<p-tabPanel header="{{'CONTACTS.ORGANIZATIONS.WZ_CODE' | translate}}">
+						<div class="col-12 p-0 inline-flex">
+							<div class="col">
+								<label for="section">{{'CONTACTS.ORGANIZATIONS.WZ_SECTION' | translate}}</label><br>
+								<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="section"
+									[options]="sections" optionLabel="Name"
+									placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+									(onChange)="sectionChange($event)"></p-dropdown>
+							</div>
+							<div class="col">
+								<label for="industryType">{{'CONTACTS.ORGANIZATIONS.WZ_INDUSTRY_TYPE' | translate}}</label><br>
+								<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="industryType"
+									[options]="industryTypes" optionLabel="Name"
+									placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+									(onChange)="industryTypeChange($event)"></p-dropdown>
+							</div>
+							<div class="col" *ngIf="industrySubType1 && industrySubType1.length > 0">
+								<label for="subType1">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_1' | translate}}</label><br>
+								<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType1"
+									[options]="industrySubType1" optionLabel="Name"
+									placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+									(onChange)="industrySubTypeChange($event)"></p-dropdown>
+							</div>
+							<div class="col" *ngIf="industrySubType2 && industrySubType2.length > 0">
+								<label for="subType2">{{'CONTACTS.ORGANIZATIONS.WZ_SUB_TYPE_2' | translate}}</label><br>
+								<p-dropdown appendTo="body" [filter]="true" filterBy="Name" formControlName="subType2"
+									[options]="industrySubType2" optionLabel="Name"
+									placeholder="{{ 'DROPDOWNS.SELECT_TYPE' | translate}}"
+									(onChange)="industrySubType2Change($event)"></p-dropdown>
+							</div>
 						</div>
 					</p-tabPanel>
 					<ng-container *ngIf="dealsTable && dealsTable.length > 0">
